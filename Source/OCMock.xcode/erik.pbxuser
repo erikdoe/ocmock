@@ -1,6 +1,34 @@
 // !$*UTF8*$!
 {
-	03428B7F06EA659500B9D4B6 = {
+	0338A95107BE738E0066DE8A = {
+		fRef = 0338A95207BE738E0066DE8A;
+		isa = PBXTextBookmark;
+		name = "(null): 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1446;
+		vrLoc = 2592;
+	};
+	0338A95207BE738E0066DE8A = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = NSConnection.h;
+		path = /System/Library/Frameworks/Foundation.framework/Versions/C/Headers/NSConnection.h;
+		refType = 0;
+		sourceTree = "<absolute>";
+	};
+	0338A95C07BE74F20066DE8A = {
+		fRef = 03DE1F5F06DB914100E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObjectTests.m: 150";
+		rLen = 0;
+		rLoc = 3077;
+		rType = 0;
+		vrLen = 991;
+		vrLoc = 2153;
+	};
+	0338A95D07BE74F20066DE8A = {
 		fRef = 03DE1F5E06DB914100E5A2A8;
 		isa = PBXTextBookmark;
 		name = "OCMockObjectTests.h: 8";
@@ -10,373 +38,2623 @@
 		vrLen = 418;
 		vrLoc = 0;
 	};
-	03428B8006EA659500B9D4B6 = {
-		fRef = 03DE1F5706DB911300E5A2A8;
+	0338A95E07BE74F20066DE8A = {
+		fRef = 03DE1F5606DB911300E5A2A8;
 		isa = PBXTextBookmark;
-		name = "OCMockRecorder.m: 9";
+		name = "OCMockRecorder.h: 8";
 		rLen = 0;
-		rLoc = 347;
+		rLoc = 360;
 		rType = 0;
-		vrLen = 1450;
-		vrLoc = 1848;
+		vrLen = 718;
+		vrLoc = 0;
 	};
-	039DFCE9070625940083B64D = {
+	0338A95F07BE74F20066DE8A = {
+		fRef = 03DE1F6106DB914100E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorderTests.m: 65";
+		rLen = 0;
+		rLoc = 1864;
+		rType = 0;
+		vrLen = 1424;
+		vrLoc = 90;
+	};
+	0338A96007BE74F20066DE8A = {
+		fRef = 089C1667FE841158C02AAC07;
+		isa = PBXTextBookmark;
+		name = "English: 5";
+		rLen = 0;
+		rLoc = 187;
+		rType = 0;
+		vrLen = 257;
+		vrLoc = 0;
+	};
+	0338A96107BE74F20066DE8A = {
+		fRef = 32DBCF5E0370ADEE00C91783;
+		isa = PBXTextBookmark;
+		name = "OCMock_Prefix.pch: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 184;
+		vrLoc = 0;
+	};
+	0338A96307BE74F20066DE8A = {
+		fRef = 03DE221606DB97DA00E5A2A8;
+		isa = PBXTextBookmark;
+		name = "License.txt: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 924;
+		vrLoc = 0;
+	};
+	0338A96507BE74F20066DE8A = {
+		fRef = 03DE1F6006DB914100E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorderTests.h: 6";
+		rLen = 0;
+		rLoc = 318;
+		rType = 0;
+		vrLen = 444;
+		vrLoc = 0;
+	};
+	0338A96807BE74F20066DE8A = {
+		fRef = 03DE1F6006DB914100E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorderTests.h: 6";
+		rLen = 0;
+		rLoc = 318;
+		rType = 0;
+		vrLen = 444;
+		vrLoc = 0;
+	};
+	0338A96907BE74F20066DE8A = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.m: 67";
+		rLen = 0;
+		rLoc = 1708;
+		rType = 0;
+		vrLen = 1470;
+		vrLoc = 1665;
+	};
+	0338A97707BE78440066DE8A = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.m: 37";
+		rLen = 0;
+		rLoc = 1105;
+		rType = 0;
+		vrLen = 1375;
+		vrLoc = 362;
+	};
+	0338A98607BE7AD30066DE8A = {
 		fRef = 03DE1F5406DB911300E5A2A8;
 		isa = PBXTextBookmark;
-		name = expectedInvocations;
-		rLen = 19;
-		rLoc = 456;
+		name = Protocol;
+		rLen = 8;
+		rLoc = 503;
 		rType = 0;
-		vrLen = 601;
+		vrLen = 605;
 		vrLoc = 0;
 	};
-	039DFCFE070627590083B64D = {
-		fRef = 03DE1F5F06DB914100E5A2A8;
-		isa = PBXTextBookmark;
-		name = "OCMockObjectTests.m: 50";
-		rLen = 0;
-		rLoc = 1123;
-		rType = 0;
-		vrLen = 1011;
-		vrLoc = 1581;
-	};
-	039DFD0A070634120083B64D = {
+	0338A99107BE7BF40066DE8A = {
 		fRef = 03DE1F5506DB911300E5A2A8;
 		isa = PBXTextBookmark;
-		name = "OCMockObject.m: 6";
+		name = "OCMockObject.m: 21";
 		rLen = 0;
-		rLoc = 318;
+		rLoc = 629;
 		rType = 0;
-		vrLen = 1470;
-		vrLoc = 1586;
+		vrLen = 1136;
+		vrLoc = 144;
 	};
-	039DFD0B070634120083B64D = {
-		fRef = 03DE1F5506DB911300E5A2A8;
+	0338A99207BE7BF40066DE8A = {
+		fRef = 0338A99307BE7BF40066DE8A;
 		isa = PBXTextBookmark;
-		name = "OCMockObject.m: 6";
+		name = "(null): 1";
 		rLen = 0;
-		rLoc = 318;
+		rLoc = 0;
 		rType = 0;
-		vrLen = 1470;
-		vrLoc = 1586;
+		vrLen = 785;
+		vrLoc = 1149;
 	};
-	039DFD11070634730083B64D = {
-		fRef = 03DE1F5F06DB914100E5A2A8;
-		isa = PBXTextBookmark;
-		name = "OCMockObjectTests.m: 134";
-		rLen = 0;
-		rLoc = 2807;
-		rType = 0;
-		vrLen = 665;
-		vrLoc = 1921;
-	};
-	039DFD12070634730083B64D = {
-		fRef = 03DE1F5F06DB914100E5A2A8;
-		isa = PBXTextBookmark;
-		name = "OCMockObjectTests.m: 134";
-		rLen = 0;
-		rLoc = 2807;
-		rType = 0;
-		vrLen = 665;
-		vrLoc = 1921;
-	};
-	039DFD13070634730083B64D = {
-		fRef = 8DC2EF5A0486A6940098B216;
-		isa = PBXTextBookmark;
-		name = "Info.plist: 7";
-		rLen = 0;
-		rLoc = 273;
-		rType = 0;
-		vrLen = 712;
-		vrLoc = 0;
-	};
-	039DFD17070634A90083B64D = {
-		fRef = 8DC2EF5A0486A6940098B216;
-		isa = PBXTextBookmark;
-		name = "Info.plist: 7";
-		rLen = 0;
-		rLoc = 273;
-		rType = 0;
-		vrLen = 712;
-		vrLoc = 0;
-	};
-	039DFD1B070634EA0083B64D = {
-		fRef = 8DC2EF5A0486A6940098B216;
-		isa = PBXTextBookmark;
-		name = "Info.plist: 7";
-		rLen = 0;
-		rLoc = 273;
-		rType = 0;
-		vrLen = 712;
-		vrLoc = 0;
-	};
-	039DFD1C070635120083B64D = {
+	0338A99307BE7BF40066DE8A = {
 		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.c.objc;
-		name = OCMockObjectTests.m;
-		path = /Users/erik/Projects/OCMock/scm/Source/OCMockObjectTests.m;
+		lastKnownFileType = sourcecode.c.h;
+		name = Protocol.h;
+		path = /usr/include/objc/Protocol.h;
+		refType = 0;
+		sourceTree = "<absolute>";
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {817, 1004}}";
+			sepNavSelRange = "{1745, 76}";
+			sepNavVisRect = "{{0, 355}, {817, 641}}";
+		};
+	};
+	0338A99407BE7BF40066DE8A = {
+		fRef = 03DE1F5406DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = Protocol;
+		rLen = 8;
+		rLoc = 503;
+		rType = 0;
+		vrLen = 605;
+		vrLoc = 0;
+	};
+	0338A99607BE7C100066DE8A = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {817, 641}}";
+			sepNavSelRange = "{359, 0}";
+			sepNavVisRect = "{{0, 0}, {817, 641}}";
+		};
+	};
+	0338A99707BE7C100066DE8A = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {817, 659}}";
+			sepNavSelRange = "{554, 0}";
+			sepNavVisRect = "{{0, 4}, {817, 641}}";
+		};
+	};
+	0338A99A07BE7EC80066DE8A = {
+		fRef = 8DC2EF5A0486A6940098B216;
+		isa = PBXTextBookmark;
+		name = "Info.plist: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 712;
+		vrLoc = 0;
+	};
+	0338A99F07BE7EC80066DE8A = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.m: 21";
+		rLen = 0;
+		rLoc = 629;
+		rType = 0;
+		vrLen = 1255;
+		vrLoc = 0;
+	};
+	0338A9A007BE7EC80066DE8A = {
+		fRef = 0338A99607BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 228;
+		vrLoc = 0;
+	};
+	0338A9A107BE7EC80066DE8A = {
+		fRef = 8DC2EF5A0486A6940098B216;
+		isa = PBXTextBookmark;
+		name = "Info.plist: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 712;
+		vrLoc = 0;
+	};
+	0338A9A207BE7EC80066DE8A = {
+		fRef = 0338A99607BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.h: 10";
+		rLen = 0;
+		rLoc = 175;
+		rType = 0;
+		vrLen = 228;
+		vrLoc = 0;
+	};
+	0338A9A307BE7EC80066DE8A = {
+		fRef = 03DE1F5406DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.h: 17";
+		rLen = 0;
+		rLoc = 525;
+		rType = 0;
+		vrLen = 605;
+		vrLoc = 0;
+	};
+	0338A9A407BE7EC80066DE8A = {
+		fRef = 0338A99607BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.h: 18";
+		rLen = 0;
+		rLoc = 274;
+		rType = 0;
+		vrLen = 265;
+		vrLoc = 0;
+	};
+	0338A9A507BE7EC80066DE8A = {
+		fRef = 03DE1F5406DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.h: mockedClass";
+		rLen = 0;
+		rLoc = 386;
+		rType = 0;
+		vrLen = 587;
+		vrLoc = 0;
+	};
+	0338A9A607BE7EC80066DE8A = {
+		fRef = 0338A99607BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.h: mockedClass";
+		rLen = 0;
+		rLoc = 227;
+		rType = 0;
+		vrLen = 284;
+		vrLoc = 0;
+	};
+	0338A9A707BE7EC80066DE8A = {
+		fRef = 03DE1F5406DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "//---------------------------------------------------------------------------------------\n//  $Id: OCMockObject.h 6 2004-09-25 23:28:32Z erik $\n//  Copyright (c) 2004 by Mulle Kybernetik. See License file for details.\n//---------------------------------------------------------------------------------------";
+		rLen = 312;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 587;
+		vrLoc = 0;
+	};
+	0338A9A807BE7EC80066DE8A = {
+		fRef = 0338A99607BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.h: 9";
+		rLen = 0;
+		rLoc = 463;
+		rType = 0;
+		vrLen = 404;
+		vrLoc = 0;
+	};
+	0338A9A907BE7EC80066DE8A = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "//---------------------------------------------------------------------------------------\n//  $Id: OCMockObject.m 6 2004-09-25 23:28:32Z erik $\n//  Copyright (c) 2004 by Mulle Kybernetik. See License file for details.\n//---------------------------------------------------------------------------------------";
+		rLen = 312;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1255;
+		vrLoc = 0;
+	};
+	0338A9AA07BE7EC80066DE8A = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: 4";
+		rLen = 0;
+		rLoc = 264;
+		rType = 0;
+		vrLen = 381;
+		vrLoc = 0;
+	};
+	0338A9AB07BE7EC80066DE8A = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "- (id)stub\n{\n\tOCMockRecorder *recorder = [[[OCMockRecorder alloc] initWithClass:mockedClass] autorelease];\n\t[recordedInvocations addObject:recorder];\n\treturn recorder;\n}";
+		rLen = 186;
+		rLoc = 1463;
+		rType = 0;
+		vrLen = 979;
+		vrLoc = 1421;
+	};
+	0338A9AC07BE7EC80066DE8A = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: 12";
+		rLen = 0;
+		rLoc = 519;
+		rType = 0;
+		vrLen = 736;
+		vrLoc = 0;
+	};
+	0338A9AD07BE7EC80066DE8A = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "- (id)stub\n{\n\tOCMockRecorder *recorder = [[[OCMockRecorder alloc] initWithClass:mockedClass] autorelease];\n\t[recordedInvocations addObject:recorder];\n\treturn recorder;\n}";
+		rLen = 186;
+		rLoc = 1463;
+		rType = 0;
+		vrLen = 1255;
+		vrLoc = 0;
+	};
+	0338A9AE07BE7EC80066DE8A = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: 20";
+		rLen = 0;
+		rLoc = 690;
+		rType = 0;
+		vrLen = 766;
+		vrLoc = 0;
+	};
+	0338A9AF07BE7EC80066DE8A = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "//---------------------------------------------------------------------------------------\n//  proxy api\n//---------------------------------------------------------------------------------------\n\n- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector\n{\n\treturn [mockedClass instanceMethodSignatureForSelector:aSelector];\n}\n\n\n";
+		rLen = 259;
+		rLoc = 2166;
+		rType = 0;
+		vrLen = 1086;
+		vrLoc = 2269;
+	};
+	0338A9B007BE7EC80066DE8A = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: 3";
+		rLen = 0;
+		rLoc = 123;
+		rType = 0;
+		vrLen = 1058;
+		vrLoc = 0;
+	};
+	0338A9B107BE7EC80066DE8A = {
+		fRef = 0338A99607BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.h: 3";
+		rLen = 0;
+		rLoc = 123;
+		rType = 0;
+		vrLen = 404;
+		vrLoc = 0;
+	};
+	0338A9B207BE7EC80066DE8A = {
+		fRef = 03DE1F5406DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "2004,2005";
+		rLen = 9;
+		rLoc = 162;
+		rType = 0;
+		vrLen = 592;
+		vrLoc = 0;
+	};
+	0338A9CA07BE82890066DE8A = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "- (NSString *)mockInstanceDescription\n";
+		rLen = 38;
+		rLoc = 1483;
+		rType = 0;
+		vrLen = 1002;
+		vrLoc = 983;
+	};
+	0338A9CC07BE82890066DE8A = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.m: 60";
+		rLen = 0;
+		rLoc = 1647;
+		rType = 0;
+		vrLen = 833;
+		vrLoc = 1285;
+	};
+	0338A9CD07BE82890066DE8A = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: 3";
+		rLen = 0;
+		rLoc = 123;
+		rType = 0;
+		vrLen = 1058;
+		vrLoc = 0;
+	};
+	0338A9CE07BE82890066DE8A = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.m: 41";
+		rLen = 0;
+		rLoc = 1129;
+		rType = 0;
+		vrLen = 1563;
+		vrLoc = 144;
+	};
+	0338A9CF07BE82890066DE8A = {
+		fRef = 03DE1F5406DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "2004,2005";
+		rLen = 9;
+		rLoc = 162;
+		rType = 0;
+		vrLen = 592;
+		vrLoc = 0;
+	};
+	0338A9D007BE82890066DE8A = {
+		fRef = 0338A99607BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.h: 3";
+		rLen = 0;
+		rLoc = 123;
+		rType = 0;
+		vrLen = 404;
+		vrLoc = 0;
+	};
+	0338A9D107BE82890066DE8A = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.m: 39";
+		rLen = 0;
+		rLoc = 1073;
+		rType = 0;
+		vrLen = 931;
+		vrLoc = 765;
+	};
+	0338A9D207BE82890066DE8A = {
+		fRef = 0338A99607BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.h: 3";
+		rLen = 0;
+		rLoc = 123;
+		rType = 0;
+		vrLen = 404;
+		vrLoc = 0;
+	};
+	0338A9D307BE82890066DE8A = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: 19";
+		rLen = 0;
+		rLoc = 398;
+		rType = 0;
+		vrLen = 1141;
+		vrLoc = 0;
+	};
+	0338A9D407BE82890066DE8A = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "//---------------------------------------------------------------------------------------\n//  init and dealloc\n//---------------------------------------------------------------------------------------\n";
+		rLen = 332;
+		rLoc = 728;
+		rType = 0;
+		vrLen = 976;
+		vrLoc = 512;
+	};
+	0338A9D507BE82890066DE8A = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: initWithClass:";
+		rLen = 0;
+		rLoc = 508;
+		rType = 0;
+		vrLen = 1118;
+		vrLoc = 90;
+	};
+	0338A9D607BE82890066DE8A = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.m: 88";
+		rLen = 0;
+		rLoc = 2425;
+		rType = 0;
+		vrLen = 1025;
+		vrLoc = 1862;
+	};
+	0338A9D707BE82890066DE8A = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: initWithClass:";
+		rLen = 0;
+		rLoc = 508;
+		rType = 0;
+		vrLen = 1020;
+		vrLoc = 332;
+	};
+	0338A9D807BE82890066DE8A = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "\t[NSException raise:NSInternalInconsistencyException format:@\"Unexpected method or arguments [OCMockObject{%@} %@]\", NSStringFromClass(mockedClass), NSStringFromSelector([anInvocation selector])];\n";
+		rLen = 171;
+		rLoc = 2957;
+		rType = 0;
+		vrLen = 1069;
+		vrLoc = 2382;
+	};
+	0338A9D907BE82890066DE8A = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: 26";
+		rLen = 0;
+		rLoc = 813;
+		rType = 0;
+		vrLen = 1180;
+		vrLoc = 332;
+	};
+	0338A9DA07BE82890066DE8A = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "- (NSString *)mockInstanceDescription\n";
+		rLen = 38;
+		rLoc = 1483;
+		rType = 0;
+		vrLen = 1002;
+		vrLoc = 983;
+	};
+	0338A9DC07BE82890066DE8A = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		rLen = 1;
+		rLoc = 6;
+		rType = 1;
+	};
+	0338A9DF07BE83040066DE8A = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: 29";
+		rLen = 0;
+		rLoc = 940;
+		rType = 0;
+		vrLen = 1142;
+		vrLoc = 0;
+	};
+	0338A9EE07BE83B50066DE8A = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {817, 641}}";
+			sepNavSelRange = "{342, 0}";
+			sepNavVisRect = "{{0, 0}, {817, 641}}";
+		};
+	};
+	0338A9EF07BE83B50066DE8A = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {817, 704}}";
+			sepNavSelRange = "{933, 11}";
+			sepNavVisRect = "{{0, 0}, {817, 641}}";
+		};
+	};
+	0338A9F507BE853A0066DE8A = {
+		fRef = 03DE1F5406DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.h: 18";
+		rLen = 0;
+		rLoc = 538;
+		rType = 0;
+		vrLen = 605;
+		vrLoc = 0;
+	};
+	0338A9F707BE853A0066DE8A = {
+		fRef = 0338A9EE07BE83B50066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCProtocolMockObject.h: 17";
+		rLen = 0;
+		rLoc = 425;
+		rType = 0;
+		vrLen = 426;
+		vrLoc = 0;
+	};
+	0338A9FA07BE853A0066DE8A = {
+		fRef = 0338A9FB07BE853A0066DE8A;
+		isa = PBXTextBookmark;
+		name = "(null): 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 545;
+		vrLoc = 0;
+	};
+	0338A9FB07BE853A0066DE8A = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = NSMethodSignature.h;
+		path = /System/Library/Frameworks/Foundation.framework/Versions/C/Headers/NSMethodSignature.h;
 		refType = 0;
 		sourceTree = "<absolute>";
 	};
-	039DFD1F070635270083B64D = {
-		fRef = 8DC2EF5A0486A6940098B216;
+	0338A9FD07BE853A0066DE8A = {
+		fRef = 0338A99607BE7C100066DE8A;
 		isa = PBXTextBookmark;
-		name = "Info.plist: 7";
+		name = "OCClassMockObject.h: 3";
 		rLen = 0;
-		rLoc = 273;
+		rLoc = 123;
 		rType = 0;
-		vrLen = 712;
+		vrLen = 404;
 		vrLoc = 0;
 	};
-	039DFD20070635270083B64D = {
-		fRef = 039DFD1C070635120083B64D;
+	0338A9FE07BE853A0066DE8A = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "\t[super init];\n";
+		rLen = 15;
+		rLoc = 571;
+		rType = 0;
+		vrLen = 1142;
+		vrLoc = 0;
+	};
+	0338A9FF07BE853A0066DE8A = {
+		fRef = 03DE1F5406DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.h: 18";
+		rLen = 0;
+		rLoc = 538;
+		rType = 0;
+		vrLen = 605;
+		vrLoc = 0;
+	};
+	0338AA0007BE853A0066DE8A = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: 13";
+		rLen = 0;
+		rLoc = 443;
+		rType = 0;
+		vrLen = 1153;
+		vrLoc = 359;
+	};
+	0338AA0107BE853A0066DE8A = {
+		fRef = 0338A99307BE7BF40066DE8A;
+		isa = PBXTextBookmark;
+		name = "Protocol.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 894;
+		vrLoc = 1040;
+	};
+	0338AA0207BE853A0066DE8A = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: 13";
+		rLen = 0;
+		rLoc = 443;
+		rType = 0;
+		vrLen = 1187;
+		vrLoc = 325;
+	};
+	0338AA0307BE853A0066DE8A = {
+		fRef = 0338A99307BE7BF40066DE8A;
+		isa = PBXTextBookmark;
+		name = "Protocol.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 894;
+		vrLoc = 1040;
+	};
+	0338AA0407BE853A0066DE8A = {
+		fRef = 0338A9EE07BE83B50066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCProtocolMockObject.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 234;
+		vrLoc = 0;
+	};
+	0338AA0607BE853A0066DE8A = {
+		fRef = 0338A99607BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "//---------------------------------------------------------------------------------------\n//  $Id: $\n//  Copyright (c) 2005 by Mulle Kybernetik. See License file for details.\n//---------------------------------------------------------------------------------------\n\n#import \"OCMockObject.h\"\n\n\n@interface OCClassMockObject : OCMockObject \n{\n\tClass\tmockedClass;\n}\n\n- (id)initWithClass:(Class)aClass;\n\n@end\n";
+		rLen = 590;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 404;
+		vrLoc = 0;
+	};
+	0338AA0707BE853A0066DE8A = {
+		fRef = 0338A9EE07BE83B50066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCProtocolMockObject.h: 17";
+		rLen = 0;
+		rLoc = 425;
+		rType = 0;
+		vrLen = 426;
+		vrLoc = 0;
+	};
+	0338AA0907BE853A0066DE8A = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "//---------------------------------------------------------------------------------------\n//  $Id: $\n//  Copyright (c) 2005 by Mulle Kybernetik. See License file for details.\n//---------------------------------------------------------------------------------------\n\n#import \"OCMockRecorder.h\"\n#import \"OCClassMockObject.h\"\n\n\n@implementation OCClassMockObject\n\n//---------------------------------------------------------------------------------------\n//  init and dealloc\n//---------------------------------------------------------------------------------------\n\n- (id)initWithClass:(Class)aClass\n{\n\t[super init];\n\tmockedClass = aClass;\n\treturn self;\n}\n\n\n//---------------------------------------------------------------------------------------\n// overrides of abstract methods\n//---------------------------------------------------------------------------------------\n\n- (NSString *)mockInstanceDescription\n{\n\treturn [NSString stringWithFormat:@\"OCMockObject{%@}\", NSStringFromClass(mockedClass)];\n}\n\n\n- (id)stub\n{\n\tOCMockRecorder *recorder = [[[OCMockRecorder alloc] initWithClass:mockedClass] autorelease];\n\t[recordedInvocations addObject:recorder];\n\treturn recorder;\n}\n\n\n//---------------------------------------------------------------------------------------\n//  proxy api\n//---------------------------------------------------------------------------------------\n\n- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector\n{\n\treturn [mockedClass instanceMethodSignatureForSelector:aSelector];\n}\n\n\n@end\n";
+		rLen = 1313;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1187;
+		vrLoc = 325;
+	};
+	0338AA0B07BE853A0066DE8A = {
+		fRef = 0338AA0C07BE853A0066DE8A;
+		isa = PBXTextBookmark;
+		name = "(null): 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 545;
+		vrLoc = 0;
+	};
+	0338AA0C07BE853A0066DE8A = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = NSMethodSignature.h;
+		path = /System/Library/Frameworks/Foundation.framework/Versions/C/Headers/NSMethodSignature.h;
+		refType = 0;
+		sourceTree = "<absolute>";
+	};
+	0338AA1007BE866F0066DE8A = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {817, 641}}";
+			sepNavSelRange = "{94, 0}";
+			sepNavVisRect = "{{0, 0}, {817, 641}}";
+		};
+	};
+	0338AA1407BE869E0066DE8A = {
+		fRef = 03DE21B206DB95C500E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMock.h: 1";
+		rLen = 0;
+		rLoc = 53;
+		rType = 0;
+		vrLen = 355;
+		vrLoc = 0;
+	};
+	0338AA1707BE869E0066DE8A = {
+		fRef = 0338A99307BE7BF40066DE8A;
+		isa = PBXTextBookmark;
+		name = "Protocol.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 894;
+		vrLoc = 1040;
+	};
+	0338AA1907BE869E0066DE8A = {
+		fRef = 0338AA1007BE866F0066DE8A;
+		isa = PBXTextBookmark;
+		name = "NSMethodInvocation+Internal.h: 1";
+		rLen = 0;
+		rLoc = 99;
+		rType = 0;
+		vrLen = 0;
+		vrLoc = 0;
+	};
+	0338AA1A07BE869E0066DE8A = {
+		fRef = 03DE21B206DB95C500E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMock.h: 1";
+		rLen = 0;
+		rLoc = 53;
+		rType = 0;
+		vrLen = 355;
+		vrLoc = 0;
+	};
+	0338AA1B07BE869E0066DE8A = {
+		fRef = 0338AA1007BE866F0066DE8A;
+		isa = PBXTextBookmark;
+		name = "NSMethodInvocation+Internal.h: 1";
+		rLen = 0;
+		rLoc = 99;
+		rType = 0;
+		vrLen = 0;
+		vrLoc = 0;
+	};
+	0338AA2807BE89F40066DE8A = {
+		fRef = 0338A99307BE7BF40066DE8A;
+		isa = PBXTextBookmark;
+		name = "- (struct objc_method_description *) descriptionForInstanceMethod:(SEL)aSel;";
+		rLen = 76;
+		rLoc = 1745;
+		rType = 0;
+		vrLen = 894;
+		vrLoc = 1040;
+	};
+	0338AA2907BE89F40066DE8A = {
+		fRef = 0338AA1007BE866F0066DE8A;
+		isa = PBXTextBookmark;
+		name = "NSMethodSignature+Private.h: 2";
+		rLen = 0;
+		rLoc = 40;
+		rType = 0;
+		vrLen = 97;
+		vrLoc = 0;
+	};
+	0338AA2A07BE89F40066DE8A = {
+		fRef = 03DE1F5706DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = mockedClass;
+		rLen = 1;
+		rLoc = 1731;
+		rType = 0;
+		vrLen = 1288;
+		vrLoc = 1143;
+	};
+	0338AA2B07BE89F40066DE8A = {
+		fRef = 0338A99607BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "//---------------------------------------------------------------------------------------\n//  $Id: $\n//  Copyright (c) 2005 by Mulle Kybernetik. See License file for details.\n//---------------------------------------------------------------------------------------\n\n#import \"OCMockObject.h\"\n\n\n@interface OCClassMockObject : OCMockObject \n{\n\tClass\tmockedClass;\n}\n\n- (id)initWithClass:(Class)aClass;\n\n@end\n";
+		rLen = 590;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 404;
+		vrLoc = 0;
+	};
+	0338AA2C07BE89F40066DE8A = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: 25";
+		rLen = 0;
+		rLoc = 749;
+		rType = 0;
+		vrLen = 1153;
+		vrLoc = 359;
+	};
+	0338AA2D07BE89F40066DE8A = {
+		fRef = 0338A9EF07BE83B50066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCProtocolMockObject.m: 7";
+		rLen = 0;
+		rLoc = 292;
+		rType = 0;
+		vrLen = 1246;
+		vrLoc = 429;
+	};
+	0338AA2E07BE89F40066DE8A = {
+		fRef = 0338AA1007BE866F0066DE8A;
+		isa = PBXTextBookmark;
+		name = "NSMethodInvocation+Internal.h: 3";
+		rLen = 0;
+		rLoc = 92;
+		rType = 0;
+		vrLen = 97;
+		vrLoc = 0;
+	};
+	0338AA2F07BE89F40066DE8A = {
+		fRef = 0338A9EF07BE83B50066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCProtocolMockObject.m: 50";
+		rLen = 0;
+		rLoc = 1472;
+		rType = 0;
+		vrLen = 1231;
+		vrLoc = 90;
+	};
+	0338AA3007BE89F40066DE8A = {
+		fRef = 0338AA1007BE866F0066DE8A;
+		isa = PBXTextBookmark;
+		name = "NSMethodSignature+Private.h: 2";
+		rLen = 0;
+		rLoc = 40;
+		rType = 0;
+		vrLen = 97;
+		vrLoc = 0;
+	};
+	0338AA3107BE89F40066DE8A = {
+		fRef = 0338A9EF07BE83B50066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCProtocolMockObject.m: 7";
+		rLen = 0;
+		rLoc = 292;
+		rType = 0;
+		vrLen = 1245;
+		vrLoc = 430;
+	};
+	0338AA3207BE89F40066DE8A = {
+		fRef = 03DE1F5706DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = mockedClass;
+		rLen = 1;
+		rLoc = 1731;
+		rType = 0;
+		vrLen = 1288;
+		vrLoc = 1143;
+	};
+	0338AA3307BE89F40066DE8A = {
+		fRef = 0338A99607BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "//---------------------------------------------------------------------------------------\n//  $Id: $\n//  Copyright (c) 2005 by Mulle Kybernetik. See License file for details.\n//---------------------------------------------------------------------------------------\n\n#import \"OCMockObject.h\"\n\n\n@interface OCClassMockObject : OCMockObject \n{\n\tClass\tmockedClass;\n}\n\n- (id)initWithClass:(Class)aClass;\n\n@end\n";
+		rLen = 590;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 404;
+		vrLoc = 0;
+	};
+	0338AA3407BE89F40066DE8A = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: 25";
+		rLen = 0;
+		rLoc = 749;
+		rType = 0;
+		vrLen = 1153;
+		vrLoc = 359;
+	};
+	0338AA3D07BFA0D70066DE8A = {
+		fRef = 0338A9EF07BE83B50066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCProtocolMockObject.m: 37";
+		rLen = 0;
+		rLoc = 1039;
+		rType = 0;
+		vrLen = 1245;
+		vrLoc = 430;
+	};
+	0338AA3E07BFA0D70066DE8A = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "#import \"OCClassMockObject.h\"\n";
+		rLen = 30;
+		rLoc = 339;
+		rType = 0;
+		vrLen = 0;
+		vrLoc = 0;
+	};
+	03736B7407BFD57200112CC0 = {
+		fRef = 0338A9EF07BE83B50066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCProtocolMockObject.m: 37";
+		rLen = 0;
+		rLoc = 1039;
+		rType = 0;
+		vrLen = 1245;
+		vrLoc = 430;
+	};
+	03736B7507BFD57200112CC0 = {
+		fRef = 03DE1F5F06DB914100E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObjectTests.m: 150";
+		rLen = 0;
+		rLoc = 3077;
+		rType = 0;
+		vrLen = 820;
+		vrLoc = 2515;
+	};
+	03736B7607BFD57200112CC0 = {
+		fRef = 03DE1F5606DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "- (id)initWithMockObject:(MockObject *)aMockObject;\n";
+		rLen = 43;
+		rLoc = 473;
+		rType = 0;
+		vrLen = 739;
+		vrLoc = 0;
+	};
+	03736B7707BFD57200112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "- (NSString *)mockInstanceDescription\n";
+		rLen = 38;
+		rLoc = 1483;
+		rType = 0;
+		vrLen = 1138;
+		vrLoc = 1868;
+	};
+	03736B7807BFD57200112CC0 = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: 25";
+		rLen = 0;
+		rLoc = 749;
+		rType = 0;
+		vrLen = 1153;
+		vrLoc = 359;
+	};
+	03736B7907BFD57200112CC0 = {
+		fRef = 03DE1F5706DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorder.m: 27";
+		rLen = 0;
+		rLoc = 952;
+		rType = 0;
+		vrLen = 1239;
+		vrLoc = 1270;
+	};
+	03736B7A07BFD57200112CC0 = {
+		fRef = 0338A9EF07BE83B50066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCProtocolMockObject.m: 37";
+		rLen = 0;
+		rLoc = 1039;
+		rType = 0;
+		vrLen = 1245;
+		vrLoc = 430;
+	};
+	03736B7B07BFD57200112CC0 = {
+		fRef = 03DE1F5F06DB914100E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObjectTests.m: 150";
+		rLen = 0;
+		rLoc = 3077;
+		rType = 0;
+		vrLen = 820;
+		vrLoc = 2515;
+	};
+	03736B7C07BFD57200112CC0 = {
+		fRef = 03DE1F5606DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorder.h: initWithMockObject:";
+		rLen = 0;
+		rLoc = 516;
+		rType = 0;
+		vrLen = 739;
+		vrLoc = 0;
+	};
+	03736B7D07BFD57200112CC0 = {
+		fRef = 03DE1F5706DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = mockedClass;
+		rLen = 1;
+		rLoc = 1731;
+		rType = 0;
+		vrLen = 1092;
+		vrLoc = 593;
+	};
+	03736B7E07BFD57200112CC0 = {
+		fRef = 03DE1F5606DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "- (id)initWithMockObject:(MockObject *)aMockObject;\n";
+		rLen = 43;
+		rLoc = 473;
+		rType = 0;
+		vrLen = 739;
+		vrLoc = 0;
+	};
+	03736B7F07BFD57200112CC0 = {
+		fRef = 03DE1F5706DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorder.m: 27";
+		rLen = 0;
+		rLoc = 952;
+		rType = 0;
+		vrLen = 1239;
+		vrLoc = 1270;
+	};
+	03736B8007BFD57200112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "- (NSString *)mockInstanceDescription\n";
+		rLen = 38;
+		rLoc = 1483;
+		rType = 0;
+		vrLen = 1138;
+		vrLoc = 1868;
+	};
+	03736B8107BFD57200112CC0 = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: 25";
+		rLen = 0;
+		rLoc = 749;
+		rType = 0;
+		vrLen = 1153;
+		vrLoc = 359;
+	};
+	03736B8207BFD57200112CC0 = {
+		fRef = 03DE1F5706DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorder.m: 62";
+		rLen = 0;
+		rLoc = 1766;
+		rType = 0;
+		vrLen = 1171;
+		vrLoc = 2138;
+	};
+	03736B8507BFD57200112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "#import \"OCClassMockObject.h\"\n";
+		rLen = 30;
+		rLoc = 339;
+		rType = 0;
+		vrLen = 0;
+		vrLoc = 0;
+	};
+	03736B9007BFD67500112CC0 = {
+		fRef = 03DE1F5706DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "#import \"OCMockRecorder.h\"\n";
+		rLen = 27;
+		rLoc = 311;
+		rType = 0;
+		vrLen = 1271;
+		vrLoc = 0;
+	};
+	03736B9107BFD67500112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "#import \"OCMockRecorder.h\"\n";
+		rLen = 27;
+		rLoc = 369;
+		rType = 0;
+		vrLen = 1396;
+		vrLoc = 0;
+	};
+	03736B9207BFD67500112CC0 = {
+		fRef = 03DE1F5606DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorder.h: mockObject";
+		rLen = 0;
+		rLoc = 379;
+		rType = 0;
+		vrLen = 740;
+		vrLoc = 0;
+	};
+	03736B9307BFD67500112CC0 = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: 25";
+		rLen = 0;
+		rLoc = 749;
+		rType = 0;
+		vrLen = 1153;
+		vrLoc = 359;
+	};
+	03736B9407BFD67500112CC0 = {
+		fRef = 03DE1F5706DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "#import \"OCMockRecorder.h\"\n";
+		rLen = 27;
+		rLoc = 311;
+		rType = 0;
+		vrLen = 1271;
+		vrLoc = 0;
+	};
+	03736B9507BFD67500112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "#import \"OCMockRecorder.h\"\n";
+		rLen = 27;
+		rLoc = 369;
+		rType = 0;
+		vrLen = 1396;
+		vrLoc = 0;
+	};
+	03736B9607BFD67500112CC0 = {
+		fRef = 03DE1F5606DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorder.h: mockObject";
+		rLen = 0;
+		rLoc = 379;
+		rType = 0;
+		vrLen = 740;
+		vrLoc = 0;
+	};
+	03736B9707BFD67500112CC0 = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: 25";
+		rLen = 0;
+		rLoc = 749;
+		rType = 0;
+		vrLen = 1153;
+		vrLoc = 359;
+	};
+	03736B9807BFD67500112CC0 = {
+		fRef = 0338A9EF07BE83B50066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCProtocolMockObject.m: 37";
+		rLen = 0;
+		rLoc = 1039;
+		rType = 0;
+		vrLen = 1246;
+		vrLoc = 429;
+	};
+	03736B9907BFD67500112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "#import \"OCClassMockObject.h\"\n";
+		rLen = 30;
+		rLoc = 339;
+		rType = 0;
+		vrLen = 0;
+		vrLoc = 0;
+	};
+	03736C2207BFD91900112CC0 = {
+		fRef = 0338A9EF07BE83B50066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCProtocolMockObject.m: 37";
+		rLen = 0;
+		rLoc = 1039;
+		rType = 0;
+		vrLen = 1246;
+		vrLoc = 429;
+	};
+	03736C2307BFD91900112CC0 = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: 25";
+		rLen = 0;
+		rLoc = 749;
+		rType = 0;
+		vrLen = 1187;
+		vrLoc = 325;
+	};
+	03736C2407BFD91900112CC0 = {
+		fRef = 0338A99607BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "//---------------------------------------------------------------------------------------\n//  $Id: $\n//  Copyright (c) 2005 by Mulle Kybernetik. See License file for details.\n//---------------------------------------------------------------------------------------\n\n#import \"OCMockObject.h\"\n\n\n@interface OCClassMockObject : OCMockObject \n{\n\tClass\tmockedClass;\n}\n\n- (id)initWithClass:(Class)aClass;\n\n@end\n";
+		rLen = 590;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 404;
+		vrLoc = 0;
+	};
+	03736C2507BFD91900112CC0 = {
+		fRef = 03DE1F5406DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "//---------------------------------------------------------------------------------------\n//  $Id: OCMockObject.h 6 2004-09-25 23:28:32Z erik $\n//  Copyright (c) 2004,2005 by Mulle Kybernetik. See License file for details.\n//---------------------------------------------------------------------------------------\n\n#import <Foundation/Foundation.h>\n\n@interface OCMockObject : NSProxy \n{\n\tNSMutableArray\t*recordedInvocations;\n\tNSMutableSet\t*expectedInvocations;\n}\n\n+ (id)mockForClass:(Class)aClass;\n+ (id)mockForProtocol:(Protocol *)aProtocol;\n\n- (id)init;\n\n- (id)stub;\n- (id)expect;\n\n- (void)verify;\n\n@end\n";
+		rLen = 588;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 605;
+		vrLoc = 0;
+	};
+	03736C2607BFD91900112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.m: 19";
+		rLen = 0;
+		rLoc = 629;
+		rType = 0;
+		vrLen = 1396;
+		vrLoc = 0;
+	};
+	03736C2707BFD91900112CC0 = {
+		fRef = 03DE1F5706DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "#import \"OCMockRecorder.h\"\n";
+		rLen = 27;
+		rLoc = 311;
+		rType = 0;
+		vrLen = 1271;
+		vrLoc = 0;
+	};
+	03736C2807BFD91900112CC0 = {
+		fRef = 03DE1F5606DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorder.h: 8";
+		rLen = 0;
+		rLoc = 345;
+		rType = 0;
+		vrLen = 761;
+		vrLoc = 0;
+	};
+	03736C2907BFD91900112CC0 = {
+		fRef = 0338A9EF07BE83B50066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCProtocolMockObject.m: 37";
+		rLen = 0;
+		rLoc = 1039;
+		rType = 0;
+		vrLen = 1246;
+		vrLoc = 429;
+	};
+	03736C2A07BFD91900112CC0 = {
+		fRef = 03DE1F5406DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "//---------------------------------------------------------------------------------------\n//  $Id: OCMockObject.h 6 2004-09-25 23:28:32Z erik $\n//  Copyright (c) 2004,2005 by Mulle Kybernetik. See License file for details.\n//---------------------------------------------------------------------------------------\n\n#import <Foundation/Foundation.h>\n\n@interface OCMockObject : NSProxy \n{\n\tNSMutableArray\t*recordedInvocations;\n\tNSMutableSet\t*expectedInvocations;\n}\n\n+ (id)mockForClass:(Class)aClass;\n+ (id)mockForProtocol:(Protocol *)aProtocol;\n\n- (id)init;\n\n- (id)stub;\n- (id)expect;\n\n- (void)verify;\n\n@end\n";
+		rLen = 588;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 605;
+		vrLoc = 0;
+	};
+	03736C2B07BFD91900112CC0 = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: 25";
+		rLen = 0;
+		rLoc = 749;
+		rType = 0;
+		vrLen = 1187;
+		vrLoc = 325;
+	};
+	03736C2C07BFD91900112CC0 = {
+		fRef = 03DE1F5406DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "//---------------------------------------------------------------------------------------\n//  $Id: OCMockObject.h 6 2004-09-25 23:28:32Z erik $\n//  Copyright (c) 2004,2005 by Mulle Kybernetik. See License file for details.\n//---------------------------------------------------------------------------------------\n\n#import <Foundation/Foundation.h>\n\n@interface OCMockObject : NSProxy \n{\n\tNSMutableArray\t*recordedInvocations;\n\tNSMutableSet\t*expectedInvocations;\n}\n\n+ (id)mockForClass:(Class)aClass;\n+ (id)mockForProtocol:(Protocol *)aProtocol;\n\n- (id)init;\n\n- (id)stub;\n- (id)expect;\n\n- (void)verify;\n\n@end\n";
+		rLen = 588;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 605;
+		vrLoc = 0;
+	};
+	03736C2D07BFD91900112CC0 = {
+		fRef = 0338A99607BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "//---------------------------------------------------------------------------------------\n//  $Id: $\n//  Copyright (c) 2005 by Mulle Kybernetik. See License file for details.\n//---------------------------------------------------------------------------------------\n\n#import \"OCMockObject.h\"\n\n\n@interface OCClassMockObject : OCMockObject \n{\n\tClass\tmockedClass;\n}\n\n- (id)initWithClass:(Class)aClass;\n\n@end\n";
+		rLen = 590;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 404;
+		vrLoc = 0;
+	};
+	03736C2E07BFD91900112CC0 = {
+		fRef = 03DE1F5606DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorder.h: 8";
+		rLen = 0;
+		rLoc = 345;
+		rType = 0;
+		vrLen = 761;
+		vrLoc = 0;
+	};
+	03736C2F07BFD91900112CC0 = {
+		fRef = 03DE1F5406DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "//---------------------------------------------------------------------------------------\n//  $Id: OCMockObject.h 6 2004-09-25 23:28:32Z erik $\n//  Copyright (c) 2004,2005 by Mulle Kybernetik. See License file for details.\n//---------------------------------------------------------------------------------------\n\n#import <Foundation/Foundation.h>\n\n@interface OCMockObject : NSProxy \n{\n\tNSMutableArray\t*recordedInvocations;\n\tNSMutableSet\t*expectedInvocations;\n}\n\n+ (id)mockForClass:(Class)aClass;\n+ (id)mockForProtocol:(Protocol *)aProtocol;\n\n- (id)init;\n\n- (id)stub;\n- (id)expect;\n\n- (void)verify;\n\n@end\n";
+		rLen = 588;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 605;
+		vrLoc = 0;
+	};
+	03736C3007BFD91900112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.m: 19";
+		rLen = 0;
+		rLoc = 629;
+		rType = 0;
+		vrLen = 1396;
+		vrLoc = 0;
+	};
+	03736C3107BFD91900112CC0 = {
+		fRef = 03DE1F5706DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "#import \"OCMockRecorder.h\"\n";
+		rLen = 27;
+		rLoc = 311;
+		rType = 0;
+		vrLen = 1271;
+		vrLoc = 0;
+	};
+	03736C3207BFD91900112CC0 = {
+		fRef = 03DE1F5606DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = OCMockObject;
+		rLen = 11;
+		rLoc = 386;
+		rType = 0;
+		vrLen = 744;
+		vrLoc = 0;
+	};
+	03736C3307BFD91900112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "#import \"OCClassMockObject.h\"\n";
+		rLen = 30;
+		rLoc = 339;
+		rType = 0;
+		vrLen = 0;
+		vrLoc = 0;
+	};
+	03736C3907BFDE7900112CC0 = {
+		fRef = 03DE1F5706DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorder.m: 62";
+		rLen = 0;
+		rLoc = 1729;
+		rType = 0;
+		vrLen = 1237;
+		vrLoc = 1449;
+	};
+	03736C3A07BFDE7900112CC0 = {
+		fRef = 03DE1F5F06DB914100E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObjectTests.m: 132";
+		rLen = 0;
+		rLoc = 2721;
+		rType = 0;
+		vrLen = 839;
+		vrLoc = 1976;
+	};
+	03736C3B07BFDE7900112CC0 = {
+		fRef = 0338A99607BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = OCClassMockObject;
+		rLen = 17;
+		rLoc = 304;
+		rType = 0;
+		vrLen = 404;
+		vrLoc = 0;
+	};
+	03736C3C07BFDE7900112CC0 = {
+		fRef = 0338A9EE07BE83B50066DE8A;
+		isa = PBXTextBookmark;
+		name = "//---------------------------------------------------------------------------------------\n//  $Id: $\n//  Copyright (c) 2005 by Mulle Kybernetik. See License file for details.\n//---------------------------------------------------------------------------------------\n\n#import \"OCMockObject.h\"\n\n\n@interface OCProtocolMockObject : OCMockObject \n{\n\tProtocol\t*mockedProtocol;\n}\n\n- (id)initWithProtocol:(Protocol *)aProtocol;\n\n@end\n\n";
+		rLen = 426;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 426;
+		vrLoc = 0;
+	};
+	03736C3D07BFDE7900112CC0 = {
+		fRef = 0338A9EF07BE83B50066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCProtocolMockObject.m: 34";
+		rLen = 0;
+		rLoc = 1039;
+		rType = 0;
+		vrLen = 1219;
+		vrLoc = 265;
+	};
+	03736C3E07BFDE7900112CC0 = {
+		fRef = 03DE1F5606DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = initWithSignatureResolver;
+		rLen = 25;
+		rLoc = 501;
+		rType = 0;
+		vrLen = 739;
+		vrLoc = 0;
+	};
+	03736C3F07BFDE7900112CC0 = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: 9";
+		rLen = 0;
+		rLoc = 331;
+		rType = 0;
+		vrLen = 1223;
+		vrLoc = 90;
+	};
+	03736C4007BFDE7900112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.m: 68";
+		rLen = 0;
+		rLoc = 1844;
+		rType = 0;
+		vrLen = 1104;
+		vrLoc = 396;
+	};
+	03736C4107BFDE7900112CC0 = {
+		fRef = 03DE1F5606DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorder.h: 7";
+		rLen = 0;
+		rLoc = 345;
+		rType = 0;
+		vrLen = 727;
+		vrLoc = 0;
+	};
+	03736C4207BFDE7900112CC0 = {
+		fRef = 0338A99607BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "//---------------------------------------------------------------------------------------\n//  $Id: $\n//  Copyright (c) 2005 by Mulle Kybernetik. See License file for details.\n//---------------------------------------------------------------------------------------\n\n#import \"OCMockObject.h\"\n\n\n@interface OCClassMockObject : OCMockObject \n{\n\tClass\tmockedClass;\n}\n\n- (id)initWithClass:(Class)aClass;\n\n@end\n";
+		rLen = 590;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 404;
+		vrLoc = 0;
+	};
+	03736C4307BFDE7900112CC0 = {
+		fRef = 03DE1F5606DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorder.h: 8";
+		rLen = 0;
+		rLoc = 346;
+		rType = 0;
+		vrLen = 728;
+		vrLoc = 0;
+	};
+	03736C4407BFDE7900112CC0 = {
+		fRef = 03DE1F5706DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorder.m: 62";
+		rLen = 0;
+		rLoc = 1729;
+		rType = 0;
+		vrLen = 1237;
+		vrLoc = 1449;
+	};
+	03736C4507BFDE7900112CC0 = {
+		fRef = 03DE1F5606DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorder.h: 8";
+		rLen = 0;
+		rLoc = 346;
+		rType = 0;
+		vrLen = 728;
+		vrLoc = 0;
+	};
+	03736C4607BFDE7900112CC0 = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: 33";
+		rLen = 0;
+		rLoc = 973;
+		rType = 0;
+		vrLen = 1239;
+		vrLoc = 101;
+	};
+	03736C4707BFDE7900112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.m: 72";
+		rLen = 0;
+		rLoc = 1913;
+		rType = 0;
+		vrLen = 1236;
+		vrLoc = 2266;
+	};
+	03736C4807BFDE7900112CC0 = {
+		fRef = 0338A9EE07BE83B50066DE8A;
+		isa = PBXTextBookmark;
+		name = "//---------------------------------------------------------------------------------------\n//  $Id: $\n//  Copyright (c) 2005 by Mulle Kybernetik. See License file for details.\n//---------------------------------------------------------------------------------------\n\n#import \"OCMockObject.h\"\n\n\n@interface OCProtocolMockObject : OCMockObject \n{\n\tProtocol\t*mockedProtocol;\n}\n\n- (id)initWithProtocol:(Protocol *)aProtocol;\n\n@end\n\n";
+		rLen = 426;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 426;
+		vrLoc = 0;
+	};
+	03736C4907BFDE7900112CC0 = {
+		fRef = 03DE1F5F06DB914100E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObjectTests.m: 132";
+		rLen = 0;
+		rLoc = 2721;
+		rType = 0;
+		vrLen = 839;
+		vrLoc = 1976;
+	};
+	03736C4A07BFDE7900112CC0 = {
+		fRef = 0338A99607BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.h: 16";
+		rLen = 0;
+		rLoc = 517;
+		rType = 0;
+		vrLen = 425;
+		vrLoc = 0;
+	};
+	03736C4B07BFDE7900112CC0 = {
+		fRef = 0338A99607BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.h: 17";
+		rLen = 0;
+		rLoc = 584;
+		rType = 0;
+		vrLen = 491;
+		vrLoc = 0;
+	};
+	03736C4C07BFDE7900112CC0 = {
+		fRef = 0338A99607BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = OCClassMethodSignatureResolver;
+		rLen = 30;
+		rLoc = 351;
+		rType = 0;
+		vrLen = 590;
+		vrLoc = 0;
+	};
+	03736C4D07BFDE7900112CC0 = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: 7";
+		rLen = 0;
+		rLoc = 305;
+		rType = 0;
+		vrLen = 1276;
+		vrLoc = 90;
+	};
+	03736C4E07BFDE7900112CC0 = {
+		fRef = 0338A99607BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = MockObject;
+		rLen = 10;
+		rLoc = 311;
+		rType = 0;
+		vrLen = 404;
+		vrLoc = 0;
+	};
+	03736C4F07BFDE7900112CC0 = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: 6";
+		rLen = 0;
+		rLoc = 266;
+		rType = 0;
+		vrLen = 1236;
+		vrLoc = 90;
+	};
+	03736C5007BFDE7900112CC0 = {
+		fRef = 0338A99607BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = OCClassMockObject;
+		rLen = 17;
+		rLoc = 304;
+		rType = 0;
+		vrLen = 404;
+		vrLoc = 0;
+	};
+	03736C5107BFDE7900112CC0 = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: 9";
+		rLen = 0;
+		rLoc = 331;
+		rType = 0;
+		vrLen = 1223;
+		vrLoc = 90;
+	};
+	03736C5207BFDE7900112CC0 = {
+		fRef = 0338A9EE07BE83B50066DE8A;
+		isa = PBXTextBookmark;
+		name = "//---------------------------------------------------------------------------------------\n//  $Id: $\n//  Copyright (c) 2005 by Mulle Kybernetik. See License file for details.\n//---------------------------------------------------------------------------------------\n\n#import \"OCMockObject.h\"\n\n\n@interface OCProtocolMockObject : OCMockObject \n{\n\tProtocol\t*mockedProtocol;\n}\n\n- (id)initWithProtocol:(Protocol *)aProtocol;\n\n@end\n\n";
+		rLen = 426;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 426;
+		vrLoc = 0;
+	};
+	03736C5307BFDE7900112CC0 = {
+		fRef = 0338A9EF07BE83B50066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCProtocolMockObject.m: 34";
+		rLen = 0;
+		rLoc = 1039;
+		rType = 0;
+		vrLen = 1219;
+		vrLoc = 265;
+	};
+	03736C5407BFDE7900112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.m: 68";
+		rLen = 0;
+		rLoc = 1844;
+		rType = 0;
+		vrLen = 1104;
+		vrLoc = 396;
+	};
+	03736C5507BFDE7900112CC0 = {
+		fRef = 03DE1F5606DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = initWithSignatureResolver;
+		rLen = 25;
+		rLoc = 501;
+		rType = 0;
+		vrLen = 739;
+		vrLoc = 0;
+	};
+	03736C5607BFDE7900112CC0 = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: 9";
+		rLen = 0;
+		rLoc = 331;
+		rType = 0;
+		vrLen = 1223;
+		vrLoc = 90;
+	};
+	03736C5707BFDE7900112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.m: 25";
+		rLen = 0;
+		rLoc = 884;
+		rType = 0;
+		vrLen = 1168;
+		vrLoc = 144;
+	};
+	03736C5807BFDE7900112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "#import \"OCClassMockObject.h\"\n";
+		rLen = 30;
+		rLoc = 339;
+		rType = 0;
+		vrLen = 0;
+		vrLoc = 0;
+	};
+	03736C5907BFE0B400112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.m: 8";
+		rLen = 0;
+		rLoc = 388;
+		rType = 0;
+		vrLen = 1200;
+		vrLoc = 144;
+	};
+	03736C5A07BFE0B400112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.m: 9";
+		rLen = 0;
+		rLoc = 402;
+		rType = 0;
+		vrLen = 0;
+		vrLoc = 0;
+	};
+	03736C5D07BFE16900112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.m: 8";
+		rLen = 0;
+		rLoc = 388;
+		rType = 0;
+		vrLen = 1200;
+		vrLoc = 144;
+	};
+	03736C5E07BFE16900112CC0 = {
+		fRef = 03DE1F6006DB914100E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorderTests.h: 6";
+		rLen = 0;
+		rLoc = 318;
+		rType = 0;
+		vrLen = 444;
+		vrLoc = 0;
+	};
+	03736C5F07BFE16900112CC0 = {
+		fRef = 03DE1F5706DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorder.m: 62";
+		rLen = 0;
+		rLoc = 1740;
+		rType = 0;
+		vrLen = 1174;
+		vrLoc = 1449;
+	};
+	03736C6007BFE16900112CC0 = {
+		fRef = 03DE1F5606DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = initWithSignatureResolver;
+		rLen = 25;
+		rLoc = 501;
+		rType = 0;
+		vrLen = 739;
+		vrLoc = 0;
+	};
+	03736C6107BFE16900112CC0 = {
+		fRef = 03DE1F6106DB914100E5A2A8;
+		isa = PBXTextBookmark;
+		name = initWithObject;
+		rLen = 14;
+		rLoc = 886;
+		rType = 0;
+		vrLen = 1105;
+		vrLoc = 727;
+	};
+	03736C6207BFE16900112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.m: 8";
+		rLen = 0;
+		rLoc = 388;
+		rType = 0;
+		vrLen = 1200;
+		vrLoc = 144;
+	};
+	03736C6307BFE16900112CC0 = {
+		fRef = 03DE1F6106DB914100E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorderTests.m: 30";
+		rLen = 0;
+		rLoc = 900;
+		rType = 0;
+		vrLen = 1105;
+		vrLoc = 727;
+	};
+	03736C6407BFE16900112CC0 = {
+		fRef = 03DE1F6006DB914100E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorderTests.h: 6";
+		rLen = 0;
+		rLoc = 318;
+		rType = 0;
+		vrLen = 444;
+		vrLoc = 0;
+	};
+	03736C6507BFE16900112CC0 = {
+		fRef = 03DE1F5606DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = initWithSignatureResolver;
+		rLen = 25;
+		rLoc = 501;
+		rType = 0;
+		vrLen = 739;
+		vrLoc = 0;
+	};
+	03736C6607BFE16900112CC0 = {
+		fRef = 03DE1F6106DB914100E5A2A8;
+		isa = PBXTextBookmark;
+		name = initWithObject;
+		rLen = 14;
+		rLoc = 886;
+		rType = 0;
+		vrLen = 1105;
+		vrLoc = 727;
+	};
+	03736C6707BFE16900112CC0 = {
+		fRef = 03DE1F5706DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorder.m: 62";
+		rLen = 0;
+		rLoc = 1740;
+		rType = 0;
+		vrLen = 1174;
+		vrLoc = 1449;
+	};
+	03736C6807BFE16900112CC0 = {
+		fRef = 03DE1F5606DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = initWithSignatureResolver;
+		rLen = 25;
+		rLoc = 501;
+		rType = 0;
+		vrLen = 739;
+		vrLoc = 0;
+	};
+	03736C6907BFE16900112CC0 = {
+		fRef = 03DE1F6106DB914100E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorderTests.m: 57";
+		rLen = 0;
+		rLoc = 1644;
+		rType = 0;
+		vrLen = 1150;
+		vrLoc = 90;
+	};
+	03736C6A07BFE16900112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.m: 9";
+		rLen = 0;
+		rLoc = 402;
+		rType = 0;
+		vrLen = 0;
+		vrLoc = 0;
+	};
+	03736C7307BFE6EF00112CC0 = {
+		fRef = 03DE1F6106DB914100E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorderTests.m: 57";
+		rLen = 0;
+		rLoc = 1644;
+		rType = 0;
+		vrLen = 1150;
+		vrLoc = 90;
+	};
+	03736C7407BFE6EF00112CC0 = {
+		fRef = 0338A99307BE7BF40066DE8A;
+		isa = PBXTextBookmark;
+		name = "- (struct objc_method_description *) descriptionForInstanceMethod:(SEL)aSel;";
+		rLen = 76;
+		rLoc = 1745;
+		rType = 0;
+		vrLen = 897;
+		vrLoc = 1037;
+	};
+	03736C7507BFE6EF00112CC0 = {
+		fRef = 03DE1F5F06DB914100E5A2A8;
+		isa = PBXTextBookmark;
+		name = uppercaseString;
+		rLen = 15;
+		rLoc = 2307;
+		rType = 0;
+		vrLen = 850;
+		vrLoc = 2103;
+	};
+	03736C7607BFE6EF00112CC0 = {
+		fRef = 03DE1F5606DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = initWithSignatureResolver;
+		rLen = 25;
+		rLoc = 501;
+		rType = 0;
+		vrLen = 739;
+		vrLoc = 0;
+	};
+	03736C7707BFE6EF00112CC0 = {
+		fRef = 0338A99607BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.h: mockedClass";
+		rLen = 0;
+		rLoc = 359;
+		rType = 0;
+		vrLen = 404;
+		vrLoc = 0;
+	};
+	03736C7807BFE6EF00112CC0 = {
+		fRef = 0338A9EE07BE83B50066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCProtocolMockObject.h: 10";
+		rLen = 0;
+		rLoc = 342;
+		rType = 0;
+		vrLen = 426;
+		vrLoc = 0;
+	};
+	03736C7907BFE6EF00112CC0 = {
+		fRef = 03DE1F5406DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.h: 8";
+		rLen = 0;
+		rLoc = 349;
+		rType = 0;
+		vrLen = 589;
+		vrLoc = 0;
+	};
+	03736C7A07BFE6EF00112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.m: 103";
+		rLen = 0;
+		rLoc = 2851;
+		rType = 0;
+		vrLen = 1265;
+		vrLoc = 0;
+	};
+	03736C7B07BFE6EF00112CC0 = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: initWithClass:";
+		rLen = 0;
+		rLoc = 554;
+		rType = 0;
+		vrLen = 1291;
+		vrLoc = 0;
+	};
+	03736C7C07BFE6EF00112CC0 = {
+		fRef = 0338A9EF07BE83B50066DE8A;
+		isa = PBXTextBookmark;
+		name = description;
+		rLen = 11;
+		rLoc = 933;
+		rType = 0;
+		vrLen = 1456;
+		vrLoc = 0;
+	};
+	03736C7D07BFE6EF00112CC0 = {
+		fRef = 03DE1F5706DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorder.m: anyArgument";
+		rLen = 0;
+		rLoc = 912;
+		rType = 0;
+		vrLen = 1277;
+		vrLoc = 0;
+	};
+	03736C7E07BFE6EF00112CC0 = {
+		fRef = 0338AA1007BE866F0066DE8A;
+		isa = PBXTextBookmark;
+		name = "NSMethodSignature+Private.h: 6";
+		rLen = 0;
+		rLoc = 94;
+		rType = 0;
+		vrLen = 99;
+		vrLoc = 0;
+	};
+	03736C7F07BFE6EF00112CC0 = {
+		fRef = 03DE21B206DB95C500E5A2A8;
+		isa = PBXTextBookmark;
+		name = "#import \"OCMockRecorder.h\"\n";
+		rLen = 27;
+		rLoc = 328;
+		rType = 0;
+		vrLen = 355;
+		vrLoc = 0;
+	};
+	03736C8007BFE6EF00112CC0 = {
+		fRef = 03DE1F6106DB914100E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorderTests.m: 57";
+		rLen = 0;
+		rLoc = 1644;
+		rType = 0;
+		vrLen = 1150;
+		vrLoc = 90;
+	};
+	03736C8107BFE6EF00112CC0 = {
+		fRef = 03DE1F5706DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "@end
+";
+		rLen = 5;
+		rLoc = 3317;
+		rType = 0;
+		vrLen = 1047;
+		vrLoc = 311;
+	};
+	03736C8207BFE6EF00112CC0 = {
+		fRef = 03DE1F5606DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = initWithSignatureResolver;
+		rLen = 25;
+		rLoc = 501;
+		rType = 0;
+		vrLen = 739;
+		vrLoc = 0;
+	};
+	03736C8307BFE6EF00112CC0 = {
+		fRef = 03DE1F5706DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorder.m: anyArgument";
+		rLen = 0;
+		rLoc = 912;
+		rType = 0;
+		vrLen = 1059;
+		vrLoc = 311;
+	};
+	03736C8407BFE6EF00112CC0 = {
+		fRef = 03DE1F5F06DB914100E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObjectTests.m: 145";
+		rLen = 0;
+		rLoc = 3051;
+		rType = 0;
+		vrLen = 822;
+		vrLoc = 2515;
+	};
+	03736C8507BFE6EF00112CC0 = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: 9";
+		rLen = 0;
+		rLoc = 331;
+		rType = 0;
+		vrLen = 1223;
+		vrLoc = 90;
+	};
+	03736C8607BFE6EF00112CC0 = {
+		fRef = 0338A99307BE7BF40066DE8A;
+		isa = PBXTextBookmark;
+		name = "- (struct objc_method_description *) descriptionForInstanceMethod:(SEL)aSel;";
+		rLen = 76;
+		rLoc = 1745;
+		rType = 0;
+		vrLen = 897;
+		vrLoc = 1037;
+	};
+	03736C8707BFE6EF00112CC0 = {
+		fRef = 0338A9EF07BE83B50066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCProtocolMockObject.m: 31";
+		rLen = 0;
+		rLoc = 1008;
+		rType = 0;
+		vrLen = 1219;
+		vrLoc = 265;
+	};
+	03736C8807BFE6EF00112CC0 = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: 29";
+		rLen = 0;
+		rLoc = 912;
+		rType = 0;
+		vrLen = 1222;
+		vrLoc = 90;
+	};
+	03736C8907BFE6EF00112CC0 = {
+		fRef = 0338A9EF07BE83B50066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCProtocolMockObject.m: 31";
+		rLen = 0;
+		rLoc = 999;
+		rType = 0;
+		vrLen = 1219;
+		vrLoc = 265;
+	};
+	03736C8A07BFE6EF00112CC0 = {
+		fRef = 03DE1F5F06DB914100E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObjectTests.m: 145";
+		rLen = 0;
+		rLoc = 3041;
+		rType = 0;
+		vrLen = 849;
+		vrLoc = 2490;
+	};
+	03736C8B07BFE6EF00112CC0 = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: 29";
+		rLen = 0;
+		rLoc = 912;
+		rType = 0;
+		vrLen = 1222;
+		vrLoc = 90;
+	};
+	03736C8C07BFE6EF00112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.m: 8";
+		rLen = 0;
+		rLoc = 388;
+		rType = 0;
+		vrLen = 1234;
+		vrLoc = 2113;
+	};
+	03736C8D07BFE6EF00112CC0 = {
+		fRef = 03DE1F5F06DB914100E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObjectTests.m: 145";
+		rLen = 0;
+		rLoc = 3041;
+		rType = 0;
+		vrLen = 849;
+		vrLoc = 2490;
+	};
+	03736C8E07BFE6EF00112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.m: 8";
+		rLen = 0;
+		rLoc = 388;
+		rType = 0;
+		vrLen = 1252;
+		vrLoc = 2095;
+	};
+	03736C8F07BFE6EF00112CC0 = {
+		fRef = 03DE1F5706DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorder.m: anyArgument";
+		rLen = 0;
+		rLoc = 912;
+		rType = 0;
+		vrLen = 1015;
+		vrLoc = 769;
+	};
+	03736C9007BFE6EF00112CC0 = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: 29";
+		rLen = 0;
+		rLoc = 912;
+		rType = 0;
+		vrLen = 1222;
+		vrLoc = 90;
+	};
+	03736C9107BFE6EF00112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.m: 82";
+		rLen = 0;
+		rLoc = 2247;
+		rType = 0;
+		vrLen = 1277;
+		vrLoc = 2095;
+	};
+	03736C9207BFE6EF00112CC0 = {
+		fRef = 03DE1F5F06DB914100E5A2A8;
+		isa = PBXTextBookmark;
+		name = uppercaseString;
+		rLen = 15;
+		rLoc = 2307;
+		rType = 0;
+		vrLen = 850;
+		vrLoc = 2103;
+	};
+	03736C9307BFE6EF00112CC0 = {
+		fRef = 0338A99607BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.h: mockedClass";
+		rLen = 0;
+		rLoc = 359;
+		rType = 0;
+		vrLen = 404;
+		vrLoc = 0;
+	};
+	03736C9407BFE6EF00112CC0 = {
+		fRef = 03DE1F5406DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "//---------------------------------------------------------------------------------------\n//  $Id: OCMockObject.h 6 2004-09-25 23:28:32Z erik $\n//  Copyright (c) 2004,2005 by Mulle Kybernetik. See License file for details.\n//---------------------------------------------------------------------------------------\n\n#import <Foundation/Foundation.h>\n\n@interface OCMockObject : NSProxy \n{\n\tNSMutableArray\t*recordedInvocations;\n\tNSMutableSet\t*expectedInvocations;\n}\n\n+ (id)mockForClass:(Class)aClass;\n+ (id)mockForProtocol:(Protocol *)aProtocol;\n\n- (id)init;\n\n- (id)stub;\n- (id)expect;\n\n- (void)verify;\n\n@end\n";
+		rLen = 588;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 605;
+		vrLoc = 0;
+	};
+	03736C9507BFE6EF00112CC0 = {
+		fRef = 03DE21B206DB95C500E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMock.h: 1";
+		rLen = 0;
+		rLoc = 53;
+		rType = 0;
+		vrLen = 355;
+		vrLoc = 0;
+	};
+	03736C9607BFE6EF00112CC0 = {
+		fRef = 03DE1F5406DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "//---------------------------------------------------------------------------------------\n//  $Id: OCMockObject.h 6 2004-09-25 23:28:32Z erik $\n//  Copyright (c) 2004,2005 by Mulle Kybernetik. See License file for details.\n//---------------------------------------------------------------------------------------\n\n#import <Foundation/Foundation.h>\n\n@interface OCMockObject : NSProxy \n{\n\tNSMutableArray\t*recordedInvocations;\n\tNSMutableSet\t*expectedInvocations;\n}\n\n+ (id)mockForClass:(Class)aClass;\n+ (id)mockForProtocol:(Protocol *)aProtocol;\n\n- (id)init;\n\n- (id)stub;\n- (id)expect;\n\n- (void)verify;\n\n@end\n";
+		rLen = 588;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 605;
+		vrLoc = 0;
+	};
+	03736C9707BFE6EF00112CC0 = {
+		fRef = 03DE21B206DB95C500E5A2A8;
+		isa = PBXTextBookmark;
+		name = "#import \"OCMockRecorder.h\"\n";
+		rLen = 27;
+		rLoc = 328;
+		rType = 0;
+		vrLen = 355;
+		vrLoc = 0;
+	};
+	03736C9807BFE6EF00112CC0 = {
+		fRef = 03DE1F5406DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "//---------------------------------------------------------------------------------------\n//  $Id: OCMockObject.h 6 2004-09-25 23:28:32Z erik $\n//  Copyright (c) 2004,2005 by Mulle Kybernetik. See License file for details.\n//---------------------------------------------------------------------------------------\n\n#import <Foundation/Foundation.h>\n\n@interface OCMockObject : NSProxy \n{\n\tNSMutableArray\t*recordedInvocations;\n\tNSMutableSet\t*expectedInvocations;\n}\n\n+ (id)mockForClass:(Class)aClass;\n+ (id)mockForProtocol:(Protocol *)aProtocol;\n\n- (id)init;\n\n- (id)stub;\n- (id)expect;\n\n- (void)verify;\n\n@end\n";
+		rLen = 588;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 605;
+		vrLoc = 0;
+	};
+	03736C9907BFE6EF00112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.m: dealloc";
+		rLen = 0;
+		rLoc = 1531;
+		rType = 0;
+		vrLen = 999;
+		vrLoc = 1106;
+	};
+	03736C9A07BFE6EF00112CC0 = {
+		fRef = 03DE1F5406DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "//---------------------------------------------------------------------------------------\n//  $Id: OCMockObject.h 6 2004-09-25 23:28:32Z erik $\n//  Copyright (c) 2004,2005 by Mulle Kybernetik. See License file for details.\n//---------------------------------------------------------------------------------------\n\n#import <Foundation/Foundation.h>\n\n@interface OCMockObject : NSProxy \n{\n\tNSMutableArray\t*recordedInvocations;\n\tNSMutableSet\t*expectedInvocations;\n}\n\n+ (id)mockForClass:(Class)aClass;\n+ (id)mockForProtocol:(Protocol *)aProtocol;\n\n- (id)init;\n\n- (id)stub;\n- (id)expect;\n\n- (void)verify;\n\n@end\n";
+		rLen = 588;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 605;
+		vrLoc = 0;
+	};
+	03736C9B07BFE6EF00112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "//---------------------------------------------------------------------------------------\n// description override\n//---------------------------------------------------------------------------------------\n";
+		rLen = 204;
+		rLoc = 1311;
+		rType = 0;
+		vrLen = 1084;
+		vrLoc = 1015;
+	};
+	03736C9C07BFE6EF00112CC0 = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: initWithClass:";
+		rLen = 0;
+		rLoc = 847;
+		rType = 0;
+		vrLen = 1291;
+		vrLoc = 0;
+	};
+	03736C9D07BFE6EF00112CC0 = {
+		fRef = 0338A9EF07BE83B50066DE8A;
+		isa = PBXTextBookmark;
+		name = description;
+		rLen = 11;
+		rLoc = 933;
+		rType = 0;
+		vrLen = 1288;
+		vrLoc = 175;
+	};
+	03736C9E07BFE6EF00112CC0 = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: initWithClass:";
+		rLen = 0;
+		rLoc = 857;
+		rType = 0;
+		vrLen = 1291;
+		vrLoc = 0;
+	};
+	03736C9F07BFE6EF00112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.m: 111";
+		rLen = 0;
+		rLoc = 3124;
+		rType = 0;
+		vrLen = 1226;
+		vrLoc = 2100;
+	};
+	03736CA007BFE6EF00112CC0 = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: initWithClass:";
+		rLen = 0;
+		rLoc = 554;
+		rType = 0;
+		vrLen = 1291;
+		vrLoc = 0;
+	};
+	03736CA107BFE6EF00112CC0 = {
+		fRef = 0338A9EE07BE83B50066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCProtocolMockObject.h: 10";
+		rLen = 0;
+		rLoc = 342;
+		rType = 0;
+		vrLen = 426;
+		vrLoc = 0;
+	};
+	03736CA207BFE6EF00112CC0 = {
+		fRef = 0338A9EF07BE83B50066DE8A;
+		isa = PBXTextBookmark;
+		name = description;
+		rLen = 11;
+		rLoc = 933;
+		rType = 0;
+		vrLen = 1198;
+		vrLoc = 265;
+	};
+	03736CA307BFE6EF00112CC0 = {
+		fRef = 03DE1F5606DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = initWithSignatureResolver;
+		rLen = 25;
+		rLoc = 501;
+		rType = 0;
+		vrLen = 739;
+		vrLoc = 0;
+	};
+	03736CA407BFE6EF00112CC0 = {
+		fRef = 03DE1F5706DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorder.m: anyArgument";
+		rLen = 0;
+		rLoc = 912;
+		rType = 0;
+		vrLen = 1171;
+		vrLoc = 2151;
+	};
+	03736CA507BFE6EF00112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.m: 105";
+		rLen = 0;
+		rLoc = 2936;
+		rType = 0;
+		vrLen = 1248;
+		vrLoc = 2036;
+	};
+	03736CA607BFE6EF00112CC0 = {
+		fRef = 03DE1F5406DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "//---------------------------------------------------------------------------------------\n//  $Id: OCMockObject.h 6 2004-09-25 23:28:32Z erik $\n//  Copyright (c) 2004,2005 by Mulle Kybernetik. See License file for details.\n//---------------------------------------------------------------------------------------\n\n#import <Foundation/Foundation.h>\n\n@interface OCMockObject : NSProxy \n{\n\tNSMutableArray\t*recordedInvocations;\n\tNSMutableSet\t*expectedInvocations;\n}\n\n+ (id)mockForClass:(Class)aClass;\n+ (id)mockForProtocol:(Protocol *)aProtocol;\n\n- (id)init;\n\n- (id)stub;\n- (id)expect;\n\n- (void)verify;\n\n@end\n";
+		rLen = 588;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 605;
+		vrLoc = 0;
+	};
+	03736CA707BFE6EF00112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.m: 93";
+		rLen = 0;
+		rLoc = 2622;
+		rType = 0;
+		vrLen = 1190;
+		vrLoc = 2100;
+	};
+	03736CA807BFE6EF00112CC0 = {
+		fRef = 03DE1F5406DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.h: recordedInvocations";
+		rLen = 0;
+		rLoc = 412;
+		rType = 0;
+		vrLen = 595;
+		vrLoc = 0;
+	};
+	03736CA907BFE6EF00112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.m: 86";
+		rLen = 0;
+		rLoc = 2363;
+		rType = 0;
+		vrLen = 1105;
+		vrLoc = 1946;
+	};
+	03736CAA07BFE6EF00112CC0 = {
+		fRef = 03DE1F5406DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.h: expectedInvocations";
+		rLen = 0;
+		rLoc = 441;
+		rType = 0;
+		vrLen = 588;
+		vrLoc = 0;
+	};
+	03736CAB07BFE6EF00112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.m: 103";
+		rLen = 0;
+		rLoc = 2851;
+		rType = 0;
+		vrLen = 1126;
+		vrLoc = 2049;
+	};
+	03736CAC07BFE6EF00112CC0 = {
+		fRef = 0338A99607BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.h: mockedClass";
+		rLen = 0;
+		rLoc = 359;
+		rType = 0;
+		vrLen = 404;
+		vrLoc = 0;
+	};
+	03736CAD07BFE6EF00112CC0 = {
+		fRef = 03DE1F5606DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = initWithSignatureResolver;
+		rLen = 25;
+		rLoc = 501;
+		rType = 0;
+		vrLen = 739;
+		vrLoc = 0;
+	};
+	03736CAE07BFE6EF00112CC0 = {
+		fRef = 03DE1F5706DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorder.m: anyArgument";
+		rLen = 0;
+		rLoc = 912;
+		rType = 0;
+		vrLen = 1037;
+		vrLoc = 677;
+	};
+	03736CAF07BFE6EF00112CC0 = {
+		fRef = 0338AA1007BE866F0066DE8A;
+		isa = PBXTextBookmark;
+		name = "NSMethodSignature+Private.h: 2";
+		rLen = 0;
+		rLoc = 40;
+		rType = 0;
+		vrLen = 97;
+		vrLoc = 0;
+	};
+	03736CB007BFE6EF00112CC0 = {
+		fRef = 03DE1F5606DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = initWithSignatureResolver;
+		rLen = 25;
+		rLoc = 501;
+		rType = 0;
+		vrLen = 739;
+		vrLoc = 0;
+	};
+	03736CB107BFE6EF00112CC0 = {
+		fRef = 0338A9EE07BE83B50066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCProtocolMockObject.h: 10";
+		rLen = 0;
+		rLoc = 342;
+		rType = 0;
+		vrLen = 426;
+		vrLoc = 0;
+	};
+	03736CB207BFE6EF00112CC0 = {
+		fRef = 0338AA1007BE866F0066DE8A;
+		isa = PBXTextBookmark;
+		name = "NSMethodSignature+Private.h: 6";
+		rLen = 0;
+		rLoc = 94;
+		rType = 0;
+		vrLen = 99;
+		vrLoc = 0;
+	};
+	03736CB307BFE6EF00112CC0 = {
+		fRef = 03DE1F5606DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = initWithSignatureResolver;
+		rLen = 25;
+		rLoc = 501;
+		rType = 0;
+		vrLen = 739;
+		vrLoc = 0;
+	};
+	03736CB407BFE6EF00112CC0 = {
+		fRef = 0338A9EE07BE83B50066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCProtocolMockObject.h: 10";
+		rLen = 0;
+		rLoc = 342;
+		rType = 0;
+		vrLen = 426;
+		vrLoc = 0;
+	};
+	03736CB507BFE6EF00112CC0 = {
+		fRef = 0338A99607BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.h: mockedClass";
+		rLen = 0;
+		rLoc = 359;
+		rType = 0;
+		vrLen = 404;
+		vrLoc = 0;
+	};
+	03736CB607BFE6EF00112CC0 = {
+		fRef = 0338A9EE07BE83B50066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCProtocolMockObject.h: 10";
+		rLen = 0;
+		rLoc = 342;
+		rType = 0;
+		vrLen = 426;
+		vrLoc = 0;
+	};
+	03736CB707BFE6EF00112CC0 = {
+		fRef = 03DE1F5406DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.h: 8";
+		rLen = 0;
+		rLoc = 349;
+		rType = 0;
+		vrLen = 589;
+		vrLoc = 0;
+	};
+	03736CB807BFE6EF00112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObject.m: 103";
+		rLen = 0;
+		rLoc = 2851;
+		rType = 0;
+		vrLen = 1265;
+		vrLoc = 0;
+	};
+	03736CB907BFE6EF00112CC0 = {
+		fRef = 0338A99707BE7C100066DE8A;
+		isa = PBXTextBookmark;
+		name = "OCClassMockObject.m: initWithClass:";
+		rLen = 0;
+		rLoc = 554;
+		rType = 0;
+		vrLen = 1291;
+		vrLoc = 0;
+	};
+	03736CBA07BFE6EF00112CC0 = {
+		fRef = 0338A9EF07BE83B50066DE8A;
+		isa = PBXTextBookmark;
+		name = description;
+		rLen = 11;
+		rLoc = 933;
+		rType = 0;
+		vrLen = 1456;
+		vrLoc = 0;
+	};
+	03736CBB07BFE6EF00112CC0 = {
+		fRef = 03DE1F5706DB911300E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorder.m: anyArgument";
+		rLen = 0;
+		rLoc = 912;
+		rType = 0;
+		vrLen = 1277;
+		vrLoc = 0;
+	};
+	03736CBC07BFE6EF00112CC0 = {
+		fRef = 0338AA1007BE866F0066DE8A;
+		isa = PBXTextBookmark;
+		name = "NSMethodSignature+Private.h: 6";
+		rLen = 0;
+		rLoc = 94;
+		rType = 0;
+		vrLen = 99;
+		vrLoc = 0;
+	};
+	03736CBD07BFE6EF00112CC0 = {
+		fRef = 03DE21B206DB95C500E5A2A8;
+		isa = PBXTextBookmark;
+		name = "#import \"OCMockRecorder.h\"\n";
+		rLen = 27;
+		rLoc = 328;
+		rType = 0;
+		vrLen = 355;
+		vrLoc = 0;
+	};
+	03736CBE07BFE6EF00112CC0 = {
+		fRef = 03DE1F5506DB911300E5A2A8;
 		isa = PBXTextBookmark;
 		rLen = 1;
-		rLoc = 135;
+		rLoc = 102;
 		rType = 1;
 	};
-	039DFD21070635270083B64D = {
-		fRef = 8DC2EF5A0486A6940098B216;
-		isa = PBXTextBookmark;
-		name = "Info.plist: 7";
-		rLen = 0;
-		rLoc = 273;
-		rType = 0;
-		vrLen = 712;
-		vrLoc = 0;
-	};
-	039DFD22070635270083B64D = {
-		fRef = 03DE1F5F06DB914100E5A2A8;
-		isa = PBXTextBookmark;
-		name = "OCMockObjectTests.m: 136";
-		rLen = 0;
-		rLoc = 2836;
-		rType = 0;
-		vrLen = 945;
-		vrLoc = 1975;
-	};
-	039DFD390706365E0083B64D = {
+	03736CBF07BFE6EF00112CC0 = {
 		fRef = 03DE1F5506DB911300E5A2A8;
 		isa = PBXTextBookmark;
-		name = "OCMockObject.m: 28";
-		rLen = 0;
-		rLoc = 938;
+		name = "\t\tif([recorder matchesInvocation:anInvocation])\n";
+		rLen = 48;
+		rLoc = 2837;
 		rType = 0;
-		vrLen = 1491;
-		vrLoc = 0;
-	};
-	039DFD3A0706365E0083B64D = {
-		fRef = 03DE1F5606DB911300E5A2A8;
-		isa = PBXTextBookmark;
-		name = "OCMockRecorder.h: 8";
-		rLen = 0;
-		rLoc = 381;
-		rType = 0;
-		vrLen = 718;
-		vrLoc = 0;
-	};
-	039DFD3B0706365E0083B64D = {
-		fRef = 03DE1F5706DB911300E5A2A8;
-		isa = PBXTextBookmark;
-		name = "OCMockRecorder.m: 74";
-		rLen = 0;
-		rLoc = 2035;
-		rType = 0;
-		vrLen = 1167;
-		vrLoc = 591;
-	};
-	039DFD3C0706365E0083B64D = {
-		fRef = 039DFD3D0706365E0083B64D;
-		isa = PBXTextBookmark;
-		name = "(null): 1";
-		rLen = 0;
-		rLoc = 0;
-		rType = 0;
-		vrLen = 366;
-		vrLoc = 0;
-	};
-	039DFD3D0706365E0083B64D = {
-		isa = PBXFileReference;
-		path = OCMockObjectTests.m;
-		refType = 4;
-		sourceTree = "<group>";
-	};
-	039DFD3E0706365E0083B64D = {
-		fRef = 03DE1F5F06DB914100E5A2A8;
-		isa = PBXTextBookmark;
-		name = "OCMockObjectTests.m: 141";
-		rLen = 0;
-		rLoc = 2922;
-		rType = 0;
-		vrLen = 945;
-		vrLoc = 1977;
-	};
-	039DFD3F0706365E0083B64D = {
-		fRef = 039DFD400706365E0083B64D;
-		isa = PBXTextBookmark;
-		name = "(null): 1";
-		rLen = 0;
-		rLoc = 0;
-		rType = 0;
-		vrLen = 83;
-		vrLoc = 0;
-	};
-	039DFD400706365E0083B64D = {
-		isa = PBXFileReference;
-		path = OCMockObject.h;
-		refType = 4;
-		sourceTree = "<group>";
-	};
-	039DFD410706365E0083B64D = {
-		fRef = 03DE1F5406DB911300E5A2A8;
-		isa = PBXTextBookmark;
-		name = NSProxy;
-		rLen = 7;
-		rLoc = 370;
-		rType = 0;
-		vrLen = 600;
-		vrLoc = 0;
-	};
-	039DFD420706365E0083B64D = {
-		fRef = 03DE1F5F06DB914100E5A2A8;
-		isa = PBXTextBookmark;
-		name = "OCMockObjectTests.m: 136";
-		rLen = 0;
-		rLoc = 2836;
-		rType = 0;
-		vrLen = 945;
-		vrLoc = 1975;
-	};
-	039DFD430706365E0083B64D = {
-		fRef = 03DE1F5706DB911300E5A2A8;
-		isa = PBXTextBookmark;
-		name = "OCMockRecorder.m: 74";
-		rLen = 0;
-		rLoc = 2035;
-		rType = 0;
-		vrLen = 1332;
-		vrLoc = 1341;
-	};
-	039DFD440706365E0083B64D = {
-		fRef = 03DE1F5406DB911300E5A2A8;
-		isa = PBXTextBookmark;
-		name = NSProxy;
-		rLen = 7;
-		rLoc = 370;
-		rType = 0;
-		vrLen = 600;
-		vrLoc = 0;
-	};
-	039DFD450706365E0083B64D = {
-		fRef = 03DE1F5606DB911300E5A2A8;
-		isa = PBXTextBookmark;
-		name = "OCMockRecorder.h: 8";
-		rLen = 0;
-		rLoc = 381;
-		rType = 0;
-		vrLen = 718;
-		vrLoc = 0;
-	};
-	039DFD460706365E0083B64D = {
-		fRef = 03DE1F5506DB911300E5A2A8;
-		isa = PBXTextBookmark;
-		name = "OCMockObject.m: 28";
-		rLen = 0;
-		rLoc = 938;
-		rType = 0;
-		vrLen = 1491;
-		vrLoc = 0;
-	};
-	039DFD470706365E0083B64D = {
-		fRef = 03DE1F5606DB911300E5A2A8;
-		isa = PBXTextBookmark;
-		name = "OCMockRecorder.h: 8";
-		rLen = 0;
-		rLoc = 381;
-		rType = 0;
-		vrLen = 718;
-		vrLoc = 0;
-	};
-	039DFD480706365E0083B64D = {
-		fRef = 03DE1F5706DB911300E5A2A8;
-		isa = PBXTextBookmark;
-		name = "OCMockRecorder.m: 74";
-		rLen = 0;
-		rLoc = 2035;
-		rType = 0;
-		vrLen = 1167;
-		vrLoc = 591;
-	};
-	039DFD490706365E0083B64D = {
-		fRef = 03DE1F5F06DB914100E5A2A8;
-		isa = PBXTextBookmark;
-		name = "OCMockObjectTests.m: 136";
-		rLen = 0;
-		rLoc = 2836;
-		rType = 0;
-		vrLen = 945;
-		vrLoc = 1975;
-	};
-	039DFD4A0706365E0083B64D = {
-		fRef = 039DFD4B0706365E0083B64D;
-		isa = PBXTextBookmark;
-		name = "(null): 1";
-		rLen = 0;
-		rLoc = 0;
-		rType = 0;
-		vrLen = 366;
-		vrLoc = 0;
-	};
-	039DFD4B0706365E0083B64D = {
-		isa = PBXFileReference;
-		path = OCMockObjectTests.m;
-		refType = 4;
-		sourceTree = "<group>";
-	};
-	039DFD4C0706365E0083B64D = {
-		fRef = 03DE1F5F06DB914100E5A2A8;
-		isa = PBXTextBookmark;
-		name = "OCMockObjectTests.m: 141";
-		rLen = 0;
-		rLoc = 2922;
-		rType = 0;
-		vrLen = 945;
-		vrLoc = 1977;
-	};
-	039DFD4D0706365E0083B64D = {
-		fRef = 03DE1F5406DB911300E5A2A8;
-		isa = PBXTextBookmark;
-		name = NSProxy;
-		rLen = 7;
-		rLoc = 370;
-		rType = 0;
-		vrLen = 600;
-		vrLoc = 0;
-	};
-	039DFD4E0706365E0083B64D = {
-		fRef = 039DFD4F0706365E0083B64D;
-		isa = PBXTextBookmark;
-		name = "(null): 1";
-		rLen = 0;
-		rLoc = 0;
-		rType = 0;
-		vrLen = 83;
-		vrLoc = 0;
-	};
-	039DFD4F0706365E0083B64D = {
-		isa = PBXFileReference;
-		path = OCMockObject.h;
-		refType = 4;
-		sourceTree = "<group>";
-	};
-	039DFD500706365F0083B64D = {
-		fRef = 03DE1F5406DB911300E5A2A8;
-		isa = PBXTextBookmark;
-		name = NSProxy;
-		rLen = 7;
-		rLoc = 370;
-		rType = 0;
-		vrLen = 600;
+		vrLen = 0;
 		vrLoc = 0;
 	};
 	03DE1F5206DB90D800E5A2A8 = {
@@ -390,7 +2668,7 @@
 	03DE1F5306DB90D800E5A2A8 = {
 		indexTemplatePath = "";
 		isa = PBXCodeSenseManager;
-		usesDefaults = 1;
+		usesDefaults = 0;
 		wantsCodeCompletion = 1;
 		wantsCodeCompletionAutoSuggestions = 0;
 		wantsCodeCompletionCaseSensitivity = 1;
@@ -403,31 +2681,32 @@
 	};
 	03DE1F5406DB911300E5A2A8 = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {852, 659}}";
-			sepNavSelRange = "{370, 7}";
-			sepNavVisRect = "{{0, 0}, {852, 659}}";
+			sepNavIntBoundsRect = "{{0, 0}, {817, 641}}";
+			sepNavSelRange = "{349, 0}";
+			sepNavVisRect = "{{0, 0}, {817, 641}}";
 		};
 	};
 	03DE1F5506DB911300E5A2A8 = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {852, 1634}}";
-			sepNavSelRange = "{938, 0}";
-			sepNavVisRect = "{{0, 0}, {852, 717}}";
+			sepNavIntBoundsRect = "{{0, 0}, {801, 1784}}";
+			sepNavSelRange = "{2837, 48}";
+			sepNavVisRect = "{{0, 0}, {0, 0}}";
 			sepNavWindowFrame = "{{15, 305}, {846, 692}}";
 		};
 	};
 	03DE1F5606DB911300E5A2A8 = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {852, 717}}";
-			sepNavSelRange = "{381, 0}";
-			sepNavVisRect = "{{0, 0}, {852, 717}}";
+			sepNavIntBoundsRect = "{{0, 0}, {817, 641}}";
+			sepNavSelRange = "{501, 25}";
+			sepNavVisRect = "{{0, 0}, {817, 641}}";
 		};
 	};
 	03DE1F5706DB911300E5A2A8 = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {852, 1784}}";
-			sepNavSelRange = "{2035, 0}";
-			sepNavVisRect = "{{0, 237}, {852, 717}}";
+			sepNavIntBoundsRect = "{{0, 0}, {817, 1769}}";
+			sepNavSelRange = "{912, 0}";
+			sepNavVisRect = "{{0, 0}, {817, 641}}";
+			sepNavWindowFrame = "{{15, 305}, {846, 692}}";
 		};
 	};
 	03DE1F5E06DB914100E5A2A8 = {
@@ -439,24 +2718,24 @@
 	};
 	03DE1F5F06DB914100E5A2A8 = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {852, 2114}}";
-			sepNavSelRange = "{2922, 0}";
-			sepNavVisRect = "{{0, 1397}, {852, 717}}";
-			sepNavWindowFrame = "{{38, 284}, {846, 692}}";
+			sepNavIntBoundsRect = "{{0, 0}, {817, 2459}}";
+			sepNavSelRange = "{2307, 15}";
+			sepNavVisRect = "{{0, 1474}, {817, 641}}";
+			sepNavWindowFrame = "{{15, 305}, {846, 692}}";
 		};
 	};
 	03DE1F6006DB914100E5A2A8 = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {852, 792}}";
+			sepNavIntBoundsRect = "{{0, 0}, {817, 641}}";
 			sepNavSelRange = "{318, 0}";
-			sepNavVisRect = "{{0, 0}, {852, 792}}";
+			sepNavVisRect = "{{0, 0}, {817, 641}}";
 		};
 	};
 	03DE1F6106DB914100E5A2A8 = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {852, 1071}}";
-			sepNavSelRange = "{462, 0}";
-			sepNavVisRect = "{{0, 0}, {852, 792}}";
+			sepNavIntBoundsRect = "{{0, 0}, {817, 1004}}";
+			sepNavSelRange = "{1644, 0}";
+			sepNavVisRect = "{{0, 17}, {817, 641}}";
 		};
 	};
 	03DE219B06DB954C00E5A2A8 = {
@@ -464,30 +2743,10 @@
 	};
 	03DE21B206DB95C500E5A2A8 = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {852, 792}}";
-			sepNavSelRange = "{355, 0}";
-			sepNavVisRect = "{{0, 0}, {852, 792}}";
+			sepNavIntBoundsRect = "{{0, 0}, {817, 641}}";
+			sepNavSelRange = "{328, 27}";
+			sepNavVisRect = "{{0, 0}, {817, 641}}";
 		};
-	};
-	03DE21C606DB95D400E5A2A8 = {
-		fRef = 03DE1F5406DB911300E5A2A8;
-		isa = PBXTextBookmark;
-		name = "OCMockObject.h: 1";
-		rLen = 0;
-		rLoc = 0;
-		rType = 0;
-		vrLen = 430;
-		vrLoc = 0;
-	};
-	03DE21C706DB95D400E5A2A8 = {
-		fRef = 03DE1F5606DB911300E5A2A8;
-		isa = PBXTextBookmark;
-		name = "- (id)andReturn:(id)anObject;\n";
-		rLen = 30;
-		rLoc = 255;
-		rType = 0;
-		vrLen = 403;
-		vrLoc = 0;
 	};
 	03DE21C806DB95D400E5A2A8 = {
 		fRef = 03DE1F5706DB911300E5A2A8;
@@ -499,66 +2758,6 @@
 		vrLen = 1002;
 		vrLoc = 86;
 	};
-	03DE21CC06DB95D400E5A2A8 = {
-		fRef = 03DE1F5506DB911300E5A2A8;
-		isa = PBXTextBookmark;
-		name = "OCMockObject.m: anyArgument";
-		rLen = 0;
-		rLoc = 286;
-		rType = 0;
-		vrLen = 978;
-		vrLoc = 0;
-	};
-	03DE21D706DB95D400E5A2A8 = {
-		fRef = 03DE1F6106DB914100E5A2A8;
-		isa = PBXTextBookmark;
-		name = "OCMockRecorderTests.m: 62";
-		rLen = 0;
-		rLoc = 1831;
-		rType = 0;
-		vrLen = 992;
-		vrLoc = 838;
-	};
-	03DE21D806DB95D400E5A2A8 = {
-		fRef = 03DE1F5F06DB914100E5A2A8;
-		isa = PBXTextBookmark;
-		name = "OCMockObjectTests.m: 1";
-		rLen = 0;
-		rLoc = 318;
-		rType = 0;
-		vrLen = 773;
-		vrLoc = 927;
-	};
-	03DE21DD06DB95D400E5A2A8 = {
-		fRef = 03DE1F6006DB914100E5A2A8;
-		isa = PBXTextBookmark;
-		name = "OCMockRecorderTests.h: 1";
-		rLen = 0;
-		rLoc = 318;
-		rType = 0;
-		vrLen = 129;
-		vrLoc = 0;
-	};
-	03DE21DF06DB95D400E5A2A8 = {
-		fRef = 03DE1F5E06DB914100E5A2A8;
-		isa = PBXTextBookmark;
-		name = "OCMockObjectTests.h: 1";
-		rLen = 0;
-		rLoc = 318;
-		rType = 0;
-		vrLen = 106;
-		vrLoc = 0;
-	};
-	03DE21EB06DB965400E5A2A8 = {
-		fRef = 03DE21B206DB95C500E5A2A8;
-		isa = PBXTextBookmark;
-		name = "OCMock.h: 4";
-		rLen = 0;
-		rLoc = 53;
-		rType = 0;
-		vrLen = 53;
-		vrLoc = 0;
-	};
 	03DE221606DB97DA00E5A2A8 = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {852, 792}}";
@@ -566,131 +2765,14 @@
 			sepNavVisRect = "{{0, 0}, {852, 792}}";
 		};
 	};
-	03DE222306DB97F400E5A2A8 = {
-		fRef = 03DE221606DB97DA00E5A2A8;
-		isa = PBXTextBookmark;
-		name = "License.text: 1";
-		rLen = 0;
-		rLoc = 0;
-		rType = 0;
-		vrLen = 0;
-		vrLoc = 0;
-	};
-	03DE222606DB97F400E5A2A8 = {
-		fRef = 8DC2EF5A0486A6940098B216;
-		isa = PBXTextBookmark;
-		name = "Info.plist: 1";
-		rLen = 0;
-		rLoc = 0;
-		rType = 0;
-		vrLen = 712;
-		vrLoc = 0;
-	};
-	03DE223206DB988200E5A2A8 = {
-		fRef = 32DBCF5E0370ADEE00C91783;
-		isa = PBXTextBookmark;
-		name = "OCMock_Prefix.pch: 1";
-		rLen = 0;
-		rLoc = 0;
-		rType = 0;
-		vrLen = 184;
-		vrLoc = 0;
-	};
-	03DE223E06DB988200E5A2A8 = {
-		fRef = 32DBCF5E0370ADEE00C91783;
-		isa = PBXTextBookmark;
-		name = "OCMock_Prefix.pch: 1";
-		rLen = 0;
-		rLoc = 0;
-		rType = 0;
-		vrLen = 184;
-		vrLoc = 0;
-	};
-	03DE225906DB997400E5A2A8 = {
-		fRef = 089C1667FE841158C02AAC07;
-		isa = PBXTextBookmark;
-		name = "English: 5";
-		rLen = 0;
-		rLoc = 187;
-		rType = 0;
-		vrLen = 257;
-		vrLoc = 0;
-	};
-	03DE227506DB997400E5A2A8 = {
-		fRef = 089C1667FE841158C02AAC07;
-		isa = PBXTextBookmark;
-		name = "English: 5";
-		rLen = 0;
-		rLoc = 187;
-		rType = 0;
-		vrLen = 257;
-		vrLoc = 0;
-	};
-	03DE227C06DB998600E5A2A8 = {
-		fRef = 03DE221606DB97DA00E5A2A8;
-		isa = PBXTextBookmark;
-		name = "License.txt: 2";
-		rLen = 0;
-		rLoc = 5;
-		rType = 0;
-		vrLen = 924;
-		vrLoc = 0;
-	};
-	03DE231606DBA98500E5A2A8 = {
-		fRef = 8DC2EF5A0486A6940098B216;
-		isa = PBXTextBookmark;
-		name = "Info.plist: 7";
-		rLen = 0;
-		rLoc = 273;
-		rType = 0;
-		vrLen = 712;
-		vrLoc = 0;
-	};
-	03DE232206DBABD200E5A2A8 = {
-		fRef = 03DE21B206DB95C500E5A2A8;
-		isa = PBXTextBookmark;
-		name = "OCMock.h: 8";
-		rLen = 0;
-		rLoc = 355;
-		rType = 0;
-		vrLen = 355;
-		vrLoc = 0;
-	};
-	03DE234406DBB07C00E5A2A8 = {
-		fRef = 03DE1F5606DB911300E5A2A8;
-		isa = PBXTextBookmark;
-		name = "OCMockRecorder.h: OCMOCK_ANY";
-		rLen = 0;
-		rLoc = 678;
-		rType = 0;
-		vrLen = 719;
-		vrLoc = 0;
-	};
-	03DE234C06DBB09700E5A2A8 = {
-		fRef = 03DE1F6006DB914100E5A2A8;
-		isa = PBXTextBookmark;
-		name = "OCMockRecorderTests.h: 6";
-		rLen = 0;
-		rLoc = 318;
-		rType = 0;
-		vrLen = 444;
-		vrLoc = 0;
-	};
-	03DE235806E3B96200E5A2A8 = {
-		fRef = 03DE1F6106DB914100E5A2A8;
-		isa = PBXTextBookmark;
-		name = "OCMockRecorderTests.m: 15";
-		rLen = 0;
-		rLoc = 462;
-		rType = 0;
-		vrLen = 1442;
-		vrLoc = 0;
-	};
 	0867D690FE84028FC02AAC07 = {
-		activeBuildStyle = 749E17DD05657B6C005A3EEA;
+		activeBuildStyle = 014CEA440018CDF011CA2923;
 		activeTarget = 03DE219B06DB954C00E5A2A8;
 		addToTargets = (
 			8DC2EF4F0486A6940098B216,
+			03DE219B06DB954C00E5A2A8,
+		);
+		breakpoints = (
 		);
 		codeSenseManager = 03DE1F5306DB90D800E5A2A8;
 		perUserDictionary = {
@@ -699,8 +2781,8 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXErrorsWarningsDataSource_LocationID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					551.8799,
-					298.2085,
+					528.8799,
+					286.2085,
 				);
 				PBXFileTableDataSourceColumnsKey = (
 					PBXErrorsWarningsDataSource_TypeID,
@@ -713,9 +2795,9 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					600,
+					570,
 					20,
-					108,
+					103,
 					43,
 					43,
 					20,
@@ -788,7 +2870,7 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 117847203;
+			PBXPerProjectTemplateStateSaveDate = 130012336;
 			PBXPrepackagedSmartGroups_v2 = (
 				{
 					PBXTransientLocationAtTop = bottom;
@@ -965,65 +3047,269 @@
 					};
 				},
 			);
-			PBXWorkspaceStateSaveDate = 117847203;
+			PBXWorkspaceStateSaveDate = 130012336;
 		};
 		perUserProjectItems = {
-			03428B7F06EA659500B9D4B6 = 03428B7F06EA659500B9D4B6;
-			03428B8006EA659500B9D4B6 = 03428B8006EA659500B9D4B6;
-			039DFCE9070625940083B64D = 039DFCE9070625940083B64D;
-			039DFCFE070627590083B64D = 039DFCFE070627590083B64D;
-			039DFD0A070634120083B64D = 039DFD0A070634120083B64D;
-			039DFD0B070634120083B64D = 039DFD0B070634120083B64D;
-			039DFD11070634730083B64D = 039DFD11070634730083B64D;
-			039DFD12070634730083B64D = 039DFD12070634730083B64D;
-			039DFD13070634730083B64D = 039DFD13070634730083B64D;
-			039DFD17070634A90083B64D = 039DFD17070634A90083B64D;
-			039DFD1B070634EA0083B64D = 039DFD1B070634EA0083B64D;
-			039DFD1F070635270083B64D = 039DFD1F070635270083B64D;
-			039DFD20070635270083B64D = 039DFD20070635270083B64D;
-			039DFD21070635270083B64D = 039DFD21070635270083B64D;
-			039DFD22070635270083B64D = 039DFD22070635270083B64D;
-			039DFD390706365E0083B64D = 039DFD390706365E0083B64D;
-			039DFD3A0706365E0083B64D = 039DFD3A0706365E0083B64D;
-			039DFD3B0706365E0083B64D = 039DFD3B0706365E0083B64D;
-			039DFD3C0706365E0083B64D = 039DFD3C0706365E0083B64D;
-			039DFD3E0706365E0083B64D = 039DFD3E0706365E0083B64D;
-			039DFD3F0706365E0083B64D = 039DFD3F0706365E0083B64D;
-			039DFD410706365E0083B64D = 039DFD410706365E0083B64D;
-			039DFD420706365E0083B64D = 039DFD420706365E0083B64D;
-			039DFD430706365E0083B64D = 039DFD430706365E0083B64D;
-			039DFD440706365E0083B64D = 039DFD440706365E0083B64D;
-			039DFD450706365E0083B64D = 039DFD450706365E0083B64D;
-			039DFD460706365E0083B64D = 039DFD460706365E0083B64D;
-			039DFD470706365E0083B64D = 039DFD470706365E0083B64D;
-			039DFD480706365E0083B64D = 039DFD480706365E0083B64D;
-			039DFD490706365E0083B64D = 039DFD490706365E0083B64D;
-			039DFD4A0706365E0083B64D = 039DFD4A0706365E0083B64D;
-			039DFD4C0706365E0083B64D = 039DFD4C0706365E0083B64D;
-			039DFD4D0706365E0083B64D = 039DFD4D0706365E0083B64D;
-			039DFD4E0706365E0083B64D = 039DFD4E0706365E0083B64D;
-			039DFD500706365F0083B64D = 039DFD500706365F0083B64D;
-			03DE21C606DB95D400E5A2A8 = 03DE21C606DB95D400E5A2A8;
-			03DE21C706DB95D400E5A2A8 = 03DE21C706DB95D400E5A2A8;
+			0338A95107BE738E0066DE8A = 0338A95107BE738E0066DE8A;
+			0338A95C07BE74F20066DE8A = 0338A95C07BE74F20066DE8A;
+			0338A95D07BE74F20066DE8A = 0338A95D07BE74F20066DE8A;
+			0338A95E07BE74F20066DE8A = 0338A95E07BE74F20066DE8A;
+			0338A95F07BE74F20066DE8A = 0338A95F07BE74F20066DE8A;
+			0338A96007BE74F20066DE8A = 0338A96007BE74F20066DE8A;
+			0338A96107BE74F20066DE8A = 0338A96107BE74F20066DE8A;
+			0338A96307BE74F20066DE8A = 0338A96307BE74F20066DE8A;
+			0338A96507BE74F20066DE8A = 0338A96507BE74F20066DE8A;
+			0338A96807BE74F20066DE8A = 0338A96807BE74F20066DE8A;
+			0338A96907BE74F20066DE8A = 0338A96907BE74F20066DE8A;
+			0338A97707BE78440066DE8A = 0338A97707BE78440066DE8A;
+			0338A98607BE7AD30066DE8A = 0338A98607BE7AD30066DE8A;
+			0338A99107BE7BF40066DE8A = 0338A99107BE7BF40066DE8A;
+			0338A99207BE7BF40066DE8A = 0338A99207BE7BF40066DE8A;
+			0338A99407BE7BF40066DE8A = 0338A99407BE7BF40066DE8A;
+			0338A99A07BE7EC80066DE8A = 0338A99A07BE7EC80066DE8A;
+			0338A99F07BE7EC80066DE8A = 0338A99F07BE7EC80066DE8A;
+			0338A9A007BE7EC80066DE8A = 0338A9A007BE7EC80066DE8A;
+			0338A9A107BE7EC80066DE8A = 0338A9A107BE7EC80066DE8A;
+			0338A9A207BE7EC80066DE8A = 0338A9A207BE7EC80066DE8A;
+			0338A9A307BE7EC80066DE8A = 0338A9A307BE7EC80066DE8A;
+			0338A9A407BE7EC80066DE8A = 0338A9A407BE7EC80066DE8A;
+			0338A9A507BE7EC80066DE8A = 0338A9A507BE7EC80066DE8A;
+			0338A9A607BE7EC80066DE8A = 0338A9A607BE7EC80066DE8A;
+			0338A9A707BE7EC80066DE8A = 0338A9A707BE7EC80066DE8A;
+			0338A9A807BE7EC80066DE8A = 0338A9A807BE7EC80066DE8A;
+			0338A9A907BE7EC80066DE8A = 0338A9A907BE7EC80066DE8A;
+			0338A9AA07BE7EC80066DE8A = 0338A9AA07BE7EC80066DE8A;
+			0338A9AB07BE7EC80066DE8A = 0338A9AB07BE7EC80066DE8A;
+			0338A9AC07BE7EC80066DE8A = 0338A9AC07BE7EC80066DE8A;
+			0338A9AD07BE7EC80066DE8A = 0338A9AD07BE7EC80066DE8A;
+			0338A9AE07BE7EC80066DE8A = 0338A9AE07BE7EC80066DE8A;
+			0338A9AF07BE7EC80066DE8A = 0338A9AF07BE7EC80066DE8A;
+			0338A9B007BE7EC80066DE8A = 0338A9B007BE7EC80066DE8A;
+			0338A9B107BE7EC80066DE8A = 0338A9B107BE7EC80066DE8A;
+			0338A9B207BE7EC80066DE8A = 0338A9B207BE7EC80066DE8A;
+			0338A9CA07BE82890066DE8A = 0338A9CA07BE82890066DE8A;
+			0338A9CC07BE82890066DE8A = 0338A9CC07BE82890066DE8A;
+			0338A9CD07BE82890066DE8A = 0338A9CD07BE82890066DE8A;
+			0338A9CE07BE82890066DE8A = 0338A9CE07BE82890066DE8A;
+			0338A9CF07BE82890066DE8A = 0338A9CF07BE82890066DE8A;
+			0338A9D007BE82890066DE8A = 0338A9D007BE82890066DE8A;
+			0338A9D107BE82890066DE8A = 0338A9D107BE82890066DE8A;
+			0338A9D207BE82890066DE8A = 0338A9D207BE82890066DE8A;
+			0338A9D307BE82890066DE8A = 0338A9D307BE82890066DE8A;
+			0338A9D407BE82890066DE8A = 0338A9D407BE82890066DE8A;
+			0338A9D507BE82890066DE8A = 0338A9D507BE82890066DE8A;
+			0338A9D607BE82890066DE8A = 0338A9D607BE82890066DE8A;
+			0338A9D707BE82890066DE8A = 0338A9D707BE82890066DE8A;
+			0338A9D807BE82890066DE8A = 0338A9D807BE82890066DE8A;
+			0338A9D907BE82890066DE8A = 0338A9D907BE82890066DE8A;
+			0338A9DA07BE82890066DE8A = 0338A9DA07BE82890066DE8A;
+			0338A9DC07BE82890066DE8A = 0338A9DC07BE82890066DE8A;
+			0338A9DF07BE83040066DE8A = 0338A9DF07BE83040066DE8A;
+			0338A9F507BE853A0066DE8A = 0338A9F507BE853A0066DE8A;
+			0338A9F707BE853A0066DE8A = 0338A9F707BE853A0066DE8A;
+			0338A9FA07BE853A0066DE8A = 0338A9FA07BE853A0066DE8A;
+			0338A9FD07BE853A0066DE8A = 0338A9FD07BE853A0066DE8A;
+			0338A9FE07BE853A0066DE8A = 0338A9FE07BE853A0066DE8A;
+			0338A9FF07BE853A0066DE8A = 0338A9FF07BE853A0066DE8A;
+			0338AA0007BE853A0066DE8A = 0338AA0007BE853A0066DE8A;
+			0338AA0107BE853A0066DE8A = 0338AA0107BE853A0066DE8A;
+			0338AA0207BE853A0066DE8A = 0338AA0207BE853A0066DE8A;
+			0338AA0307BE853A0066DE8A = 0338AA0307BE853A0066DE8A;
+			0338AA0407BE853A0066DE8A = 0338AA0407BE853A0066DE8A;
+			0338AA0607BE853A0066DE8A = 0338AA0607BE853A0066DE8A;
+			0338AA0707BE853A0066DE8A = 0338AA0707BE853A0066DE8A;
+			0338AA0907BE853A0066DE8A = 0338AA0907BE853A0066DE8A;
+			0338AA0B07BE853A0066DE8A = 0338AA0B07BE853A0066DE8A;
+			0338AA1407BE869E0066DE8A = 0338AA1407BE869E0066DE8A;
+			0338AA1707BE869E0066DE8A = 0338AA1707BE869E0066DE8A;
+			0338AA1907BE869E0066DE8A = 0338AA1907BE869E0066DE8A;
+			0338AA1A07BE869E0066DE8A = 0338AA1A07BE869E0066DE8A;
+			0338AA1B07BE869E0066DE8A = 0338AA1B07BE869E0066DE8A;
+			0338AA2807BE89F40066DE8A = 0338AA2807BE89F40066DE8A;
+			0338AA2907BE89F40066DE8A = 0338AA2907BE89F40066DE8A;
+			0338AA2A07BE89F40066DE8A = 0338AA2A07BE89F40066DE8A;
+			0338AA2B07BE89F40066DE8A = 0338AA2B07BE89F40066DE8A;
+			0338AA2C07BE89F40066DE8A = 0338AA2C07BE89F40066DE8A;
+			0338AA2D07BE89F40066DE8A = 0338AA2D07BE89F40066DE8A;
+			0338AA2E07BE89F40066DE8A = 0338AA2E07BE89F40066DE8A;
+			0338AA2F07BE89F40066DE8A = 0338AA2F07BE89F40066DE8A;
+			0338AA3007BE89F40066DE8A = 0338AA3007BE89F40066DE8A;
+			0338AA3107BE89F40066DE8A = 0338AA3107BE89F40066DE8A;
+			0338AA3207BE89F40066DE8A = 0338AA3207BE89F40066DE8A;
+			0338AA3307BE89F40066DE8A = 0338AA3307BE89F40066DE8A;
+			0338AA3407BE89F40066DE8A = 0338AA3407BE89F40066DE8A;
+			0338AA3D07BFA0D70066DE8A = 0338AA3D07BFA0D70066DE8A;
+			0338AA3E07BFA0D70066DE8A = 0338AA3E07BFA0D70066DE8A;
+			03736B7407BFD57200112CC0 = 03736B7407BFD57200112CC0;
+			03736B7507BFD57200112CC0 = 03736B7507BFD57200112CC0;
+			03736B7607BFD57200112CC0 = 03736B7607BFD57200112CC0;
+			03736B7707BFD57200112CC0 = 03736B7707BFD57200112CC0;
+			03736B7807BFD57200112CC0 = 03736B7807BFD57200112CC0;
+			03736B7907BFD57200112CC0 = 03736B7907BFD57200112CC0;
+			03736B7A07BFD57200112CC0 = 03736B7A07BFD57200112CC0;
+			03736B7B07BFD57200112CC0 = 03736B7B07BFD57200112CC0;
+			03736B7C07BFD57200112CC0 = 03736B7C07BFD57200112CC0;
+			03736B7D07BFD57200112CC0 = 03736B7D07BFD57200112CC0;
+			03736B7E07BFD57200112CC0 = 03736B7E07BFD57200112CC0;
+			03736B7F07BFD57200112CC0 = 03736B7F07BFD57200112CC0;
+			03736B8007BFD57200112CC0 = 03736B8007BFD57200112CC0;
+			03736B8107BFD57200112CC0 = 03736B8107BFD57200112CC0;
+			03736B8207BFD57200112CC0 = 03736B8207BFD57200112CC0;
+			03736B8507BFD57200112CC0 = 03736B8507BFD57200112CC0;
+			03736B9007BFD67500112CC0 = 03736B9007BFD67500112CC0;
+			03736B9107BFD67500112CC0 = 03736B9107BFD67500112CC0;
+			03736B9207BFD67500112CC0 = 03736B9207BFD67500112CC0;
+			03736B9307BFD67500112CC0 = 03736B9307BFD67500112CC0;
+			03736B9407BFD67500112CC0 = 03736B9407BFD67500112CC0;
+			03736B9507BFD67500112CC0 = 03736B9507BFD67500112CC0;
+			03736B9607BFD67500112CC0 = 03736B9607BFD67500112CC0;
+			03736B9707BFD67500112CC0 = 03736B9707BFD67500112CC0;
+			03736B9807BFD67500112CC0 = 03736B9807BFD67500112CC0;
+			03736B9907BFD67500112CC0 = 03736B9907BFD67500112CC0;
+			03736C2207BFD91900112CC0 = 03736C2207BFD91900112CC0;
+			03736C2307BFD91900112CC0 = 03736C2307BFD91900112CC0;
+			03736C2407BFD91900112CC0 = 03736C2407BFD91900112CC0;
+			03736C2507BFD91900112CC0 = 03736C2507BFD91900112CC0;
+			03736C2607BFD91900112CC0 = 03736C2607BFD91900112CC0;
+			03736C2707BFD91900112CC0 = 03736C2707BFD91900112CC0;
+			03736C2807BFD91900112CC0 = 03736C2807BFD91900112CC0;
+			03736C2907BFD91900112CC0 = 03736C2907BFD91900112CC0;
+			03736C2A07BFD91900112CC0 = 03736C2A07BFD91900112CC0;
+			03736C2B07BFD91900112CC0 = 03736C2B07BFD91900112CC0;
+			03736C2C07BFD91900112CC0 = 03736C2C07BFD91900112CC0;
+			03736C2D07BFD91900112CC0 = 03736C2D07BFD91900112CC0;
+			03736C2E07BFD91900112CC0 = 03736C2E07BFD91900112CC0;
+			03736C2F07BFD91900112CC0 = 03736C2F07BFD91900112CC0;
+			03736C3007BFD91900112CC0 = 03736C3007BFD91900112CC0;
+			03736C3107BFD91900112CC0 = 03736C3107BFD91900112CC0;
+			03736C3207BFD91900112CC0 = 03736C3207BFD91900112CC0;
+			03736C3307BFD91900112CC0 = 03736C3307BFD91900112CC0;
+			03736C3907BFDE7900112CC0 = 03736C3907BFDE7900112CC0;
+			03736C3A07BFDE7900112CC0 = 03736C3A07BFDE7900112CC0;
+			03736C3B07BFDE7900112CC0 = 03736C3B07BFDE7900112CC0;
+			03736C3C07BFDE7900112CC0 = 03736C3C07BFDE7900112CC0;
+			03736C3D07BFDE7900112CC0 = 03736C3D07BFDE7900112CC0;
+			03736C3E07BFDE7900112CC0 = 03736C3E07BFDE7900112CC0;
+			03736C3F07BFDE7900112CC0 = 03736C3F07BFDE7900112CC0;
+			03736C4007BFDE7900112CC0 = 03736C4007BFDE7900112CC0;
+			03736C4107BFDE7900112CC0 = 03736C4107BFDE7900112CC0;
+			03736C4207BFDE7900112CC0 = 03736C4207BFDE7900112CC0;
+			03736C4307BFDE7900112CC0 = 03736C4307BFDE7900112CC0;
+			03736C4407BFDE7900112CC0 = 03736C4407BFDE7900112CC0;
+			03736C4507BFDE7900112CC0 = 03736C4507BFDE7900112CC0;
+			03736C4607BFDE7900112CC0 = 03736C4607BFDE7900112CC0;
+			03736C4707BFDE7900112CC0 = 03736C4707BFDE7900112CC0;
+			03736C4807BFDE7900112CC0 = 03736C4807BFDE7900112CC0;
+			03736C4907BFDE7900112CC0 = 03736C4907BFDE7900112CC0;
+			03736C4A07BFDE7900112CC0 = 03736C4A07BFDE7900112CC0;
+			03736C4B07BFDE7900112CC0 = 03736C4B07BFDE7900112CC0;
+			03736C4C07BFDE7900112CC0 = 03736C4C07BFDE7900112CC0;
+			03736C4D07BFDE7900112CC0 = 03736C4D07BFDE7900112CC0;
+			03736C4E07BFDE7900112CC0 = 03736C4E07BFDE7900112CC0;
+			03736C4F07BFDE7900112CC0 = 03736C4F07BFDE7900112CC0;
+			03736C5007BFDE7900112CC0 = 03736C5007BFDE7900112CC0;
+			03736C5107BFDE7900112CC0 = 03736C5107BFDE7900112CC0;
+			03736C5207BFDE7900112CC0 = 03736C5207BFDE7900112CC0;
+			03736C5307BFDE7900112CC0 = 03736C5307BFDE7900112CC0;
+			03736C5407BFDE7900112CC0 = 03736C5407BFDE7900112CC0;
+			03736C5507BFDE7900112CC0 = 03736C5507BFDE7900112CC0;
+			03736C5607BFDE7900112CC0 = 03736C5607BFDE7900112CC0;
+			03736C5707BFDE7900112CC0 = 03736C5707BFDE7900112CC0;
+			03736C5807BFDE7900112CC0 = 03736C5807BFDE7900112CC0;
+			03736C5907BFE0B400112CC0 = 03736C5907BFE0B400112CC0;
+			03736C5A07BFE0B400112CC0 = 03736C5A07BFE0B400112CC0;
+			03736C5D07BFE16900112CC0 = 03736C5D07BFE16900112CC0;
+			03736C5E07BFE16900112CC0 = 03736C5E07BFE16900112CC0;
+			03736C5F07BFE16900112CC0 = 03736C5F07BFE16900112CC0;
+			03736C6007BFE16900112CC0 = 03736C6007BFE16900112CC0;
+			03736C6107BFE16900112CC0 = 03736C6107BFE16900112CC0;
+			03736C6207BFE16900112CC0 = 03736C6207BFE16900112CC0;
+			03736C6307BFE16900112CC0 = 03736C6307BFE16900112CC0;
+			03736C6407BFE16900112CC0 = 03736C6407BFE16900112CC0;
+			03736C6507BFE16900112CC0 = 03736C6507BFE16900112CC0;
+			03736C6607BFE16900112CC0 = 03736C6607BFE16900112CC0;
+			03736C6707BFE16900112CC0 = 03736C6707BFE16900112CC0;
+			03736C6807BFE16900112CC0 = 03736C6807BFE16900112CC0;
+			03736C6907BFE16900112CC0 = 03736C6907BFE16900112CC0;
+			03736C6A07BFE16900112CC0 = 03736C6A07BFE16900112CC0;
+			03736C7307BFE6EF00112CC0 = 03736C7307BFE6EF00112CC0;
+			03736C7407BFE6EF00112CC0 = 03736C7407BFE6EF00112CC0;
+			03736C7507BFE6EF00112CC0 = 03736C7507BFE6EF00112CC0;
+			03736C7607BFE6EF00112CC0 = 03736C7607BFE6EF00112CC0;
+			03736C7707BFE6EF00112CC0 = 03736C7707BFE6EF00112CC0;
+			03736C7807BFE6EF00112CC0 = 03736C7807BFE6EF00112CC0;
+			03736C7907BFE6EF00112CC0 = 03736C7907BFE6EF00112CC0;
+			03736C7A07BFE6EF00112CC0 = 03736C7A07BFE6EF00112CC0;
+			03736C7B07BFE6EF00112CC0 = 03736C7B07BFE6EF00112CC0;
+			03736C7C07BFE6EF00112CC0 = 03736C7C07BFE6EF00112CC0;
+			03736C7D07BFE6EF00112CC0 = 03736C7D07BFE6EF00112CC0;
+			03736C7E07BFE6EF00112CC0 = 03736C7E07BFE6EF00112CC0;
+			03736C7F07BFE6EF00112CC0 = 03736C7F07BFE6EF00112CC0;
+			03736C8007BFE6EF00112CC0 = 03736C8007BFE6EF00112CC0;
+			03736C8107BFE6EF00112CC0 = 03736C8107BFE6EF00112CC0;
+			03736C8207BFE6EF00112CC0 = 03736C8207BFE6EF00112CC0;
+			03736C8307BFE6EF00112CC0 = 03736C8307BFE6EF00112CC0;
+			03736C8407BFE6EF00112CC0 = 03736C8407BFE6EF00112CC0;
+			03736C8507BFE6EF00112CC0 = 03736C8507BFE6EF00112CC0;
+			03736C8607BFE6EF00112CC0 = 03736C8607BFE6EF00112CC0;
+			03736C8707BFE6EF00112CC0 = 03736C8707BFE6EF00112CC0;
+			03736C8807BFE6EF00112CC0 = 03736C8807BFE6EF00112CC0;
+			03736C8907BFE6EF00112CC0 = 03736C8907BFE6EF00112CC0;
+			03736C8A07BFE6EF00112CC0 = 03736C8A07BFE6EF00112CC0;
+			03736C8B07BFE6EF00112CC0 = 03736C8B07BFE6EF00112CC0;
+			03736C8C07BFE6EF00112CC0 = 03736C8C07BFE6EF00112CC0;
+			03736C8D07BFE6EF00112CC0 = 03736C8D07BFE6EF00112CC0;
+			03736C8E07BFE6EF00112CC0 = 03736C8E07BFE6EF00112CC0;
+			03736C8F07BFE6EF00112CC0 = 03736C8F07BFE6EF00112CC0;
+			03736C9007BFE6EF00112CC0 = 03736C9007BFE6EF00112CC0;
+			03736C9107BFE6EF00112CC0 = 03736C9107BFE6EF00112CC0;
+			03736C9207BFE6EF00112CC0 = 03736C9207BFE6EF00112CC0;
+			03736C9307BFE6EF00112CC0 = 03736C9307BFE6EF00112CC0;
+			03736C9407BFE6EF00112CC0 = 03736C9407BFE6EF00112CC0;
+			03736C9507BFE6EF00112CC0 = 03736C9507BFE6EF00112CC0;
+			03736C9607BFE6EF00112CC0 = 03736C9607BFE6EF00112CC0;
+			03736C9707BFE6EF00112CC0 = 03736C9707BFE6EF00112CC0;
+			03736C9807BFE6EF00112CC0 = 03736C9807BFE6EF00112CC0;
+			03736C9907BFE6EF00112CC0 = 03736C9907BFE6EF00112CC0;
+			03736C9A07BFE6EF00112CC0 = 03736C9A07BFE6EF00112CC0;
+			03736C9B07BFE6EF00112CC0 = 03736C9B07BFE6EF00112CC0;
+			03736C9C07BFE6EF00112CC0 = 03736C9C07BFE6EF00112CC0;
+			03736C9D07BFE6EF00112CC0 = 03736C9D07BFE6EF00112CC0;
+			03736C9E07BFE6EF00112CC0 = 03736C9E07BFE6EF00112CC0;
+			03736C9F07BFE6EF00112CC0 = 03736C9F07BFE6EF00112CC0;
+			03736CA007BFE6EF00112CC0 = 03736CA007BFE6EF00112CC0;
+			03736CA107BFE6EF00112CC0 = 03736CA107BFE6EF00112CC0;
+			03736CA207BFE6EF00112CC0 = 03736CA207BFE6EF00112CC0;
+			03736CA307BFE6EF00112CC0 = 03736CA307BFE6EF00112CC0;
+			03736CA407BFE6EF00112CC0 = 03736CA407BFE6EF00112CC0;
+			03736CA507BFE6EF00112CC0 = 03736CA507BFE6EF00112CC0;
+			03736CA607BFE6EF00112CC0 = 03736CA607BFE6EF00112CC0;
+			03736CA707BFE6EF00112CC0 = 03736CA707BFE6EF00112CC0;
+			03736CA807BFE6EF00112CC0 = 03736CA807BFE6EF00112CC0;
+			03736CA907BFE6EF00112CC0 = 03736CA907BFE6EF00112CC0;
+			03736CAA07BFE6EF00112CC0 = 03736CAA07BFE6EF00112CC0;
+			03736CAB07BFE6EF00112CC0 = 03736CAB07BFE6EF00112CC0;
+			03736CAC07BFE6EF00112CC0 = 03736CAC07BFE6EF00112CC0;
+			03736CAD07BFE6EF00112CC0 = 03736CAD07BFE6EF00112CC0;
+			03736CAE07BFE6EF00112CC0 = 03736CAE07BFE6EF00112CC0;
+			03736CAF07BFE6EF00112CC0 = 03736CAF07BFE6EF00112CC0;
+			03736CB007BFE6EF00112CC0 = 03736CB007BFE6EF00112CC0;
+			03736CB107BFE6EF00112CC0 = 03736CB107BFE6EF00112CC0;
+			03736CB207BFE6EF00112CC0 = 03736CB207BFE6EF00112CC0;
+			03736CB307BFE6EF00112CC0 = 03736CB307BFE6EF00112CC0;
+			03736CB407BFE6EF00112CC0 = 03736CB407BFE6EF00112CC0;
+			03736CB507BFE6EF00112CC0 = 03736CB507BFE6EF00112CC0;
+			03736CB607BFE6EF00112CC0 = 03736CB607BFE6EF00112CC0;
+			03736CB707BFE6EF00112CC0 = 03736CB707BFE6EF00112CC0;
+			03736CB807BFE6EF00112CC0 = 03736CB807BFE6EF00112CC0;
+			03736CB907BFE6EF00112CC0 = 03736CB907BFE6EF00112CC0;
+			03736CBA07BFE6EF00112CC0 = 03736CBA07BFE6EF00112CC0;
+			03736CBB07BFE6EF00112CC0 = 03736CBB07BFE6EF00112CC0;
+			03736CBC07BFE6EF00112CC0 = 03736CBC07BFE6EF00112CC0;
+			03736CBD07BFE6EF00112CC0 = 03736CBD07BFE6EF00112CC0;
+			03736CBE07BFE6EF00112CC0 = 03736CBE07BFE6EF00112CC0;
+			03736CBF07BFE6EF00112CC0 = 03736CBF07BFE6EF00112CC0;
 			03DE21C806DB95D400E5A2A8 = 03DE21C806DB95D400E5A2A8;
-			03DE21CC06DB95D400E5A2A8 = 03DE21CC06DB95D400E5A2A8;
-			03DE21D706DB95D400E5A2A8 = 03DE21D706DB95D400E5A2A8;
-			03DE21D806DB95D400E5A2A8 = 03DE21D806DB95D400E5A2A8;
-			03DE21DD06DB95D400E5A2A8 = 03DE21DD06DB95D400E5A2A8;
-			03DE21DF06DB95D400E5A2A8 = 03DE21DF06DB95D400E5A2A8;
-			03DE21EB06DB965400E5A2A8 = 03DE21EB06DB965400E5A2A8;
-			03DE222306DB97F400E5A2A8 = 03DE222306DB97F400E5A2A8;
-			03DE222606DB97F400E5A2A8 = 03DE222606DB97F400E5A2A8;
-			03DE223206DB988200E5A2A8 = 03DE223206DB988200E5A2A8;
-			03DE223E06DB988200E5A2A8 = 03DE223E06DB988200E5A2A8;
-			03DE225906DB997400E5A2A8 = 03DE225906DB997400E5A2A8;
-			03DE227506DB997400E5A2A8 = 03DE227506DB997400E5A2A8;
-			03DE227C06DB998600E5A2A8 = 03DE227C06DB998600E5A2A8;
-			03DE231606DBA98500E5A2A8 = 03DE231606DBA98500E5A2A8;
-			03DE232206DBABD200E5A2A8 = 03DE232206DBABD200E5A2A8;
-			03DE234406DBB07C00E5A2A8 = 03DE234406DBB07C00E5A2A8;
-			03DE234C06DBB09700E5A2A8 = 03DE234C06DBB09700E5A2A8;
-			03DE235806E3B96200E5A2A8 = 03DE235806E3B96200E5A2A8;
 		};
 		sourceControlManager = 03DE1F5206DB90D800E5A2A8;
 		userBuildSettings = {
@@ -1048,9 +3334,9 @@
 	};
 	8DC2EF5A0486A6940098B216 = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {852, 549}}";
-			sepNavSelRange = "{273, 0}";
-			sepNavVisRect = "{{0, 0}, {852, 549}}";
+			sepNavIntBoundsRect = "{{0, 0}, {852, 792}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRect = "{{0, 0}, {852, 792}}";
 		};
 	};
 }

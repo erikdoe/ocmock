@@ -137,4 +137,27 @@
 }
 
 
+- (void)testCanMockFormalProtocol
+{
+	mock = [OCMockObject mockForProtocol:@protocol(NSLocking)];
+	[[mock expect] lock];
+	
+	[mock lock];
+	
+	[mock verify];
+}
+
+/*
+- (void)testCanMockInformalProtocol
+{
+	mock = [OCMockObject mock];
+	NSArray *params = [NSArray arrayWithObject:@"steve"];
+	[[mock expect] authenticationDataForComponents:params];
+	
+	[mock authenticationDataForComponents:params];
+	
+	[mock verify];
+}
+*/
+
 @end

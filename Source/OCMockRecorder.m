@@ -22,9 +22,9 @@
 //  init and dealloc
 //---------------------------------------------------------------------------------------
 
-- (id)initWithClass:(Class)aClass
+- (id)initWithSignatureResolver:(NSObject *)anObject
 {
-	mockedClass = aClass;
+	signatureResolver = anObject;
 	return self;
 }
 
@@ -57,10 +57,9 @@
 	return self;
 }
 
-
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
-	return [mockedClass instanceMethodSignatureForSelector:aSelector];
+	return [signatureResolver methodSignatureForSelector:aSelector];
 }
 
 

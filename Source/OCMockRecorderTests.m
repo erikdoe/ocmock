@@ -27,7 +27,7 @@
 	arg = @"I love mocks.";
 	[testInvocation setArgument:&arg atIndex:2];
 	
-	recorder = [[[OCMockRecorder alloc] initWithClass:[NSString class]] autorelease];
+	recorder = [[[OCMockRecorder alloc] initWithSignatureResolver:[NSString string]] autorelease];
 	[(id)recorder initWithString:arg];
 
 	STAssertTrue([recorder matchesInvocation:testInvocation], @"Should match.");
@@ -42,7 +42,7 @@
 	arg = @"I love mocks.";
 	[testInvocation setArgument:&arg atIndex:2];
 	
-	recorder = [[[OCMockRecorder alloc] initWithClass:[NSString class]] autorelease];
+	recorder = [[[OCMockRecorder alloc] initWithSignatureResolver:[NSString string]] autorelease];
 	[(id)recorder initWithString:@"whatever"];
 	
 	STAssertFalse([recorder matchesInvocation:testInvocation], @"Should not match.");
@@ -54,7 +54,7 @@
 	OCMockRecorder *recorder;
 	NSString				 *result;
 
-	recorder = [[[OCMockRecorder alloc] initWithClass:[NSString class]] autorelease];
+	recorder = [[[OCMockRecorder alloc] initWithSignatureResolver:[NSString string]] autorelease];
 	[recorder andReturn:@"foo"];
 	[recorder setUpReturnValue:testInvocation];
 	[testInvocation getReturnValue:&result];

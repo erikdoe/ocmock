@@ -1,9 +1,11 @@
 //---------------------------------------------------------------------------------------
 //  $Id$
-//  Copyright (c) 2004 by Mulle Kybernetik. See License file for details.
+//  Copyright (c) 2004,2005 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import "OCMockObject.h"
+#import "OCClassMockObject.h"
+#import "OCProtocolMockObject.h"
 #import "OCMockRecorder.h"
 
 
@@ -15,7 +17,13 @@
 
 + (id)mockForClass:(Class)aClass
 {
-	return [[[[self class] alloc] initWithClass:aClass] autorelease];
+	return [[[OCClassMockObject alloc] initWithClass:aClass] autorelease];
+}
+
+
++ (id)mockForProtocol:(Protocol *)aProtocol
+{
+	return [[[OCProtocolMockObject alloc] initWithProtocol:aProtocol] autorelease];
 }
 
 
@@ -23,19 +31,27 @@
 //  init and dealloc
 //---------------------------------------------------------------------------------------
 
-- (id)initWithClass:(Class)aClass
+- (id)init
 {
-	mockedClass = aClass;
-	recordedInvocations = [[NSMutableArray alloc] init];
-	expectedInvocations = [[NSMutableSet alloc] init];
+	recorders = [[NSMutableArray alloc] init];
+	expectations = [[NSMutableSet alloc] init];
 	return self;
 }
 
 - (void)dealloc
 {
-	[recordedInvocations release];
-	[expectedInvocations release];
+	[recorders release];
+	[expectations release];
 	[super dealloc];
+}
+
+//---------------------------------------------------------------------------------------
+// description override
+//---------------------------------------------------------------------------------------
+
+- (NSString *)description
+{
+	return @"OCMockObject";
 }
 
 
@@ -45,8 +61,8 @@
 
 - (id)stub
 {
-	OCMockRecorder *recorder = [[[OCMockRecorder alloc] initWithClass:mockedClass] autorelease];
-	[recordedInvocations addObject:recorder];
+	OCMockRecorder *recorder = [[[OCMockRecorder alloc] initWithSignatureResolver:self] autorelease];
+	[recorders addObject:recorder];
 	return recorder;
 }
 
@@ -54,20 +70,20 @@
 - (id)expect
 {
 	OCMockRecorder *recorder = [self stub];
-	[expectedInvocations addObject:recorder];
+	[expectations addObject:recorder];
 	return recorder;
 }
 
 
 - (void)verify
 {
-	if([expectedInvocations count] == 1)
+	if([expectations count] == 1)
 	{
-		[NSException raise:NSInternalInconsistencyException format:@"Did not call expected method [OCMockObject{%@} %@]", NSStringFromClass(mockedClass), expectedInvocations];
+		[NSException raise:NSInternalInconsistencyException format:@"Did not call expected method [%@ %@]", [self description], [[expectations anyObject] description]];
 	}
-	else if([expectedInvocations count] > 1)
+	else if([expectations count] > 1)
 	{
-		[NSException raise:NSInternalInconsistencyException format:@"Did not call %d expected methods", [expectedInvocations count]];
+		[NSException raise:NSInternalInconsistencyException format:@"Did not call %d expected methods on %@", [expectations count], [self description]];
 	}
 }
 
@@ -76,29 +92,23 @@
 //  proxy api
 //---------------------------------------------------------------------------------------
 
-- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
-{
-	return [mockedClass instanceMethodSignatureForSelector:aSelector];
-}
-
-
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
-	OCMockRecorder *stubbedInvocation;
+	OCMockRecorder *recorder;
 	int			   i;
 
-	for(i = 0; i < [recordedInvocations count]; i++)
+	for(i = 0; i < [recorders count]; i++)
 	{
-		stubbedInvocation = [recordedInvocations objectAtIndex:i];
-		if([stubbedInvocation matchesInvocation:anInvocation])
+		recorder = [recorders objectAtIndex:i];
+		if([recorder matchesInvocation:anInvocation])
 		{
-			[expectedInvocations removeObject:stubbedInvocation];
-			[stubbedInvocation setUpReturnValue:anInvocation];
+			[expectations removeObject:recorder];
+			[recorder setUpReturnValue:anInvocation];
 			return;
 		}
 	}
 	
-	[NSException raise:NSInternalInconsistencyException format:@"Unexpected method or arguments [OCMockObject{%@} %@]", NSStringFromClass(mockedClass), NSStringFromSelector([anInvocation selector])];
+	[NSException raise:NSInternalInconsistencyException format:@"Unexpected method or arguments [%@ %@]", [self description], NSStringFromSelector([anInvocation selector])];
 }
 
 
