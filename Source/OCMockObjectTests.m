@@ -53,7 +53,7 @@
 
 - (void)testReturnsStubbedReturnValue
 {
-	id returnValue;
+	id returnValue;  
 
 	[[[mock stub] andReturn:@"megamock"] lowercaseString];
 	returnValue = [mock lowercaseString];
