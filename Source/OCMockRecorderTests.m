@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-//  $Id: MKConsoleWindow.h,v 1.4 2004/02/15 18:55:05 erik Exp $
+//  $Id$
 //  Copyright (c) 2004 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
@@ -12,7 +12,7 @@
 - (void)setUp
 {
 	NSMethodSignature *signature;
-
+ 
 	signature = [NSString instanceMethodSignatureForSelector:@selector(initWithString:)];
 	testInvocation = [NSInvocation invocationWithMethodSignature:signature];
 	[testInvocation setSelector:@selector(initWithString:)];

@@ -60,8 +60,8 @@
 	03DE1F5F06DB914100E5A2A8 = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {852, 2047}}";
-			sepNavSelRange = "{416, 150}";
-			sepNavVisRect = "{{0, 34}, {852, 792}}";
+			sepNavSelRange = "{1238, 0}";
+			sepNavVisRect = "{{0, 359}, {852, 792}}";
 		};
 	};
 	03DE1F6006DB914100E5A2A8 = {
@@ -74,7 +74,7 @@
 	03DE1F6106DB914100E5A2A8 = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {852, 1071}}";
-			sepNavSelRange = "{687, 0}";
+			sepNavSelRange = "{462, 0}";
 			sepNavVisRect = "{{0, 0}, {852, 792}}";
 		};
 	};
@@ -133,9 +133,9 @@
 		isa = PBXTextBookmark;
 		name = "OCMockRecorderTests.m: 62";
 		rLen = 0;
-		rLoc = 1842;
+		rLoc = 1831;
 		rType = 0;
-		vrLen = 1057;
+		vrLen = 992;
 		vrLoc = 838;
 	};
 	03DE21D806DB95D400E5A2A8 = {
@@ -260,7 +260,7 @@
 		isa = PBXTextBookmark;
 		name = "OCMockRecorderTests.m: 21";
 		rLen = 0;
-		rLoc = 687;
+		rLoc = 688;
 		rType = 0;
 		vrLen = 1444;
 		vrLoc = 0;
@@ -745,6 +745,56 @@
 		vrLen = 1031;
 		vrLoc = 149;
 	};
+	03DE235806E3B96200E5A2A8 = {
+		fRef = 03DE1F6106DB914100E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorderTests.m: 15";
+		rLen = 0;
+		rLoc = 462;
+		rType = 0;
+		vrLen = 1442;
+		vrLoc = 0;
+	};
+	03DE235906E3B96200E5A2A8 = {
+		fRef = 03DE1F5F06DB914100E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObjectTests.m: testAcceptsStubbedMethod";
+		rLen = 0;
+		rLoc = 596;
+		rType = 0;
+		vrLen = 1177;
+		vrLoc = 0;
+	};
+	03DE235A06E3B96200E5A2A8 = {
+		fRef = 03DE1F5F06DB914100E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObjectTests.m: testAcceptsStubbedMethod";
+		rLen = 0;
+		rLoc = 596;
+		rType = 0;
+		vrLen = 1177;
+		vrLoc = 0;
+	};
+	03DE235B06E3B96200E5A2A8 = {
+		fRef = 03DE1F6106DB914100E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockRecorderTests.m: 15";
+		rLen = 0;
+		rLoc = 462;
+		rType = 0;
+		vrLen = 1442;
+		vrLoc = 0;
+	};
+	03DE235C06E3B96200E5A2A8 = {
+		fRef = 03DE1F5F06DB914100E5A2A8;
+		isa = PBXTextBookmark;
+		name = "OCMockObjectTests.m: 57";
+		rLen = 0;
+		rLoc = 1238;
+		rType = 0;
+		vrLen = 962;
+		vrLoc = 568;
+	};
 	0867D690FE84028FC02AAC07 = {
 		activeBuildStyle = 014CEA440018CDF011CA2923;
 		activeTarget = 8DC2EF4F0486A6940098B216;
@@ -1068,6 +1118,11 @@
 			03DE235506DBB0C500E5A2A8 = 03DE235506DBB0C500E5A2A8;
 			03DE235606DC770300E5A2A8 = 03DE235606DC770300E5A2A8;
 			03DE235706E3B51D00E5A2A8 = 03DE235706E3B51D00E5A2A8;
+			03DE235806E3B96200E5A2A8 = 03DE235806E3B96200E5A2A8;
+			03DE235906E3B96200E5A2A8 = 03DE235906E3B96200E5A2A8;
+			03DE235A06E3B96200E5A2A8 = 03DE235A06E3B96200E5A2A8;
+			03DE235B06E3B96200E5A2A8 = 03DE235B06E3B96200E5A2A8;
+			03DE235C06E3B96200E5A2A8 = 03DE235C06E3B96200E5A2A8;
 		};
 		sourceControlManager = 03DE1F5206DB90D800E5A2A8;
 		userBuildSettings = {

@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-//  $Id: MKConsoleWindow.h,v 1.4 2004/02/15 18:55:05 erik Exp $
+//  $Id$
 //  Copyright (c) 2004 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
@@ -54,7 +54,7 @@
 - (void)testReturnsStubbedReturnValue
 {
 	id returnValue;
-	
+
 	[[[mock stub] andReturn:@"megamock"] lowercaseString];
 	returnValue = [mock lowercaseString];
 	
