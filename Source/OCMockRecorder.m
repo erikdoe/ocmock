@@ -76,10 +76,105 @@
 //  verification and return values
 //---------------------------------------------------------------------------------------
 
-- (void)_assertIsObject:(const char *)aType
+- (id)_extractArgument: (NSInvocation*)anInvocation atIndex:(int)index
 {
-	if(strcmp(aType, @encode(id)) != 0)
-		[NSException raise:NSInvalidArgumentException format:@"Can only handle object arguments."];
+	const char* argType;
+	
+	argType = [[anInvocation methodSignature] getArgumentTypeAtIndex:index];
+	if(strlen(argType) > 1) 
+		[NSException raise:NSInvalidArgumentException format:@"Can only handle object and simple scalar arguments."];
+	
+	switch (argType[0]) 
+	{
+		case '#':
+		case ':':
+		case '@': 
+		{
+			id value;
+			[anInvocation getArgument:&value atIndex:index];
+			return value;
+		}
+		case 'i': 
+		{
+			int value;
+			[anInvocation getArgument:&value atIndex:index];
+			return [NSNumber numberWithInt:value];
+		}	
+		case 's':
+		{
+			short value;
+			[anInvocation getArgument:&value atIndex:index];
+			return [NSNumber numberWithShort:value];
+		}	
+		case 'l':
+		{
+			long value;
+			[anInvocation getArgument:&value atIndex:index];
+			return [NSNumber numberWithLong:value];
+		}	
+		case 'q':
+		{
+			long long value;
+			[anInvocation getArgument:&value atIndex:index];
+			return [NSNumber numberWithLongLong:value];
+		}	
+		case 'c':
+		{
+			char value;
+			[anInvocation getArgument:&value atIndex:index];
+			return [NSNumber numberWithChar:value];
+		}	
+		case 'C':
+		{
+			unsigned char value;
+			[anInvocation getArgument:&value atIndex:index];
+			return [NSNumber numberWithUnsignedChar:value];
+		}	
+		case 'I':
+		{
+			unsigned int value;
+			[anInvocation getArgument:&value atIndex:index];
+			return [NSNumber numberWithUnsignedInt:value];
+		}	
+		case 'S':
+		{
+			unsigned short value;
+			[anInvocation getArgument:&value atIndex:index];
+			return [NSNumber numberWithUnsignedShort:value];
+		}	
+		case 'L':
+		{
+			unsigned long value;
+			[anInvocation getArgument:&value atIndex:index];
+			return [NSNumber numberWithUnsignedLong:value];
+		}	
+		case 'Q':
+		{
+			unsigned long long value;
+			[anInvocation getArgument:&value atIndex:index];
+			return [NSNumber numberWithUnsignedLongLong:value];
+		}	
+		case 'f':
+		{
+			float value;
+			[anInvocation getArgument:&value atIndex:index];
+			return [NSNumber numberWithFloat:value];
+		}	
+		case 'd':
+		{
+			double value;
+			[anInvocation getArgument:&value atIndex:index];
+			return [NSNumber numberWithDouble:value];
+		}	
+		case 'B':
+		{
+			bool value;
+			[anInvocation getArgument:&value atIndex:index];
+			return [NSNumber numberWithBool:value];
+		}
+	}
+	[NSException raise:NSInvalidArgumentException format:@"Argument type '%s' not supported", argType];
+	return nil;
 }
 
 
@@ -94,12 +189,15 @@
 	n = [[recordedInvocation methodSignature] numberOfArguments];
 	for(i = 2; i < n; i++)
 	{
-		[self _assertIsObject:[[recordedInvocation methodSignature] getArgumentTypeAtIndex:i]];
-		[recordedInvocation getArgument:&recordedArg atIndex:i];
+		recordedArg = [self _extractArgument:recordedInvocation atIndex:i];
 		if(recordedArg != OCMOCK_ANY)
 		{
-			[self _assertIsObject:[[anInvocation methodSignature] getArgumentTypeAtIndex:i]];
-			[anInvocation getArgument:&passedArg atIndex:i];
+			passedArg = [self _extractArgument:anInvocation atIndex:i];
+			if([recordedArg class] != [passedArg class])
+				return NO;
+			if(([recordedArg class] == [NSNumber class]) && 
+				([(NSNumber*)recordedArg compare:(NSNumber*)passedArg] != NSOrderedSame))
+				return NO;
 			if([recordedArg isEqual:passedArg] == NO)
 				return NO;
 		}

@@ -51,6 +51,20 @@
 }
 
 
+- (void)testAcceptsStubbedMethodWithScalarArgument
+{
+	[[mock stub] stringByPaddingToLength:20 withString:@"foo" startingAtIndex:5];
+	[mock stringByPaddingToLength:20 withString:@"foo" startingAtIndex:5];
+}
+
+
+- (void)testRaisesExceptionWhenMethodWithOneWrongScalarArgumentIsCalled
+{
+	[[mock stub] stringByPaddingToLength:20 withString:@"foo" startingAtIndex:5];
+	STAssertThrows([mock stringByPaddingToLength:20 withString:@"foo" startingAtIndex:3], @"Should have raised an exception.");	
+}
+
+
 - (void)testReturnsStubbedReturnValue
 {
 	id returnValue;  
