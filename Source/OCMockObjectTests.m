@@ -124,4 +124,17 @@
 }
 
 
+- (void)testCanStubValueForKeyMethod
+{
+	id returnValue;
+	
+	mock = [OCMockObject mockForClass:[NSObject class]];
+	[[[mock stub] andReturn:@"SomeValue"] valueForKey:@"SomeKey"];
+	
+	returnValue = [mock valueForKey:@"SomeKey"];
+	
+	STAssertEqualObjects(@"SomeValue", returnValue, @"Should have returned value that was set up.");
+}
+
+
 @end

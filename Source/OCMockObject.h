@@ -1,11 +1,11 @@
 //---------------------------------------------------------------------------------------
-//  $Id: MKConsoleWindow.h,v 1.4 2004/02/15 18:55:05 erik Exp $
+//  $Id$
 //  Copyright (c) 2004 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import <Foundation/Foundation.h>
 
-@interface OCMockObject : NSObject 
+@interface OCMockObject : NSProxy 
 {
 	Class			mockedClass;
 	NSMutableArray	*recordedInvocations;
