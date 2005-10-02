@@ -225,8 +225,6 @@
 			<key>Layout</key>
 			<array>
 				<dict>
-					<key>BecomeActive</key>
-					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXBottomSmartGroupGIDs</key>
@@ -280,8 +278,13 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>2</integer>
-									<integer>1</integer>
+									<integer>11</integer>
+									<integer>3</integer>
+									<integer>0</integer>
+								</array>
+								<array>
+									<integer>15</integer>
+									<integer>13</integer>
 									<integer>0</integer>
 								</array>
 							</array>
@@ -321,7 +324,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>OCMock.h</string>
+								<string>OCMockObjectTests.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -329,13 +332,12 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>OCMock.h</string>
+										<string>OCMockObjectTests.m</string>
 										<key>bookmark</key>
-										<string>03736CBD07BFE6EF00112CC0</string>
+										<string>030288D007C2C8490053DBDB</string>
 										<key>history</key>
 										<array>
 											<string>0338A95107BE738E0066DE8A</string>
-											<string>0338A95D07BE74F20066DE8A</string>
 											<string>0338A96007BE74F20066DE8A</string>
 											<string>0338A96107BE74F20066DE8A</string>
 											<string>0338A96307BE74F20066DE8A</string>
@@ -344,17 +346,20 @@
 											<string>03736C5E07BFE16900112CC0</string>
 											<string>03736C7307BFE6EF00112CC0</string>
 											<string>03736C7407BFE6EF00112CC0</string>
-											<string>03736C7507BFE6EF00112CC0</string>
 											<string>03736C7607BFE6EF00112CC0</string>
 											<string>03736C7707BFE6EF00112CC0</string>
 											<string>03736C7807BFE6EF00112CC0</string>
 											<string>03736C7907BFE6EF00112CC0</string>
-											<string>03736C7A07BFE6EF00112CC0</string>
-											<string>03736C7B07BFE6EF00112CC0</string>
-											<string>03736C7C07BFE6EF00112CC0</string>
-											<string>03736C7D07BFE6EF00112CC0</string>
 											<string>03736C7E07BFE6EF00112CC0</string>
-											<string>03736C7F07BFE6EF00112CC0</string>
+											<string>0302886A07C2C1AD0053DBDB</string>
+											<string>0302886B07C2C1AD0053DBDB</string>
+											<string>0302887107C2C1F30053DBDB</string>
+											<string>0302888807C2C5370053DBDB</string>
+											<string>0302888907C2C5370053DBDB</string>
+											<string>030288B907C2C7AB0053DBDB</string>
+											<string>030288BB07C2C7AB0053DBDB</string>
+											<string>030288BD07C2C7AB0053DBDB</string>
+											<string>030288BE07C2C7AB0053DBDB</string>
 										</array>
 										<key>prevStack</key>
 										<array>
@@ -371,117 +376,27 @@
 											<string>0338AA1907BE869E0066DE8A</string>
 											<string>0338AA1A07BE869E0066DE8A</string>
 											<string>0338AA2F07BE89F40066DE8A</string>
-											<string>03736B7A07BFD57200112CC0</string>
 											<string>03736B7B07BFD57200112CC0</string>
 											<string>03736B7C07BFD57200112CC0</string>
-											<string>03736B7D07BFD57200112CC0</string>
-											<string>03736B7E07BFD57200112CC0</string>
-											<string>03736B7F07BFD57200112CC0</string>
-											<string>03736B8007BFD57200112CC0</string>
-											<string>03736B8107BFD57200112CC0</string>
-											<string>03736B9407BFD67500112CC0</string>
-											<string>03736B9507BFD67500112CC0</string>
-											<string>03736B9607BFD67500112CC0</string>
-											<string>03736B9707BFD67500112CC0</string>
-											<string>03736C2907BFD91900112CC0</string>
-											<string>03736C2A07BFD91900112CC0</string>
-											<string>03736C2B07BFD91900112CC0</string>
-											<string>03736C2C07BFD91900112CC0</string>
-											<string>03736C2D07BFD91900112CC0</string>
-											<string>03736C2E07BFD91900112CC0</string>
-											<string>03736C2F07BFD91900112CC0</string>
-											<string>03736C3007BFD91900112CC0</string>
-											<string>03736C3107BFD91900112CC0</string>
-											<string>03736C4107BFDE7900112CC0</string>
-											<string>03736C4207BFDE7900112CC0</string>
-											<string>03736C4307BFDE7900112CC0</string>
-											<string>03736C4407BFDE7900112CC0</string>
-											<string>03736C4507BFDE7900112CC0</string>
-											<string>03736C4607BFDE7900112CC0</string>
-											<string>03736C4707BFDE7900112CC0</string>
-											<string>03736C4807BFDE7900112CC0</string>
-											<string>03736C4907BFDE7900112CC0</string>
-											<string>03736C4A07BFDE7900112CC0</string>
-											<string>03736C4B07BFDE7900112CC0</string>
-											<string>03736C4C07BFDE7900112CC0</string>
-											<string>03736C4D07BFDE7900112CC0</string>
-											<string>03736C4E07BFDE7900112CC0</string>
-											<string>03736C4F07BFDE7900112CC0</string>
-											<string>03736C5007BFDE7900112CC0</string>
-											<string>03736C5107BFDE7900112CC0</string>
-											<string>03736C5207BFDE7900112CC0</string>
-											<string>03736C5307BFDE7900112CC0</string>
-											<string>03736C5407BFDE7900112CC0</string>
-											<string>03736C5507BFDE7900112CC0</string>
-											<string>03736C5607BFDE7900112CC0</string>
-											<string>03736C6207BFE16900112CC0</string>
 											<string>03736C6307BFE16900112CC0</string>
-											<string>03736C6407BFE16900112CC0</string>
-											<string>03736C6507BFE16900112CC0</string>
-											<string>03736C6607BFE16900112CC0</string>
-											<string>03736C6707BFE16900112CC0</string>
-											<string>03736C6807BFE16900112CC0</string>
-											<string>03736C8007BFE6EF00112CC0</string>
-											<string>03736C8107BFE6EF00112CC0</string>
-											<string>03736C8207BFE6EF00112CC0</string>
-											<string>03736C8307BFE6EF00112CC0</string>
-											<string>03736C8407BFE6EF00112CC0</string>
-											<string>03736C8507BFE6EF00112CC0</string>
-											<string>03736C8607BFE6EF00112CC0</string>
-											<string>03736C8707BFE6EF00112CC0</string>
-											<string>03736C8807BFE6EF00112CC0</string>
-											<string>03736C8907BFE6EF00112CC0</string>
-											<string>03736C8A07BFE6EF00112CC0</string>
-											<string>03736C8B07BFE6EF00112CC0</string>
-											<string>03736C8C07BFE6EF00112CC0</string>
-											<string>03736C8D07BFE6EF00112CC0</string>
-											<string>03736C8E07BFE6EF00112CC0</string>
-											<string>03736C8F07BFE6EF00112CC0</string>
-											<string>03736C9007BFE6EF00112CC0</string>
-											<string>03736C9107BFE6EF00112CC0</string>
-											<string>03736C9207BFE6EF00112CC0</string>
-											<string>03736C9307BFE6EF00112CC0</string>
-											<string>03736C9407BFE6EF00112CC0</string>
-											<string>03736C9507BFE6EF00112CC0</string>
-											<string>03736C9607BFE6EF00112CC0</string>
-											<string>03736C9707BFE6EF00112CC0</string>
-											<string>03736C9807BFE6EF00112CC0</string>
-											<string>03736C9907BFE6EF00112CC0</string>
-											<string>03736C9A07BFE6EF00112CC0</string>
-											<string>03736C9B07BFE6EF00112CC0</string>
-											<string>03736C9C07BFE6EF00112CC0</string>
-											<string>03736C9D07BFE6EF00112CC0</string>
-											<string>03736C9E07BFE6EF00112CC0</string>
-											<string>03736C9F07BFE6EF00112CC0</string>
-											<string>03736CA007BFE6EF00112CC0</string>
-											<string>03736CA107BFE6EF00112CC0</string>
-											<string>03736CA207BFE6EF00112CC0</string>
-											<string>03736CA307BFE6EF00112CC0</string>
-											<string>03736CA407BFE6EF00112CC0</string>
-											<string>03736CA507BFE6EF00112CC0</string>
-											<string>03736CA607BFE6EF00112CC0</string>
-											<string>03736CA707BFE6EF00112CC0</string>
-											<string>03736CA807BFE6EF00112CC0</string>
-											<string>03736CA907BFE6EF00112CC0</string>
-											<string>03736CAA07BFE6EF00112CC0</string>
-											<string>03736CAB07BFE6EF00112CC0</string>
-											<string>03736CAC07BFE6EF00112CC0</string>
-											<string>03736CAD07BFE6EF00112CC0</string>
-											<string>03736CAE07BFE6EF00112CC0</string>
-											<string>03736CAF07BFE6EF00112CC0</string>
-											<string>03736CB007BFE6EF00112CC0</string>
-											<string>03736CB107BFE6EF00112CC0</string>
-											<string>03736CB207BFE6EF00112CC0</string>
-											<string>03736CB307BFE6EF00112CC0</string>
-											<string>03736CB407BFE6EF00112CC0</string>
-											<string>03736CB507BFE6EF00112CC0</string>
-											<string>03736CB607BFE6EF00112CC0</string>
-											<string>03736CB707BFE6EF00112CC0</string>
-											<string>03736CB807BFE6EF00112CC0</string>
-											<string>03736CB907BFE6EF00112CC0</string>
-											<string>03736CBA07BFE6EF00112CC0</string>
-											<string>03736CBB07BFE6EF00112CC0</string>
-											<string>03736CBC07BFE6EF00112CC0</string>
+											<string>0302886C07C2C1AD0053DBDB</string>
+											<string>0302886D07C2C1AD0053DBDB</string>
+											<string>0302887407C2C1F30053DBDB</string>
+											<string>0302887507C2C1F30053DBDB</string>
+											<string>0302887607C2C1F30053DBDB</string>
+											<string>0302887B07C2C2F50053DBDB</string>
+											<string>0302888B07C2C5370053DBDB</string>
+											<string>0302888C07C2C5370053DBDB</string>
+											<string>0302888D07C2C5370053DBDB</string>
+											<string>0302888E07C2C5370053DBDB</string>
+											<string>0302888F07C2C5370053DBDB</string>
+											<string>030288BF07C2C7AB0053DBDB</string>
+											<string>030288C007C2C7AB0053DBDB</string>
+											<string>030288C107C2C7AB0053DBDB</string>
+											<string>030288C307C2C7AB0053DBDB</string>
+											<string>030288C407C2C7AB0053DBDB</string>
+											<string>030288C507C2C7AB0053DBDB</string>
+											<string>030288C707C2C7AB0053DBDB</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -539,9 +454,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>03736B8307BFD57200112CC0</string>
+				<string>0302886F07C2C1AD0053DBDB</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>03736B8407BFD57200112CC0</string>
+				<string>0302887007C2C1AD0053DBDB</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -554,7 +469,7 @@
 	<key>StatusbarIsVisible</key>
 	<true/>
 	<key>TimeStamp</key>
-	<real>130017007.89364278</real>
+	<real>130205769.97772202</real>
 	<key>ToolbarDisplayMode</key>
 	<integer>1</integer>
 	<key>ToolbarIsVisible</key>
@@ -569,7 +484,7 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>03736B8607BFD57200112CC0</string>
+		<string>0302887E07C2C2F50053DBDB</string>
 		<string>/Users/erik/Projects/OCMock/scm/Source/OCMock.xcode</string>
 	</array>
 	<key>WindowString</key>
@@ -602,10 +517,10 @@
 										<key>PBXProjectModuleLabel</key>
 										<string>OCMockObject.m</string>
 										<key>bookmark</key>
-										<string>03736CBF07BFE6EF00112CC0</string>
+										<string>030288D107C2C8490053DBDB</string>
 										<key>history</key>
 										<array>
-											<string>03736CBE07BFE6EF00112CC0</string>
+											<string>03736CC407C036F100112CC0</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -667,8 +582,8 @@
 			<true/>
 			<key>TableOfContents</key>
 			<array>
-				<string>03736B8607BFD57200112CC0</string>
-				<string>03736B8707BFD57200112CC0</string>
+				<string>0302887E07C2C2F50053DBDB</string>
+				<string>0302887F07C2C2F50053DBDB</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
@@ -677,7 +592,7 @@
 			<key>WindowString</key>
 			<string>422 114 848 624 0 0 1280 1002 </string>
 			<key>WindowToolGUID</key>
-			<string>03736B8607BFD57200112CC0</string>
+			<string>0302887E07C2C2F50053DBDB</string>
 			<key>WindowToolIsVisible</key>
 			<true/>
 		</dict>
