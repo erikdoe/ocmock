@@ -22,7 +22,7 @@
 - (void)testStoresAndMatchesInvocation
 {
 	OCMockRecorder *recorder;
-	NSString				 *arg;
+	NSString	   *arg;
 	
 	arg = @"I love mocks.";
 	[testInvocation setArgument:&arg atIndex:2];
@@ -37,7 +37,7 @@
 - (void)testOnlyMatchesInvocationWithRightArguments
 {
 	OCMockRecorder *recorder;
-	NSString				 *arg;
+	NSString	   *arg;
 	
 	arg = @"I love mocks.";
 	[testInvocation setArgument:&arg atIndex:2];
@@ -52,7 +52,7 @@
 - (void)testSetsUpReturnValueInInvocation
 {
 	OCMockRecorder *recorder;
-	NSString				 *result;
+	NSString	   *result;
 
 	recorder = [[[OCMockRecorder alloc] initWithSignatureResolver:[NSString string]] autorelease];
 	[recorder andReturn:@"foo"];

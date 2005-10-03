@@ -22,7 +22,7 @@
 //  init and dealloc
 //---------------------------------------------------------------------------------------
 
-- (id)initWithSignatureResolver:(NSObject *)anObject
+- (id)initWithSignatureResolver:(id)anObject
 {
 	signatureResolver = anObject;
 	return self;
