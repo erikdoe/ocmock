@@ -39,6 +39,8 @@
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
 	struct objc_method_description *desc = [mockedProtocol descriptionForInstanceMethod:aSelector];
+	if (desc == NULL)
+	   return nil;
 	return [NSMethodSignature signatureWithObjCTypes:desc->types];
 }
 

@@ -81,6 +81,7 @@
 		03BF2D1B08F1C26700978C59 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = /System/Library/Frameworks/SenTestingKit.framework; sourceTree = "<absolute>"; };
 		03BF2D3708F1C69500978C59 /* Test.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Test.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		03BF2D3808F1C69500978C59 /* Test-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Test-Info.plist"; sourceTree = "<group>"; };
+		03D65B47094CA23B00DF6687 /* Changes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Changes.txt; sourceTree = "<group>"; };
 		03DE1F5406DB911300E5A2A8 /* OCMockObject.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = OCMockObject.h; sourceTree = "<group>"; };
 		03DE1F5506DB911300E5A2A8 /* OCMockObject.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = OCMockObject.m; sourceTree = "<group>"; };
 		03DE1F5606DB911300E5A2A8 /* OCMockRecorder.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = OCMockRecorder.h; sourceTree = "<group>"; };
@@ -174,6 +175,7 @@
 			isa = PBXGroup;
 			children = (
 				03DE221606DB97DA00E5A2A8 /* License.txt */,
+				03D65B47094CA23B00DF6687 /* Changes.txt */,
 				03BF2D3808F1C69500978C59 /* Test-Info.plist */,
 				8DC2EF5A0486A6940098B216 /* Info.plist */,
 				089C1666FE841158C02AAC07 /* InfoPlist.strings */,
@@ -478,7 +480,7 @@
 				INFOPLIST_FILE = "Test-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				LIBRARY_STYLE = BUNDLE;
-				OPTIMIZATION_CFLAGS = "";
+				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -511,7 +513,7 @@
 				INFOPLIST_FILE = "Test-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				LIBRARY_STYLE = BUNDLE;
-				OPTIMIZATION_CFLAGS = "";
+				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -543,7 +545,7 @@
 				INFOPLIST_FILE = "Test-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				LIBRARY_STYLE = BUNDLE;
-				OPTIMIZATION_CFLAGS = "";
+				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -575,7 +577,7 @@
 				INFOPLIST_FILE = "Test-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				LIBRARY_STYLE = BUNDLE;
-				OPTIMIZATION_CFLAGS = "";
+				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-framework",

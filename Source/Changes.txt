@@ -1,0 +1,34 @@
+
+2005-12-11 (r11)
+
+* Added slightly modified version of Jon Reid's contribution, which adds the possibility to stub 
+  primitive return values.
+
+* Added Jon Reid's bugfix that prevents a crash when trying to stub an unknown method on a 
+  protocol.
+
+
+2005-10-03 (r10)
+
+* Upgraded to build and run tests using the OCUnit that is now part of XCode.
+
+
+2005-10-03 (r9)
+
+* Added XCdoe 2.1 project
+
+
+2005-02-16 (r8)
+
+* Added Richard Clark's contribution, which provides support for scalar arguments.
+
+
+2005-02-13 (r7)
+
+* Added support for mocking formal protocols
+
+
+2004-08-26 (r6)
+
+* MockObject and Recorder now inherit from NSProxy.
+

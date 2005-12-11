@@ -10,6 +10,7 @@
 {
 	id				signatureResolver;
 	id				returnValue;
+	BOOL            returnValueIsBoxed;
 	NSInvocation	*recordedInvocation;
 }
 
@@ -18,6 +19,7 @@
 - (id)initWithSignatureResolver:(id)anObject;
 
 - (id)andReturn:(id)anObject;
+- (id)andReturnValue:(NSValue *)aValue;
 
 - (BOOL)matchesInvocation:(NSInvocation *)anInvocation;
 - (void)setUpReturnValue:(NSInvocation *)anInvocation;
@@ -26,3 +28,4 @@
 
 
 #define OCMOCK_ANY [OCMockRecorder anyArgument]
+#define OCMOCK_VALUE(variable) [NSValue value:&variable withObjCType:@encode(typeof(variable))]

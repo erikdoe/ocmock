@@ -76,6 +76,23 @@
 	
 }
 
+- (void)testReturnsStubbedIntReturnValue
+{
+    int expectedValue = 42;
+	[[[mock stub] andReturnValue:OCMOCK_VALUE(expectedValue)] intValue];
+	int returnValue = [mock intValue];
+    
+	STAssertEquals(expectedValue, returnValue, @"Should have returned stubbed value.");
+}
+
+- (void)testRaisesWhenBoxedValueTypesDoNotMatch
+{
+    double expectedValue = 42;
+	[[[mock stub] andReturnValue:OCMOCK_VALUE(expectedValue)] intValue];
+    
+	STAssertThrows([mock intValue], @"Should have raised an exception.");
+}
+
 
 - (void)testAcceptsExpectedMethod
 {
@@ -161,6 +178,14 @@
 	[mock verify];
 }
 
+
+- (void)testRaisesWhenUnknownMethodIsCalledOnProtocol
+{
+	mock = [OCMockObject mockForProtocol:@protocol(NSLocking)];
+	STAssertThrows([mock lowercaseString], @"Should have raised an exception.");
+}
+
+
 /*
 - (void)testCanMockInformalProtocol
 {
@@ -173,5 +198,6 @@
 	[mock verify];
 }
 */
+
 
 @end

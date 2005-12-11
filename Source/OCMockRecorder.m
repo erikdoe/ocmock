@@ -53,7 +53,16 @@
 
 - (id)andReturn:(id)anObject
 {
+	[returnValue autorelease];
 	returnValue = [anObject retain];
+	returnValueIsBoxed = NO;
+	return self;
+}
+
+- (id)andReturnValue:(NSValue *)aValue
+{
+	[self andReturn:aValue];
+	returnValueIsBoxed = YES;
 	return self;
 }
 
@@ -208,8 +217,20 @@
 
 - (void)setUpReturnValue:(NSInvocation *)anInvocation
 {
-	if(strcmp([[anInvocation methodSignature] methodReturnType], @encode(id)) == 0)
-		[anInvocation setReturnValue:&returnValue];	
+	if(returnValueIsBoxed)
+	{
+		if(strcmp([[anInvocation methodSignature] methodReturnType], [(NSValue *)returnValue objCType]) != 0)
+			[NSException raise:NSInvalidArgumentException format:@"Return value does not match method signature."];
+		void *buffer = malloc([[anInvocation methodSignature] methodReturnLength]);
+		[returnValue getValue:buffer];
+		[anInvocation setReturnValue:buffer];
+		free(buffer);
+	}
+	else
+	{
+		if(strcmp([[anInvocation methodSignature] methodReturnType], @encode(id)) == 0)
+			[anInvocation setReturnValue:&returnValue];	
+	}
 }
 
 @end
