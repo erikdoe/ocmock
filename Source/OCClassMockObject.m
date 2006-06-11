@@ -26,7 +26,7 @@
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"OCMockObject:%@", NSStringFromClass(mockedClass)];
+	return [NSString stringWithFormat:@"OCMockObject[%@]", NSStringFromClass(mockedClass)];
 }
 
 
@@ -38,6 +38,5 @@
 {
 	return [mockedClass instanceMethodSignatureForSelector:aSelector];
 }
-
 
 @end

@@ -5,8 +5,7 @@
 
 #import <Foundation/Foundation.h>
 
-
-@interface OCMockObject : NSProxy 
+@interface OCMockObject : NSProxy
 {
 	NSMutableArray	*recorders;
 	NSMutableSet	*expectations;

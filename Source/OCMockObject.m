@@ -7,7 +7,11 @@
 #import "OCClassMockObject.h"
 #import "OCProtocolMockObject.h"
 #import "OCMockRecorder.h"
+#import "NSInvocation+OCMAdditions.h"
 
+@interface OCMockObject(Private)
+- (NSString *)_recorderDescriptions:(BOOL)onlyExpectations;
+@end
 
 @implementation OCMockObject
 
@@ -79,11 +83,13 @@
 {
 	if([expectations count] == 1)
 	{
-		[NSException raise:NSInternalInconsistencyException format:@"Did not call expected method [%@ %@]", [self description], [[expectations anyObject] description]];
+		[NSException raise:NSInternalInconsistencyException format:@"%@: expected method was not invoked: %@", 
+			[self description], [[expectations anyObject] description]];
 	}
-	else if([expectations count] > 1)
+	else if([expectations count] > 0)
 	{
-		[NSException raise:NSInternalInconsistencyException format:@"Did not call %d expected methods on %@", [expectations count], [self description]];
+		[NSException raise:NSInternalInconsistencyException format:@"%@ : %d expected methods were not invoked: %@", 
+			[self description], [expectations count], [self _recorderDescriptions:YES]];
 	}
 }
 
@@ -97,18 +103,68 @@
 	OCMockRecorder *recorder;
 	int			   i;
 
-	for(i = 0; i < [recorders count]; i++)
+	NSMutableArray *mutableRecorders = [[NSMutableArray alloc] initWithArray:recorders];
+	
+	for(i = 0; i < [mutableRecorders count]; i++)
 	{
-		recorder = [recorders objectAtIndex:i];
-		if([recorder matchesInvocation:anInvocation])
+		recorder = [mutableRecorders objectAtIndex:i];
+
+		if(![recorder matchesInvocation:anInvocation])
+			continue;
+
+		// If there's a matching expectation... remove it and the corresponding recorder (as it's not a stub)
+		if ([expectations containsObject:recorder])
 		{
 			[expectations removeObject:recorder];
-			[recorder setUpReturnValue:anInvocation];
-			return;
+			[mutableRecorders removeObjectAtIndex:i];
 		}
+
+		// Also remove the recorder (for expectations and stubs)
+		[recorder setUpReturnValue:anInvocation];
+		
+		[recorders release];
+		recorders = [[NSArray alloc] initWithArray:mutableRecorders];
+		[mutableRecorders release];
+		
+		return;
+	}
+
+	[NSException raise:NSInternalInconsistencyException format:@"%@: unexpected method invoked: %@ %@", 
+		[self description], [anInvocation invocationDescription], [self _recorderDescriptions:NO]];
+}
+
+
+//---------------------------------------------------------------------------------------
+//  descriptions
+//---------------------------------------------------------------------------------------
+
+- (NSString *)_recorderDescriptions:(BOOL)onlyExpectations
+{
+	NSMutableString *outputString = [NSMutableString string];
+	
+	OCMockRecorder *currentObject;
+	NSEnumerator *recorderEnumerator = [recorders objectEnumerator];
+	while(currentObject = [recorderEnumerator nextObject])
+	{
+		NSString *prefix;
+		
+		if(onlyExpectations)
+		{
+			if(![expectations containsObject:currentObject])
+				continue;
+			prefix = @" ";
+		}
+		else
+		{
+			if ([expectations containsObject:currentObject])
+				prefix = @"expected: ";
+			else
+				prefix = @"stubbed: ";
+		}
+		[outputString appendFormat:@"\n\t%@\t%@", prefix, [currentObject description]];
 	}
 	
-	[NSException raise:NSInternalInconsistencyException format:@"Unexpected method or arguments [%@ %@]", [self description], NSStringFromSelector([anInvocation selector])];
+	return outputString;
 }
 
 

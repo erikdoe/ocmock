@@ -5,7 +5,6 @@
 
 #import "OCMockObject.h"
 
-
 @interface OCProtocolMockObject : OCMockObject 
 {
 	Protocol	*mockedProtocol;

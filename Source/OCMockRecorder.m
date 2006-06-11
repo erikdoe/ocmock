@@ -4,7 +4,7 @@
 //---------------------------------------------------------------------------------------
 
 #import "OCMockRecorder.h"
-
+#import "NSInvocation+OCMAdditions.h"
 
 @implementation OCMockRecorder
 
@@ -43,7 +43,7 @@
 
 - (NSString *)description
 {
-	return NSStringFromSelector([recordedInvocation selector]);
+	return [recordedInvocation invocationDescription];
 }
 
 
@@ -56,6 +56,7 @@
 	[returnValue autorelease];
 	returnValue = [anObject retain];
 	returnValueIsBoxed = NO;
+	returnValueShouldBeThrown = NO;
 	return self;
 }
 
@@ -63,6 +64,13 @@
 {
 	[self andReturn:aValue];
 	returnValueIsBoxed = YES;
+	return self;
+}
+
+- (id)andThrow:(NSException *)anException
+{
+	[self andReturn:anException];
+	returnValueShouldBeThrown = YES;
 	return self;
 }
 
@@ -90,9 +98,9 @@
 	const char* argType;
 	
 	argType = [[anInvocation methodSignature] getArgumentTypeAtIndex:index];
-	if(strlen(argType) > 1) 
-		[NSException raise:NSInvalidArgumentException format:@"Can only handle object and simple scalar arguments."];
-	
+	if((strlen(argType) > 1) && (argType[0] != '{'))
+		[NSException raise:NSInvalidArgumentException format:@"Cannot handle argument type '%s'.", argType];
+			
 	switch (argType[0]) 
 	{
 		case '#':
@@ -181,6 +189,14 @@
 			[anInvocation getArgument:&value atIndex:index];
 			return [NSNumber numberWithBool:value];
 		}
+		case '{': // structure
+		{
+			unsigned maxSize = [[signatureResolver methodSignatureForSelector:[anInvocation selector]] frameLength];
+			NSMutableData *argumentData = [[[NSMutableData alloc] initWithLength:maxSize] autorelease];
+			[anInvocation getArgument:[argumentData mutableBytes] atIndex:index];
+			return [NSValue valueWithBytes:[argumentData bytes] objCType:argType];
+		}       
+			
 	}
 	[NSException raise:NSInvalidArgumentException format:@"Argument type '%s' not supported", argType];
 	return nil;
@@ -207,17 +223,21 @@
 			if(([recordedArg class] == [NSNumber class]) && 
 				([(NSNumber*)recordedArg compare:(NSNumber*)passedArg] != NSOrderedSame))
 				return NO;
-			if([recordedArg isEqual:passedArg] == NO)
+			if(([recordedArg isEqual:passedArg] == NO) &&
+				!((recordedArg == nil) && (passedArg == nil)))
 				return NO;
 		}
 	}
 	return YES;
 }
 
-
 - (void)setUpReturnValue:(NSInvocation *)anInvocation
 {
-	if(returnValueIsBoxed)
+	if(returnValueShouldBeThrown)
+	{
+		@throw returnValue;
+	}
+	else if(returnValueIsBoxed)
 	{
 		if(strcmp([[anInvocation methodSignature] methodReturnType], [(NSValue *)returnValue objCType]) != 0)
 			[NSException raise:NSInvalidArgumentException format:@"Return value does not match method signature."];

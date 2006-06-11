@@ -7,11 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		030106730A3B9B240049FED7 /* NSInvocationOCMAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 030106470A3B99F20049FED7 /* NSInvocationOCMAdditionsTests.m */; };
 		0338A99807BE7C100066DE8A /* OCClassMockObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 0338A99607BE7C100066DE8A /* OCClassMockObject.h */; };
 		0338A99907BE7C100066DE8A /* OCClassMockObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0338A99707BE7C100066DE8A /* OCClassMockObject.m */; };
 		0338A9F007BE83B50066DE8A /* OCProtocolMockObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 0338A9EE07BE83B50066DE8A /* OCProtocolMockObject.h */; };
 		0338A9F107BE83B50066DE8A /* OCProtocolMockObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0338A9EF07BE83B50066DE8A /* OCProtocolMockObject.m */; };
 		0338AA1207BE866F0066DE8A /* NSMethodSignature+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 0338AA1007BE866F0066DE8A /* NSMethodSignature+Private.h */; };
+		03A2D0CB09F01D13008A1AFD /* NSInvocation+OCMAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 03A2D0C909F01D13008A1AFD /* NSInvocation+OCMAdditions.h */; };
+		03A2D0CC09F01D13008A1AFD /* NSInvocation+OCMAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A2D0CA09F01D13008A1AFD /* NSInvocation+OCMAdditions.m */; };
+		03A2D0D909F01DCB008A1AFD /* NSInvocation+OCMAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A2D0CA09F01D13008A1AFD /* NSInvocation+OCMAdditions.m */; };
 		03BF2D4008F1C6BA00978C59 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03BF2D1B08F1C26700978C59 /* SenTestingKit.framework */; };
 		03BF2D4108F1C6BC00978C59 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03DE218F06DB91CF00E5A2A8 /* Foundation.framework */; };
 		03BF2D4208F1C6BE00978C59 /* OCMockRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DE1F5706DB911300E5A2A8 /* OCMockRecorder.m */; };
@@ -31,53 +35,16 @@
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXBuildStyle section */
-		014CEA440018CDF011CA2923 /* Development */ = {
-			isa = PBXBuildStyle;
-			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				DEBUGGING_SYMBOLS = YES;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				OPTIMIZATION_CFLAGS = "-O0";
-				ZERO_LINK = YES;
-			};
-			name = Development;
-		};
-		014CEA450018CDF011CA2923 /* Deployment */ = {
-			isa = PBXBuildStyle;
-			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				ZERO_LINK = NO;
-			};
-			name = Deployment;
-		};
-		749E17DD05657B6C005A3EEA /* Test */ = {
-			isa = PBXBuildStyle;
-			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				DEBUGGING_SYMBOLS = YES;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				OPTIMIZATION_CFLAGS = "-O0";
-				TEST_AFTER_BUILD = YES;
-				ZERO_LINK = NO;
-			};
-			name = Test;
-		};
-/* End PBXBuildStyle section */
-
 /* Begin PBXFileReference section */
+		030106470A3B99F20049FED7 /* NSInvocationOCMAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSInvocationOCMAdditionsTests.m; sourceTree = "<group>"; };
 		0338A99607BE7C100066DE8A /* OCClassMockObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCClassMockObject.h; sourceTree = "<group>"; };
 		0338A99707BE7C100066DE8A /* OCClassMockObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCClassMockObject.m; sourceTree = "<group>"; };
 		0338A9EE07BE83B50066DE8A /* OCProtocolMockObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCProtocolMockObject.h; sourceTree = "<group>"; };
 		0338A9EF07BE83B50066DE8A /* OCProtocolMockObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCProtocolMockObject.m; sourceTree = "<group>"; };
 		0338AA1007BE866F0066DE8A /* NSMethodSignature+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMethodSignature+Private.h"; sourceTree = "<group>"; };
+		03A2D0C909F01D13008A1AFD /* NSInvocation+OCMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSInvocation+OCMAdditions.h"; sourceTree = "<group>"; };
+		03A2D0CA09F01D13008A1AFD /* NSInvocation+OCMAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSInvocation+OCMAdditions.m"; sourceTree = "<group>"; };
+		03A2D1F809F1533C008A1AFD /* NSInvocationOCMAdditionsTests.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSInvocationOCMAdditionsTests.h; sourceTree = "<group>"; };
 		03BF2D1B08F1C26700978C59 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = /System/Library/Frameworks/SenTestingKit.framework; sourceTree = "<absolute>"; };
 		03BF2D3708F1C69500978C59 /* Test.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Test.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		03BF2D3808F1C69500978C59 /* Test-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Test-Info.plist"; sourceTree = "<group>"; };
@@ -136,6 +103,8 @@
 				03DE1F5F06DB914100E5A2A8 /* OCMockObjectTests.m */,
 				03DE1F6006DB914100E5A2A8 /* OCMockRecorderTests.h */,
 				03DE1F6106DB914100E5A2A8 /* OCMockRecorderTests.m */,
+				03A2D1F809F1533C008A1AFD /* NSInvocationOCMAdditionsTests.h */,
+				030106470A3B99F20049FED7 /* NSInvocationOCMAdditionsTests.m */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -195,6 +164,8 @@
 				03DE1F5606DB911300E5A2A8 /* OCMockRecorder.h */,
 				03DE1F5706DB911300E5A2A8 /* OCMockRecorder.m */,
 				0338AA1007BE866F0066DE8A /* NSMethodSignature+Private.h */,
+				03A2D0C909F01D13008A1AFD /* NSInvocation+OCMAdditions.h */,
+				03A2D0CA09F01D13008A1AFD /* NSInvocation+OCMAdditions.m */,
 			);
 			name = Implementation;
 			sourceTree = "<group>";
@@ -237,6 +208,7 @@
 				0338A99807BE7C100066DE8A /* OCClassMockObject.h in Headers */,
 				0338A9F007BE83B50066DE8A /* OCProtocolMockObject.h in Headers */,
 				0338AA1207BE866F0066DE8A /* NSMethodSignature+Private.h in Headers */,
+				03A2D0CB09F01D13008A1AFD /* NSInvocation+OCMAdditions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -254,60 +226,11 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
-				INFOPLIST_FILE = "Test-Info.plist";
-				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
-				LIBRARY_STYLE = BUNDLE;
-				OPTIMIZATION_CFLAGS = "";
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Cocoa,
-					"-framework",
-					SenTestingKit,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = Test;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-				WRAPPER_EXTENSION = octest;
-			};
 			dependencies = (
 			);
 			name = Test;
 			productName = Test;
 			productReference = 03BF2D3708F1C69500978C59 /* Test.octest */;
-			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
-<plist version=\"1.0\">
-<dict>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>English</string>
-	<key>CFBundleExecutable</key>
-	<string>Test</string>
-	<key>CFBundleIdentifier</key>
-	<string>com.yourcompany.Test</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
-	<key>CFBundleVersion</key>
-	<string>1.0</string>
-</dict>
-</plist>
-";
 			productType = "com.apple.product-type.bundle";
 		};
 		8DC2EF4F0486A6940098B216 /* OCMock */ = {
@@ -322,36 +245,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
-				FRAMEWORK_VERSION = A;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_ENABLE_TRIGRAPHS = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = OCMock_Prefix.pch;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
-				GCC_WARN_UNKNOWN_PRAGMAS = NO;
-				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Library/Frameworks;
-				LIBRARY_SEARCH_PATHS = "";
-				LIBRARY_STYLE = Dynamic;
-				OTHER_CFLAGS = "-fobjc-exceptions";
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = OCMock;
-				SECTORDER_FLAGS = "";
-				TEST_AFTER_BUILD = YES;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-				WRAPPER_EXTENSION = framework;
-			};
 			dependencies = (
 			);
 			name = OCMock;
@@ -366,13 +259,6 @@
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 03DFEE1208F04987002E8661 /* Build configuration list for PBXProject "OCMock" */;
-			buildSettings = {
-			};
-			buildStyles = (
-				014CEA440018CDF011CA2923 /* Development */,
-				014CEA450018CDF011CA2923 /* Deployment */,
-				749E17DD05657B6C005A3EEA /* Test */,
-			);
 			hasScannedForEncodings = 1;
 			mainGroup = 0867D691FE84028FC02AAC07 /* OCMock */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
@@ -440,6 +326,8 @@
 				03BF2D4508F1C6C000978C59 /* OCMockObject.m in Sources */,
 				03BF2D5E08F1C82C00978C59 /* OCMockRecorderTests.m in Sources */,
 				03BF2D5F08F1C82D00978C59 /* OCMockObjectTests.m in Sources */,
+				03A2D0D909F01DCB008A1AFD /* NSInvocation+OCMAdditions.m in Sources */,
+				030106730A3B9B240049FED7 /* NSInvocationOCMAdditionsTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -451,6 +339,7 @@
 				03DE1F5B06DB911300E5A2A8 /* OCMockRecorder.m in Sources */,
 				0338A99907BE7C100066DE8A /* OCClassMockObject.m in Sources */,
 				0338A9F107BE83B50066DE8A /* OCProtocolMockObject.m in Sources */,
+				03A2D0CC09F01D13008A1AFD /* NSInvocation+OCMAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -468,6 +357,83 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		038AB0DB098BD8C9001907BF /* Deployment (embedded) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
+				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_ENABLE_TRIGRAPHS = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = OCMock_Prefix.pch;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_STYLE = Dynamic;
+				MACH_O_TYPE = mh_dylib;
+				OTHER_CFLAGS = "-fobjc-exceptions";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = OCMock;
+				SECTORDER_FLAGS = "";
+				TEST_AFTER_BUILD = YES;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = framework;
+				ZERO_LINK = NO;
+			};
+			name = "Deployment (embedded)";
+		};
+		038AB0DC098BD8C9001907BF /* Deployment (embedded) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
+				INFOPLIST_FILE = "Test-Info.plist";
+				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
+				LIBRARY_STYLE = BUNDLE;
+				OPTIMIZATION_CFLAGS = "-O0";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Cocoa,
+					"-framework",
+					SenTestingKit,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = Test;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = octest;
+			};
+			name = "Deployment (embedded)";
+		};
+		038AB0DD098BD8C9001907BF /* Deployment (embedded) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = "Deployment (embedded)";
+		};
 		03BF2D3C08F1C69600978C59 /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -623,6 +589,7 @@
 				INSTALL_PATH = /Library/Frameworks;
 				LIBRARY_SEARCH_PATHS = "";
 				LIBRARY_STYLE = Dynamic;
+				MACH_O_TYPE = mh_dylib;
 				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "-fobjc-exceptions";
 				OTHER_LDFLAGS = "";
@@ -661,6 +628,7 @@
 				INSTALL_PATH = /Library/Frameworks;
 				LIBRARY_SEARCH_PATHS = "";
 				LIBRARY_STYLE = Dynamic;
+				MACH_O_TYPE = mh_dylib;
 				OTHER_CFLAGS = "-fobjc-exceptions";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = OCMock;
@@ -701,6 +669,7 @@
 				INSTALL_PATH = /Library/Frameworks;
 				LIBRARY_SEARCH_PATHS = "";
 				LIBRARY_STYLE = Dynamic;
+				MACH_O_TYPE = mh_dylib;
 				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "-fobjc-exceptions";
 				OTHER_LDFLAGS = "";
@@ -737,6 +706,7 @@
 				INSTALL_PATH = /Library/Frameworks;
 				LIBRARY_SEARCH_PATHS = "";
 				LIBRARY_STYLE = Dynamic;
+				MACH_O_TYPE = mh_dylib;
 				OTHER_CFLAGS = "-fobjc-exceptions";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = OCMock;
@@ -783,16 +753,19 @@
 			buildConfigurations = (
 				03BF2D3C08F1C69600978C59 /* Development */,
 				03BF2D3D08F1C69600978C59 /* Deployment */,
+				038AB0DC098BD8C9001907BF /* Deployment (embedded) */,
 				03BF2D3E08F1C69600978C59 /* Test */,
 				03BF2D3F08F1C69600978C59 /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
 		};
 		03DFEE0808F04987002E8661 /* Build configuration list for PBXNativeTarget "OCMock" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				03DFEE0908F04987002E8661 /* Development */,
 				03DFEE0A08F04987002E8661 /* Deployment */,
+				038AB0DB098BD8C9001907BF /* Deployment (embedded) */,
 				03DFEE0B08F04987002E8661 /* Test */,
 				03DFEE0C08F04987002E8661 /* Default */,
 			);
@@ -804,6 +777,7 @@
 			buildConfigurations = (
 				03DFEE1308F04987002E8661 /* Development */,
 				03DFEE1408F04987002E8661 /* Deployment */,
+				038AB0DD098BD8C9001907BF /* Deployment (embedded) */,
 				03DFEE1508F04987002E8661 /* Test */,
 				03DFEE1608F04987002E8661 /* Default */,
 			);

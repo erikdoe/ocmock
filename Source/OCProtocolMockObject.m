@@ -28,7 +28,7 @@
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"OCMockObject<%s>", [mockedProtocol name]];
+	return [NSString stringWithFormat:@"OCMockObject[%s]", [mockedProtocol name]];
 }
 
 
@@ -42,6 +42,11 @@
 	if (desc == NULL)
 	   return nil;
 	return [NSMethodSignature signatureWithObjCTypes:desc->types];
+}
+
+- (BOOL)conformsToProtocol:(Protocol *)aProtocol
+{
+	return [mockedProtocol conformsTo:aProtocol];
 }
 
 

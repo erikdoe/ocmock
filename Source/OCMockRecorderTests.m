@@ -62,5 +62,18 @@
 	STAssertEqualObjects(result, @"foo", @"Should have set up right return value.");
 }
 
+- (void)testThrowsWhenSettingUpReturnValue
+{
+	OCMockRecorder	*recorder;
+	NSString		*result;
+	
+	recorder = [[[OCMockRecorder alloc] initWithSignatureResolver:[NSString string]] autorelease];
+	[recorder andThrow:[NSException exceptionWithName:@"TestException" reason:@"A reason" userInfo:nil]];
+	
+	STAssertThrows([recorder setUpReturnValue:testInvocation], @"Should have thrown the exception.");
+	[testInvocation getReturnValue:&result];
+	STAssertNil(result, @"Should have a nil return value");
+	
+}
 
 @end
