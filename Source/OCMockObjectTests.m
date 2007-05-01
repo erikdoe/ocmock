@@ -6,6 +6,10 @@
 #import "OCMock.h"
 #import "OCMockObjectTests.h"
 
+@protocol TestProtocol
+-(int) primitiveValue;
+@end
+
 
 @implementation OCMockObjectTests
 
@@ -267,6 +271,35 @@
 }
 
 
+- (void)testReturnsDefaultValueWhenUnknownMethodIsCalledOnNiceClassMock
+{
+	mock = [OCMockObject niceMockForClass:[NSString class]];
+	STAssertNil([mock lowercaseString], @"Should return nil on unexpected method call (for nice mock).");	
+	[mock verify];
+}
+
+- (void)testRaisesAnExceptionWhenAnExpectedMethodIsNotCalledOnNiceClassMock
+{
+	mock = [OCMockObject niceMockForClass:[NSString class]];	
+	[[[mock expect] andReturn:@"HELLO!"] uppercaseString];
+	STAssertThrows([mock verify], @"Should have raised an exception because method was not called.");
+}
+
+- (void)testReturnDefaultValueWhenUnknownMethodIsCalledOnProtocolMock
+{
+	mock = [OCMockObject niceMockForProtocol:@protocol(TestProtocol)];
+	STAssertTrue(0 == [mock primitiveValue], @"Should return 0 on unexpected method call (for nice mock).");
+	[mock verify];
+}
+
+- (void)testEaisesAnExceptionWenAnExpectedMethodIsNotCalledOnNiceProtocolMock
+{
+	mock = [OCMockObject niceMockForProtocol:@protocol(TestProtocol)];	
+	[[mock expect] primitiveValue];
+	STAssertThrows([mock verify], @"Should have raised an exception because method was not called.");
+}
+
+
 /*
 - (void)testCanMockInformalProtocol
 {
@@ -279,5 +312,13 @@
 	[mock verify];
 }
 */
+
+- (void)testCanCreateExpectationsAfterInvocations
+{
+	[[mock expect] lowercaseString];
+	[mock lowercaseString];
+	[mock expect];
+}
+
 
 @end

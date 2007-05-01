@@ -10,6 +10,7 @@
 #import "NSInvocation+OCMAdditions.h"
 
 @interface OCMockObject(Private)
++ (id)_makeNice:(OCMockObject *)mock;
 - (NSString *)_recorderDescriptions:(BOOL)onlyExpectations;
 @end
 
@@ -28,6 +29,24 @@
 + (id)mockForProtocol:(Protocol *)aProtocol
 {
 	return [[[OCProtocolMockObject alloc] initWithProtocol:aProtocol] autorelease];
+}
+
+
++ (id)niceMockForClass:(Class)aClass
+{
+	return [self _makeNice:[self mockForClass:aClass]];
+}
+
++ (id)niceMockForProtocol:(Protocol *)aProtocol
+{
+	return [self _makeNice:[self mockForProtocol:aProtocol]];
+}
+
+
++ (id)_makeNice:(OCMockObject *)mock
+{
+	mock->isNice = YES;
+	return mock;
 }
 
 
@@ -100,37 +119,31 @@
 
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
-	OCMockRecorder *recorder;
+	OCMockRecorder *recorder = nil;
 	int			   i;
 
-	NSMutableArray *mutableRecorders = [[NSMutableArray alloc] initWithArray:recorders];
-	
-	for(i = 0; i < [mutableRecorders count]; i++)
+	for(i = 0; i < [recorders count]; i++)
 	{
-		recorder = [mutableRecorders objectAtIndex:i];
-
-		if(![recorder matchesInvocation:anInvocation])
-			continue;
-
-		// If there's a matching expectation... remove it and the corresponding recorder (as it's not a stub)
+		recorder = [recorders objectAtIndex:i];
+		if([recorder matchesInvocation:anInvocation])
+			break;
+	}
+	
+	if(i < [recorders count]) 
+	{
 		if ([expectations containsObject:recorder])
 		{
 			[expectations removeObject:recorder];
-			[mutableRecorders removeObjectAtIndex:i];
+			[recorders removeObjectAtIndex:i];
 		}
-
-		// Also remove the recorder (for expectations and stubs)
 		[recorder setUpReturnValue:anInvocation];
-		
-		[recorders release];
-		recorders = [[NSArray alloc] initWithArray:mutableRecorders];
-		[mutableRecorders release];
-		
-		return;
 	}
-
-	[NSException raise:NSInternalInconsistencyException format:@"%@: unexpected method invoked: %@ %@", 
-		[self description], [anInvocation invocationDescription], [self _recorderDescriptions:NO]];
+	else if(isNice == NO)
+	{
+		[NSException raise:NSInternalInconsistencyException format:@"%@: unexpected method invoked: %@ %@", 
+			[self description], [anInvocation invocationDescription], [self _recorderDescriptions:NO]];
+	}
+	
 }
 
 
