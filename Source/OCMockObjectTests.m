@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------------------
 //  $Id$
-//  Copyright (c) 2004 by Mulle Kybernetik. See License file for details.
+//  Copyright (c) 2004-2007 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import "OCMock.h"
@@ -292,11 +292,24 @@
 	[mock verify];
 }
 
-- (void)testEaisesAnExceptionWenAnExpectedMethodIsNotCalledOnNiceProtocolMock
+- (void)testRaisesAnExceptionWenAnExpectedMethodIsNotCalledOnNiceProtocolMock
 {
 	mock = [OCMockObject niceMockForProtocol:@protocol(TestProtocol)];	
 	[[mock expect] primitiveValue];
 	STAssertThrows([mock verify], @"Should have raised an exception because method was not called.");
+}
+
+- (void)testReRaisesFailFastExceptionsOnVerify
+{
+	@try
+	{
+		[mock lowercaseString];
+	}
+	@catch(NSException *exception)
+	{
+		// expected
+	}
+	STAssertThrows([mock verify], @"Should have reraised the exception.");
 }
 
 

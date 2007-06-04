@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------------------
 //  $Id$
-//  Copyright (c) 2004,2005 by Mulle Kybernetik. See License file for details.
+//  Copyright (c) 2004-2007 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import "OCMockObject.h"
@@ -58,6 +58,7 @@
 {
 	recorders = [[NSMutableArray alloc] init];
 	expectations = [[NSMutableSet alloc] init];
+	exceptions = [[NSMutableArray alloc] init];
 	return self;
 }
 
@@ -65,6 +66,7 @@
 {
 	[recorders release];
 	[expectations release];
+	[exceptions release];
 	[super dealloc];
 }
 
@@ -105,10 +107,14 @@
 		[NSException raise:NSInternalInconsistencyException format:@"%@: expected method was not invoked: %@", 
 			[self description], [[expectations anyObject] description]];
 	}
-	else if([expectations count] > 0)
+	if([expectations count] > 0)
 	{
 		[NSException raise:NSInternalInconsistencyException format:@"%@ : %d expected methods were not invoked: %@", 
 			[self description], [expectations count], [self _recorderDescriptions:YES]];
+	}
+	if([exceptions count] > 0)
+	{
+		[[exceptions objectAtIndex:0] raise];
 	}
 }
 
@@ -140,8 +146,11 @@
 	}
 	else if(isNice == NO)
 	{
-		[NSException raise:NSInternalInconsistencyException format:@"%@: unexpected method invoked: %@ %@", 
-			[self description], [anInvocation invocationDescription], [self _recorderDescriptions:NO]];
+		NSException *exception = [NSException exceptionWithName:NSInternalInconsistencyException reason:
+			[NSString stringWithFormat:@"%@: unexpected method invoked: %@ %@",  [self description], 
+			[anInvocation invocationDescription], [self _recorderDescriptions:NO]] userInfo:nil];
+		[exceptions addObject:exception];
+		[exception raise];
 	}
 	
 }
