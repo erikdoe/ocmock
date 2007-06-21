@@ -1,3 +1,9 @@
+2007-06-04 (r15)
+
+* Now re-throwing fail-fast exceptions, for unexpected invocations for example, when
+  verify is called; in case the first throw is ignored by a framework.
+
+
 2007-04-23 (r14)
 
 * Added nice mocks, i.e. mocks that don't raise on unknown methods (Mark Thomas)
