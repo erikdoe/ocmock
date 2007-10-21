@@ -166,7 +166,7 @@
 	
 	OCMockRecorder *currentObject;
 	NSEnumerator *recorderEnumerator = [recorders objectEnumerator];
-	while(currentObject = [recorderEnumerator nextObject])
+	while((currentObject = [recorderEnumerator nextObject]) != nil)
 	{
 		NSString *prefix;
 		

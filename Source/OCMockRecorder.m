@@ -4,19 +4,11 @@
 //---------------------------------------------------------------------------------------
 
 #import "OCMockRecorder.h"
+#import "OCMConstraint.h"
 #import "NSInvocation+OCMAdditions.h"
 
+
 @implementation OCMockRecorder
-
-//---------------------------------------------------------------------------------------
-//  factory methods
-//---------------------------------------------------------------------------------------
-
-+ (id)anyArgument
-{
-	return @"ANY";  // we're testing for pointer equality so anything unique will do
-}
-
 
 //---------------------------------------------------------------------------------------
 //  init and dealloc
@@ -215,9 +207,14 @@
 	for(i = 2; i < n; i++)
 	{
 		recordedArg = [self _extractArgument:recordedInvocation atIndex:i];
-		if(recordedArg != OCMOCK_ANY)
+		passedArg = [self _extractArgument:anInvocation atIndex:i];
+		if([recordedArg isKindOfClass:[OCMConstraint class]])
+		{	
+			if([recordedArg evaluate:passedArg] == NO)
+				return NO;
+		}
+		else
 		{
-			passedArg = [self _extractArgument:anInvocation atIndex:i];
 			if([recordedArg class] != [passedArg class])
 				return NO;
 			if(([recordedArg class] == [NSNumber class]) && 

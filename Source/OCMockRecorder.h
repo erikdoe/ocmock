@@ -5,6 +5,9 @@
 
 #import <Foundation/Foundation.h>
 
+@class OCMConstraint; // reference for backwards compatibility OCMOCK_ANY macro
+
+
 @interface OCMockRecorder : NSProxy 
 {
 	id				signatureResolver;
@@ -13,8 +16,6 @@
 	BOOL			returnValueShouldBeThrown;
 	NSInvocation	*recordedInvocation;
 }
-
-+ (id)anyArgument;
 
 - (id)initWithSignatureResolver:(id)anObject;
 
@@ -27,6 +28,5 @@
 
 @end
 
-
-#define OCMOCK_ANY [OCMockRecorder anyArgument]
+#define OCMOCK_ANY [OCMConstraint any]
 #define OCMOCK_VALUE(variable) [NSValue value:&variable withObjCType:@encode(typeof(variable))]

@@ -4,6 +4,7 @@
 //---------------------------------------------------------------------------------------
 
 #import "OCMock.h"
+#import "OCMConstraint.h"
 #import "OCMockObjectTests.h"
 
 @protocol TestProtocol
@@ -40,9 +41,9 @@
 }
 
 
-- (void)testAcceptsStubbedMethodWithAnyArgument
+- (void)testAcceptsStubbedMethodWithConstraint
 {
-	[[mock stub] hasSuffix:OCMOCK_ANY];
+	[[mock stub] hasSuffix:[OCMConstraint any]];
 	[mock hasSuffix:@"foo"];
 	[mock hasSuffix:@"bar"];
 }
