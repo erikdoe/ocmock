@@ -90,7 +90,10 @@
 	const char* argType;
 	
 	argType = [[anInvocation methodSignature] getArgumentTypeAtIndex:index];
-	if((strlen(argType) > 1) && (argType[0] != '{'))
+	if(strchr("rnNoORV", argType[0]) != NULL)
+		argType += 1;
+	
+	if((strlen(argType) > 1) && (strchr("{^", argType[0]) == NULL))
 		[NSException raise:NSInvalidArgumentException format:@"Cannot handle argument type '%s'.", argType];
 			
 	switch (argType[0]) 
@@ -181,6 +184,12 @@
 			[anInvocation getArgument:&value atIndex:index];
 			return [NSNumber numberWithBool:value];
 		}
+		case '^':
+        {
+            void *value = NULL;
+            [anInvocation getArgument:&value atIndex:index];
+            return [NSValue valueWithPointer:value];
+        }
 		case '{': // structure
 		{
 			unsigned maxSize = [[signatureResolver methodSignatureForSelector:[anInvocation selector]] frameLength];

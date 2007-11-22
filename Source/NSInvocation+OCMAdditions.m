@@ -30,6 +30,9 @@
 - (NSString *)argumentDescriptionAtIndex:(int)index
 {
 	const char *argType = [[self methodSignature] getArgumentTypeAtIndex:index];
+	if(strchr("rnNoORV", argType[0]) != NULL)
+		argType += 1;
+
 	switch(*argType)
 	{
 		case NSObjCObjectType:	return [self objectDescriptionAtIndex:index];
@@ -48,7 +51,7 @@
 		// Why does this throw EXC_BAD_ACCESS when appending the string?
 		//	case NSObjCStructType: return [self structDescriptionAtIndex:index];
 		case NSObjCPointerType:	return [self pointerDescriptionAtIndex:index];
-		case 'r':				return [self cStringDescriptionAtIndex:index];
+		case '*':				return [self cStringDescriptionAtIndex:index];
 		case ':':				return [self selectorDescriptionAtIndex:index];
 		default:				return [@"<??" stringByAppendingString:@">"];  // avoid confusion with trigraphs...
 	}

@@ -79,6 +79,22 @@
 	STAssertThrows([mock stringByPaddingToLength:20 withString:@"foo" startingAtIndex:3], @"Should have raised an exception.");	
 }
 
+- (void)testAcceptsStubbedMethodWithVoidPointerArgument
+{
+	mock = [OCMockObject mockForClass:[NSMutableData class]];
+	[[mock stub] appendBytes:NULL length:0];
+	[mock appendBytes:NULL length:0];
+}
+
+
+- (void)testRaisesExceptionWhenMethodWithWrongVoidPointerArgumentIsCalled
+{
+	mock = [OCMockObject mockForClass:[NSMutableData class]];
+	[[mock stub] appendBytes:"foo" length:3];
+	STAssertThrows([mock appendBytes:"bar" length:3], @"Should have raised an exception.");
+}
+
+
 - (void)testAcceptsStubbedMethodWithStructArgument
 {
     NSRange range = NSMakeRange(0,20);
