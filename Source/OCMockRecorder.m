@@ -245,7 +245,9 @@
 	}
 	else
 	{
-		if(strcmp([[anInvocation methodSignature] methodReturnType], @encode(id)) == 0)
+		const char *returnType = [[anInvocation methodSignature] methodReturnType];
+		const char *returnTypeWithoutQualifiers = returnType + (strlen(returnType) - 1);
+		if(strcmp(returnTypeWithoutQualifiers, @encode(id)) == 0)
 			[anInvocation setReturnValue:&returnValue];	
 	}
 }

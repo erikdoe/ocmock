@@ -8,7 +8,11 @@
 #import "OCMockObjectTests.h"
 
 @protocol TestProtocol
--(int) primitiveValue;
+- (int)primitiveValue;
+@end
+
+@protocol ProtocolWithTypeQualifierMethod
+- (bycopy NSString *)byCopyString;
 @end
 
 
@@ -334,5 +338,13 @@
 	[mock expect];
 }
 
+- (void)testReturnsStubbedByCopyReturnValue
+{
+	id myMock = [OCMockObject mockForProtocol:@protocol(ProtocolWithTypeQualifierMethod)];
+	
+	[[[myMock stub] andReturn:@"megamock"] byCopyString];
+	
+	STAssertEqualObjects(@"megamock", [myMock byCopyString], @"Should have returned stubbed value.");
+}
 
 @end
