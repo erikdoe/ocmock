@@ -1,10 +1,10 @@
 //---------------------------------------------------------------------------------------
 //  $Id: OCMockRecorderTests.m 12 2006-06-11 02:41:31Z erik $
-//  Copyright (c) 2004 by Mulle Kybernetik. See License file for details.
+//  Copyright (c) 2004-2008 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import "OCMConstraintTests.h"
-#import "OCMConstraint.h"
+#import <OCMock/OCMConstraint.h>
 
 
 @implementation OCMConstraintTests

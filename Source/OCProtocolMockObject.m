@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------------------
 //  $Id$
-//  Copyright (c) 2005 by Mulle Kybernetik. See License file for details.
+//  Copyright (c) 2005-2008 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import <objc/Protocol.h>

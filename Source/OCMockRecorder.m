@@ -1,10 +1,10 @@
 //---------------------------------------------------------------------------------------
 //  $Id$
-//  Copyright (c) 2004 by Mulle Kybernetik. See License file for details.
+//  Copyright (c) 2004-2008 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
-#import "OCMockRecorder.h"
-#import "OCMConstraint.h"
+#import <OCMock/OCMockRecorder.h>
+#import <OCMock/OCMConstraint.h>
 #import "NSInvocation+OCMAdditions.h"
 
 

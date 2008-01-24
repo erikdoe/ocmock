@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------------------
 //  $Id$
-//  Copyright (c) 2006 by Mulle Kybernetik. See License file for details.
+//  Copyright (c) 2006-2008 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import "NSInvocation+OCMAdditions.h"

@@ -1,10 +1,10 @@
 //---------------------------------------------------------------------------------------
 //  $Id$
-//  Copyright (c) 2004-2007 by Mulle Kybernetik. See License file for details.
+//  Copyright (c) 2004-2008 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import "OCMock.h"
-#import "OCMConstraint.h"
+#import <OCMock/OCMConstraint.h>
 #import "OCMockObjectTests.h"
 
 @protocol TestProtocol
@@ -95,6 +95,22 @@
 }
 
 
+- (void)testAcceptsStubbedMethodWithPointerPointerArgument
+{
+	NSError *error = nil;
+	[[mock stub] initWithContentsOfFile:@"foo.txt" encoding:NSASCIIStringEncoding error:&error];	
+	[mock initWithContentsOfFile:@"foo.txt" encoding:NSASCIIStringEncoding error:&error];
+}
+
+
+- (void)testRaisesExceptionWhenMethodWithWrongPointerPointerArgumentIsCalled
+{
+	NSError *error = nil, *error2;
+	[[mock stub] initWithContentsOfFile:@"foo.txt" encoding:NSASCIIStringEncoding error:&error];	
+	STAssertThrows([mock initWithContentsOfFile:@"foo.txt" encoding:NSASCIIStringEncoding error:&error2], @"Should have raised.");
+}
+
+
 - (void)testAcceptsStubbedMethodWithStructArgument
 {
     NSRange range = NSMakeRange(0,20);
@@ -132,6 +148,15 @@
 	STAssertEquals(expectedValue, returnValue, @"Should have returned stubbed value.");
 }
 
+
+- (void)testRaisesWhenBoxedValueTypesDoNotMatch
+{
+    double expectedValue = 42;
+	[[[mock stub] andReturnValue:OCMOCK_VALUE(expectedValue)] intValue];
+    
+	STAssertThrows([mock intValue], @"Should have raised an exception.");
+}
+
 - (void)testReturnsStubbedNilReturnValue
 {
 	[[[mock stub] andReturn:nil] uppercaseString];
@@ -141,12 +166,13 @@
 	STAssertNil(returnValue, @"Should have returned stubbed value, which is nil.");
 }
 
-- (void)testRaisesWhenBoxedValueTypesDoNotMatch
+- (void)testReturnsStubbedByCopyReturnValue
 {
-    double expectedValue = 42;
-	[[[mock stub] andReturnValue:OCMOCK_VALUE(expectedValue)] intValue];
-    
-	STAssertThrows([mock intValue], @"Should have raised an exception.");
+	id myMock = [OCMockObject mockForProtocol:@protocol(ProtocolWithTypeQualifierMethod)];
+	
+	[[[myMock stub] andReturn:@"megamock"] byCopyString];
+	
+	STAssertEqualObjects(@"megamock", [myMock byCopyString], @"Should have returned stubbed value.");
 }
 
 
@@ -200,7 +226,7 @@
 }
 
 
-- (void) testAcceptsAndVerifiesTwoExpectedInvocationsOfSameMethodAndReturnsCorrespondingValues
+- (void)testAcceptsAndVerifiesTwoExpectedInvocationsOfSameMethodAndReturnsCorrespondingValues
 {
 	[[[mock expect] andReturn:@"foo"] lowercaseString];
 	[[[mock expect] andReturn:@"bar"] lowercaseString];
@@ -354,13 +380,5 @@
 	[mock expect];
 }
 
-- (void)testReturnsStubbedByCopyReturnValue
-{
-	id myMock = [OCMockObject mockForProtocol:@protocol(ProtocolWithTypeQualifierMethod)];
-	
-	[[[myMock stub] andReturn:@"megamock"] byCopyString];
-	
-	STAssertEqualObjects(@"megamock", [myMock byCopyString], @"Should have returned stubbed value.");
-}
 
 @end
