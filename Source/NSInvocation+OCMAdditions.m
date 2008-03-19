@@ -35,25 +35,25 @@
 
 	switch(*argType)
 	{
-		case NSObjCObjectType:	return [self objectDescriptionAtIndex:index];
-		case 'c':				return [self charDescriptionAtIndex:index];
-		case 'C':				return [self unsignedCharDescriptionAtIndex:index];
-		case 'i':				return [self intDescriptionAtIndex:index];
-		case 'I':				return [self unsignedIntDescriptionAtIndex:index];
-		case 's':				return [self shortDescriptionAtIndex:index];
-		case 'S':				return [self unsignedShortDescriptionAtIndex:index];
-		case 'l':				return [self longDescriptionAtIndex:index];
-		case 'L':				return [self unsignedLongDescriptionAtIndex:index];
-		case 'q':				return [self longLongDescriptionAtIndex:index];
-		case 'Q':				return [self unsignedLongLongDescriptionAtIndex:index];
-		case 'd':				return [self doubleDescriptionAtIndex:index];
-		case 'f':				return [self floatDescriptionAtIndex:index];
+		case '@':	return [self objectDescriptionAtIndex:index];
+		case 'c':	return [self charDescriptionAtIndex:index];
+		case 'C':	return [self unsignedCharDescriptionAtIndex:index];
+		case 'i':	return [self intDescriptionAtIndex:index];
+		case 'I':	return [self unsignedIntDescriptionAtIndex:index];
+		case 's':	return [self shortDescriptionAtIndex:index];
+		case 'S':	return [self unsignedShortDescriptionAtIndex:index];
+		case 'l':	return [self longDescriptionAtIndex:index];
+		case 'L':	return [self unsignedLongDescriptionAtIndex:index];
+		case 'q':	return [self longLongDescriptionAtIndex:index];
+		case 'Q':	return [self unsignedLongLongDescriptionAtIndex:index];
+		case 'd':	return [self doubleDescriptionAtIndex:index];
+		case 'f':	return [self floatDescriptionAtIndex:index];
 		// Why does this throw EXC_BAD_ACCESS when appending the string?
 		//	case NSObjCStructType: return [self structDescriptionAtIndex:index];
-		case NSObjCPointerType:	return [self pointerDescriptionAtIndex:index];
-		case '*':				return [self cStringDescriptionAtIndex:index];
-		case ':':				return [self selectorDescriptionAtIndex:index];
-		default:				return [@"<??" stringByAppendingString:@">"];  // avoid confusion with trigraphs...
+		case '^':	return [self pointerDescriptionAtIndex:index];
+		case '*':	return [self cStringDescriptionAtIndex:index];
+		case ':':	return [self selectorDescriptionAtIndex:index];
+		default:	return [@"<??" stringByAppendingString:@">"];  // avoid confusion with trigraphs...
 	}
 	
 }
