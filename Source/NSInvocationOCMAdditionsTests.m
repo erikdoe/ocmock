@@ -318,7 +318,7 @@
 	// Give it an argument
 	NSData *data = [@"foo" dataUsingEncoding:NSUTF8StringEncoding];
 	const void *bytes = [[@"foo" dataUsingEncoding:NSUTF8StringEncoding] bytes];
-	unsigned int length = [data length];
+	NSUInteger length = [data length];
 	[invocation setArgument:&bytes atIndex:2];
 	[invocation setArgument:&length atIndex:3];
 	
