@@ -642,7 +642,7 @@
 				038AB0DC098BD8C9001907BF /* Release (embedded) */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = "Release (embedded)";
 		};
 		03DFEE0808F04987002E8661 /* Build configuration list for PBXNativeTarget "OCMock" */ = {
 			isa = XCConfigurationList;
@@ -652,7 +652,7 @@
 				038AB0DB098BD8C9001907BF /* Release (embedded) */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = "Release (embedded)";
 		};
 		03DFEE1208F04987002E8661 /* Build configuration list for PBXProject "OCMock" */ = {
 			isa = XCConfigurationList;
@@ -662,7 +662,7 @@
 				038AB0DD098BD8C9001907BF /* Release (embedded) */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = "Release (embedded)";
 		};
 /* End XCConfigurationList section */
 	};
