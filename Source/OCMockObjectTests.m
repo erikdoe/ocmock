@@ -52,6 +52,7 @@
 	[mock hasSuffix:@"bar"];
 }
 
+
 - (void)testAcceptsStubbedMethodWithNilArgument
 {
 	[[mock stub] hasSuffix:nil];

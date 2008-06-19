@@ -3,9 +3,14 @@
 //  Copyright (c) 2004-2008 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
+#import <objc/runtime.h>
 #import <OCMock/OCMockRecorder.h>
 #import <OCMock/OCMConstraint.h>
 #import "NSInvocation+OCMAdditions.h"
+
+@interface NSObject(HCMatcherDummy)
+- (BOOL) matches:(id)item;
+@end
 
 
 @implementation OCMockRecorder
@@ -222,6 +227,11 @@
 			if([recordedArg evaluate:passedArg] == NO)
 				return NO;
 		}
+		else if([recordedArg conformsToProtocol:objc_getProtocol("HCMatcher")])
+		{
+			if([recordedArg matches:passedArg] == NO)
+				return NO;
+		}
 		else
 		{
 			if([recordedArg class] != [passedArg class])
@@ -259,6 +269,17 @@
 		if(strcmp(returnTypeWithoutQualifiers, @encode(id)) == 0)
 			[anInvocation setReturnValue:&returnValue];	
 	}
+}
+
+
+//---------------------------------------------------------------------------------------
+// House-keeping
+//---------------------------------------------------------------------------------------
+
+- (void)releaseInvocation
+{
+	[recordedInvocation release];
+	recordedInvocation = nil;
 }
 
 @end

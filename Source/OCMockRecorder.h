@@ -25,6 +25,7 @@
 
 - (BOOL)matchesInvocation:(NSInvocation *)anInvocation;
 - (void)setUpReturnValue:(NSInvocation *)anInvocation;
+- (void)releaseInvocation;
 
 @end
 

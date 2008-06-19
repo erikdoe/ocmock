@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		030106730A3B9B240049FED7 /* NSInvocationOCMAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 030106470A3B99F20049FED7 /* NSInvocationOCMAdditionsTests.m */; };
+		032797870E09F40E006CA665 /* hamcrest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032797860E09F40E006CA665 /* hamcrest.framework */; };
+		032798030E09F8B7006CA665 /* OCMockObjectHamcrestTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 032798020E09F8B7006CA665 /* OCMockObjectHamcrestTests.mm */; };
 		0338A99807BE7C100066DE8A /* OCClassMockObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 0338A99607BE7C100066DE8A /* OCClassMockObject.h */; };
 		0338A99907BE7C100066DE8A /* OCClassMockObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0338A99707BE7C100066DE8A /* OCClassMockObject.m */; };
 		0338A9F007BE83B50066DE8A /* OCProtocolMockObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 0338A9EE07BE83B50066DE8A /* OCProtocolMockObject.h */; settings = {ATTRIBUTES = (); }; };
@@ -46,6 +48,9 @@
 
 /* Begin PBXFileReference section */
 		030106470A3B99F20049FED7 /* NSInvocationOCMAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSInvocationOCMAdditionsTests.m; sourceTree = "<group>"; };
+		032797860E09F40E006CA665 /* hamcrest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = hamcrest.framework; path = "${TEMP_ROOT}/Frameworks/hamcrest.framework"; sourceTree = "<absolute>"; };
+		032798010E09F8B7006CA665 /* OCMockObjectHamcrestTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockObjectHamcrestTests.h; sourceTree = "<group>"; };
+		032798020E09F8B7006CA665 /* OCMockObjectHamcrestTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OCMockObjectHamcrestTests.mm; sourceTree = "<group>"; };
 		0338A99607BE7C100066DE8A /* OCClassMockObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCClassMockObject.h; sourceTree = "<group>"; };
 		0338A99707BE7C100066DE8A /* OCClassMockObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCClassMockObject.m; sourceTree = "<group>"; };
 		0338A9EE07BE83B50066DE8A /* OCProtocolMockObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCProtocolMockObject.h; sourceTree = "<group>"; };
@@ -87,6 +92,7 @@
 				03BF2D4008F1C6BA00978C59 /* SenTestingKit.framework in Frameworks */,
 				03BF2D4108F1C6BC00978C59 /* Foundation.framework in Frameworks */,
 				9F35D3DC0D349E7E00C05E52 /* OCMock.framework in Frameworks */,
+				032797870E09F40E006CA665 /* hamcrest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,12 +121,15 @@
 			children = (
 				03DE1F5E06DB914100E5A2A8 /* OCMockObjectTests.h */,
 				03DE1F5F06DB914100E5A2A8 /* OCMockObjectTests.m */,
+				032798010E09F8B7006CA665 /* OCMockObjectHamcrestTests.h */,
+				032798020E09F8B7006CA665 /* OCMockObjectHamcrestTests.mm */,
 				03DE1F6006DB914100E5A2A8 /* OCMockRecorderTests.h */,
 				03DE1F6106DB914100E5A2A8 /* OCMockRecorderTests.m */,
 				034313E80CCA7BC700A2E080 /* OCMConstraintTests.h */,
 				034313E90CCA7BC700A2E080 /* OCMConstraintTests.m */,
 				03A2D1F809F1533C008A1AFD /* NSInvocationOCMAdditionsTests.h */,
 				030106470A3B99F20049FED7 /* NSInvocationOCMAdditionsTests.m */,
+				32C88DFF0371C24200C91783 /* Other Sources */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -139,7 +148,6 @@
 				03DE21B506DB95CB00E5A2A8 /* Public Headers */,
 				08FB77AEFE84172EC02AAC07 /* Implementation */,
 				03DE1F5D06DB911C00E5A2A8 /* Tests */,
-				32C88DFF0371C24200C91783 /* Other Sources */,
 				089C1665FE841158C02AAC07 /* Resources */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
 				034768DFFF38A50411DB9C8B /* Products */,
@@ -191,6 +199,7 @@
 		1058C7B0FEA5585E11CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				032797860E09F40E006CA665 /* hamcrest.framework */,
 				03DE218F06DB91CF00E5A2A8 /* Foundation.framework */,
 				03BF2D1B08F1C26700978C59 /* SenTestingKit.framework */,
 			);
@@ -238,6 +247,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 03BF2D3B08F1C69600978C59 /* Build configuration list for PBXNativeTarget "OCMockTests" */;
 			buildPhases = (
+				032798EB0E0A0583006CA665 /* ShellScript */,
 				03BF2D3208F1C69500978C59 /* Resources */,
 				03BF2D3308F1C69500978C59 /* Sources */,
 				03BF2D3408F1C69500978C59 /* Frameworks */,
@@ -322,6 +332,19 @@
 /* End PBXRezBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		032798EB0E0A0583006CA665 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Unpack frameworks required for this target\npushd \"${TEMP_ROOT}\"\nif [ ! -d Frameworks ]; then\n\tmkdir Frameworks\nfi\ncd Frameworks\nif [ ! -d  hamcrest.framework ]; then\n    gnutar xjf \"${PROJECT_DIR}/Frameworks/hamcrest.tar.bz2\"\nfi\npopd\n";
+		};
 		03BF2D3508F1C69500978C59 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -333,7 +356,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+			shellScript = "# Run the unit tests in this test bundle.\nexport DYLD_FRAMEWORK_PATH=\"${TEMP_ROOT}/Frameworks\"\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -346,6 +369,7 @@
 				03BF2D5F08F1C82D00978C59 /* OCMockObjectTests.m in Sources */,
 				030106730A3B9B240049FED7 /* NSInvocationOCMAdditionsTests.m in Sources */,
 				034313EA0CCA7BC700A2E080 /* OCMConstraintTests.m in Sources */,
+				032798030E09F8B7006CA665 /* OCMockObjectHamcrestTests.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -463,6 +487,8 @@
 					ppc64,
 					x86_64,
 				);
+				FRAMEWORK_SEARCH_PATHS = "$(TEMP_ROOT)/Frameworks";
+				GCC_INPUT_FILETYPE = automatic;
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
 			};
@@ -614,6 +640,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(NATIVE_ARCH_32_BIT)";
+				FRAMEWORK_SEARCH_PATHS = "$(TEMP_ROOT)/Frameworks";
+				GCC_INPUT_FILETYPE = automatic;
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
 			};
@@ -628,6 +656,8 @@
 					ppc64,
 					x86_64,
 				);
+				FRAMEWORK_SEARCH_PATHS = "$(TEMP_ROOT)/Frameworks";
+				GCC_INPUT_FILETYPE = automatic;
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
 			};
