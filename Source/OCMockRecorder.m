@@ -81,6 +81,7 @@
 {
 	if(recordedInvocation != nil)
 		[NSException raise:NSInternalInconsistencyException format:@"Recorder received two methods to record."];
+	[anInvocation setTarget:nil];
 	[anInvocation retainArguments];
 	recordedInvocation = [anInvocation retain];
 }
