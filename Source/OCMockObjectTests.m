@@ -9,6 +9,8 @@
 
 @protocol TestProtocol
 - (int)primitiveValue;
+@optional
+- (id)objectValue;
 @end
 
 @protocol ProtocolWithTypeQualifierMethod
@@ -321,6 +323,15 @@
 	STAssertEqualObjects(@"SomeValue", returnValue, @"Should have returned value that was set up.");
 }
 
+- (void)testRespondsToValidSelector
+{
+	STAssertTrue([mock respondsToSelector:@selector(lowercaseString)], nil);
+}
+
+- (void)testDoesNotRespondToInvalidSelector
+{
+	STAssertFalse([mock respondsToSelector:@selector(fooBar)], nil);
+}
 
 - (void)testCanMockFormalProtocol
 {
@@ -373,6 +384,24 @@
 	mock = [OCMockObject niceMockForProtocol:@protocol(TestProtocol)];	
 	[[mock expect] primitiveValue];
 	STAssertThrows([mock verify], @"Should have raised an exception because method was not called.");
+}
+
+- (void)testRespondsToValidProtocolRequiredSelector
+{
+	mock = [OCMockObject niceMockForProtocol:@protocol(TestProtocol)];	
+    STAssertTrue([mock respondsToSelector:@selector(primitiveValue)], nil);
+}
+
+- (void)testRespondsToValidProtocolOptionalSelector
+{
+	mock = [OCMockObject niceMockForProtocol:@protocol(TestProtocol)];	
+    STAssertTrue([mock respondsToSelector:@selector(objectValue)], nil);
+}
+
+- (void)testDoesNotRespondToInvalidProtocolSelector
+{
+	mock = [OCMockObject niceMockForProtocol:@protocol(TestProtocol)];	
+    STAssertFalse([mock respondsToSelector:@selector(fooBar)], nil);
 }
 
 - (void)testReRaisesFailFastExceptionsOnVerify

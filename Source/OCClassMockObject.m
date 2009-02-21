@@ -39,4 +39,9 @@
 	return [mockedClass instanceMethodSignatureForSelector:aSelector];
 }
 
+- (BOOL)respondsToSelector:(SEL)selector
+{
+    return [mockedClass instancesRespondToSelector:selector];
+}
+
 @end
