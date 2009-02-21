@@ -105,13 +105,19 @@
 	switch (argType[0]) 
 	{
 		case '#':
-		case ':':
 		case '@': 
 		{
 			id value;
 			[anInvocation getArgument:&value atIndex:index];
 			return value;
 		}
+		case ':':
+ 		{
+ 			SEL s = (SEL)0;
+ 			[anInvocation getArgument:&s atIndex:index];
+ 			id value = NSStringFromSelector(s);
+ 			return value;
+ 		}
 		case 'i': 
 		{
 			int value;
