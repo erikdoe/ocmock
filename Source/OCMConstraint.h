@@ -16,6 +16,7 @@
 + (id)constraintWithSelector:(SEL)aSelector onObject:(id)anObject withValue:(id)aValue;
 
 + (id)any;
++ (void *)anyPointer;
 + (id)isNil;
 + (id)isNotNil;
 + (id)isNotEqual:(id)value;

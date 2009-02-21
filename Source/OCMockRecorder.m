@@ -200,6 +200,8 @@
         {
             void *value = NULL;
             [anInvocation getArgument:&value atIndex:index];
+			if(value == (void *)0x01234567)
+				return [OCMConstraint any];
             return [NSValue valueWithPointer:value];
         }
 		case '{': // structure

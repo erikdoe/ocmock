@@ -137,6 +137,12 @@
 	return [OCMAnyConstraint constraint];
 }
 
++ (void *)anyPointer
+{
+	// This magic constant is picked up in OCMockRecorder
+	return (void *)0x01234567;
+}
+
 + (id)isNil
 {
 	return [OCMIsNilConstraint constraint];

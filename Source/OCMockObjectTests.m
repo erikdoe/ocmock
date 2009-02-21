@@ -80,6 +80,24 @@
 	STAssertThrows([mock stringByPaddingToLength:20 withString:@"foo" startingAtIndex:3], @"Should have raised an exception.");	
 }
 
+- (void)testAcceptsStubbedMethodWithPointerArgument
+{
+	NSError *error;
+	BOOL yes = YES;
+	[[[mock stub] andReturnValue:OCMOCK_VALUE(yes)] writeToFile:OCMOCK_ANY atomically:YES encoding:NSMacOSRomanStringEncoding error:&error];
+	
+	STAssertTrue([mock writeToFile:@"foo" atomically:YES encoding:NSMacOSRomanStringEncoding error:&error], nil);
+}
+
+- (void)testAcceptsStubbedMethodWithAnyPointerArgument
+{
+	BOOL yes = YES;
+	NSError *error;
+	[[[mock stub] andReturnValue:OCMOCK_VALUE(yes)] writeToFile:OCMOCK_ANY atomically:YES encoding:NSMacOSRomanStringEncoding error:[OCMConstraint anyPointer]];
+	
+	STAssertTrue([mock writeToFile:@"foo" atomically:YES encoding:NSMacOSRomanStringEncoding error:&error], nil);
+}
+
 - (void)testAcceptsStubbedMethodWithVoidPointerArgument
 {
 	mock = [OCMockObject mockForClass:[NSMutableData class]];
@@ -128,6 +146,16 @@
 	STAssertThrows([mock substringWithRange:otherRange], @"Should have raised an exception.");	
 }
 
+- (void)testRaisesExceptionWhenMethodWithWrongPointerArgumentIsCalled
+{
+	NSString *string;
+	NSString *anotherString;
+	NSArray *array;
+	
+	[[mock stub] completePathIntoString:&string caseSensitive:YES matchesIntoArray:&array filterTypes:OCMOCK_ANY];
+	
+	STAssertThrows([mock completePathIntoString:&anotherString caseSensitive:YES matchesIntoArray:&array filterTypes:OCMOCK_ANY], nil);
+}
 
 - (void)testReturnsStubbedReturnValue
 {
