@@ -9,6 +9,7 @@
 
 @protocol TestProtocol
 - (int)primitiveValue;
+//- (BOOL)boolValue;
 @optional
 - (id)objectValue;
 @end
@@ -31,7 +32,6 @@
 	[[mock stub] lowercaseString];
 	[mock lowercaseString];
 }
-
 
 - (void)testRaisesExceptionWhenUnknownMethodIsCalled
 {
@@ -179,6 +179,27 @@
 	STAssertEquals(expectedValue, returnValue, @"Should have returned stubbed value.");
 }
 
+/*
+- (void)testReturnsStubbedTrueBoolReturnValue
+{
+	mock = [OCMockObject mockForProtocol:@protocol(TestProtocol)];	
+    BOOL expectedValue = YES;
+	[[[mock stub] andReturnValue:OCMOCK_VALUE(expectedValue)] boolValue];
+	BOOL returnValue = [mock boolValue];
+    
+	STAssertTrue(returnValue, @"Should have returned stubbed YES.");
+}
+
+- (void)testReturnsStubbedFalseBoolReturnValue
+{
+	mock = [OCMockObject mockForProtocol:@protocol(TestProtocol)];	
+    BOOL expectedValue = NO;
+	[[[mock stub] andReturnValue:OCMOCK_VALUE(expectedValue)] boolValue];
+	BOOL returnValue = [mock boolValue];
+    
+	STAssertFalse(returnValue, @"Should have returned stubbed NO.");
+}
+*/
 
 - (void)testRaisesWhenBoxedValueTypesDoNotMatch
 {
@@ -302,6 +323,12 @@
 	STAssertThrows([mock verify], @"Should have raised an exception.");
 }
 
+-(void)testAcceptsAndVerifiesMethodsWithSelectorArgument
+{
+	[[mock expect] performSelector:@selector(lowercaseString)];
+	[mock performSelector:@selector(lowercaseString)];
+	[mock verify];
+}
 
 - (void)testRaisesExceptionWhenAskedTo
 {
@@ -437,6 +464,5 @@
 	[mock lowercaseString];
 	[mock expect];
 }
-
 
 @end
