@@ -6,10 +6,12 @@
 #import <objc/runtime.h>
 #import <OCMock/OCMockRecorder.h>
 #import <OCMock/OCMConstraint.h>
+#import <OCMock/OCMArg.h>
+#import "OCMPassByRefSetter.h"
 #import "NSInvocation+OCMAdditions.h"
 
 @interface NSObject(HCMatcherDummy)
-- (BOOL) matches:(id)item;
+- (BOOL)matches:(id)item;
 @end
 
 
@@ -202,6 +204,8 @@
             [anInvocation getArgument:&value atIndex:index];
 			if(value == (void *)0x01234567)
 				return [OCMConstraint any];
+			if((value != NULL) && (((id)value)->isa == [OCMPassByRefSetter class]))
+				return (id)value;
             return [NSValue valueWithPointer:value];
         }
 		case '{': // structure
@@ -235,6 +239,11 @@
 		{	
 			if([recordedArg evaluate:passedArg] == NO)
 				return NO;
+		}
+		else if([recordedArg isKindOfClass:[OCMPassByRefSetter class]])
+		{
+			// side effect but easier to do here than in setupReturnValue
+			*(id *)[passedArg pointerValue] = [(OCMPassByRefSetter *)recordedArg value];
 		}
 		else if([recordedArg conformsToProtocol:objc_getProtocol("HCMatcher")])
 		{

@@ -222,6 +222,28 @@
 
 
 // --------------------------------------------------------------------------------------
+//	returning values in pass-by-reference arguments
+// --------------------------------------------------------------------------------------
+
+- (void)testReturnsValuesInPassByReferenceArguments
+{
+	NSString *expectedName = [NSString stringWithString:@"Test"];
+	NSArray *expectedArray = [NSArray array];
+	
+	[[mock expect] completePathIntoString:[OCMArg setTo:expectedName] caseSensitive:YES 
+						 matchesIntoArray:[OCMArg setTo:expectedArray] filterTypes:OCMOCK_ANY];
+	
+	NSString *actualName = nil;
+	NSArray *actualArray = nil;
+	[mock completePathIntoString:&actualName caseSensitive:YES matchesIntoArray:&actualArray filterTypes:nil];
+
+	STAssertNoThrow([mock verify], @"An unexpected exception was thrown");
+	STAssertEqualObjects(expectedName, actualName, @"The two string objects should be equal");
+	STAssertEqualObjects(expectedArray, actualArray, @"The two array objects should be equal");
+}
+
+
+// --------------------------------------------------------------------------------------
 //	accepting expected methods
 // --------------------------------------------------------------------------------------
 
