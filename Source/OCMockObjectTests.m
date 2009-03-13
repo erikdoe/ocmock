@@ -9,7 +9,6 @@
 
 @protocol TestProtocol
 - (int)primitiveValue;
-//- (BOOL)boolValue;
 @optional
 - (id)objectValue;
 @end
@@ -26,6 +25,10 @@
 	mock = [OCMockObject mockForClass:[NSString class]];
 }
 
+
+// --------------------------------------------------------------------------------------
+//	accepting stubbed methods / rejecting methods not stubbed
+// --------------------------------------------------------------------------------------
 
 - (void)testAcceptsStubbedMethod
 {
@@ -100,6 +103,17 @@
 	STAssertTrue([mock writeToFile:@"foo" atomically:YES encoding:NSMacOSRomanStringEncoding error:&error], nil);
 }
 
+- (void)testRaisesExceptionWhenMethodWithWrongPointerArgumentIsCalled
+{
+	NSString *string;
+	NSString *anotherString;
+	NSArray *array;
+	
+	[[mock stub] completePathIntoString:&string caseSensitive:YES matchesIntoArray:&array filterTypes:OCMOCK_ANY];
+	
+	STAssertThrows([mock completePathIntoString:&anotherString caseSensitive:YES matchesIntoArray:&array filterTypes:OCMOCK_ANY], nil);
+}
+
 - (void)testAcceptsStubbedMethodWithVoidPointerArgument
 {
 	mock = [OCMockObject mockForClass:[NSMutableData class]];
@@ -148,16 +162,10 @@
 	STAssertThrows([mock substringWithRange:otherRange], @"Should have raised an exception.");	
 }
 
-- (void)testRaisesExceptionWhenMethodWithWrongPointerArgumentIsCalled
-{
-	NSString *string;
-	NSString *anotherString;
-	NSArray *array;
-	
-	[[mock stub] completePathIntoString:&string caseSensitive:YES matchesIntoArray:&array filterTypes:OCMOCK_ANY];
-	
-	STAssertThrows([mock completePathIntoString:&anotherString caseSensitive:YES matchesIntoArray:&array filterTypes:OCMOCK_ANY], nil);
-}
+
+// --------------------------------------------------------------------------------------
+//	returning values from stubbed methods
+// --------------------------------------------------------------------------------------
 
 - (void)testReturnsStubbedReturnValue
 {
@@ -178,28 +186,6 @@
     
 	STAssertEquals(expectedValue, returnValue, @"Should have returned stubbed value.");
 }
-
-/*
-- (void)testReturnsStubbedTrueBoolReturnValue
-{
-	mock = [OCMockObject mockForProtocol:@protocol(TestProtocol)];	
-    BOOL expectedValue = YES;
-	[[[mock stub] andReturnValue:OCMOCK_VALUE(expectedValue)] boolValue];
-	BOOL returnValue = [mock boolValue];
-    
-	STAssertTrue(returnValue, @"Should have returned stubbed YES.");
-}
-
-- (void)testReturnsStubbedFalseBoolReturnValue
-{
-	mock = [OCMockObject mockForProtocol:@protocol(TestProtocol)];	
-    BOOL expectedValue = NO;
-	[[[mock stub] andReturnValue:OCMOCK_VALUE(expectedValue)] boolValue];
-	BOOL returnValue = [mock boolValue];
-    
-	STAssertFalse(returnValue, @"Should have returned stubbed NO.");
-}
-*/
 
 - (void)testRaisesWhenBoxedValueTypesDoNotMatch
 {
@@ -235,6 +221,10 @@
 }
 
 
+// --------------------------------------------------------------------------------------
+//	accepting expected methods
+// --------------------------------------------------------------------------------------
+
 - (void)testAcceptsExpectedMethodAndReturnsValue
 {
 	id returnValue;
@@ -265,6 +255,32 @@
 	[mock lowercaseString];
 }
 
+
+// --------------------------------------------------------------------------------------
+//	verifying expected methods
+// --------------------------------------------------------------------------------------
+
+- (void)testAcceptsAndVerifiesExpectedMethods
+{
+	[[mock expect] lowercaseString];
+	[[mock expect] uppercaseString];
+	
+	[mock lowercaseString];
+	[mock uppercaseString];
+	
+	[mock verify];
+}
+
+
+- (void)testRaisesExceptionOnVerifyWhenNotAllExpectedMethodsWereCalled
+{
+	[[mock expect] lowercaseString];
+	[[mock expect] uppercaseString];
+	
+	[mock lowercaseString];
+	
+	STAssertThrows([mock verify], @"Should have raised an exception.");
+}
 
 - (void)testAcceptsAndVerifiesTwoExpectedInvocationsOfSameMethod
 {
@@ -301,34 +317,17 @@
 	[mock verify];
 }
 
-- (void)testAcceptsAndVerifiesExpectedMethods
-{
-	[[mock expect] lowercaseString];
-	[[mock expect] uppercaseString];
-	
-	[mock lowercaseString];
-	[mock uppercaseString];
-	
-	[mock verify];
-}
-
-
-- (void)testRaisesExceptionOnVerifyWhenNotAllExpectedMethodsWereCalled
-{
-	[[mock expect] lowercaseString];
-	[[mock expect] uppercaseString];
-	
-	[mock lowercaseString];
-
-	STAssertThrows([mock verify], @"Should have raised an exception.");
-}
-
 -(void)testAcceptsAndVerifiesMethodsWithSelectorArgument
 {
 	[[mock expect] performSelector:@selector(lowercaseString)];
 	[mock performSelector:@selector(lowercaseString)];
 	[mock verify];
 }
+
+
+// --------------------------------------------------------------------------------------
+//	raising exceptions
+// --------------------------------------------------------------------------------------
 
 - (void)testRaisesExceptionWhenAskedTo
 {
@@ -350,40 +349,10 @@
 	STAssertEqualObjects(@"SomeValue", returnValue, @"Should have returned value that was set up.");
 }
 
-- (void)testRespondsToValidSelector
-{
-	STAssertTrue([mock respondsToSelector:@selector(lowercaseString)], nil);
-}
 
-- (void)testDoesNotRespondToInvalidSelector
-{
-	STAssertFalse([mock respondsToSelector:@selector(fooBar)], nil);
-}
-
-- (void)testCanMockFormalProtocol
-{
-	mock = [OCMockObject mockForProtocol:@protocol(NSLocking)];
-	[[mock expect] lock];
-	
-	[mock lock];
-	
-	[mock verify];
-}
-
-
-- (void)testRaisesWhenUnknownMethodIsCalledOnProtocol
-{
-	mock = [OCMockObject mockForProtocol:@protocol(NSLocking)];
-	STAssertThrows([mock lowercaseString], @"Should have raised an exception.");
-}
-
-
-- (void)testMockedProtocolConforms
-{
-	mock = [OCMockObject mockForProtocol:@protocol(NSLocking)];
-	STAssertTrue([mock conformsToProtocol:@protocol(NSLocking)], nil);
-}
-
+// --------------------------------------------------------------------------------------
+//	nice mocks don't complain about unknown methods
+// --------------------------------------------------------------------------------------
 
 - (void)testReturnsDefaultValueWhenUnknownMethodIsCalledOnNiceClassMock
 {
@@ -413,23 +382,65 @@
 	STAssertThrows([mock verify], @"Should have raised an exception because method was not called.");
 }
 
+
+// --------------------------------------------------------------------------------------
+//	mocks should honour the NSObject contract
+// --------------------------------------------------------------------------------------
+
+- (void)testRespondsToValidSelector
+{
+	STAssertTrue([mock respondsToSelector:@selector(lowercaseString)], nil);
+}
+
+- (void)testDoesNotRespondToInvalidSelector
+{
+	STAssertFalse([mock respondsToSelector:@selector(fooBar)], nil);
+}
+
+- (void)testCanMockFormalProtocol
+{
+	mock = [OCMockObject mockForProtocol:@protocol(NSLocking)];
+	[[mock expect] lock];
+	
+	[mock lock];
+	
+	[mock verify];
+}
+
+- (void)testRaisesWhenUnknownMethodIsCalledOnProtocol
+{
+	mock = [OCMockObject mockForProtocol:@protocol(NSLocking)];
+	STAssertThrows([mock lowercaseString], @"Should have raised an exception.");
+}
+
+- (void)testConformsToMockedProtocol
+{
+	mock = [OCMockObject mockForProtocol:@protocol(NSLocking)];
+	STAssertTrue([mock conformsToProtocol:@protocol(NSLocking)], nil);
+}
+
 - (void)testRespondsToValidProtocolRequiredSelector
 {
-	mock = [OCMockObject niceMockForProtocol:@protocol(TestProtocol)];	
+	mock = [OCMockObject mockForProtocol:@protocol(TestProtocol)];	
     STAssertTrue([mock respondsToSelector:@selector(primitiveValue)], nil);
 }
 
 - (void)testRespondsToValidProtocolOptionalSelector
 {
-	mock = [OCMockObject niceMockForProtocol:@protocol(TestProtocol)];	
+	mock = [OCMockObject mockForProtocol:@protocol(TestProtocol)];	
     STAssertTrue([mock respondsToSelector:@selector(objectValue)], nil);
 }
 
 - (void)testDoesNotRespondToInvalidProtocolSelector
 {
-	mock = [OCMockObject niceMockForProtocol:@protocol(TestProtocol)];	
+	mock = [OCMockObject mockForProtocol:@protocol(TestProtocol)];	
     STAssertFalse([mock respondsToSelector:@selector(fooBar)], nil);
 }
+
+
+// --------------------------------------------------------------------------------------
+//  some internal tests
+// --------------------------------------------------------------------------------------
 
 - (void)testReRaisesFailFastExceptionsOnVerify
 {
@@ -444,19 +455,6 @@
 	STAssertThrows([mock verify], @"Should have reraised the exception.");
 }
 
-
-/*
-- (void)testCanMockInformalProtocol
-{
-	mock = [OCMockObject mock];
-	NSArray *params = [NSArray arrayWithObject:@"steve"];
-	[[mock expect] authenticationDataForComponents:params];
-	
-	[mock authenticationDataForComponents:params];
-	
-	[mock verify];
-}
-*/
 
 - (void)testCanCreateExpectationsAfterInvocations
 {
