@@ -5,7 +5,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class OCMConstraint; // reference for backwards compatibility OCMOCK_ANY macro
+@class OCMArg; // reference for backwards compatibility OCMOCK_ANY macro
 
 
 @interface OCMockRecorder : NSProxy 
@@ -29,5 +29,5 @@
 
 @end
 
-#define OCMOCK_ANY [OCMConstraint any]
+#define OCMOCK_ANY [OCMArg any]
 #define OCMOCK_VALUE(variable) [NSValue value:&variable withObjCType:@encode(typeof(variable))]

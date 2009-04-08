@@ -9,9 +9,6 @@
 //	OCMAnyConstraint
 //---------------------------------------------------------------------------------------
 
-@interface OCMAnyConstraint : OCMConstraint
-@end
-
 @implementation OCMAnyConstraint
 
 - (BOOL)evaluate:(id)value
@@ -25,9 +22,6 @@
 //---------------------------------------------------------------------------------------
 //	OCMIsNilConstraint
 //---------------------------------------------------------------------------------------
-
-@interface OCMIsNilConstraint : OCMConstraint
-@end
 
 @implementation OCMIsNilConstraint
 
@@ -43,9 +37,6 @@
 //	OCMIsNotNilConstraint
 //---------------------------------------------------------------------------------------
 
-@interface OCMIsNotNilConstraint : OCMConstraint
-@end
-
 @implementation OCMIsNotNilConstraint
 
 - (BOOL)evaluate:(id)value
@@ -60,14 +51,6 @@
 //	OCMIsNotEqualConstraint
 //---------------------------------------------------------------------------------------
 
-@interface OCMIsNotEqualConstraint : OCMConstraint
-{
-	@public
-	id testValue;
-}
-
-@end
-
 @implementation OCMIsNotEqualConstraint
 
 - (BOOL)evaluate:(id)value
@@ -81,14 +64,6 @@
 //---------------------------------------------------------------------------------------
 //	OCMInvocationConstraint
 //---------------------------------------------------------------------------------------
-
-@interface OCMInvocationConstraint : OCMConstraint
-{
-	@public
-	NSInvocation *invocation;
-}
-
-@end
 
 @implementation OCMInvocationConstraint
 
@@ -115,6 +90,11 @@
 	return [[[self alloc] init] autorelease];
 }
 
+- (BOOL)evaluate:(id)value
+{
+	return NO;
+}
+
 
 - (BOOL)checkAny:(id)theArg
 {
@@ -131,34 +111,6 @@
 	return ![self checkNil:theArg];
 }
 
-
-+ (id)any
-{
-	return [OCMAnyConstraint constraint];
-}
-
-+ (void *)anyPointer
-{
-	// This magic constant is picked up in OCMockRecorder
-	return (void *)0x01234567;
-}
-
-+ (id)isNil
-{
-	return [OCMIsNilConstraint constraint];
-}
-
-+ (id)isNotNil
-{
-	return [OCMIsNotNilConstraint constraint];
-}
-
-+ (id)isNotEqual:(id)value
-{
-	OCMIsNotEqualConstraint *constraint = [OCMIsNotEqualConstraint constraint];
-	constraint->testValue = value;
-	return constraint;
-}
 
 + (id)constraintWithSelector:(SEL)aSelector onObject:(id)anObject
 {
@@ -182,10 +134,6 @@
 	return constraint;
 }
 
-- (BOOL)evaluate:(id)value
-{
-	return NO;
-}
 
 @end
 

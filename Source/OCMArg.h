@@ -9,6 +9,17 @@
 {
 }
 
+// constraining arguments
+
++ (id)any;
++ (void *)anyPointer;
++ (id)isNil;
++ (id)isNotNil;
++ (id)isNotEqual:(id)value;
++ (id)checkWithSelector:(SEL)selector onObject:(id)anObject;
+
+// manipulating arguments
+
 + (id *)setTo:(id)value;
 
 @end

@@ -52,7 +52,7 @@
 
 - (void)testAcceptsStubbedMethodWithConstraint
 {
-	[[mock stub] hasSuffix:[OCMConstraint any]];
+	[[mock stub] hasSuffix:[OCMArg any]];
 	[mock hasSuffix:@"foo"];
 	[mock hasSuffix:@"bar"];
 }
@@ -98,7 +98,7 @@
 {
 	BOOL yes = YES;
 	NSError *error;
-	[[[mock stub] andReturnValue:OCMOCK_VALUE(yes)] writeToFile:OCMOCK_ANY atomically:YES encoding:NSMacOSRomanStringEncoding error:[OCMConstraint anyPointer]];
+	[[[mock stub] andReturnValue:OCMOCK_VALUE(yes)] writeToFile:OCMOCK_ANY atomically:YES encoding:NSMacOSRomanStringEncoding error:[OCMArg anyPointer]];
 	
 	STAssertTrue([mock writeToFile:@"foo" atomically:YES encoding:NSMacOSRomanStringEncoding error:&error], nil);
 }

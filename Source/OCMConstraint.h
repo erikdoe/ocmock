@@ -7,21 +7,40 @@
 
 
 @interface OCMConstraint : NSObject 
-{
-}
 
 + (id)constraint;
+- (BOOL)evaluate:(id)value;
 
 + (id)constraintWithSelector:(SEL)aSelector onObject:(id)anObject;
 + (id)constraintWithSelector:(SEL)aSelector onObject:(id)anObject withValue:(id)aValue;
 
-+ (id)any;
-+ (void *)anyPointer;
-+ (id)isNil;
-+ (id)isNotNil;
-+ (id)isNotEqual:(id)value;
+// if you are looking for any, isNil, etc, they have moved to OCMArg
+// try to use [OCMArg checkWith...] instead of constraint with selector in here
 
-- (BOOL)evaluate:(id)value;
+@end
+
+@interface OCMAnyConstraint : OCMConstraint
+@end
+
+@interface OCMIsNilConstraint : OCMConstraint
+@end
+
+@interface OCMIsNotNilConstraint : OCMConstraint
+@end
+
+@interface OCMIsNotEqualConstraint : OCMConstraint
+{
+	@public
+	id testValue;
+}
+
+@end
+
+@interface OCMInvocationConstraint : OCMConstraint
+{
+	@public
+	NSInvocation *invocation;
+}
 
 @end
 

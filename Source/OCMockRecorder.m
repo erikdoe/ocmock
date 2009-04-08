@@ -203,7 +203,7 @@
             void *value = NULL;
             [anInvocation getArgument:&value atIndex:index];
 			if(value == (void *)0x01234567)
-				return [OCMConstraint any];
+				return [OCMArg any];
 			if((value != NULL) && (((id)value)->isa == [OCMPassByRefSetter class]))
 				return (id)value;
             return [NSValue valueWithPointer:value];

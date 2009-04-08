@@ -16,7 +16,7 @@
 
 - (void)testAnyAcceptsAnything
 {
-	OCMConstraint *constraint = [OCMConstraint any];
+	OCMConstraint *constraint = [OCMAnyConstraint constraint];
 	
 	STAssertTrue([constraint evaluate:@"foo"], @"Should have accepted a value.");
 	STAssertTrue([constraint evaluate:@"foo"], @"Should have accepted another value.");
@@ -25,7 +25,7 @@
 
 - (void)testIsNilAcceptsOnlyNil
 {
-	OCMConstraint *constraint = [OCMConstraint isNil];
+	OCMConstraint *constraint = [OCMIsNilConstraint constraint];
 	
 	STAssertFalse([constraint evaluate:@"foo"], @"Should not have accepted a value.");
 	STAssertTrue([constraint evaluate:nil], @"Should have accepted nil.");	
@@ -33,7 +33,7 @@
 
 - (void)testIsNotNilAcceptsAnythingButNil
 {
-	OCMConstraint *constraint = [OCMConstraint isNotNil];
+	OCMConstraint *constraint = [OCMIsNotNilConstraint constraint];
 	
 	STAssertTrue([constraint evaluate:@"foo"], @"Should have accepted a value.");
 	STAssertFalse([constraint evaluate:nil], @"Should not have accepted nil.");	
@@ -41,7 +41,8 @@
 
 - (void)testNotEqualAcceptsAnythingButValue
 {
-	OCMConstraint *constraint = [OCMConstraint isNotEqual:@"foo"];
+	OCMIsNotEqualConstraint *constraint = [OCMIsNotEqualConstraint constraint];
+	constraint->testValue = @"foo";
 	
 	STAssertFalse([constraint evaluate:@"foo"], @"Should not have accepted value.");
 	STAssertTrue([constraint evaluate:@"bar"], @"Should have accepted other value.");	
