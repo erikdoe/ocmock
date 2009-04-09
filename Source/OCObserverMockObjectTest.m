@@ -27,6 +27,27 @@ static NSString *TestNotificationOne = @"TestNotificationOne";
     [mock verify];
 }
 
+- (void)testAcceptsNotificationsInAnyOrder
+{
+	[center addMockObserver:mock name:TestNotificationOne object:nil];
+	[[mock expect] notificationWithName:TestNotificationOne object:self];
+    [[mock expect] notificationWithName:TestNotificationOne object:[OCMArg any]];
+	
+	[center postNotificationName:TestNotificationOne object:[NSString string]];
+	[center postNotificationName:TestNotificationOne object:self];
+}
+
+- (void)testRaisesEvenThoughOverlappingExpectationsCouldHaveBeenSatisfied
+{
+	// this test demonstrates a shortcoming, not a feature
+	[center addMockObserver:mock name:TestNotificationOne object:nil];
+    [[mock expect] notificationWithName:TestNotificationOne object:[OCMArg any]];
+	[[mock expect] notificationWithName:TestNotificationOne object:self];
+	
+	[center postNotificationName:TestNotificationOne object:self];
+	STAssertThrows([center postNotificationName:TestNotificationOne object:[NSString string]], nil);
+}
+
 - (void)testRaisesExceptionWhenUnexpectedNotificationIsReceived
 {
 	[center addMockObserver:mock name:TestNotificationOne object:nil];
@@ -42,7 +63,7 @@ static NSString *TestNotificationOne = @"TestNotificationOne";
 	STAssertThrows([center postNotificationName:TestNotificationOne object:[NSString string]], nil);
 }
 
-- (void)testRaisesOnVerifyWhenNotAllNotificationsWereSent
+- (void)testRaisesOnVerifyWhenExpectedNotificationIsNotSent
 {
 	[center addMockObserver:mock name:TestNotificationOne object:nil];
     [[mock expect] notificationWithName:TestNotificationOne object:[OCMArg any]];
@@ -50,5 +71,14 @@ static NSString *TestNotificationOne = @"TestNotificationOne";
 	STAssertThrows([mock verify], nil);
 }
 
+- (void)testRaisesOnVerifyWhenNotAllNotificationsWereSent
+{
+	[center addMockObserver:mock name:TestNotificationOne object:nil];
+    [[mock expect] notificationWithName:TestNotificationOne object:[OCMArg any]];
+	[[mock expect] notificationWithName:TestNotificationOne object:self];
+
+	[center postNotificationName:TestNotificationOne object:self];
+	STAssertThrows([mock verify], nil);
+}
 
 @end
