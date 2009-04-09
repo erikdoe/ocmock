@@ -6,6 +6,7 @@
 #import <OCMock/OCMockObject.h>
 #import "OCClassMockObject.h"
 #import "OCProtocolMockObject.h"
+#import "OCObserverMockObject.h"
 #import <OCMock/OCMockRecorder.h>
 #import "NSInvocation+OCMAdditions.h"
 
@@ -31,7 +32,6 @@
 	return [[[OCProtocolMockObject alloc] initWithProtocol:aProtocol] autorelease];
 }
 
-
 + (id)niceMockForClass:(Class)aClass
 {
 	return [self _makeNice:[self mockForClass:aClass]];
@@ -47,6 +47,12 @@
 {
 	mock->isNice = YES;
 	return mock;
+}
+
+
++ (id)observerMock
+{
+	return [[[OCObserverMockObject alloc] init] autorelease];
 }
 
 

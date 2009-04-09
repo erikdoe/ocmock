@@ -3,8 +3,8 @@
 //  Copyright (c) 2009 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
-#import "OCMArg.h"
-#import "OCMConstraint.h"
+#import <OCMock/OCMArg.h>
+#import <OCMock/OCMConstraint.h>
 #import "OCMPassByRefSetter.h"
 
 @implementation OCMArg

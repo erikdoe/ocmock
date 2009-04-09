@@ -1,21 +1,21 @@
 //---------------------------------------------------------------------------------------
-//  $Id: $
-//  Copyright (c) 2007-2008 by Mulle Kybernetik. See License file for details.
+//  $Id: OCMConstraint.h$
+//  Copyright (c) 2007-2009 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import <Foundation/Foundation.h>
-
 
 @interface OCMConstraint : NSObject 
 
 + (id)constraint;
 - (BOOL)evaluate:(id)value;
 
+// if you are looking for any, isNil, etc, they have moved to OCMArg
+
 + (id)constraintWithSelector:(SEL)aSelector onObject:(id)anObject;
 + (id)constraintWithSelector:(SEL)aSelector onObject:(id)anObject withValue:(id)aValue;
 
-// if you are looking for any, isNil, etc, they have moved to OCMArg
-// try to use [OCMArg checkWith...] instead of constraint with selector in here
+// try to use [OCMArg checkWith...] instead of constraintWithSelector in here
 
 @end
 

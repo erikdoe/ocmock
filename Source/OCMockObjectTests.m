@@ -3,8 +3,7 @@
 //  Copyright (c) 2004-2008 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
-#import "OCMock.h"
-#import <OCMock/OCMConstraint.h>
+#import <OCMock/OCMock.h>
 #import "OCMockObjectTests.h"
 
 @protocol TestProtocol

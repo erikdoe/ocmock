@@ -1,10 +1,9 @@
 //---------------------------------------------------------------------------------------
-//  $Id: $
+//  $Id: OCMPassByRefSetter.m$
 //  Copyright (c) 2009 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import "OCMPassByRefSetter.h"
-
 
 @implementation OCMPassByRefSetter
 

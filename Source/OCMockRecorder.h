@@ -5,9 +5,6 @@
 
 #import <Foundation/Foundation.h>
 
-@class OCMArg; // reference for backwards compatibility OCMOCK_ANY macro
-
-
 @interface OCMockRecorder : NSProxy 
 {
 	id				signatureResolver;
@@ -28,6 +25,3 @@
 - (void)releaseInvocation;
 
 @end
-
-#define OCMOCK_ANY [OCMArg any]
-#define OCMOCK_VALUE(variable) [NSValue value:&variable withObjCType:@encode(typeof(variable))]

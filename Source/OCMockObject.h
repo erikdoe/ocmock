@@ -19,6 +19,8 @@
 + (id)niceMockForClass:(Class)aClass;
 + (id)niceMockForProtocol:(Protocol *)aProtocol;
 
++ (id)observerMock;
+
 - (id)init;
 
 - (id)stub;

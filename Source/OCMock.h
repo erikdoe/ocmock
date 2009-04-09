@@ -7,3 +7,4 @@
 #import <OCMock/OCMockRecorder.h>
 #import <OCMock/OCMConstraint.h>
 #import <OCMock/OCMArg.h>
+#import <OCMock/NSNotificationCenter+OCMAdditions.h>

@@ -6,8 +6,6 @@
 #import <Foundation/Foundation.h>
 
 @interface OCMArg : NSObject 
-{
-}
 
 // constraining arguments
 
@@ -23,3 +21,6 @@
 + (id *)setTo:(id)value;
 
 @end
+
+#define OCMOCK_ANY [OCMArg any]
+#define OCMOCK_VALUE(variable) [NSValue value:&variable withObjCType:@encode(typeof(variable))]

@@ -1,17 +1,16 @@
 //---------------------------------------------------------------------------------------
-//  $Id: OCMPassByRefSetter.m$
+//  $Id: OCObserverMockObject.h $
 //  Copyright (c) 2009 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
-#import <Foundation/Foundation.h>
+#import <SenTestingKit/SenTestingKit.h>
 
-@interface OCMPassByRefSetter : NSObject 
+
+@interface OCObserverMockObjectTest : SenTestCase 
 {
-	id value;
+	NSNotificationCenter *center;
+	
+	id mock;
 }
-
-- (id)initWithValue:(id)value;
-
-- (id)value;
 
 @end

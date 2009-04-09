@@ -1,17 +1,17 @@
 //---------------------------------------------------------------------------------------
-//  $Id: OCMPassByRefSetter.m$
+//  $Id: OCObserverMockObject.h $
 //  Copyright (c) 2009 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import <Foundation/Foundation.h>
 
-@interface OCMPassByRefSetter : NSObject 
+@interface OCObserverMockObject : NSObject 
 {
-	id value;
+	NSMutableArray *recorders;
 }
 
-- (id)initWithValue:(id)value;
+- (id)expect;
 
-- (id)value;
+- (void)verify;
 
 @end
