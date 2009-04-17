@@ -608,6 +608,7 @@
 			buildSettings = {
 				ARCHS = "$(NATIVE_ARCH_32_BIT)";
 				FRAMEWORK_SEARCH_PATHS = "$(TEMP_ROOT)/Frameworks";
+				GCC_ENABLE_OBJC_GC = supported;
 				GCC_INPUT_FILETYPE = automatic;
 				LD_DYLIB_INSTALL_NAME = "@rpath/$(EXECUTABLE_PATH)";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
@@ -626,6 +627,7 @@
 					x86_64,
 				);
 				FRAMEWORK_SEARCH_PATHS = "$(TEMP_ROOT)/Frameworks";
+				GCC_ENABLE_OBJC_GC = supported;
 				GCC_INPUT_FILETYPE = automatic;
 				LD_DYLIB_INSTALL_NAME = "@rpath/$(EXECUTABLE_PATH)";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
