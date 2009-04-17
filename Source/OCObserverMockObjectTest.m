@@ -27,6 +27,17 @@ static NSString *TestNotificationOne = @"TestNotificationOne";
     [mock verify];
 }
 
+- (void)testAcceptsExpectedNotificationWithSpecifiedObjectAndUserInfo
+{
+	[center addMockObserver:mock name:TestNotificationOne object:nil];
+	NSDictionary *info = [NSDictionary dictionaryWithObject:@"foo" forKey:@"key"];
+    [[mock expect] notificationWithName:TestNotificationOne object:self userInfo:info];
+    
+    [center postNotificationName:TestNotificationOne object:self userInfo:info];
+	
+    [mock verify];
+}
+
 - (void)testAcceptsNotificationsInAnyOrder
 {
 	[center addMockObserver:mock name:TestNotificationOne object:nil];
@@ -61,6 +72,15 @@ static NSString *TestNotificationOne = @"TestNotificationOne";
     [[mock expect] notificationWithName:TestNotificationOne object:self];
 	
 	STAssertThrows([center postNotificationName:TestNotificationOne object:[NSString string]], nil);
+}
+
+- (void)testRaisesWhenNotificationWithWrongUserInfoIsReceived
+{
+	[center addMockObserver:mock name:TestNotificationOne object:nil];
+    [[mock expect] notificationWithName:TestNotificationOne object:self 
+							   userInfo:[NSDictionary dictionaryWithObject:@"foo" forKey:@"key"]];
+	STAssertThrows([center postNotificationName:TestNotificationOne object:[NSString string] 
+									   userInfo:[NSDictionary dictionaryWithObject:@"bar" forKey:@"key"]], nil);
 }
 
 - (void)testRaisesOnVerifyWhenExpectedNotificationIsNotSent
