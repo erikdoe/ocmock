@@ -6,6 +6,10 @@
 #import <OCMock/OCMock.h>
 #import "OCMockObjectTests.h"
 
+// --------------------------------------------------------------------------------------
+//	Helper classes and protocols for testing
+// --------------------------------------------------------------------------------------
+
 @protocol TestProtocol
 - (int)primitiveValue;
 @optional
@@ -15,6 +19,30 @@
 @protocol ProtocolWithTypeQualifierMethod
 - (bycopy NSString *)byCopyString;
 @end
+
+@interface TestClassThatCallsSelf : NSObject
+- (NSString *)description;
+- (NSString *)name;
+@end
+
+@implementation TestClassThatCallsSelf
+
+- (NSString *)description
+{
+	return [self name];
+}
+
+- (NSString *)name
+{
+	return @"Foo";
+}
+
+@end
+
+
+// --------------------------------------------------------------------------------------
+//  setup
+// --------------------------------------------------------------------------------------
 
 
 @implementation OCMockObjectTests
@@ -402,6 +430,32 @@
 	[[mock expect] primitiveValue];
 	STAssertThrows([mock verify], @"Should have raised an exception because method was not called.");
 }
+
+
+// --------------------------------------------------------------------------------------
+//	partial mocks forward unknown methods to a real instance
+// --------------------------------------------------------------------------------------
+
+- (void)testStubsMethodsOnPartialMock
+{
+	mock = [OCMockObject partialMockForObject:[NSString stringWithString:@"hello"]];
+	[[[mock stub] andReturn:@"hi"] uppercaseString];
+	STAssertEqualObjects(@"hi", [mock uppercaseString], @"Should have returned stubbed value");
+}
+
+- (void)testForwardsUnstubbedMethodsCallsToRealObjectOnPartialMock
+{
+	mock = [OCMockObject partialMockForObject:[NSString stringWithString:@"HELLO"]];
+	STAssertEqualObjects(@"hello", [mock lowercaseString], @"Should have returned value from real object.");
+}
+
+//- (void)testCallsToSelfInRealObjectAreShadowedByPartialMock
+//{
+//	TestClassThatCallsSelf *foo = [[[TestClassThatCallsSelf alloc] init] autorelease];
+//	mock = [OCMockObject partialMockForObject:foo];
+//	[[[mock stub] andReturn:@"FooFoo"] name];
+//	STAssertEqualObjects(@"FooFoo", [mock description], @"Should have called through to stubbed method.");
+//}
 
 
 // --------------------------------------------------------------------------------------

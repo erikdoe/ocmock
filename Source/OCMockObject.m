@@ -6,12 +6,15 @@
 #import <OCMock/OCMockObject.h>
 #import "OCClassMockObject.h"
 #import "OCProtocolMockObject.h"
+#import "OCPartialMockObject.h"
 #import "OCObserverMockObject.h"
 #import <OCMock/OCMockRecorder.h>
 #import "NSInvocation+OCMAdditions.h"
 
 @interface OCMockObject(Private)
 + (id)_makeNice:(OCMockObject *)mock;
+- (BOOL)_handleInvocation:(NSInvocation *)anInvocation;
+- (void)_handleUnRecordedInvocation:(NSInvocation *)anInvocation;
 - (NSString *)_recorderDescriptions:(BOOL)onlyExpectations;
 @end
 
@@ -26,11 +29,16 @@
 	return [[[OCClassMockObject alloc] initWithClass:aClass] autorelease];
 }
 
-
 + (id)mockForProtocol:(Protocol *)aProtocol
 {
 	return [[[OCProtocolMockObject alloc] initWithProtocol:aProtocol] autorelease];
 }
+
++ (id)partialMockForObject:(NSObject *)anObject
+{
+	return [[[OCPartialMockObject alloc] initWithObject:anObject] autorelease];
+}
+
 
 + (id)niceMockForClass:(Class)aClass
 {
@@ -131,9 +139,20 @@
 
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
+	if([self _handleInvocation:anInvocation] == NO)
+		[self _handleUnRecordedInvocation:anInvocation];
+}
+
+
+//---------------------------------------------------------------------------------------
+//  internal methods
+//---------------------------------------------------------------------------------------
+
+- (BOOL)_handleInvocation:(NSInvocation *)anInvocation
+{
 	OCMockRecorder *recorder = nil;
 	int			   i;
-
+	
 	for(i = 0; i < [recorders count]; i++)
 	{
 		recorder = [recorders objectAtIndex:i];
@@ -141,30 +160,31 @@
 			break;
 	}
 	
-	if(i < [recorders count]) 
+	if(i == [recorders count])
+		return NO;
+	
+	if([expectations containsObject:recorder])
 	{
-		if ([expectations containsObject:recorder])
-		{
-			[expectations removeObject:recorder];
-			[recorders removeObjectAtIndex:i];
-		}
-		[recorder setUpReturnValue:anInvocation];
+		[expectations removeObject:recorder];
+		[recorders removeObjectAtIndex:i];
 	}
-	else if(isNice == NO)
+	[recorder setUpReturnValue:anInvocation];
+	
+	return YES;
+}
+
+- (void)_handleUnRecordedInvocation:(NSInvocation *)anInvocation
+{
+	if(isNice == NO)
 	{
 		NSException *exception = [NSException exceptionWithName:NSInternalInconsistencyException reason:
-			[NSString stringWithFormat:@"%@: unexpected method invoked: %@ %@",  [self description], 
-			[anInvocation invocationDescription], [self _recorderDescriptions:NO]] userInfo:nil];
+								  [NSString stringWithFormat:@"%@: unexpected method invoked: %@ %@",  [self description], 
+								   [anInvocation invocationDescription], [self _recorderDescriptions:NO]] userInfo:nil];
 		[exceptions addObject:exception];
 		[exception raise];
 	}
-	
 }
 
-
-//---------------------------------------------------------------------------------------
-//  descriptions
-//---------------------------------------------------------------------------------------
 
 - (NSString *)_recorderDescriptions:(BOOL)onlyExpectations
 {
