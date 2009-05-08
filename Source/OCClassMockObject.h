@@ -12,4 +12,6 @@
 
 - (id)initWithClass:(Class)aClass;
 
+- (Class)mockedClass;
+
 @end
