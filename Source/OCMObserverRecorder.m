@@ -12,12 +12,12 @@
 - (BOOL)matches:(id)item;
 @end
 
+#pragma mark -
+
 
 @implementation OCMObserverRecorder
 
-//---------------------------------------------------------------------------------------
-//  init and dealloc
-//---------------------------------------------------------------------------------------
+#pragma mark  Initialisers, description, accessors, etc.
 
 - (void)dealloc
 {
@@ -26,9 +26,7 @@
 }
 
 
-//---------------------------------------------------------------------------------------
-//  recording
-//---------------------------------------------------------------------------------------
+#pragma mark  Recording
 
 - (void)notificationWithName:(NSString *)name object:(id)sender
 {
@@ -41,9 +39,7 @@
 }
 
 
-//---------------------------------------------------------------------------------------
-//  verification
-//---------------------------------------------------------------------------------------
+#pragma mark  Verification
 
 - (BOOL)matchesNotification:(NSNotification *)aNotification
 {
@@ -74,7 +70,6 @@
 	}
 	return YES;
 }
-
 
 
 @end

@@ -14,19 +14,18 @@
 - (BOOL)matches:(id)item;
 @end
 
+#pragma mark  -
+
 
 @implementation OCMockRecorder
 
-//---------------------------------------------------------------------------------------
-//  init and dealloc
-//---------------------------------------------------------------------------------------
+#pragma mark  Initialisers, description, accessors, etc.
 
 - (id)initWithSignatureResolver:(id)anObject
 {
 	signatureResolver = anObject;
 	return self;
 }
-
 
 - (void)dealloc
 {
@@ -35,20 +34,19 @@
 	[super dealloc];
 }
 
-
-//---------------------------------------------------------------------------------------
-//  description
-//---------------------------------------------------------------------------------------
-
 - (NSString *)description
 {
 	return [recordedInvocation invocationDescription];
 }
 
+- (void)releaseInvocation
+{
+	[recordedInvocation release];
+	recordedInvocation = nil;
+}
 
-//---------------------------------------------------------------------------------------
-//  recording
-//---------------------------------------------------------------------------------------
+
+#pragma mark  Setting up behaviour
 
 - (id)andReturn:(id)anObject
 {
@@ -73,11 +71,14 @@
 	return self;
 }
 
+
+
+#pragma mark  Proxy API
+
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
 	return [signatureResolver methodSignatureForSelector:aSelector];
 }
-
 
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
@@ -89,9 +90,8 @@
 }
 
 
-//---------------------------------------------------------------------------------------
-//  verification and return values
-//---------------------------------------------------------------------------------------
+
+#pragma mark  Verification and return values
 
 - (id)_extractArgument: (NSInvocation*)anInvocation atIndex:(int)index
 {
@@ -290,14 +290,5 @@
 }
 
 
-//---------------------------------------------------------------------------------------
-// House-keeping
-//---------------------------------------------------------------------------------------
-
-- (void)releaseInvocation
-{
-	[recordedInvocation release];
-	recordedInvocation = nil;
-}
 
 @end

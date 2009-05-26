@@ -13,4 +13,9 @@
 
 - (id)initWithObject:(NSObject *)anObject;
 
+- (NSObject *)realObject;
+
+- (void)setupSubclassForObject:(id)anObject;
+- (void)setupForwarderForSelector:(SEL)selector;
+
 @end

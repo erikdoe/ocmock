@@ -29,4 +29,7 @@
 
 - (void)verify;
 
+- (BOOL)handleInvocation:(NSInvocation *)anInvocation;
+- (void)handleUnRecordedInvocation:(NSInvocation *)anInvocation;
+
 @end

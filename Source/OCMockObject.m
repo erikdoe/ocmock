@@ -13,16 +13,16 @@
 
 @interface OCMockObject(Private)
 + (id)_makeNice:(OCMockObject *)mock;
-- (BOOL)_handleInvocation:(NSInvocation *)anInvocation;
-- (void)_handleUnRecordedInvocation:(NSInvocation *)anInvocation;
 - (NSString *)_recorderDescriptions:(BOOL)onlyExpectations;
 @end
 
+#pragma mark  -
+
+
+
 @implementation OCMockObject
 
-//---------------------------------------------------------------------------------------
-//  factory methods
-//---------------------------------------------------------------------------------------
+#pragma mark  Factory methods
 
 + (id)mockForClass:(Class)aClass
 {
@@ -64,9 +64,14 @@
 }
 
 
-//---------------------------------------------------------------------------------------
-//  init and dealloc
-//---------------------------------------------------------------------------------------
++ (id)recorderForMock:(OCMockObject *)mock
+{
+	return [[[OCMockRecorder alloc] initWithSignatureResolver:mock] autorelease];
+}
+
+
+
+#pragma mark  Initialisers, description, accessors, etc.
 
 - (id)init
 {
@@ -84,23 +89,18 @@
 	[super dealloc];
 }
 
-//---------------------------------------------------------------------------------------
-// description override
-//---------------------------------------------------------------------------------------
-
 - (NSString *)description
 {
 	return @"OCMockObject";
 }
 
 
-//---------------------------------------------------------------------------------------
-//  public api
-//---------------------------------------------------------------------------------------
+
+#pragma mark  Public API
 
 - (id)stub
 {
-	OCMockRecorder *recorder = [[[OCMockRecorder alloc] initWithSignatureResolver:self] autorelease];
+	OCMockRecorder *recorder = [[self class] recorderForMock:self];
 	[recorders addObject:recorder];
 	return recorder;
 }
@@ -133,22 +133,16 @@
 }
 
 
-//---------------------------------------------------------------------------------------
-//  proxy api
-//---------------------------------------------------------------------------------------
+
+#pragma mark  Handling invocations
 
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
-	if([self _handleInvocation:anInvocation] == NO)
-		[self _handleUnRecordedInvocation:anInvocation];
+	if([self handleInvocation:anInvocation] == NO)
+		[self handleUnRecordedInvocation:anInvocation];
 }
 
-
-//---------------------------------------------------------------------------------------
-//  internal methods
-//---------------------------------------------------------------------------------------
-
-- (BOOL)_handleInvocation:(NSInvocation *)anInvocation
+- (BOOL)handleInvocation:(NSInvocation *)anInvocation
 {
 	OCMockRecorder *recorder = nil;
 	int			   i;
@@ -173,7 +167,7 @@
 	return YES;
 }
 
-- (void)_handleUnRecordedInvocation:(NSInvocation *)anInvocation
+- (void)handleUnRecordedInvocation:(NSInvocation *)anInvocation
 {
 	if(isNice == NO)
 	{
@@ -184,7 +178,6 @@
 		[exception raise];
 	}
 }
-
 
 - (NSString *)_recorderDescriptions:(BOOL)onlyExpectations
 {

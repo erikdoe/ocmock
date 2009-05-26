@@ -10,9 +10,7 @@
 
 @implementation OCProtocolMockObject
 
-//---------------------------------------------------------------------------------------
-//  init and dealloc
-//---------------------------------------------------------------------------------------
+#pragma mark  Initialisers, description, accessors, etc.
 
 - (id)initWithProtocol:(Protocol *)aProtocol
 {
@@ -21,20 +19,14 @@
 	return self;
 }
 
-
-//---------------------------------------------------------------------------------------
-// description override
-//---------------------------------------------------------------------------------------
-
 - (NSString *)description
 {
 	return [NSString stringWithFormat:@"OCMockObject[%s]", [mockedProtocol name]];
 }
 
 
-//---------------------------------------------------------------------------------------
-//  proxy api
-//---------------------------------------------------------------------------------------
+
+#pragma mark  Proxy API
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
