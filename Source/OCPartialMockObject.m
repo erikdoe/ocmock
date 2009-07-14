@@ -116,7 +116,6 @@ static NSMutableDictionary *mockTable;
 	if([mock handleInvocation:anInvocation] == NO)
 		[NSException raise:NSInternalInconsistencyException format:@"Ended up in subclass forwarder for %@ with unstubbed method %@",
 		 [self class], NSStringFromSelector([anInvocation selector])];
-	NSLog(@"#&*%^*#%^ self = %@, mock = %@", [self class], mock);
 }
 
 

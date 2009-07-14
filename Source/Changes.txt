@@ -2,6 +2,11 @@ Chronological listing of changes. If a particular SVN revision has no entry, tha
 check-in did not involve any code or feature changes.
 
 
+2009-07-14 (r46)
+
+* Fixed bug around complex type encodings (Jean-Francois Dontigny)
+
+
 2009-05-26 (r45)
 
 * Partial mocks now work on object reference and self (thanks to Mike Mangino)

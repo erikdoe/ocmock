@@ -17,7 +17,7 @@
 @end
 
 @protocol ProtocolWithTypeQualifierMethod
-- (bycopy NSString *)byCopyString;
+- (void)aSpecialMethod:(byref in void *)someArg;
 @end
 
 @interface TestClassThatCallsSelf : NSObject
@@ -232,23 +232,6 @@
 	STAssertNil(returnValue, @"Should have returned stubbed value, which is nil.");
 }
 
-- (void)testReturnsStubbedByCopyReturnValue
-{
-	id myMock = [OCMockObject mockForProtocol:@protocol(ProtocolWithTypeQualifierMethod)];
-	
-	[[[myMock stub] andReturn:@"megamock"] byCopyString];
-	
-	STAssertEqualObjects(@"megamock", [myMock byCopyString], @"Should have returned stubbed value.");
-}
-
-
-- (void)testAcceptsExpectedMethod
-{
-	[[mock expect] lowercaseString];
-	[mock lowercaseString];
-}
-
-
 // --------------------------------------------------------------------------------------
 //	returning values in pass-by-reference arguments
 // --------------------------------------------------------------------------------------
@@ -274,6 +257,13 @@
 // --------------------------------------------------------------------------------------
 //	accepting expected methods
 // --------------------------------------------------------------------------------------
+
+- (void)testAcceptsExpectedMethod
+{
+	[[mock expect] lowercaseString];
+	[mock lowercaseString];
+}
+
 
 - (void)testAcceptsExpectedMethodAndReturnsValue
 {
@@ -483,7 +473,7 @@
 
 
 // --------------------------------------------------------------------------------------
-//	mocks should honour the NSObject contract
+//	mocks should honour the NSObject contract, etc.
 // --------------------------------------------------------------------------------------
 
 - (void)testRespondsToValidSelector
@@ -495,6 +485,19 @@
 {
 	STAssertFalse([mock respondsToSelector:@selector(fooBar)], nil);
 }
+
+- (void)testWorksWithTypeQualifiers
+{
+	id myMock = [OCMockObject mockForProtocol:@protocol(ProtocolWithTypeQualifierMethod)];
+	
+	STAssertNoThrow([[myMock expect] aSpecialMethod:"foo"], @"Should not complain about method with type qualifiers.");
+	STAssertNoThrow([myMock aSpecialMethod:"foo"], @"Should not complain about method with type qualifiers.");
+}
+
+
+// --------------------------------------------------------------------------------------
+//	protocol mocks
+// --------------------------------------------------------------------------------------
 
 - (void)testCanMockFormalProtocol
 {

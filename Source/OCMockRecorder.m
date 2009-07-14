@@ -98,7 +98,7 @@
 	const char* argType;
 	
 	argType = [[anInvocation methodSignature] getArgumentTypeAtIndex:index];
-	if(strchr("rnNoORV", argType[0]) != NULL)
+	while(strchr("rnNoORV", argType[0]) != NULL)
 		argType += 1;
 	
 	if((strlen(argType) > 1) && (strchr("{^", argType[0]) == NULL))
