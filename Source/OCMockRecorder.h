@@ -11,6 +11,7 @@
 	id				returnValue;
 	BOOL			returnValueIsBoxed;
 	BOOL			returnValueShouldBeThrown;
+	NSNotification	*notificationToPost;
 	NSInvocation	*recordedInvocation;
 }
 
@@ -19,6 +20,7 @@
 - (id)andReturn:(id)anObject;
 - (id)andReturnValue:(NSValue *)aValue;
 - (id)andThrow:(NSException *)anException;
+- (id)andPost:(NSNotification *)aNotification;
 
 - (BOOL)matchesInvocation:(NSInvocation *)anInvocation;
 - (void)setUpReturnValue:(NSInvocation *)anInvocation;

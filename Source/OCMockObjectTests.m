@@ -40,6 +40,32 @@
 
 @end
 
+@interface TestObserver	: NSObject
+{
+	@public
+	NSNotification *notification;
+}
+
+@end
+
+@implementation TestObserver
+
+- (void)dealloc
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[notification release];
+	[super dealloc];
+}
+
+- (void)receiveNotification:(NSNotification *)aNotification
+{
+	notification = [aNotification retain];
+}
+
+@end
+
+static NSString *TestNotification = @"TestNotification";
+
 
 // --------------------------------------------------------------------------------------
 //  setup
@@ -245,6 +271,32 @@
 	STAssertThrows([mock lowercaseString], @"Should have raised an exception.");
 }
 
+- (void)testPostsNotificationWhenAskedTo
+{
+	TestObserver *observer = [[[TestObserver alloc] init] autorelease];
+	[[NSNotificationCenter defaultCenter] addObserver:observer selector:@selector(receiveNotification:) name:TestNotification object:nil];
+	
+	NSNotification *notification = [NSNotification notificationWithName:TestNotification object:self];
+	[[[mock stub] andPost:notification] lowercaseString];
+	
+	[mock lowercaseString];
+	
+	STAssertNotNil(observer->notification, @"Should have sent a notification.");
+	STAssertEqualObjects(TestNotification, [observer->notification name], @"Name should match posted one.");
+	STAssertEqualObjects(self, [observer->notification object], @"Object should match posted one.");
+}
+
+- (void)testPostsNotificationInAddtionToReturningValue
+{
+	TestObserver *observer = [[[TestObserver alloc] init] autorelease];
+	[[NSNotificationCenter defaultCenter] addObserver:observer selector:@selector(receiveNotification:) name:TestNotification object:nil];
+	
+	NSNotification *notification = [NSNotification notificationWithName:TestNotification object:self];
+	[[[[mock stub] andReturn:@"foo"] andPost:notification] lowercaseString];
+	
+	STAssertEqualObjects(@"foo", [mock lowercaseString], @"Should have returned stubbed value.");
+	STAssertNotNil(observer->notification, @"Should have sent a notification.");
+}
 
 
 // --------------------------------------------------------------------------------------

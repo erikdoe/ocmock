@@ -31,6 +31,7 @@
 {
 	[recordedInvocation release];
 	[returnValue release];
+	[notificationToPost release];
 	[super dealloc];
 }
 
@@ -68,6 +69,12 @@
 {
 	[self andReturn:anException];
 	returnValueShouldBeThrown = YES;
+	return self;
+}
+
+- (id)andPost:(NSNotification *)aNotification
+{
+	notificationToPost = [aNotification retain];
 	return self;
 }
 
@@ -267,6 +274,10 @@
 
 - (void)setUpReturnValue:(NSInvocation *)anInvocation
 {
+	if(notificationToPost != nil)
+	{
+		[[NSNotificationCenter defaultCenter] postNotification:notificationToPost];
+	}
 	if(returnValueShouldBeThrown)
 	{
 		@throw returnValue;
