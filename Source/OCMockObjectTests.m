@@ -260,7 +260,7 @@ static NSString *TestNotification = @"TestNotification";
 
 
 // --------------------------------------------------------------------------------------
-//	raising exceptions and posting notifications
+//	raising exceptions, posting notifications, etc.
 // --------------------------------------------------------------------------------------
 
 - (void)testRaisesExceptionWhenAskedTo
@@ -298,6 +298,33 @@ static NSString *TestNotification = @"TestNotification";
 	STAssertNotNil(observer->notification, @"Should have sent a notification.");
 }
 
+
+- (NSString *)valueForTest
+{
+	return @"value for test";
+}
+
+- (void)testCallsMethodAndReturnsItsReturnValueWhenAskedTo
+{
+	[[[mock stub] andCall:@selector(valueForTest) onObject:self] lowercaseString];
+	
+	STAssertEqualObjects(@"value for test", [mock lowercaseString], @"Should have returned value from called method");
+}
+
+
+- (NSString *)valueForTest:(NSInvocation *)originalInvocation
+{
+	return (id)originalInvocation;
+}
+
+- (void)testCallsMethodAndPassesOriginalInvocation
+{
+	[[[mock stub] andCall:@selector(valueForTest:) onObject:self] lowercaseString];
+	
+	NSInvocation *invocation = (id)[mock lowercaseString];
+	
+	STAssertEquals(@selector(lowercaseString), [invocation selector], @"Should have passed and returned invocation.");
+}
 
 // --------------------------------------------------------------------------------------
 //	returning values in pass-by-reference arguments

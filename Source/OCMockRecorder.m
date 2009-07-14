@@ -31,6 +31,7 @@
 {
 	[recordedInvocation release];
 	[returnValue release];
+	[returnValueProvider release];
 	[notificationToPost release];
 	[super dealloc];
 }
@@ -78,7 +79,13 @@
 	return self;
 }
 
-
+- (id)andCall:(SEL)selector onObject:(id)anObject
+{
+	returnValue = nil;
+	returnValueProvider = [anObject retain];
+	returnValueSelector = selector;
+	return self;
+}
 
 #pragma mark  Proxy API
 
@@ -278,7 +285,12 @@
 	{
 		[[NSNotificationCenter defaultCenter] postNotification:notificationToPost];
 	}
-	if(returnValueShouldBeThrown)
+	if(returnValueProvider != nil)
+	{
+		id value = [returnValueProvider performSelector:returnValueSelector withObject:anInvocation];
+		[anInvocation setReturnValue:&value];
+	}
+	else if(returnValueShouldBeThrown)
 	{
 		@throw returnValue;
 	}
