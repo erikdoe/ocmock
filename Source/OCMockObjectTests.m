@@ -232,6 +232,21 @@
 	STAssertNil(returnValue, @"Should have returned stubbed value, which is nil.");
 }
 
+
+// --------------------------------------------------------------------------------------
+//	raising exceptions and posting notifications
+// --------------------------------------------------------------------------------------
+
+- (void)testRaisesExceptionWhenAskedTo
+{
+	NSException *exception = [NSException exceptionWithName:@"TestException" reason:@"test" userInfo:nil];
+	[[[mock expect] andThrow:exception] lowercaseString];
+	
+	STAssertThrows([mock lowercaseString], @"Should have raised an exception.");
+}
+
+
+
 // --------------------------------------------------------------------------------------
 //	returning values in pass-by-reference arguments
 // --------------------------------------------------------------------------------------
@@ -366,27 +381,47 @@
 
 
 // --------------------------------------------------------------------------------------
-//	raising exceptions
+//	protocol mocks
 // --------------------------------------------------------------------------------------
 
-- (void)testRaisesExceptionWhenAskedTo
+- (void)testCanMockFormalProtocol
 {
-	NSException *exception = [NSException exceptionWithName:@"TestException" reason:@"test" userInfo:nil];
-	[[[mock expect] andThrow:exception] lowercaseString];
+	mock = [OCMockObject mockForProtocol:@protocol(NSLocking)];
+	[[mock expect] lock];
 	
+	[mock lock];
+	
+	[mock verify];
+}
+
+- (void)testRaisesWhenUnknownMethodIsCalledOnProtocol
+{
+	mock = [OCMockObject mockForProtocol:@protocol(NSLocking)];
 	STAssertThrows([mock lowercaseString], @"Should have raised an exception.");
 }
 
-- (void)testCanStubValueForKeyMethod
+- (void)testConformsToMockedProtocol
 {
-	id returnValue;
-	
-	mock = [OCMockObject mockForClass:[NSObject class]];
-	[[[mock stub] andReturn:@"SomeValue"] valueForKey:@"SomeKey"];
-	
-	returnValue = [mock valueForKey:@"SomeKey"];
-	
-	STAssertEqualObjects(@"SomeValue", returnValue, @"Should have returned value that was set up.");
+	mock = [OCMockObject mockForProtocol:@protocol(NSLocking)];
+	STAssertTrue([mock conformsToProtocol:@protocol(NSLocking)], nil);
+}
+
+- (void)testRespondsToValidProtocolRequiredSelector
+{
+	mock = [OCMockObject mockForProtocol:@protocol(TestProtocol)];	
+    STAssertTrue([mock respondsToSelector:@selector(primitiveValue)], nil);
+}
+
+- (void)testRespondsToValidProtocolOptionalSelector
+{
+	mock = [OCMockObject mockForProtocol:@protocol(TestProtocol)];	
+    STAssertTrue([mock respondsToSelector:@selector(objectValue)], nil);
+}
+
+- (void)testDoesNotRespondToInvalidProtocolSelector
+{
+	mock = [OCMockObject mockForProtocol:@protocol(TestProtocol)];	
+    STAssertFalse([mock respondsToSelector:@selector(fooBar)], nil);
 }
 
 
@@ -435,7 +470,7 @@
 	STAssertEqualObjects(@"hi", [mock method1], @"Should have returned stubbed value");
 }
 
-//- (void)testStubsMethodsOnPartialMockForClassCluster
+//- (void)testStubsMethodsOnPartialMockForTollFreeBridgedClasses
 //{
 //	mock = [OCMockObject partialMockForObject:[NSString stringWithString:@"hello"]];
 //	[[[mock stub] andReturn:@"hi"] uppercaseString];
@@ -449,7 +484,7 @@
 	STAssertEqualObjects(@"Foo", [mock method2], @"Should have returned value from real object.");
 }
 
-//- (void)testForwardsUnstubbedMethodsCallsToRealObjectOnPartialMockForClassCluster
+//- (void)testForwardsUnstubbedMethodsCallsToRealObjectOnPartialMockForTollFreeBridgedClasses
 //{
 //	mock = [OCMockObject partialMockForObject:[NSString stringWithString:@"hello2"]];
 //	STAssertEqualObjects(@"HELLO2", [mock uppercaseString], @"Should have returned value from real object.");
@@ -486,57 +521,24 @@
 	STAssertFalse([mock respondsToSelector:@selector(fooBar)], nil);
 }
 
+- (void)testCanStubValueForKeyMethod
+{
+	id returnValue;
+	
+	mock = [OCMockObject mockForClass:[NSObject class]];
+	[[[mock stub] andReturn:@"SomeValue"] valueForKey:@"SomeKey"];
+	
+	returnValue = [mock valueForKey:@"SomeKey"];
+	
+	STAssertEqualObjects(@"SomeValue", returnValue, @"Should have returned value that was set up.");
+}
+
 - (void)testWorksWithTypeQualifiers
 {
 	id myMock = [OCMockObject mockForProtocol:@protocol(ProtocolWithTypeQualifierMethod)];
 	
 	STAssertNoThrow([[myMock expect] aSpecialMethod:"foo"], @"Should not complain about method with type qualifiers.");
 	STAssertNoThrow([myMock aSpecialMethod:"foo"], @"Should not complain about method with type qualifiers.");
-}
-
-
-// --------------------------------------------------------------------------------------
-//	protocol mocks
-// --------------------------------------------------------------------------------------
-
-- (void)testCanMockFormalProtocol
-{
-	mock = [OCMockObject mockForProtocol:@protocol(NSLocking)];
-	[[mock expect] lock];
-	
-	[mock lock];
-	
-	[mock verify];
-}
-
-- (void)testRaisesWhenUnknownMethodIsCalledOnProtocol
-{
-	mock = [OCMockObject mockForProtocol:@protocol(NSLocking)];
-	STAssertThrows([mock lowercaseString], @"Should have raised an exception.");
-}
-
-- (void)testConformsToMockedProtocol
-{
-	mock = [OCMockObject mockForProtocol:@protocol(NSLocking)];
-	STAssertTrue([mock conformsToProtocol:@protocol(NSLocking)], nil);
-}
-
-- (void)testRespondsToValidProtocolRequiredSelector
-{
-	mock = [OCMockObject mockForProtocol:@protocol(TestProtocol)];	
-    STAssertTrue([mock respondsToSelector:@selector(primitiveValue)], nil);
-}
-
-- (void)testRespondsToValidProtocolOptionalSelector
-{
-	mock = [OCMockObject mockForProtocol:@protocol(TestProtocol)];	
-    STAssertTrue([mock respondsToSelector:@selector(objectValue)], nil);
-}
-
-- (void)testDoesNotRespondToInvalidProtocolSelector
-{
-	mock = [OCMockObject mockForProtocol:@protocol(TestProtocol)];	
-    STAssertFalse([mock respondsToSelector:@selector(fooBar)], nil);
 }
 
 
