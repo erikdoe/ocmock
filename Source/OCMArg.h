@@ -20,6 +20,10 @@
 
 + (id *)setTo:(id)value;
 
+// internal use only
+
++ (id)resolveSpecialValues:(NSValue *)value;
+
 @end
 
 #define OCMOCK_ANY [OCMArg any]

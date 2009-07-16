@@ -1,11 +1,136 @@
 //---------------------------------------------------------------------------------------
 //  $Id$
-//  Copyright (c) 2006-2008 by Mulle Kybernetik. See License file for details.
+//  Copyright (c) 2006-2009 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import "NSInvocation+OCMAdditions.h"
 
+
 @implementation NSInvocation(OCMAdditions)
+
+- (id)getArgumentAtIndexAsObject:(int)index
+{
+	const char* argType;
+	
+	argType = [[self methodSignature] getArgumentTypeAtIndex:index];
+	while(strchr("rnNoORV", argType[0]) != NULL)
+		argType += 1;
+	
+	if((strlen(argType) > 1) && (strchr("{^", argType[0]) == NULL))
+		[NSException raise:NSInvalidArgumentException format:@"Cannot handle argument type '%s'.", argType];
+	
+	switch (argType[0]) 
+	{
+		case '#':
+		case '@': 
+		{
+			id value;
+			[self getArgument:&value atIndex:index];
+			return value;
+		}
+		case ':':
+ 		{
+ 			SEL s = (SEL)0;
+ 			[self getArgument:&s atIndex:index];
+ 			id value = NSStringFromSelector(s);
+ 			return value;
+ 		}
+		case 'i': 
+		{
+			int value;
+			[self getArgument:&value atIndex:index];
+			return [NSNumber numberWithInt:value];
+		}	
+		case 's':
+		{
+			short value;
+			[self getArgument:&value atIndex:index];
+			return [NSNumber numberWithShort:value];
+		}	
+		case 'l':
+		{
+			long value;
+			[self getArgument:&value atIndex:index];
+			return [NSNumber numberWithLong:value];
+		}	
+		case 'q':
+		{
+			long long value;
+			[self getArgument:&value atIndex:index];
+			return [NSNumber numberWithLongLong:value];
+		}	
+		case 'c':
+		{
+			char value;
+			[self getArgument:&value atIndex:index];
+			return [NSNumber numberWithChar:value];
+		}	
+		case 'C':
+		{
+			unsigned char value;
+			[self getArgument:&value atIndex:index];
+			return [NSNumber numberWithUnsignedChar:value];
+		}	
+		case 'I':
+		{
+			unsigned int value;
+			[self getArgument:&value atIndex:index];
+			return [NSNumber numberWithUnsignedInt:value];
+		}	
+		case 'S':
+		{
+			unsigned short value;
+			[self getArgument:&value atIndex:index];
+			return [NSNumber numberWithUnsignedShort:value];
+		}	
+		case 'L':
+		{
+			unsigned long value;
+			[self getArgument:&value atIndex:index];
+			return [NSNumber numberWithUnsignedLong:value];
+		}	
+		case 'Q':
+		{
+			unsigned long long value;
+			[self getArgument:&value atIndex:index];
+			return [NSNumber numberWithUnsignedLongLong:value];
+		}	
+		case 'f':
+		{
+			float value;
+			[self getArgument:&value atIndex:index];
+			return [NSNumber numberWithFloat:value];
+		}	
+		case 'd':
+		{
+			double value;
+			[self getArgument:&value atIndex:index];
+			return [NSNumber numberWithDouble:value];
+		}	
+		case 'B':
+		{
+			bool value;
+			[self getArgument:&value atIndex:index];
+			return [NSNumber numberWithBool:value];
+		}
+		case '^':
+        {
+            void *value = NULL;
+            [self getArgument:&value atIndex:index];
+            return [NSValue valueWithPointer:value];
+        }
+		case '{': // structure
+		{
+			unsigned maxSize = [[self methodSignature] frameLength];
+			NSMutableData *argumentData = [[[NSMutableData alloc] initWithLength:maxSize] autorelease];
+			[self getArgument:[argumentData mutableBytes] atIndex:index];
+			return [NSValue valueWithBytes:[argumentData bytes] objCType:argType];
+		}       
+			
+	}
+	[NSException raise:NSInvalidArgumentException format:@"Argument type '%s' not supported", argType];
+	return nil;
+}
 
 - (NSString *)invocationDescription
 {

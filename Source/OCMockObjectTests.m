@@ -549,6 +549,7 @@ static NSString *TestNotification = @"TestNotification";
 	STAssertEqualObjects(@"hi", [mock method1], @"Should have returned stubbed value");
 }
 
+
 //- (void)testStubsMethodsOnPartialMockForTollFreeBridgedClasses
 //{
 //	mock = [OCMockObject partialMockForObject:[NSString stringWithString:@"hello"]];
@@ -583,6 +584,21 @@ static NSString *TestNotification = @"TestNotification";
 	mock = [OCMockObject partialMockForObject:foo];
 	[[[mock stub] andReturn:@"FooFoo"] method2];
 	STAssertEqualObjects(@"FooFoo", [mock method1], @"Should have called through to stubbed method.");
+}
+
+
+- (NSString *)differentMethodInDifferentClass
+{
+	return @"swizzled!";
+}
+
+- (void)testImplementsMethodSwizzling
+{
+	// using partial mocks and the indirect return value provider
+	TestClassThatCallsSelf *foo = [[[TestClassThatCallsSelf alloc] init] autorelease];
+	mock = [OCMockObject partialMockForObject:foo];
+	[[[mock stub] andCall:@selector(differentMethodInDifferentClass) onObject:self] method1];
+	STAssertEqualObjects(@"swizzled!", [foo method1], @"Should have returned value from different method");
 }
 
 

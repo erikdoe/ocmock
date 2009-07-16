@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------------------
 //  $Id$
-//  Copyright (c) 2004-2008 by Mulle Kybernetik. See License file for details.
+//  Copyright (c) 2004-2009 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import <OCMock/OCMockObject.h>
@@ -64,12 +64,6 @@
 }
 
 
-+ (id)recorderForMock:(OCMockObject *)mock
-{
-	return [[[OCMockRecorder alloc] initWithSignatureResolver:mock] autorelease];
-}
-
-
 
 #pragma mark  Initialisers, description, accessors, etc.
 
@@ -100,7 +94,7 @@
 
 - (id)stub
 {
-	OCMockRecorder *recorder = [[self class] recorderForMock:self];
+	OCMockRecorder *recorder = [self getNewRecorder];
 	[recorders addObject:recorder];
 	return recorder;
 }
@@ -162,7 +156,7 @@
 		[expectations removeObject:recorder];
 		[recorders removeObjectAtIndex:i];
 	}
-	[recorder setUpReturnValue:anInvocation];
+	[[recorder invocationHandlers] makeObjectsPerformSelector:@selector(handleInvocation:) withObject:anInvocation];
 	
 	return YES;
 }
@@ -178,6 +172,15 @@
 		[exception raise];
 	}
 }
+
+
+#pragma mark  Helper methods
+
+- (id)getNewRecorder
+{
+	return [[[OCMockRecorder alloc] initWithSignatureResolver:self] autorelease];
+}
+
 
 - (NSString *)_recorderDescriptions:(BOOL)onlyExpectations
 {

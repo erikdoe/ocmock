@@ -16,7 +16,6 @@
 
 + (void *)anyPointer
 {
-	// This magic constant is picked up in OCMockRecorder
 	return (void *)0x01234567;
 }
 
@@ -45,6 +44,20 @@
 + (id *)setTo:(id)value;
 {
 	return (id *)[[OCMPassByRefSetter alloc] initWithValue:value];
+}
+
++ (id)resolveSpecialValues:(NSValue *)value
+{
+	const char *type = [value objCType];
+	if(type[0] == '^')
+	{
+		void *pointer = [value pointerValue];
+		if(pointer == (void *)0x01234567)
+			return [OCMArg any];
+		if((pointer != NULL) && (((id)pointer)->isa == [OCMPassByRefSetter class]))
+			return (id)pointer;
+	}
+	return value;
 }
 
 @end

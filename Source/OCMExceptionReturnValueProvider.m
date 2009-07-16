@@ -1,17 +1,16 @@
 //---------------------------------------------------------------------------------------
-//  $Id: $
+//  $Id$
 //  Copyright (c) 2009 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
-#import <Foundation/Foundation.h>
+#import "OCMExceptionReturnValueProvider.h"
 
-@interface OCMPassByRefSetter : NSObject 
+
+@implementation OCMExceptionReturnValueProvider
+
+- (void)handleInvocation:(NSInvocation *)anInvocation
 {
-	id value;
+	@throw returnValue;
 }
-
-- (id)initWithValue:(id)value;
-
-- (id)value;
 
 @end

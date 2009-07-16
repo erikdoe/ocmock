@@ -1,17 +1,17 @@
 //---------------------------------------------------------------------------------------
-//  $Id: $
+//  $Id$
 //  Copyright (c) 2009 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import <Foundation/Foundation.h>
 
-@interface OCMPassByRefSetter : NSObject 
+@interface OCMNotificationPoster : NSObject 
 {
-	id value;
+	NSNotification *notification;
 }
 
-- (id)initWithValue:(id)value;
+- (id)initWithNotification:(id)aNotification;
 
-- (id)value;
+- (void)handleInvocation:(NSInvocation *)anInvocation;
 
 @end

@@ -1,10 +1,12 @@
 //---------------------------------------------------------------------------------------
 //  $Id$
-//  Copyright (c) 2004-2008 by Mulle Kybernetik. See License file for details.
+//  Copyright (c) 2004-2009 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import "OCMockRecorderTests.h"
 #import <OCMock/OCMockRecorder.h>
+#import "OCMReturnValueProvider.h"
+#import "OCMExceptionReturnValueProvider.h"
 
 
 @implementation OCMockRecorderTests
@@ -49,30 +51,30 @@
 }
 
 
-- (void)testSetsUpReturnValueInInvocation
+- (void)testAddsReturnValueProvider
 {
 	OCMockRecorder *recorder;
-	NSString	   *result;
+	NSArray		   *handlerList;
 
 	recorder = [[[OCMockRecorder alloc] initWithSignatureResolver:[NSString string]] autorelease];
 	[recorder andReturn:@"foo"];
-	[recorder setUpReturnValue:testInvocation];
-	[testInvocation getReturnValue:&result];
+	handlerList = [recorder invocationHandlers];
 	
-	STAssertEqualObjects(result, @"foo", @"Should have set up right return value.");
+	STAssertEquals(1u, [handlerList count], @"Should have added one handler.");
+	STAssertEqualObjects([OCMReturnValueProvider class], [[handlerList objectAtIndex:0] class], @"Should have added correct handler.");
 }
 
-- (void)testThrowsWhenSettingUpReturnValue
+- (void)testAddsExceptionReturnValueProvider
 {
 	OCMockRecorder	*recorder;
-	NSString		*result;
+	NSArray			*handlerList;
 	
 	recorder = [[[OCMockRecorder alloc] initWithSignatureResolver:[NSString string]] autorelease];
 	[recorder andThrow:[NSException exceptionWithName:@"TestException" reason:@"A reason" userInfo:nil]];
-	
-	STAssertThrows([recorder setUpReturnValue:testInvocation], @"Should have thrown the exception.");
-	[testInvocation getReturnValue:&result];
-	STAssertNil(result, @"Should have a nil return value");
+	handlerList = [recorder invocationHandlers];
+
+	STAssertEquals(1u, [handlerList count], @"Should have added one handler.");
+	STAssertEqualObjects([OCMExceptionReturnValueProvider class], [[handlerList objectAtIndex:0] class], @"Should have added correct handler.");
 	
 }
 

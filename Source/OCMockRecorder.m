@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------------------
 //  $Id$
-//  Copyright (c) 2004-2008 by Mulle Kybernetik. See License file for details.
+//  Copyright (c) 2004-2009 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import <objc/runtime.h>
@@ -8,6 +8,11 @@
 #import <OCMock/OCMArg.h>
 #import <OCMock/OCMConstraint.h>
 #import "OCMPassByRefSetter.h"
+#import "OCMReturnValueProvider.h"
+#import "OCMBoxedReturnValueProvider.h"
+#import "OCMExceptionReturnValueProvider.h"
+#import "OCMIndirectReturnValueProvider.h"
+#import "OCMNotificationPoster.h"
 #import "NSInvocation+OCMAdditions.h"
 
 @interface NSObject(HCMatcherDummy)
@@ -24,15 +29,14 @@
 - (id)initWithSignatureResolver:(id)anObject
 {
 	signatureResolver = anObject;
+	invocationHandlers = [[NSMutableArray alloc] init];
 	return self;
 }
 
 - (void)dealloc
 {
 	[recordedInvocation release];
-	[returnValue release];
-	[returnValueProvider release];
-	[notificationToPost release];
+	[invocationHandlers release];
 	[super dealloc];
 }
 
@@ -48,46 +52,45 @@
 }
 
 
-#pragma mark  Setting up behaviour
+#pragma mark  Recording invocation handlers
 
 - (id)andReturn:(id)anObject
 {
-	[returnValue autorelease];
-	returnValue = [anObject retain];
-	returnValueIsBoxed = NO;
-	returnValueShouldBeThrown = NO;
+	[invocationHandlers addObject:[[[OCMReturnValueProvider alloc] initWithValue:anObject] autorelease]];
 	return self;
 }
 
 - (id)andReturnValue:(NSValue *)aValue
 {
-	[self andReturn:aValue];
-	returnValueIsBoxed = YES;
+	[invocationHandlers addObject:[[[OCMBoxedReturnValueProvider alloc] initWithValue:aValue] autorelease]];
 	return self;
 }
 
 - (id)andThrow:(NSException *)anException
 {
-	[self andReturn:anException];
-	returnValueShouldBeThrown = YES;
+	[invocationHandlers addObject:[[[OCMExceptionReturnValueProvider alloc] initWithValue:anException] autorelease]];
 	return self;
 }
 
 - (id)andPost:(NSNotification *)aNotification
 {
-	notificationToPost = [aNotification retain];
+	[invocationHandlers addObject:[[[OCMNotificationPoster alloc] initWithNotification:aNotification] autorelease]];
 	return self;
 }
 
 - (id)andCall:(SEL)selector onObject:(id)anObject
 {
-	returnValue = nil;
-	returnValueProvider = [anObject retain];
-	returnValueSelector = selector;
+	[invocationHandlers addObject:[[[OCMIndirectReturnValueProvider alloc] initWithProvider:anObject andSelector:selector] autorelease]];
 	return self;
 }
 
-#pragma mark  Proxy API
+- (NSArray *)invocationHandlers
+{
+	return invocationHandlers;
+}
+
+
+#pragma mark  Recording the actual invocation
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
@@ -105,136 +108,7 @@
 
 
 
-#pragma mark  Verification and return values
-
-- (id)_extractArgument: (NSInvocation*)anInvocation atIndex:(int)index
-{
-	const char* argType;
-	
-	argType = [[anInvocation methodSignature] getArgumentTypeAtIndex:index];
-	while(strchr("rnNoORV", argType[0]) != NULL)
-		argType += 1;
-	
-	if((strlen(argType) > 1) && (strchr("{^", argType[0]) == NULL))
-		[NSException raise:NSInvalidArgumentException format:@"Cannot handle argument type '%s'.", argType];
-			
-	switch (argType[0]) 
-	{
-		case '#':
-		case '@': 
-		{
-			id value;
-			[anInvocation getArgument:&value atIndex:index];
-			return value;
-		}
-		case ':':
- 		{
- 			SEL s = (SEL)0;
- 			[anInvocation getArgument:&s atIndex:index];
- 			id value = NSStringFromSelector(s);
- 			return value;
- 		}
-		case 'i': 
-		{
-			int value;
-			[anInvocation getArgument:&value atIndex:index];
-			return [NSNumber numberWithInt:value];
-		}	
-		case 's':
-		{
-			short value;
-			[anInvocation getArgument:&value atIndex:index];
-			return [NSNumber numberWithShort:value];
-		}	
-		case 'l':
-		{
-			long value;
-			[anInvocation getArgument:&value atIndex:index];
-			return [NSNumber numberWithLong:value];
-		}	
-		case 'q':
-		{
-			long long value;
-			[anInvocation getArgument:&value atIndex:index];
-			return [NSNumber numberWithLongLong:value];
-		}	
-		case 'c':
-		{
-			char value;
-			[anInvocation getArgument:&value atIndex:index];
-			return [NSNumber numberWithChar:value];
-		}	
-		case 'C':
-		{
-			unsigned char value;
-			[anInvocation getArgument:&value atIndex:index];
-			return [NSNumber numberWithUnsignedChar:value];
-		}	
-		case 'I':
-		{
-			unsigned int value;
-			[anInvocation getArgument:&value atIndex:index];
-			return [NSNumber numberWithUnsignedInt:value];
-		}	
-		case 'S':
-		{
-			unsigned short value;
-			[anInvocation getArgument:&value atIndex:index];
-			return [NSNumber numberWithUnsignedShort:value];
-		}	
-		case 'L':
-		{
-			unsigned long value;
-			[anInvocation getArgument:&value atIndex:index];
-			return [NSNumber numberWithUnsignedLong:value];
-		}	
-		case 'Q':
-		{
-			unsigned long long value;
-			[anInvocation getArgument:&value atIndex:index];
-			return [NSNumber numberWithUnsignedLongLong:value];
-		}	
-		case 'f':
-		{
-			float value;
-			[anInvocation getArgument:&value atIndex:index];
-			return [NSNumber numberWithFloat:value];
-		}	
-		case 'd':
-		{
-			double value;
-			[anInvocation getArgument:&value atIndex:index];
-			return [NSNumber numberWithDouble:value];
-		}	
-		case 'B':
-		{
-			bool value;
-			[anInvocation getArgument:&value atIndex:index];
-			return [NSNumber numberWithBool:value];
-		}
-		case '^':
-        {
-            void *value = NULL;
-            [anInvocation getArgument:&value atIndex:index];
-			if(value == (void *)0x01234567)
-				return [OCMArg any];
-			if((value != NULL) && (((id)value)->isa == [OCMPassByRefSetter class]))
-				return (id)value;
-            return [NSValue valueWithPointer:value];
-        }
-		case '{': // structure
-		{
-			unsigned maxSize = [[signatureResolver methodSignatureForSelector:[anInvocation selector]] frameLength];
-			NSMutableData *argumentData = [[[NSMutableData alloc] initWithLength:maxSize] autorelease];
-			[anInvocation getArgument:[argumentData mutableBytes] atIndex:index];
-			return [NSValue valueWithBytes:[argumentData bytes] objCType:argType];
-		}       
-			
-	}
-	[NSException raise:NSInvalidArgumentException format:@"Argument type '%s' not supported", argType];
-	return nil;
-}
-
+#pragma mark  Checking the invocation
 
 - (BOOL)matchesInvocation:(NSInvocation *)anInvocation
 {
@@ -247,8 +121,11 @@
 	n = [[recordedInvocation methodSignature] numberOfArguments];
 	for(i = 2; i < n; i++)
 	{
-		recordedArg = [self _extractArgument:recordedInvocation atIndex:i];
-		passedArg = [self _extractArgument:anInvocation atIndex:i];
+		recordedArg = [recordedInvocation getArgumentAtIndexAsObject:i];
+		if([recordedArg isKindOfClass:[NSValue class]])
+			recordedArg = [OCMArg resolveSpecialValues:recordedArg];
+		passedArg = [anInvocation getArgumentAtIndexAsObject:i];
+		
 		if([recordedArg isKindOfClass:[OCMConstraint class]])
 		{	
 			if([recordedArg evaluate:passedArg] == NO)
@@ -256,7 +133,7 @@
 		}
 		else if([recordedArg isKindOfClass:[OCMPassByRefSetter class]])
 		{
-			// side effect but easier to do here than in setupReturnValue
+			// side effect but easier to do here than in handleInvocation
 			*(id *)[passedArg pointerValue] = [(OCMPassByRefSetter *)recordedArg value];
 		}
 		else if([recordedArg conformsToProtocol:objc_getProtocol("HCMatcher")])
@@ -279,38 +156,6 @@
 	return YES;
 }
 
-- (void)setUpReturnValue:(NSInvocation *)anInvocation
-{
-	if(notificationToPost != nil)
-	{
-		[[NSNotificationCenter defaultCenter] postNotification:notificationToPost];
-	}
-	if(returnValueProvider != nil)
-	{
-		id value = [returnValueProvider performSelector:returnValueSelector withObject:anInvocation];
-		[anInvocation setReturnValue:&value];
-	}
-	else if(returnValueShouldBeThrown)
-	{
-		@throw returnValue;
-	}
-	else if(returnValueIsBoxed)
-	{
-		if(strcmp([[anInvocation methodSignature] methodReturnType], [(NSValue *)returnValue objCType]) != 0)
-			[NSException raise:NSInvalidArgumentException format:@"Return value does not match method signature."];
-		void *buffer = malloc([[anInvocation methodSignature] methodReturnLength]);
-		[returnValue getValue:buffer];
-		[anInvocation setReturnValue:buffer];
-		free(buffer);
-	}
-	else
-	{
-		const char *returnType = [[anInvocation methodSignature] methodReturnType];
-		const char *returnTypeWithoutQualifiers = returnType + (strlen(returnType) - 1);
-		if(strcmp(returnTypeWithoutQualifiers, @encode(id)) == 0)
-			[anInvocation setReturnValue:&returnValue];	
-	}
-}
 
 
 

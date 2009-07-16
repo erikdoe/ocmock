@@ -1,29 +1,30 @@
 //---------------------------------------------------------------------------------------
-//  $Id: $
+//  $Id$
 //  Copyright (c) 2009 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
-#import "OCMPassByRefSetter.h"
+#import "OCMNotificationPoster.h"
 
 
-@implementation OCMPassByRefSetter
+@implementation OCMNotificationPoster
 
-- (id)initWithValue:(id)aValue
+- (id)initWithNotification:(id)aNotification
 {
 	[super init];
-	value = [aValue retain];
+	notification = [aNotification retain];
 	return self;
 }
 
 - (void)dealloc
 {
-	[value release];
+	[notification release];
 	[super dealloc];
 }
 
-- (id)value
+- (void)handleInvocation:(NSInvocation *)anInvocation
 {
-	return value;
+	[[NSNotificationCenter defaultCenter] postNotification:notification];
 }
+
 
 @end

@@ -1,11 +1,13 @@
 //---------------------------------------------------------------------------------------
 //  $Id$
-//  Copyright (c) 2006-2008 by Mulle Kybernetik. See License file for details.
+//  Copyright (c) 2006-2009 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import <Foundation/Foundation.h>
 
 @interface NSInvocation(OCMAdditions)
+
+- (id)getArgumentAtIndexAsObject:(int)index;
 
 - (NSString *)invocationDescription;
 

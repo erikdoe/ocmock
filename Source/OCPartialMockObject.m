@@ -1,26 +1,14 @@
 //---------------------------------------------------------------------------------------
-//  $Id: OCPartialMockObject.m $
+//  $Id: $
 //  Copyright (c) 2009 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
-#import <objc/runtime.h>
-#import <objc/objc.h>
 #import <objc/objc-runtime.h>
-#import <objc/objc-api.h>
-#import <objc/objc-class.h>
 #import "OCPartialMockRecorder.h"
 #import "OCPartialMockObject.h"
 
 
 @implementation OCPartialMockObject
-
-#pragma mark  Factory methods
-
-+ (id)recorderForMock:(OCMockObject *)mock
-{
-	return [[[OCPartialMockRecorder alloc] initWithSignatureResolver:mock] autorelease];
-}
-
 
 
 #pragma mark  Mock table
@@ -120,7 +108,12 @@ static NSMutableDictionary *mockTable;
 
 
 
-#pragma mark  Invocation handling
+#pragma mark  Overrides
+
+- (id)getNewRecorder
+{
+	return [[[OCPartialMockRecorder alloc] initWithSignatureResolver:self] autorelease];
+}
 
 - (void)handleUnRecordedInvocation:(NSInvocation *)anInvocation
 {
