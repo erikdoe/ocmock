@@ -24,9 +24,14 @@
 
 - (void)handleInvocation:(NSInvocation *)anInvocation
 {
-	// TODO: Should check signature and only provide invocation when it matches first argument
-	returnValue = [[provider performSelector:selector withObject:anInvocation] retain];
-	[super handleInvocation:anInvocation];
+	const char *returnType = [[provider methodSignatureForSelector:selector] methodReturnType];
+	const char *returnTypeWithoutQualifiers = returnType + (strlen(returnType) - 1);
+	if(strcmp(returnTypeWithoutQualifiers, @encode(void)))
+	{
+		// TODO: Should check signature and only provide invocation when it matches first argument
+		returnValue = [[provider performSelector:selector withObject:anInvocation] retain];
+		[super handleInvocation:anInvocation];
+	}
 }
 
 @end

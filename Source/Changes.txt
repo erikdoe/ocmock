@@ -2,6 +2,11 @@ Chronological listing of changes. If a particular SVN revision has no entry, tha
 check-in did not involve any code or feature changes.
 
 
+2009-08-13 (r51)
+
+* Fixed bug that caused crash when using method swizzling with void return type.
+
+
 2009-07-14 (r49)
 
 * Added support for calling arbitrary methods when stubbed methods are invoked.

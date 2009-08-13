@@ -602,6 +602,19 @@ static NSString *TestNotification = @"TestNotification";
 }
 
 
+- (void)aMethodWithVoidReturn
+{
+}
+
+- (void)testMethodSwizzlingWorksForVoidReturns
+{
+	TestClassThatCallsSelf *foo = [[[TestClassThatCallsSelf alloc] init] autorelease];
+	mock = [OCMockObject partialMockForObject:foo];
+	[[[mock stub] andCall:@selector(aMethodWithVoidReturn) onObject:self] method1];
+	STAssertNoThrow([foo method1], @"Should have worked.");
+}
+
+
 // --------------------------------------------------------------------------------------
 //	mocks should honour the NSObject contract, etc.
 // --------------------------------------------------------------------------------------
