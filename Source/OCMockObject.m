@@ -166,6 +166,7 @@
 			 [self description], [recorder description], [[expectations objectAtIndex:0] description]];
 			
 		}
+		[[recorder retain] autorelease];
 		[expectations removeObject:recorder];
 		[recorders removeObjectAtIndex:i];
 	}
