@@ -8,8 +8,9 @@
 @interface OCMockObject : NSProxy
 {
 	BOOL			isNice;
+	BOOL			expectationOrderMatters;
 	NSMutableArray	*recorders;
-	NSMutableSet	*expectations;
+	NSMutableArray	*expectations;
 	NSMutableArray	*exceptions;
 }
 
@@ -23,6 +24,8 @@
 + (id)observerMock;
 
 - (id)init;
+
+- (void)setExpectationOrderMatters:(BOOL)flag;
 
 - (id)stub;
 - (id)expect;

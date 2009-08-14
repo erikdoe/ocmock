@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-//  $Id: $
+//  $Id$
 //  Copyright (c) 2009 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
@@ -29,6 +29,10 @@
 	return @"OCMockObserver";
 }
 
+- (void)setExpectationOrderMatters:(BOOL)flag
+{
+    expectationOrderMatters = flag;
+}
 
 
 #pragma mark  Public API
@@ -60,9 +64,10 @@
 
 - (void)handleNotification:(NSNotification *)aNotification
 {
-	int i;
+	int i, limit;
 	
-	for(i = 0; i < [recorders count]; i++)
+	limit = expectationOrderMatters ? 1 : [recorders count];
+	for(i = 0; i < limit; i++)
 	{
 		if([[recorders objectAtIndex:i] matchesNotification:aNotification])
 		{

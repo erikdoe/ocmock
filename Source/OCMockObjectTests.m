@@ -460,6 +460,32 @@ static NSString *TestNotification = @"TestNotification";
 
 
 // --------------------------------------------------------------------------------------
+//	ordered expectations
+// --------------------------------------------------------------------------------------
+
+- (void)testAcceptsExpectedMethodsInRecordedSequenceWhenOrderMatters
+{
+	[mock setExpectationOrderMatters:YES];
+	
+	[[mock expect] lowercaseString];
+	[[mock expect] uppercaseString];
+	
+	STAssertNoThrow([mock lowercaseString], @"Should have accepted expected method in sequence.");
+	STAssertNoThrow([mock uppercaseString], @"Should have accepted expected method in sequence.");
+}
+
+- (void)testRaisesExceptionWhenSequenceIsWrongAndOrderMatters
+{
+	[mock setExpectationOrderMatters:YES];
+	
+	[[mock expect] lowercaseString];
+	[[mock expect] uppercaseString];
+	
+	STAssertThrows([mock uppercaseString], @"Should have complained about wrong sequence.");
+}
+
+
+// --------------------------------------------------------------------------------------
 //	protocol mocks
 // --------------------------------------------------------------------------------------
 

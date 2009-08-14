@@ -4,7 +4,7 @@
 //---------------------------------------------------------------------------------------
 
 #import <objc/runtime.h>
-#import "NSMethodSignature+Private.h"
+#import "NSMethodSignature+OCMAdditions.h"
 #import "OCProtocolMockObject.h"
 
 

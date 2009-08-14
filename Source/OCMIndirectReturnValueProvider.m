@@ -3,6 +3,7 @@
 //  Copyright (c) 2009 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
+#import "NSMethodSignature+OCMAdditions.h"
 #import "OCMIndirectReturnValueProvider.h"
 
 
@@ -24,9 +25,8 @@
 
 - (void)handleInvocation:(NSInvocation *)anInvocation
 {
-	const char *returnType = [[provider methodSignatureForSelector:selector] methodReturnType];
-	const char *returnTypeWithoutQualifiers = returnType + (strlen(returnType) - 1);
-	if(strcmp(returnTypeWithoutQualifiers, @encode(void)))
+	const char *returnType = [[provider methodSignatureForSelector:selector] methodReturnTypeWithoutQualifiers];
+	if(strcmp(returnType, @encode(void)))
 	{
 		// TODO: Should check signature and only provide invocation when it matches first argument
 		returnValue = [[provider performSelector:selector withObject:anInvocation] retain];

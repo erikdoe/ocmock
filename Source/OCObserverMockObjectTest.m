@@ -48,6 +48,29 @@ static NSString *TestNotificationOne = @"TestNotificationOne";
 	[center postNotificationName:TestNotificationOne object:self];
 }
 
+- (void)testAcceptsNotificationsInCorrectOrderWhenOrderMatters
+{
+	[mock setExpectationOrderMatters:YES];
+
+	[center addMockObserver:mock name:TestNotificationOne object:nil];
+	[[mock expect] notificationWithName:TestNotificationOne object:self];
+    [[mock expect] notificationWithName:TestNotificationOne object:[OCMArg any]];
+	
+	[center postNotificationName:TestNotificationOne object:self];
+	[center postNotificationName:TestNotificationOne object:[NSString string]];
+}
+
+- (void)testRaisesExceptionWhenSequenceIsWrongAndOrderMatters
+{
+	[mock setExpectationOrderMatters:YES];
+	
+	[center addMockObserver:mock name:TestNotificationOne object:nil];
+	[[mock expect] notificationWithName:TestNotificationOne object:self];
+    [[mock expect] notificationWithName:TestNotificationOne object:[OCMArg any]];
+	
+	STAssertThrows([center postNotificationName:TestNotificationOne object:[NSString string]], @"Should have complained about sequence.");
+}
+
 - (void)testRaisesEvenThoughOverlappingExpectationsCouldHaveBeenSatisfied
 {
 	// this test demonstrates a shortcoming, not a feature
