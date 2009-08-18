@@ -11,7 +11,7 @@
 
 - (id)initWithProvider:(id)aProvider andSelector:(SEL)aSelector
 {
-	[super initWithValue:nil];
+	[super init];
 	provider = [aProvider retain];
 	selector = aSelector;
 	return self;
@@ -25,13 +25,9 @@
 
 - (void)handleInvocation:(NSInvocation *)anInvocation
 {
-	const char *returnType = [[provider methodSignatureForSelector:selector] methodReturnTypeWithoutQualifiers];
-	if(strcmp(returnType, @encode(void)))
-	{
-		// TODO: Should check signature and only provide invocation when it matches first argument
-		returnValue = [[provider performSelector:selector withObject:anInvocation] retain];
-		[super handleInvocation:anInvocation];
-	}
+	[anInvocation setTarget:provider];
+	[anInvocation setSelector:selector];
+	[anInvocation invoke];
 }
 
 @end

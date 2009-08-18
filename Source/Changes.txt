@@ -2,6 +2,11 @@ Chronological listing of changes. If a particular SVN revision has no entry, tha
 check-in did not involve any code or feature changes.
 
 
+2009-08-18 (r54)
+
+* OnCall methods now have same signature as replaced ones.
+
+
 2009-08-14 (r53)
 
 * Fixed possible retain bug (Daniel Eggert)

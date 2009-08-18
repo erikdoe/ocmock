@@ -3,9 +3,9 @@
 //  Copyright (c) 2009 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
-#import "OCMReturnValueProvider.h"
+#import <Foundation/Foundation.h>
 
-@interface OCMIndirectReturnValueProvider : OCMReturnValueProvider 
+@interface OCMIndirectReturnValueProvider : NSObject 
 {
 	id	provider;
 	SEL	selector;

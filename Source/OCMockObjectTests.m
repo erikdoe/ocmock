@@ -299,32 +299,20 @@ static NSString *TestNotification = @"TestNotification";
 }
 
 
-- (NSString *)valueForTest
+- (NSString *)valueForString:(NSString *)aString andMask:(NSStringCompareOptions)mask
 {
-	return @"value for test";
+	return [NSString stringWithFormat:@"[%@, %d]", aString, mask];
 }
 
-- (void)testCallsMethodAndReturnsItsReturnValueWhenAskedTo
+- (void)testCallsAlternativeMethodAndPassesOriginalArgumentsAndReturnsValue
 {
-	[[[mock stub] andCall:@selector(valueForTest) onObject:self] lowercaseString];
+	[[[mock stub] andCall:@selector(valueForString:andMask:) onObject:self] commonPrefixWithString:@"FOO" options:NSCaseInsensitiveSearch];
 	
-	STAssertEqualObjects(@"value for test", [mock lowercaseString], @"Should have returned value from called method");
-}
-
-
-- (NSString *)valueForTest:(NSInvocation *)originalInvocation
-{
-	return (id)originalInvocation;
-}
-
-- (void)testCallsMethodAndPassesOriginalInvocation
-{
-	[[[mock stub] andCall:@selector(valueForTest:) onObject:self] lowercaseString];
+	NSString *returnValue = [mock commonPrefixWithString:@"FOO" options:NSCaseInsensitiveSearch];
 	
-	NSInvocation *invocation = (id)[mock lowercaseString];
-	
-	STAssertEquals(@selector(lowercaseString), [invocation selector], @"Should have passed and returned invocation.");
+	STAssertEqualObjects(@"[FOO, 1]", returnValue, @"Should have passed and returned invocation.");
 }
+
 
 // --------------------------------------------------------------------------------------
 //	returning values in pass-by-reference arguments
