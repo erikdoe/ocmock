@@ -68,7 +68,7 @@
 - (void)testInvocationDescriptionWithArrayArgument
 {
 	SEL selector = @selector(addObjectsFromArray:);
-	NSMethodSignature *signature = [[NSArray array] methodSignatureForSelector:selector];
+	NSMethodSignature *signature = [[NSMutableArray array] methodSignatureForSelector:selector];
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it one argument (starts at index 2)

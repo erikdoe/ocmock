@@ -217,6 +217,36 @@ static NSString *TestNotification = @"TestNotification";
 }
 
 
+- (void)testCanPassMocksAsArguments
+{
+	id mockArg = [OCMockObject mockForClass:[NSString class]];
+	[[mock stub] stringByAppendingString:[OCMArg any]];
+	[mock stringByAppendingString:mockArg];
+}
+
+- (void)testCanStubWithMockArguments
+{
+	id mockArg = [OCMockObject mockForClass:[NSString class]];
+	[[mock stub] stringByAppendingString:mockArg];
+	[mock stringByAppendingString:mockArg];
+}
+
+- (void)testRaisesExceptionWhenStubbedMockArgIsNotUsed
+{
+	id mockArg = [OCMockObject mockForClass:[NSString class]];
+	[[mock stub] stringByAppendingString:mockArg];
+	STAssertThrows([mock stringByAppendingString:@"foo"], @"Should have raised an exception.");
+}
+
+- (void)testRaisesExceptionWhenDifferentMockArgumentIsPassed
+{
+	id expectedArg = [OCMockObject mockForClass:[NSString class]];
+	id otherArg = [OCMockObject mockForClass:[NSString class]];
+	[[mock stub] stringByAppendingString:otherArg];
+	STAssertThrows([mock stringByAppendingString:expectedArg], @"Should have raised an exception.");	
+}
+
+
 // --------------------------------------------------------------------------------------
 //	returning values from stubbed methods
 // --------------------------------------------------------------------------------------

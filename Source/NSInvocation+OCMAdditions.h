@@ -7,11 +7,11 @@
 
 @interface NSInvocation(OCMAdditions)
 
-- (id)getArgumentAtIndexAsObject:(int)index;
+- (id)getArgumentAtIndexAsObject:(int)argIndex;
 
 - (NSString *)invocationDescription;
 
-- (NSString *)argumentDescriptionAtIndex:(int)index;
+- (NSString *)argumentDescriptionAtIndex:(int)argIndex;
 
 - (NSString *)objectDescriptionAtIndex:(int)anInt;
 - (NSString *)charDescriptionAtIndex:(int)anInt;

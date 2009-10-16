@@ -122,9 +122,17 @@
 	for(i = 2; i < n; i++)
 	{
 		recordedArg = [recordedInvocation getArgumentAtIndexAsObject:i];
+		passedArg = [anInvocation getArgumentAtIndexAsObject:i];
+
+		if([recordedArg isProxy])
+		{
+			if(![recordedArg isEqual:passedArg])
+				return NO;
+			continue;
+		}
+		
 		if([recordedArg isKindOfClass:[NSValue class]])
 			recordedArg = [OCMArg resolveSpecialValues:recordedArg];
-		passedArg = [anInvocation getArgumentAtIndexAsObject:i];
 		
 		if([recordedArg isKindOfClass:[OCMConstraint class]])
 		{	

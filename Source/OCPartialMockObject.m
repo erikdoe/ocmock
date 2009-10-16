@@ -23,7 +23,7 @@ static NSMutableDictionary *mockTable;
 
 + (void)rememberPartialMock:(OCPartialMockObject *)mock forObject:(id)anObject
 {
-	[mockTable setObject:mock forKey:[NSValue valueWithNonretainedObject:anObject]];
+	[mockTable setObject:[NSValue valueWithNonretainedObject:mock] forKey:[NSValue valueWithNonretainedObject:anObject]];
 }
 
 + (void)forgetPartialMockForObject:(id)anObject
@@ -31,9 +31,9 @@ static NSMutableDictionary *mockTable;
 	[mockTable removeObjectForKey:[NSValue valueWithNonretainedObject:anObject]];
 }
 
-+ (OCPartialMockObject *)partialMockForObject:(id)anObject
++ (OCPartialMockObject *)existingPartialMockForObject:(id)anObject
 {
-	OCPartialMockObject *mock = [mockTable objectForKey:[NSValue valueWithNonretainedObject:anObject]];
+	OCPartialMockObject *mock = [[mockTable objectForKey:[NSValue valueWithNonretainedObject:anObject]] nonretainedObjectValue];
 	if(mock == nil)
 		[NSException raise:NSInternalInconsistencyException format:@"No partial mock for object %p", anObject];
 	return mock;
@@ -77,8 +77,8 @@ static NSMutableDictionary *mockTable;
 - (void)setupSubclassForObject:(id)anObject
 {
 	Class realClass = [anObject class];
-	const char *className = [[NSString stringWithFormat:@"%@-%p", realClass, anObject] cString]; 
-	NSLog(@"Creating class named %s", className);
+	double timestamp = [NSDate timeIntervalSinceReferenceDate];
+	const char *className = [[NSString stringWithFormat:@"%@-%p-%f", realClass, anObject, timestamp] cString]; 
 	Class subclass = objc_allocateClassPair(realClass, className, 0);
 	objc_registerClassPair(subclass);
 	object_setClass(anObject, subclass);
@@ -100,7 +100,7 @@ static NSMutableDictionary *mockTable;
 - (void)forwardInvocationForRealObject:(NSInvocation *)anInvocation
 {
 	// in here "self" is a reference to the real object, not the mock
-	OCPartialMockObject *mock = [OCPartialMockObject partialMockForObject:self];
+	OCPartialMockObject *mock = [OCPartialMockObject existingPartialMockForObject:self];
 	if([mock handleInvocation:anInvocation] == NO)
 		[NSException raise:NSInternalInconsistencyException format:@"Ended up in subclass forwarder for %@ with unstubbed method %@",
 		 [self class], NSStringFromSelector([anInvocation selector])];

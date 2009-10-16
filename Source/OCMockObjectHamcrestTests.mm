@@ -7,7 +7,7 @@
 #import "OCMockObjectHamcrestTests.h"
 
 #define HC_SHORTHAND
-#import <hamcrest/hamcrest.h>
+#import <OCHamcrest/OCHamcrest.h>
 
 
 @implementation OCMockObjectHamcrestTests

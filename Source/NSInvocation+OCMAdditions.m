@@ -8,11 +8,11 @@
 
 @implementation NSInvocation(OCMAdditions)
 
-- (id)getArgumentAtIndexAsObject:(int)index
+- (id)getArgumentAtIndexAsObject:(int)argIndex
 {
 	const char* argType;
 	
-	argType = [[self methodSignature] getArgumentTypeAtIndex:index];
+	argType = [[self methodSignature] getArgumentTypeAtIndex:argIndex];
 	while(strchr("rnNoORV", argType[0]) != NULL)
 		argType += 1;
 	
@@ -25,105 +25,105 @@
 		case '@': 
 		{
 			id value;
-			[self getArgument:&value atIndex:index];
+			[self getArgument:&value atIndex:argIndex];
 			return value;
 		}
 		case ':':
  		{
  			SEL s = (SEL)0;
- 			[self getArgument:&s atIndex:index];
+ 			[self getArgument:&s atIndex:argIndex];
  			id value = NSStringFromSelector(s);
  			return value;
  		}
 		case 'i': 
 		{
 			int value;
-			[self getArgument:&value atIndex:index];
+			[self getArgument:&value atIndex:argIndex];
 			return [NSNumber numberWithInt:value];
 		}	
 		case 's':
 		{
 			short value;
-			[self getArgument:&value atIndex:index];
+			[self getArgument:&value atIndex:argIndex];
 			return [NSNumber numberWithShort:value];
 		}	
 		case 'l':
 		{
 			long value;
-			[self getArgument:&value atIndex:index];
+			[self getArgument:&value atIndex:argIndex];
 			return [NSNumber numberWithLong:value];
 		}	
 		case 'q':
 		{
 			long long value;
-			[self getArgument:&value atIndex:index];
+			[self getArgument:&value atIndex:argIndex];
 			return [NSNumber numberWithLongLong:value];
 		}	
 		case 'c':
 		{
 			char value;
-			[self getArgument:&value atIndex:index];
+			[self getArgument:&value atIndex:argIndex];
 			return [NSNumber numberWithChar:value];
 		}	
 		case 'C':
 		{
 			unsigned char value;
-			[self getArgument:&value atIndex:index];
+			[self getArgument:&value atIndex:argIndex];
 			return [NSNumber numberWithUnsignedChar:value];
 		}	
 		case 'I':
 		{
 			unsigned int value;
-			[self getArgument:&value atIndex:index];
+			[self getArgument:&value atIndex:argIndex];
 			return [NSNumber numberWithUnsignedInt:value];
 		}	
 		case 'S':
 		{
 			unsigned short value;
-			[self getArgument:&value atIndex:index];
+			[self getArgument:&value atIndex:argIndex];
 			return [NSNumber numberWithUnsignedShort:value];
 		}	
 		case 'L':
 		{
 			unsigned long value;
-			[self getArgument:&value atIndex:index];
+			[self getArgument:&value atIndex:argIndex];
 			return [NSNumber numberWithUnsignedLong:value];
 		}	
 		case 'Q':
 		{
 			unsigned long long value;
-			[self getArgument:&value atIndex:index];
+			[self getArgument:&value atIndex:argIndex];
 			return [NSNumber numberWithUnsignedLongLong:value];
 		}	
 		case 'f':
 		{
 			float value;
-			[self getArgument:&value atIndex:index];
+			[self getArgument:&value atIndex:argIndex];
 			return [NSNumber numberWithFloat:value];
 		}	
 		case 'd':
 		{
 			double value;
-			[self getArgument:&value atIndex:index];
+			[self getArgument:&value atIndex:argIndex];
 			return [NSNumber numberWithDouble:value];
 		}	
 		case 'B':
 		{
 			bool value;
-			[self getArgument:&value atIndex:index];
+			[self getArgument:&value atIndex:argIndex];
 			return [NSNumber numberWithBool:value];
 		}
 		case '^':
         {
             void *value = NULL;
-            [self getArgument:&value atIndex:index];
+            [self getArgument:&value atIndex:argIndex];
             return [NSValue valueWithPointer:value];
         }
 		case '{': // structure
 		{
-			unsigned maxSize = [[self methodSignature] frameLength];
-			NSMutableData *argumentData = [[[NSMutableData alloc] initWithLength:maxSize] autorelease];
-			[self getArgument:[argumentData mutableBytes] atIndex:index];
+			unsigned maxArgSize = [[self methodSignature] frameLength];
+			NSMutableData *argumentData = [[[NSMutableData alloc] initWithLength:maxArgSize] autorelease];
+			[self getArgument:[argumentData mutableBytes] atIndex:argIndex];
 			return [NSValue valueWithBytes:[argumentData bytes] objCType:argType];
 		}       
 			
@@ -152,32 +152,32 @@
 	return [description autorelease];
 }
 
-- (NSString *)argumentDescriptionAtIndex:(int)index
+- (NSString *)argumentDescriptionAtIndex:(int)argIndex
 {
-	const char *argType = [[self methodSignature] getArgumentTypeAtIndex:index];
+	const char *argType = [[self methodSignature] getArgumentTypeAtIndex:argIndex];
 	if(strchr("rnNoORV", argType[0]) != NULL)
 		argType += 1;
 
 	switch(*argType)
 	{
-		case '@':	return [self objectDescriptionAtIndex:index];
-		case 'c':	return [self charDescriptionAtIndex:index];
-		case 'C':	return [self unsignedCharDescriptionAtIndex:index];
-		case 'i':	return [self intDescriptionAtIndex:index];
-		case 'I':	return [self unsignedIntDescriptionAtIndex:index];
-		case 's':	return [self shortDescriptionAtIndex:index];
-		case 'S':	return [self unsignedShortDescriptionAtIndex:index];
-		case 'l':	return [self longDescriptionAtIndex:index];
-		case 'L':	return [self unsignedLongDescriptionAtIndex:index];
-		case 'q':	return [self longLongDescriptionAtIndex:index];
-		case 'Q':	return [self unsignedLongLongDescriptionAtIndex:index];
-		case 'd':	return [self doubleDescriptionAtIndex:index];
-		case 'f':	return [self floatDescriptionAtIndex:index];
+		case '@':	return [self objectDescriptionAtIndex:argIndex];
+		case 'c':	return [self charDescriptionAtIndex:argIndex];
+		case 'C':	return [self unsignedCharDescriptionAtIndex:argIndex];
+		case 'i':	return [self intDescriptionAtIndex:argIndex];
+		case 'I':	return [self unsignedIntDescriptionAtIndex:argIndex];
+		case 's':	return [self shortDescriptionAtIndex:argIndex];
+		case 'S':	return [self unsignedShortDescriptionAtIndex:argIndex];
+		case 'l':	return [self longDescriptionAtIndex:argIndex];
+		case 'L':	return [self unsignedLongDescriptionAtIndex:argIndex];
+		case 'q':	return [self longLongDescriptionAtIndex:argIndex];
+		case 'Q':	return [self unsignedLongLongDescriptionAtIndex:argIndex];
+		case 'd':	return [self doubleDescriptionAtIndex:argIndex];
+		case 'f':	return [self floatDescriptionAtIndex:argIndex];
 		// Why does this throw EXC_BAD_ACCESS when appending the string?
 		//	case NSObjCStructType: return [self structDescriptionAtIndex:index];
-		case '^':	return [self pointerDescriptionAtIndex:index];
-		case '*':	return [self cStringDescriptionAtIndex:index];
-		case ':':	return [self selectorDescriptionAtIndex:index];
+		case '^':	return [self pointerDescriptionAtIndex:argIndex];
+		case '*':	return [self cStringDescriptionAtIndex:argIndex];
+		case ':':	return [self selectorDescriptionAtIndex:argIndex];
 		default:	return [@"<??" stringByAppendingString:@">"];  // avoid confusion with trigraphs...
 	}
 	
@@ -191,7 +191,7 @@
 	[self getArgument:&object atIndex:anInt];
 	if (object == nil)
 		return @"nil";
-	else if([object isKindOfClass:[NSString class]])
+	else if(![object isProxy] && [object isKindOfClass:[NSString class]])
 		return [NSString stringWithFormat:@"@\"%@\"", [object description]];
 	else
 		return [object description];

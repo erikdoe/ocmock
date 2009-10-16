@@ -1,6 +1,14 @@
 Chronological listing of changes. If a particular SVN revision has no entry, that
 check-in did not involve any code or feature changes.
 
+2009-10-16 (r55)
+
+* Fixed broken test for array argument descciptions (Craig Beck)
+* Disambiguated mock table method name to avoid compiler warning
+* Renamed some variables to avoid warnings when using -Wshadow
+* Partial mocks are now deallocated as they should
+* Fixed problems that occured when using mocks as arguments
+
 
 2009-08-18 (r54)
 
