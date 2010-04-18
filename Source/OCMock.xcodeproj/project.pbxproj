@@ -39,6 +39,8 @@
 		03C3672F100D6D0F00BE9731 /* OCMIndirectReturnValueProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C3672D100D6D0F00BE9731 /* OCMIndirectReturnValueProvider.m */; };
 		03C36775100D744700BE9731 /* OCMNotificationPoster.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C36773100D744700BE9731 /* OCMNotificationPoster.h */; };
 		03C36776100D744700BE9731 /* OCMNotificationPoster.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C36774100D744700BE9731 /* OCMNotificationPoster.m */; };
+		03CFB08C117B308C00935C1E /* OCMBlockCaller.h in Headers */ = {isa = PBXBuildFile; fileRef = 03CFB089117B308C00935C1E /* OCMBlockCaller.h */; };
+		03CFB08D117B308C00935C1E /* OCMBlockCaller.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CFB08A117B308C00935C1E /* OCMBlockCaller.m */; };
 		03D880550F8C75980087D071 /* OCObserverMockObjectTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D880540F8C75980087D071 /* OCObserverMockObjectTest.m */; };
 		03D880610F8C81DE0087D071 /* OCObserverMockObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 03D8805E0F8C81DE0087D071 /* OCObserverMockObject.h */; };
 		03D880620F8C81DE0087D071 /* OCObserverMockObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D8805F0F8C81DE0087D071 /* OCObserverMockObject.m */; };
@@ -106,6 +108,8 @@
 		03C3672D100D6D0F00BE9731 /* OCMIndirectReturnValueProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMIndirectReturnValueProvider.m; sourceTree = "<group>"; };
 		03C36773100D744700BE9731 /* OCMNotificationPoster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMNotificationPoster.h; sourceTree = "<group>"; };
 		03C36774100D744700BE9731 /* OCMNotificationPoster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMNotificationPoster.m; sourceTree = "<group>"; };
+		03CFB089117B308C00935C1E /* OCMBlockCaller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMBlockCaller.h; sourceTree = "<group>"; };
+		03CFB08A117B308C00935C1E /* OCMBlockCaller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMBlockCaller.m; sourceTree = "<group>"; };
 		03D65B47094CA23B00DF6687 /* Changes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Changes.txt; sourceTree = "<group>"; };
 		03D880530F8C75980087D071 /* OCObserverMockObjectTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCObserverMockObjectTest.h; sourceTree = "<group>"; };
 		03D880540F8C75980087D071 /* OCObserverMockObjectTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCObserverMockObjectTest.m; sourceTree = "<group>"; };
@@ -244,6 +248,8 @@
 				03C3672D100D6D0F00BE9731 /* OCMIndirectReturnValueProvider.m */,
 				03C36773100D744700BE9731 /* OCMNotificationPoster.h */,
 				03C36774100D744700BE9731 /* OCMNotificationPoster.m */,
+				03CFB089117B308C00935C1E /* OCMBlockCaller.h */,
+				03CFB08A117B308C00935C1E /* OCMBlockCaller.m */,
 			);
 			name = "Invocation Handler";
 			sourceTree = "<group>";
@@ -374,6 +380,7 @@
 				03C3672E100D6D0F00BE9731 /* OCMIndirectReturnValueProvider.h in Headers */,
 				03C36775100D744700BE9731 /* OCMNotificationPoster.h in Headers */,
 				03F1FE8A10353A5F00E4962C /* NSMethodSignature+OCMAdditions.h in Headers */,
+				03CFB08C117B308C00935C1E /* OCMBlockCaller.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -533,6 +540,7 @@
 				03C3672F100D6D0F00BE9731 /* OCMIndirectReturnValueProvider.m in Sources */,
 				03C36776100D744700BE9731 /* OCMNotificationPoster.m in Sources */,
 				03F1FE8B10353A5F00E4962C /* NSMethodSignature+OCMAdditions.m in Sources */,
+				03CFB08D117B308C00935C1E /* OCMBlockCaller.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

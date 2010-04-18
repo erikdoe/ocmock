@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------------------
 //  $Id$
-//  Copyright (c) 2004-2008 by Mulle Kybernetik. See License file for details.
+//  Copyright (c) 2004-2010 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import <OCMock/OCMock.h>
@@ -111,6 +111,17 @@ static NSString *TestNotification = @"TestNotification";
 	[mock hasSuffix:@"bar"];
 }
 
+#ifdef MAC_OS_X_VERSION_10_6
+
+- (void)testAcceptsStubbedMethodWithBlockConstraint
+{
+	[[mock stub] hasSuffix:[OCMArg checkWithBlock:^(id value) { return [value isEqualToString:@"foo"]; }]];
+
+	STAssertNoThrow([mock hasSuffix:@"foo"], @"Should not have thrown a exception");   
+	STAssertThrows([mock hasSuffix:@"bar"], @"Should have thrown a exception");   
+}
+	
+#endif
 
 - (void)testAcceptsStubbedMethodWithNilArgument
 {
@@ -343,6 +354,25 @@ static NSString *TestNotification = @"TestNotification";
 	STAssertEqualObjects(@"[FOO, 1]", returnValue, @"Should have passed and returned invocation.");
 }
 
+#ifdef MAC_OS_X_VERSION_10_6
+
+- (void)testCallsBlockWhichCanSetUpReturnValue
+{
+	void (^theBlock)(NSInvocation *) = ^(NSInvocation *invocation) 
+		{
+			NSString *value;
+			[invocation getArgument:&value atIndex:2];
+			value = [NSString stringWithFormat:@"MOCK %@", value];
+			[invocation setReturnValue:&value];
+		};
+		
+	[[[mock stub] andDo:theBlock] stringByAppendingString:[OCMArg any]];
+		
+	STAssertEqualObjects(@"MOCK foo", [mock stringByAppendingString:@"foo"], @"Should have called block.");
+	STAssertEqualObjects(@"MOCK bar", [mock stringByAppendingString:@"bar"], @"Should have called block.");
+}
+
+#endif
 
 // --------------------------------------------------------------------------------------
 //	returning values in pass-by-reference arguments

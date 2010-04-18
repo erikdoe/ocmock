@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------------------
 //  $Id$
-//  Copyright (c) 2004-2009 by Mulle Kybernetik. See License file for details.
+//  Copyright (c) 2004-2010 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import <objc/runtime.h>
@@ -13,6 +13,7 @@
 #import "OCMExceptionReturnValueProvider.h"
 #import "OCMIndirectReturnValueProvider.h"
 #import "OCMNotificationPoster.h"
+#import "OCMBlockCaller.h"
 #import "NSInvocation+OCMAdditions.h"
 
 @interface NSObject(HCMatcherDummy)
@@ -83,6 +84,17 @@
 	[invocationHandlers addObject:[[[OCMIndirectReturnValueProvider alloc] initWithProvider:anObject andSelector:selector] autorelease]];
 	return self;
 }
+
+#ifdef MAC_OS_X_VERSION_10_6
+
+- (id)andDo:(void (^)(NSInvocation *))aBlock 
+{
+	[invocationHandlers addObject:[[[OCMBlockCaller alloc] initWithCallBlock:aBlock] autorelease]];
+	return self;
+}
+
+#endif
+
 
 - (NSArray *)invocationHandlers
 {

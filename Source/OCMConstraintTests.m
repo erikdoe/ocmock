@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------------------
 //  $Id: OCMockRecorderTests.m 12 2006-06-11 02:41:31Z erik $
-//  Copyright (c) 2004-2008 by Mulle Kybernetik. See License file for details.
+//  Copyright (c) 2004-2010 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import "OCMConstraintTests.h"
@@ -93,5 +93,39 @@
 	STAssertThrows(CONSTRAINTV(@selector(checkArgXXX:), @"bar"), @"Should have thrown for unknown constraint method.");	
 }
 
+
+#ifdef MAC_OS_X_VERSION_10_6
+
+-(void)testUsesBlock
+{
+	BOOL (^checkForFooBlock)(id) = ^(id value)
+		{
+			return [value isEqualToString:@"foo"];
+		};
+	
+	OCMBlockConstraint *constraint = [[[OCMBlockConstraint alloc] initWithConstraintBlock:checkForFooBlock] autorelease];
+
+	STAssertTrue([constraint evaluate:@"foo"], @"Should have accepted foo.");
+	STAssertFalse([constraint evaluate:@"bar"], @"Should not have accepted bar.");
+}
+
+-(void)testBlockConstraintCanCaptureArgument 
+{
+	__block NSString *captured;
+	BOOL (^captureArgBlock)(id) = ^(id value)
+		{
+			captured = value;
+			return YES;
+		};
+	
+	OCMBlockConstraint *constraint = [[[OCMBlockConstraint alloc] initWithConstraintBlock:captureArgBlock] autorelease];
+
+	[constraint evaluate:@"foo"];
+	STAssertEqualObjects(@"foo", captured, @"Should have captured value from last invocation.");
+	[constraint evaluate:@"bar"];
+	STAssertEqualObjects(@"bar", captured, @"Should have captured value from last invocation.");
+}
+
+#endif
 
 @end

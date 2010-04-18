@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------------------
 //  $Id$
-//  Copyright (c) 2004-2009 by Mulle Kybernetik. See License file for details.
+//  Copyright (c) 2004-2010 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import <Foundation/Foundation.h>
@@ -22,6 +22,9 @@
 - (id)andThrow:(NSException *)anException;
 - (id)andPost:(NSNotification *)aNotification;
 - (id)andCall:(SEL)selector onObject:(id)anObject;
+#ifdef MAC_OS_X_VERSION_10_6
+- (id)andDo:(void (^)(NSInvocation *))block; 
+#endif
 
 - (NSArray *)invocationHandlers;
 

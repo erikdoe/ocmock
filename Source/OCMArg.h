@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------------------
-//  $Id: $
-//  Copyright (c) 2009 by Mulle Kybernetik. See License file for details.
+//  $Id$
+//  Copyright (c) 2009-2010 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import <Foundation/Foundation.h>
@@ -15,6 +15,9 @@
 + (id)isNotNil;
 + (id)isNotEqual:(id)value;
 + (id)checkWithSelector:(SEL)selector onObject:(id)anObject;
+#ifdef MAC_OS_X_VERSION_10_6
++ (id)checkWithBlock:(BOOL (^)(id))block;
+#endif
 
 // manipulating arguments
 

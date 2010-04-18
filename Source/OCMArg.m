@@ -1,11 +1,12 @@
 //---------------------------------------------------------------------------------------
-//  $Id: $
-//  Copyright (c) 2009 by Mulle Kybernetik. See License file for details.
+//  $Id$
+//  Copyright (c) 2009-2010 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import <OCMock/OCMArg.h>
 #import <OCMock/OCMConstraint.h>
 #import "OCMPassByRefSetter.h"
+#import "OCMConstraint.h"
 
 @implementation OCMArg
 
@@ -40,6 +41,15 @@
 {
 	return [OCMConstraint constraintWithSelector:selector onObject:anObject];
 }
+
+#ifdef MAC_OS_X_VERSION_10_6
+
++ (id)checkWithBlock:(BOOL (^)(id))block 
+{
+	return [[[OCMBlockConstraint alloc] initWithConstraintBlock:block] autorelease];
+}
+
+#endif
 
 + (id *)setTo:(id)value;
 {
