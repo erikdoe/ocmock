@@ -15,7 +15,7 @@
 + (id)isNotNil;
 + (id)isNotEqual:(id)value;
 + (id)checkWithSelector:(SEL)selector onObject:(id)anObject;
-#ifdef MAC_OS_X_VERSION_10_6
+#if NS_BLOCKS_AVAILABLE
 + (id)checkWithBlock:(BOOL (^)(id))block;
 #endif
 

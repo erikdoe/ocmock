@@ -1,11 +1,16 @@
 //---------------------------------------------------------------------------------------
-//  $Id: $
+//  $Id$
 //  Copyright (c) 2009 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
-#import <objc/objc-runtime.h>
+#import <objc/runtime.h>
 #import "OCPartialMockRecorder.h"
 #import "OCPartialMockObject.h"
+
+
+@interface OCPartialMockObject (Private)
+- (void)forwardInvocationForRealObject:(NSInvocation *)anInvocation;
+@end 
 
 
 @implementation OCPartialMockObject

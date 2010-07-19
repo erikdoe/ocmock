@@ -111,7 +111,7 @@ static NSString *TestNotification = @"TestNotification";
 	[mock hasSuffix:@"bar"];
 }
 
-#ifdef MAC_OS_X_VERSION_10_6
+#if NS_BLOCKS_AVAILABLE
 
 - (void)testAcceptsStubbedMethodWithBlockConstraint
 {
@@ -354,7 +354,7 @@ static NSString *TestNotification = @"TestNotification";
 	STAssertEqualObjects(@"[FOO, 1]", returnValue, @"Should have passed and returned invocation.");
 }
 
-#ifdef MAC_OS_X_VERSION_10_6
+#if NS_BLOCKS_AVAILABLE
 
 - (void)testCallsBlockWhichCanSetUpReturnValue
 {

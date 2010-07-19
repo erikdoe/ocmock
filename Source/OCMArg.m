@@ -42,7 +42,7 @@
 	return [OCMConstraint constraintWithSelector:selector onObject:anObject];
 }
 
-#ifdef MAC_OS_X_VERSION_10_6
+#if NS_BLOCKS_AVAILABLE
 
 + (id)checkWithBlock:(BOOL (^)(id))block 
 {

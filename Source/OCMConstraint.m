@@ -91,7 +91,7 @@
 
 - (BOOL)evaluate:(id)value
 {
-	return ![value isEqualTo:testValue];
+	return ![value isEqual:testValue];
 }
 
 @end
@@ -115,7 +115,7 @@
 
 #pragma mark  -
 
-#ifdef MAC_OS_X_VERSION_10_6
+#if NS_BLOCKS_AVAILABLE
 
 @implementation OCMBlockConstraint
 

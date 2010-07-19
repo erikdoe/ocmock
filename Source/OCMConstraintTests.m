@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-//  $Id: OCMockRecorderTests.m 12 2006-06-11 02:41:31Z erik $
+//  $Id$
 //  Copyright (c) 2004-2010 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
@@ -69,7 +69,7 @@
 - (BOOL)checkArg:(id)theArg withValue:(id)value
 {
 	didCallCustomConstraint = YES;
-	return [theArg isEqualTo:value];
+	return [theArg isEqual:value];
 }
 
 - (void)testUsesMethodWithValue
@@ -94,7 +94,7 @@
 }
 
 
-#ifdef MAC_OS_X_VERSION_10_6
+#if NS_BLOCKS_AVAILABLE
 
 -(void)testUsesBlock
 {

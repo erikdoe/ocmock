@@ -17,4 +17,6 @@
 
 - (void)verify;
 
+- (void)handleNotification:(NSNotification *)aNotification;
+
 @end
