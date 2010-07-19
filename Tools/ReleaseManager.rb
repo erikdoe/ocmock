@@ -13,7 +13,7 @@ class Project
         @settings = "INSTALL_PATH=\"/\" COPY_PHASE_STRIP=YES"
     end
     
-    attr_accessor :name, :version, :basename, :settings, :svnroot, :uploaddest, :uploadcmd
+    attr_accessor :name, :version, :basename, :settings, :svnroot, :uploaddest, :uploadcmd, :revision
 end
 
 
@@ -141,8 +141,9 @@ class ReleaseManager
     end
     
     def checkOutSource
-        @worker.chdir(@env.sourcedir)
-        @worker.run("#{@env.svn} export #{@proj.svnroot} #{@proj.basename}")
+        @worker.chdir(@env.sourcedir) 
+        rflag = @proj.revision ? "-r #{@proj.revision}" : "" 
+        @worker.run("#{@env.svn} export #{rflag} #{@proj.svnroot} #{@proj.basename}")
         @worker.run("cp -R #{@env.sourcedir} #{@env.productdir}")
     end
 
