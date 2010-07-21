@@ -27,14 +27,10 @@
 	[[[mockTableView expect] andReturn:nil] dequeueReusableCellWithIdentifier:@"HelloWorldCell"];
 	
 	UITableViewCell *cell = [controller tableView:mockTableView cellForRowAtIndexPath:nil];
-//	UITableViewCell *cell = [controller tableView:nil cellForRowAtIndexPath:nil];
 	
 	STAssertNotNil(cell, @"Should have returned a cell");
-//	STAssertNotNil(cell.textLabel, @"Cell should have a text label");
-//	STAssertEquals(@"Hello World!", cell.textLabel.text, @"Should have set up cell correctly");
 	[mockTableView verify];
 }
-
 
 
 @end

@@ -72,13 +72,16 @@
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"HelloWorldCell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     
+//  It would be nice to set the label and then assert that in the unit test but, unfortunately, this
+//  cannot be done in "logic tests". The problem is described well in the discussion linked below.
+//	http://stackoverflow.com/questions/1689586/why-does-instantiating-a-uifont-in-an-iphone-unit-test-cause-a-crash
 //	cell.textLabel.text = @"Hello World!";
 
     return cell;

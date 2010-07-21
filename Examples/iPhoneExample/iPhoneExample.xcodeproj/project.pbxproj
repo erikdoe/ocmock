@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -192,7 +192,7 @@
 				ORGANIZATIONNAME = "Mulle Kybernetik";
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "iPhoneExample" */;
-			compatibilityVersion = "Xcode 3.1";
+			compatibilityVersion = "Xcode 3.2";
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				English,
@@ -242,7 +242,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+			shellScript = "# Run the unit tests in this test bundle.\nulimit -c unlimited\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -292,7 +292,8 @@
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
-					"-all_load",
+					"-force_load",
+					"$(PROJECT_DIR)/Libraries/libOCMock.a",
 					"-framework",
 					Foundation,
 					"-framework",
@@ -327,7 +328,8 @@
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
-					"-all_load",
+					"-force_load",
+					"$(PROJECT_DIR)/Libraries/libOCMock.a",
 					"-framework",
 					Foundation,
 					"-framework",

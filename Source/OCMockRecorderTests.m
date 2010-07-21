@@ -60,7 +60,7 @@
 	[recorder andReturn:@"foo"];
 	handlerList = [recorder invocationHandlers];
 	
-	STAssertEquals(1u, [handlerList count], @"Should have added one handler.");
+	STAssertEquals((NSUInteger)1, [handlerList count], @"Should have added one handler.");
 	STAssertEqualObjects([OCMReturnValueProvider class], [[handlerList objectAtIndex:0] class], @"Should have added correct handler.");
 }
 
@@ -73,7 +73,7 @@
 	[recorder andThrow:[NSException exceptionWithName:@"TestException" reason:@"A reason" userInfo:nil]];
 	handlerList = [recorder invocationHandlers];
 
-	STAssertEquals(1u, [handlerList count], @"Should have added one handler.");
+	STAssertEquals((NSUInteger)1, [handlerList count], @"Should have added one handler.");
 	STAssertEqualObjects([OCMExceptionReturnValueProvider class], [[handlerList objectAtIndex:0] class], @"Should have added correct handler.");
 	
 }
