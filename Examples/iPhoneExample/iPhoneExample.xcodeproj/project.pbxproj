@@ -11,6 +11,17 @@
 		036EF43E11F5BE7900A41604 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C286E00D94DF7D0034E888 /* RootViewController.m */; };
 		036EF43F11F5BE7900A41604 /* iPhoneExampleAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* iPhoneExampleAppDelegate.m */; };
 		036EF4CC11F5D67600A41604 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03E41EBE11F5B13F00147791 /* libOCMock.a */; };
+		03B85C4E11FFAF1100347AAD /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD735F0D9D9599002E5188 /* MainWindow.xib */; };
+		03B85C4F11FFAF1100347AAD /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28F335F01007B36200424DE2 /* RootViewController.xib */; };
+		03B85C5111FFAF1100347AAD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
+		03B85C5511FFAF1100347AAD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
+		03B85C5611FFAF1100347AAD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		03B85C5711FFAF1100347AAD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */; };
+		03B85C6311FFB03900347AAD /* iPhoneExampleTests.octest in Resources */ = {isa = PBXBuildFile; fileRef = 03E41F0811F5BE2F00147791 /* iPhoneExampleTests.octest */; };
+		03B85C6B11FFB04A00347AAD /* OCMockLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 03B85C6A11FFB04A00347AAD /* OCMockLogo.png */; };
+		03B85C6C11FFB04A00347AAD /* OCMockLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 03B85C6A11FFB04A00347AAD /* OCMockLogo.png */; };
+		03B85CCF11FFB88E00347AAD /* iPhoneExampleAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* iPhoneExampleAppDelegate.m */; };
+		03B85CD011FFB89000347AAD /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C286E00D94DF7D0034E888 /* RootViewController.m */; };
 		1D3623260D0F684500981E51 /* iPhoneExampleAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* iPhoneExampleAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
@@ -21,7 +32,19 @@
 		28F335F11007B36200424DE2 /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28F335F01007B36200424DE2 /* RootViewController.xib */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		03B85C5E11FFB03100347AAD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 03E41F0711F5BE2F00147791;
+			remoteInfo = iPhoneExampleTests;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		03B85C5B11FFAF1100347AAD /* iPhoneExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iPhoneExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		03B85C6A11FFB04A00347AAD /* OCMockLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = OCMockLogo.png; sourceTree = "<group>"; };
 		03E41EAF11F5B0D100147791 /* RootViewControllerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewControllerTests.h; sourceTree = "<group>"; };
 		03E41EB011F5B0D100147791 /* RootViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewControllerTests.m; sourceTree = "<group>"; };
 		03E41EBE11F5B13F00147791 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOCMock.a; path = Libraries/libOCMock.a; sourceTree = "<group>"; };
@@ -43,6 +66,16 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		03B85C5411FFAF1100347AAD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03B85C5511FFAF1100347AAD /* Foundation.framework in Frameworks */,
+				03B85C5611FFAF1100347AAD /* UIKit.framework in Frameworks */,
+				03B85C5711FFAF1100347AAD /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		03E41F0511F5BE2F00147791 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -97,6 +130,7 @@
 			children = (
 				1D6058910D05DD3D006BFB54 /* iPhoneExample.app */,
 				03E41F0811F5BE2F00147791 /* iPhoneExampleTests.octest */,
+				03B85C5B11FFAF1100347AAD /* iPhoneExample.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -111,7 +145,6 @@
 				03E41EBC11F5B12100147791 /* Libraries */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
-				03E41F0911F5BE2F00147791 /* iPhoneExampleTests-Info.plist */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -131,6 +164,8 @@
 				28F335F01007B36200424DE2 /* RootViewController.xib */,
 				28AD735F0D9D9599002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* iPhoneExample-Info.plist */,
+				03E41F0911F5BE2F00147791 /* iPhoneExampleTests-Info.plist */,
+				03B85C6A11FFB04A00347AAD /* OCMockLogo.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -148,6 +183,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		03B85C4C11FFAF1100347AAD /* iPhoneExampleTesting */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 03B85C5811FFAF1100347AAD /* Build configuration list for PBXNativeTarget "iPhoneExampleTesting" */;
+			buildPhases = (
+				03B85C4D11FFAF1100347AAD /* Resources */,
+				03B85C5011FFAF1100347AAD /* Sources */,
+				03B85C5411FFAF1100347AAD /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				03B85C5F11FFB03100347AAD /* PBXTargetDependency */,
+			);
+			name = iPhoneExampleTesting;
+			productName = iPhoneExample;
+			productReference = 03B85C5B11FFAF1100347AAD /* iPhoneExample.app */;
+			productType = "com.apple.product-type.application";
+		};
 		03E41F0711F5BE2F00147791 /* iPhoneExampleTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 03E41F0F11F5BE3000147791 /* Build configuration list for PBXNativeTarget "iPhoneExampleTests" */;
@@ -155,7 +208,6 @@
 				03E41F0311F5BE2F00147791 /* Resources */,
 				03E41F0411F5BE2F00147791 /* Sources */,
 				03E41F0511F5BE2F00147791 /* Frameworks */,
-				03E41F0611F5BE2F00147791 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -207,11 +259,23 @@
 			targets = (
 				1D6058900D05DD3D006BFB54 /* iPhoneExample */,
 				03E41F0711F5BE2F00147791 /* iPhoneExampleTests */,
+				03B85C4C11FFAF1100347AAD /* iPhoneExampleTesting */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		03B85C4D11FFAF1100347AAD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03B85C6C11FFB04A00347AAD /* OCMockLogo.png in Resources */,
+				03B85C4E11FFAF1100347AAD /* MainWindow.xib in Resources */,
+				03B85C4F11FFAF1100347AAD /* RootViewController.xib in Resources */,
+				03B85C6311FFB03900347AAD /* iPhoneExampleTests.octest in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		03E41F0311F5BE2F00147791 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -225,28 +289,23 @@
 			files = (
 				28AD73600D9D9599002E5188 /* MainWindow.xib in Resources */,
 				28F335F11007B36200424DE2 /* RootViewController.xib in Resources */,
+				03B85C6B11FFB04A00347AAD /* OCMockLogo.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		03E41F0611F5BE2F00147791 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
+/* Begin PBXSourcesBuildPhase section */
+		03B85C5011FFAF1100347AAD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
+				03B85C5111FFAF1100347AAD /* main.m in Sources */,
+				03B85CCF11FFB88E00347AAD /* iPhoneExampleAppDelegate.m in Sources */,
+				03B85CD011FFB89000347AAD /* RootViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\nulimit -c unlimited\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 		};
-/* End PBXShellScriptBuildPhase section */
-
-/* Begin PBXSourcesBuildPhase section */
 		03E41F0411F5BE2F00147791 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -269,7 +328,42 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		03B85C5F11FFB03100347AAD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 03E41F0711F5BE2F00147791 /* iPhoneExampleTests */;
+			targetProxy = 03B85C5E11FFB03100347AAD /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		03B85C5911FFAF1100347AAD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = iPhoneExample_Prefix.pch;
+				INFOPLIST_FILE = "iPhoneExample-Info.plist";
+				PRODUCT_NAME = iPhoneExample;
+			};
+			name = Debug;
+		};
+		03B85C5A11FFAF1100347AAD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = iPhoneExample_Prefix.pch;
+				INFOPLIST_FILE = "iPhoneExample-Info.plist";
+				PRODUCT_NAME = iPhoneExample;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		03E41F0D11F5BE3000147791 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -288,7 +382,7 @@
 				INFOPLIST_FILE = "iPhoneExampleTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Libraries\"",
+					"\"$(PROJECT_DIR)/Libraries\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -324,7 +418,7 @@
 				INFOPLIST_FILE = "iPhoneExampleTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Libraries\"",
+					"\"$(PROJECT_DIR)/Libraries\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -405,6 +499,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		03B85C5811FFAF1100347AAD /* Build configuration list for PBXNativeTarget "iPhoneExampleTesting" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				03B85C5911FFAF1100347AAD /* Debug */,
+				03B85C5A11FFAF1100347AAD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		03E41F0F11F5BE3000147791 /* Build configuration list for PBXNativeTarget "iPhoneExampleTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -1,12 +1,13 @@
 Chronological listing of changes. If a particular SVN revision has no entry, that
 check-in did not involve any code or feature changes.
 
-2010-05-28 (r62)
+2010-07-28 (r62, r63)
 
 * Now building OCMock library for simulator (i386) and device (armv7)
+* Updated example to run tests on device                    
 
 
-2010-05-21 (r61)
+2010-07-21 (r61)
 
 * Added a new target to build a static library for iOS use
 * Created an example showing how to use OCMock in an iOS project
