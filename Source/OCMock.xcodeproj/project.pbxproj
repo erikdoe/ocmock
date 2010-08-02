@@ -399,7 +399,6 @@
 				034313E90CCA7BC700A2E080 /* OCMConstraintTests.m */,
 				03A2D1F809F1533C008A1AFD /* NSInvocationOCMAdditionsTests.h */,
 				030106470A3B99F20049FED7 /* NSInvocationOCMAdditionsTests.m */,
-				32C88DFF0371C24200C91783 /* Other Sources */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -418,6 +417,7 @@
 				03DE21B506DB95CB00E5A2A8 /* Public Headers */,
 				08FB77AEFE84172EC02AAC07 /* Implementation */,
 				03DE1F5D06DB911C00E5A2A8 /* Tests */,
+				32C88DFF0371C24200C91783 /* Other Sources */,
 				089C1665FE841158C02AAC07 /* Resources */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
 				034768DFFF38A50411DB9C8B /* Products */,
@@ -925,7 +925,7 @@
 				OTHER_REZFLAGS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = OCMockTests;
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -961,7 +961,7 @@
 				OTHER_REZFLAGS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = OCMockTests;
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1066,7 +1066,7 @@
 				OTHER_CFLAGS = "-fobjc-exceptions";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = OCMock;
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
 				SECTORDER_FLAGS = "";
 				TEST_AFTER_BUILD = YES;
 				WARNING_CFLAGS = (
@@ -1109,7 +1109,7 @@
 				OTHER_CFLAGS = "-fobjc-exceptions";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = OCMock;
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
 				SECTORDER_FLAGS = "";
 				TEST_AFTER_BUILD = YES;
 				WARNING_CFLAGS = (

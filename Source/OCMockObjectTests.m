@@ -113,6 +113,14 @@ static NSString *TestNotification = @"TestNotification";
 
 #if NS_BLOCKS_AVAILABLE
 
+- (void)testAcceptsStubbedMethodWithBlockArgument
+{
+	mock = [OCMockObject mockForClass:[NSArray class]];
+	[[mock stub] indexesOfObjectsPassingTest:[OCMArg any]];
+	[mock indexesOfObjectsPassingTest:^(id obj, NSUInteger idx, BOOL *stop) { return YES; }];
+}
+
+
 - (void)testAcceptsStubbedMethodWithBlockConstraint
 {
 	[[mock stub] hasSuffix:[OCMArg checkWithBlock:^(id value) { return [value isEqualToString:@"foo"]; }]];

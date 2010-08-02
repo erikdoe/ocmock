@@ -16,7 +16,7 @@
 	while(strchr("rnNoORV", argType[0]) != NULL)
 		argType += 1;
 	
-	if((strlen(argType) > 1) && (strchr("{^", argType[0]) == NULL))
+	if((strlen(argType) > 1) && (strchr("{^", argType[0]) == NULL) && (strcmp("@?", argType) != 0))
 		[NSException raise:NSInvalidArgumentException format:@"Cannot handle argument type '%s'.", argType];
 	
 	switch (argType[0]) 
