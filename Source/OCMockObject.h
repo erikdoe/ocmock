@@ -11,6 +11,7 @@
 	BOOL			expectationOrderMatters;
 	NSMutableArray	*recorders;
 	NSMutableArray	*expectations;
+	NSMutableArray	*rejections;
 	NSMutableArray	*exceptions;
 }
 
@@ -29,6 +30,7 @@
 
 - (id)stub;
 - (id)expect;
+- (id)reject;
 
 - (void)verify;
 

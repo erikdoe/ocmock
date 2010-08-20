@@ -1,6 +1,11 @@
 Chronological listing of changes. If a particular SVN revision has no entry, that
 check-in did not involve any code or feature changes.
 
+2010-08-21 (r69)
+
+* Added feature to explicitly reject methods on nice mocks (thanks to Heath Borders)
+ 
+
 2010-08-20 (r68)
 
 * Added feature to forward method to real object from partial mock (thanks to Marco Sandrini)

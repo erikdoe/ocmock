@@ -570,6 +570,19 @@ static NSString *TestNotification = @"TestNotification";
 
 
 // --------------------------------------------------------------------------------------
+//	explicitly rejecting methods (mostly for nice mocks, see below)
+// --------------------------------------------------------------------------------------
+
+- (void)testThrowsWhenRejectedMethodIsCalledOnNiceMock
+{
+	mock = [OCMockObject niceMockForClass:[NSString class]];
+	
+	[[mock reject] uppercaseString];
+	STAssertThrows([mock uppercaseString], @"Should have complained about rejected method being called.");
+}
+
+
+// --------------------------------------------------------------------------------------
 //	protocol mocks
 // --------------------------------------------------------------------------------------
 
@@ -769,6 +782,21 @@ static NSString *TestNotification = @"TestNotification";
 	@try
 	{
 		[mock lowercaseString];
+	}
+	@catch(NSException *exception)
+	{
+		// expected
+	}
+	STAssertThrows([mock verify], @"Should have reraised the exception.");
+}
+
+- (void)testReRaisesRejectExceptionsOnVerify
+{
+	mock = [OCMockObject niceMockForClass:[NSString class]];
+	[[mock reject] uppercaseString];
+	@try
+	{
+		[mock uppercaseString];
 	}
 	@catch(NSException *exception)
 	{

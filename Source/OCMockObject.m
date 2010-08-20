@@ -73,6 +73,7 @@
 	expectationOrderMatters = NO;
 	recorders = [[NSMutableArray alloc] init];
 	expectations = [[NSMutableArray alloc] init];
+	rejections = [[NSMutableArray alloc] init];
 	exceptions = [[NSMutableArray alloc] init];
 	return self;
 }
@@ -81,6 +82,7 @@
 {
 	[recorders release];
 	[expectations release];
+	[rejections	release];
 	[exceptions release];
 	[super dealloc];
 }
@@ -111,6 +113,14 @@
 {
 	OCMockRecorder *recorder = [self stub];
 	[expectations addObject:recorder];
+	return recorder;
+}
+
+
+- (id)reject
+{
+	OCMockRecorder *recorder = [self stub];
+	[rejections addObject:recorder];
 	return recorder;
 }
 
@@ -158,6 +168,15 @@
 	if(i == [recorders count])
 		return NO;
 	
+	if([rejections containsObject:recorder]) 
+	{
+		NSException *exception = [NSException exceptionWithName:NSInternalInconsistencyException reason:
+								  [NSString stringWithFormat:@"%@: explicitly disallowed method invoked: %@", [self description], 
+								   [anInvocation invocationDescription]] userInfo:nil];
+		[exceptions addObject:exception];
+		[exception raise];
+	}
+
 	if([expectations containsObject:recorder])
 	{
 		if(expectationOrderMatters && ([expectations objectAtIndex:0] != recorder))
