@@ -382,6 +382,34 @@ static NSString *TestNotification = @"TestNotification";
 
 #endif
 
+- (void)testThrowsWhenTryingToUseForwardToRealObjectOnNonPartialMock
+{
+	STAssertThrows([[[mock expect] andForwardToRealObject] method2], @"Should have raised and exception.");
+}
+
+- (void)testForwardsToRealObjectWhenSetUpAndCalledOnMock
+{
+	TestClassThatCallsSelf *realObject = [[[TestClassThatCallsSelf alloc] init] autorelease];
+	mock = [OCMockObject partialMockForObject:realObject];
+
+	[[[mock expect] andForwardToRealObject] method2];
+	STAssertEquals(@"Foo", [mock method2], @"Should have called method on real object.");
+
+	[mock verify];
+}
+
+- (void)testForwardsToRealObjectWhenSetUpAndCalledOnRealObject
+{
+	TestClassThatCallsSelf *realObject = [[[TestClassThatCallsSelf alloc] init] autorelease];
+	mock = [OCMockObject partialMockForObject:realObject];
+	
+	[[[mock expect] andForwardToRealObject] method2];
+	STAssertEquals(@"Foo", [realObject method2], @"Should have called method on real object.");
+	
+	[mock verify];
+}
+
+
 // --------------------------------------------------------------------------------------
 //	returning values in pass-by-reference arguments
 // --------------------------------------------------------------------------------------

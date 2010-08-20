@@ -12,7 +12,9 @@
 	void (^block)(NSInvocation *);
 }
 
--(id)initWithCallBlock:(void (^)(NSInvocation *))theBlock;
+- (id)initWithCallBlock:(void (^)(NSInvocation *))theBlock;
+
+- (void)handleInvocation:(NSInvocation *)anInvocation;
 
 @end
 

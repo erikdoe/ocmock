@@ -1,17 +1,13 @@
 //---------------------------------------------------------------------------------------
 //  $Id$
-//  Copyright (c) 2009 by Mulle Kybernetik. See License file for details.
+//  Copyright (c) 2010 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import <Foundation/Foundation.h>
 
-@interface OCMIndirectReturnValueProvider : NSObject 
+@interface OCMRealObjectForwarder : NSObject 
 {
-	id	provider;
-	SEL	selector;
 }
-
-- (id)initWithProvider:(id)aProvider andSelector:(SEL)aSelector;
 
 - (void)handleInvocation:(NSInvocation *)anInvocation;
 

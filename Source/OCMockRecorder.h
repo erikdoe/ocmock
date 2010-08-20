@@ -25,6 +25,7 @@
 #if NS_BLOCKS_AVAILABLE
 - (id)andDo:(void (^)(NSInvocation *))block; 
 #endif
+- (id)andForwardToRealObject;
 
 - (NSArray *)invocationHandlers;
 

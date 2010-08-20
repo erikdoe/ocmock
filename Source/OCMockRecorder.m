@@ -95,6 +95,13 @@
 
 #endif
 
+- (id)andForwardToRealObject
+{
+	[NSException raise:NSInternalInconsistencyException format:@"Method %@ can only be used with partial mocks.",
+	 NSStringFromSelector(_cmd)];
+	return self; // keep compiler happy
+}
+
 
 - (NSArray *)invocationHandlers
 {

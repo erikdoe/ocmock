@@ -13,6 +13,8 @@
 @end 
 
 
+NSString *OCMRealMethodAliasPrefix = @"ocmock_replaced_";
+
 @implementation OCPartialMockObject
 
 
@@ -97,9 +99,14 @@ static NSMutableDictionary *mockTable;
 - (void)setupForwarderForSelector:(SEL)selector
 {
 	Class subclass = [[self realObject] class];
-	Method originalMethod = class_getInstanceMethod(subclass, selector);
+	Method originalMethod = class_getInstanceMethod([subclass superclass], selector);
+	IMP originalImp = method_getImplementation(originalMethod);
+
 	IMP forwarderImp = [subclass instanceMethodForSelector:@selector(aMethodThatMustNotExist)];
 	class_addMethod(subclass, method_getName(originalMethod), forwarderImp, method_getTypeEncoding(originalMethod)); 
+
+	SEL aliasSelector = NSSelectorFromString([OCMRealMethodAliasPrefix stringByAppendingString:NSStringFromSelector(selector)]);
+	class_addMethod(subclass, aliasSelector, originalImp, method_getTypeEncoding(originalMethod));
 }
 
 - (void)forwardInvocationForRealObject:(NSInvocation *)anInvocation

@@ -18,3 +18,6 @@
 - (void)setupForwarderForSelector:(SEL)selector;
 
 @end
+
+
+extern NSString *OCMRealMethodAliasPrefix;
