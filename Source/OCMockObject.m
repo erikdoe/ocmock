@@ -19,8 +19,16 @@
 #pragma mark  -
 
 
-
 @implementation OCMockObject
+
+#pragma mark  Class initialisation
+
++ (void)initialize
+{
+	if([[NSInvocation class] instanceMethodSignatureForSelector:@selector(getArgumentAtIndexAsObject:)] == NULL)
+		[NSException raise:NSInternalInconsistencyException format:@"** Expected method not present; the method getArgumentAtIndexAsObject: is not implemented by NSInvocation. If you see this exception it is likely that you are using the static library version of OCMock and your project is not configured correctly to load categories from static libraries. Did you forget to add the -force_load linker flag?"];
+}
+
 
 #pragma mark  Factory methods
 
