@@ -10,7 +10,7 @@ class Project
         @name = name
         @version = version
         @basename = name.downcase + "-" + version
-        @settings = "INSTALL_PATH=\"/\" COPY_PHASE_STRIP=YES"
+        @settings = "INSTALL_PATH=\"/\" "
     end
     
     attr_accessor :name, :version, :basename, :settings, :svnroot, :uploaddest, :uploadcmd, :revision
@@ -147,14 +147,13 @@ class ReleaseManager
         @worker.run("cp -R #{@env.sourcedir} #{@env.productdir}")
     end
 
-    def buildModules
+    def buildModules(target = @proj.name)
         @worker.chdir("#{@env.sourcedir}/#{@proj.basename}")
-        @worker.run("xcodebuild -project #{@proj.name}.xcodeproj -target #{@proj.name} DSTROOT=#{@env.productdir} #{@proj.settings} install")                                                 
-        # need to mv because we're building embedded which doesn't install to DSTROOT
-        @worker.run("cp -R build/UninstalledProducts/* #{@env.productdir}")    
+        @worker.run("xcodebuild -project #{@proj.name}.xcodeproj -target #{target} DSTROOT=#{@env.productdir} #{@proj.settings}")                                                 
     end
 
     def createPackage
+        @worker.run("cp -R build/Release #{@env.productdir}")    
         @worker.chdir(@env.packagedir)  
         @worker.makedmg(@env.productdir, "#{@proj.name} #{@proj.version}", "#{@env.packagedir}/#{@proj.basename}.dmg")
     end
