@@ -61,9 +61,8 @@ static NSMutableDictionary *mockTable;
 
 - (void)dealloc
 {
-	object_setClass(realObject, [self mockedClass]);
-	[realObject release];
-	[[self class] forgetPartialMockForObject:realObject];
+	if(realObject != nil)
+		[self stop];
 	[super dealloc];
 }
 
@@ -77,6 +76,13 @@ static NSMutableDictionary *mockTable;
 	return realObject;
 }
 
+- (void)stop
+{
+	object_setClass(realObject, [self mockedClass]);
+	[realObject release];
+	[[self class] forgetPartialMockForObject:realObject];
+	realObject = nil;
+}
 
 
 #pragma mark  Subclass management

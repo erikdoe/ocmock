@@ -164,7 +164,7 @@
 		03F1FE8A10353A5F00E4962C /* NSMethodSignature+OCMAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 03F1FE8710353A5F00E4962C /* NSMethodSignature+OCMAdditions.h */; };
 		03F1FE8B10353A5F00E4962C /* NSMethodSignature+OCMAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F1FE8810353A5F00E4962C /* NSMethodSignature+OCMAdditions.m */; };
 		8DC2EF510486A6940098B216 /* OCMock_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 32DBCF5E0370ADEE00C91783 /* OCMock_Prefix.pch */; };
-		9F35D3DC0D349E7E00C05E52 /* OCMock in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* OCMock */; };
+		9F35D3DC0D349E7E00C05E52 /* OCMock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* OCMock.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -258,7 +258,7 @@
 		03F1FE8810353A5F00E4962C /* NSMethodSignature+OCMAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMethodSignature+OCMAdditions.m"; sourceTree = "<group>"; };
 		32DBCF5E0370ADEE00C91783 /* OCMock_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMock_Prefix.pch; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist.xml; fileEncoding = 4; path = Info.plist; sourceTree = "<group>"; };
-		8DC2EF5B0486A6940098B216 /* OCMock */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.framework; path = OCMock; sourceTree = BUILT_PRODUCTS_DIR; };
+		8DC2EF5B0486A6940098B216 /* OCMock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OCMock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -275,7 +275,7 @@
 			files = (
 				03BF2D4008F1C6BA00978C59 /* SenTestingKit.framework in Frameworks */,
 				03BF2D4108F1C6BC00978C59 /* Foundation.framework in Frameworks */,
-				9F35D3DC0D349E7E00C05E52 /* OCMock in Frameworks */,
+				9F35D3DC0D349E7E00C05E52 /* OCMock.framework in Frameworks */,
 				032797870E09F40E006CA665 /* OCHamcrest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -310,7 +310,7 @@
 		034768DFFF38A50411DB9C8B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8DC2EF5B0486A6940098B216 /* OCMock */,
+				8DC2EF5B0486A6940098B216 /* OCMock.framework */,
 				03BF2D3708F1C69500978C59 /* OCMockTests.octest */,
 				033C84AF11F585CB0009B9CD /* libOCMock.a */,
 				03DAC01F11FEB771007AF17B /* libOCMock.a */,
@@ -665,7 +665,7 @@
 			name = OCMock;
 			productInstallPath = "$(HOME)/Library/Frameworks";
 			productName = OCMock;
-			productReference = 8DC2EF5B0486A6940098B216 /* OCMock */;
+			productReference = 8DC2EF5B0486A6940098B216 /* OCMock.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */

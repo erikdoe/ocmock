@@ -697,9 +697,20 @@ static NSString *TestNotification = @"TestNotification";
 {
 	TestClassThatCallsSelf *realObject = [[[TestClassThatCallsSelf alloc] init] autorelease];
 	mock = [OCMockObject partialMockForObject:realObject];
-	[[[mock stub] andReturn:@"FooFoo"] method1];
-	STAssertEqualObjects(@"FooFoo", [realObject method1], @"Should have stubbed method.");
+	[[[mock stub] andReturn:@"TestFoo"] method1];
+	STAssertEqualObjects(@"TestFoo", [realObject method1], @"Should have stubbed method.");
 }
+
+- (void)testRestoresObjectWhenStopped
+{
+	TestClassThatCallsSelf *realObject = [[[TestClassThatCallsSelf alloc] init] autorelease];
+	mock = [OCMockObject partialMockForObject:realObject];
+	[[[mock stub] andReturn:@"TestFoo"] method2];
+	STAssertEqualObjects(@"TestFoo", [realObject method2], @"Should have stubbed method.");
+	[mock stop];
+	STAssertEqualObjects(@"Foo", [realObject method2], @"Should have 'unstubbed' method.");
+}
+
 
 - (void)testCallsToSelfInRealObjectAreShadowedByPartialMock
 {
@@ -708,7 +719,6 @@ static NSString *TestNotification = @"TestNotification";
 	[[[mock stub] andReturn:@"FooFoo"] method2];
 	STAssertEqualObjects(@"FooFoo", [mock method1], @"Should have called through to stubbed method.");
 }
-
 
 - (NSString *)differentMethodInDifferentClass
 {

@@ -14,6 +14,8 @@
 
 - (NSObject *)realObject;
 
+- (void)stop;
+
 - (void)setupSubclassForObject:(id)anObject;
 - (void)setupForwarderForSelector:(SEL)selector;
 
