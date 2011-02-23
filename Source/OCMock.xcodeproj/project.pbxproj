@@ -619,7 +619,7 @@
 				03BF2D3208F1C69500978C59 /* Resources */,
 				03BF2D3308F1C69500978C59 /* Sources */,
 				03BF2D3408F1C69500978C59 /* Frameworks */,
-				03BF2D3508F1C69500978C59 /* ShellScript */,
+				03BF2D3508F1C69500978C59 /* Run Script */,
 			);
 			buildRules = (
 			);
@@ -740,20 +740,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Unpack frameworks required for this target\npushd \"${TEMP_ROOT}\"\nif [ ! -d Frameworks ]; then\n\tmkdir Frameworks\nfi\ncd Frameworks\nif [ ! -d  OCHamcrest.framework ]; then\n    gnutar xjf \"${PROJECT_DIR}/Frameworks/OCHamcrest.tar.bz2\"\nfi\npopd\n";
+			shellScript = "# Unpack frameworks required for this target\npushd \"${TARGET_BUILD_DIR}\"\nif [ ! -d Frameworks ]; then\n\tmkdir Frameworks\nfi\ncd Frameworks\nif [ ! -d  OCHamcrest.framework ]; then\n    gnutar xjf \"${PROJECT_DIR}/Frameworks/OCHamcrest.tar.bz2\"\nfi\npopd\n";
 		};
-		03BF2D3508F1C69500978C59 /* ShellScript */ = {
+		03BF2D3508F1C69500978C59 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Run Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\nexport DYLD_FRAMEWORK_PATH=\"${TEMP_ROOT}/Frameworks\"\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+			shellScript = "# Run the unit tests in this test bundle.\nexport DYLD_FRAMEWORK_PATH=\"${TARGET_BUILD_DIR}/Frameworks\"\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 		};
 		03DAC04011FEB897007AF17B /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -766,7 +767,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# make a new output folder\nmkdir -p ${TEMP_ROOT}/${BUILD_STYLE}/Library\n \n# combine lib files for device and simulator platforms into one\nlipo -create \"${TEMP_ROOT}/${BUILD_STYLE}-iphoneos/libOCMock.a\" \"${TEMP_ROOT}/${BUILD_STYLE}-iphonesimulator/libOCMock.a\" -output \"${TEMP_ROOT}/${BUILD_STYLE}/Library/libOCMock.a\"\n\n# copy the headers (we could have used a copy files build phase, too)\ncp -R \"${TEMP_ROOT}/${BUILD_STYLE}-iphoneos/Headers\" \"${TEMP_ROOT}/${BUILD_STYLE}/Library\"\n";
+			shellScript = "# make a new output folder\nmkdir -p \"${BUILD_DIR}/${BUILD_STYLE}/Library\"\n \n# combine lib files for device and simulator platforms into one\nlipo -create \"${BUILD_DIR}/${BUILD_STYLE}-iphoneos/libOCMock.a\" \"${BUILD_DIR}/${BUILD_STYLE}-iphonesimulator/libOCMock.a\" -output \"${TARGET_BUILD_DIR}/Library/libOCMock.a\"\n\n# copy the headers (we could have used a copy files build phase, too)\ncp -R \"${BUILD_DIR}/${BUILD_STYLE}-iphoneos/Headers\" \"${TARGET_BUILD_DIR}/Library\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -937,7 +938,7 @@
 				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(TEMP_ROOT)/Frameworks",
+					"$(TARGET_BUILD_DIR)/Frameworks",
 					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
 				);
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -949,7 +950,7 @@
 				GCC_PREFIX_HEADER = OCMock_Prefix.pch;
 				INFOPLIST_FILE = "Test-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
-				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../Frameworks";
 				LIBRARY_STYLE = BUNDLE;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "";
@@ -974,7 +975,7 @@
 				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(TEMP_ROOT)/Frameworks",
+					"$(TARGET_BUILD_DIR)/Frameworks",
 					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
 				);
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -986,7 +987,7 @@
 				GCC_PREFIX_HEADER = OCMock_Prefix.pch;
 				INFOPLIST_FILE = "Test-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
-				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../Frameworks";
 				LIBRARY_STYLE = BUNDLE;
 				OTHER_CFLAGS = "";
 				OTHER_REZFLAGS = "";
@@ -1007,7 +1008,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1027,7 +1029,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = "";
