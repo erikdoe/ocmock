@@ -51,9 +51,9 @@
 
 #endif
 
-+ (id *)setTo:(id)value;
++ (id *)setTo:(id)value
 {
-	return (id *)[[OCMPassByRefSetter alloc] initWithValue:value];
+	return (id *)[[[OCMPassByRefSetter alloc] initWithValue:value] autorelease];
 }
 
 + (id)resolveSpecialValues:(NSValue *)value
