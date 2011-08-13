@@ -26,7 +26,7 @@
 {
 	const char *returnType = [[anInvocation methodSignature] methodReturnTypeWithoutQualifiers];
 	if(strcmp(returnType, @encode(id)) != 0)
-		@throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Expected invocation with object return type." userInfo:nil];
+		@throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Expected invocation with object return type. Did you mean to use andReturnValue: instead?" userInfo:nil];
 	[anInvocation setReturnValue:&returnValue];	
 }
 
