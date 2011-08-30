@@ -15,8 +15,8 @@
 		03B85C4F11FFAF1100347AAD /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28F335F01007B36200424DE2 /* RootViewController.xib */; };
 		03B85C5111FFAF1100347AAD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		03B85C6311FFB03900347AAD /* iPhoneExampleTests.octest in Resources */ = {isa = PBXBuildFile; fileRef = 03E41F0811F5BE2F00147791 /* iPhoneExampleTests.octest */; };
-		03B85C6B11FFB04A00347AAD /* OCMockLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 03B85C6A11FFB04A00347AAD /* OCMockLogo.png */; };
-		03B85C6C11FFB04A00347AAD /* OCMockLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 03B85C6A11FFB04A00347AAD /* OCMockLogo.png */; };
+		03B85C6B11FFB04A00347AAD /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 03B85C6A11FFB04A00347AAD /* Icon.png */; };
+		03B85C6C11FFB04A00347AAD /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 03B85C6A11FFB04A00347AAD /* Icon.png */; };
 		03B85CCF11FFB88E00347AAD /* iPhoneExampleAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* iPhoneExampleAppDelegate.m */; };
 		03B85CD011FFB89000347AAD /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C286E00D94DF7D0034E888 /* RootViewController.m */; };
 		03DE954B12F2FFB0003852B7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03DE954A12F2FFB0003852B7 /* CoreGraphics.framework */; };
@@ -41,7 +41,7 @@
 
 /* Begin PBXFileReference section */
 		03B85C5B11FFAF1100347AAD /* iPhoneExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iPhoneExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		03B85C6A11FFB04A00347AAD /* OCMockLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = OCMockLogo.png; sourceTree = "<group>"; };
+		03B85C6A11FFB04A00347AAD /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		03DE954A12F2FFB0003852B7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		03DE954C12F2FFB0003852B7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		03DE954E12F2FFB0003852B7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -159,7 +159,7 @@
 				28AD735F0D9D9599002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* iPhoneExample-Info.plist */,
 				03E41F0911F5BE2F00147791 /* iPhoneExampleTests-Info.plist */,
-				03B85C6A11FFB04A00347AAD /* OCMockLogo.png */,
+				03B85C6A11FFB04A00347AAD /* Icon.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -264,7 +264,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				03B85C6C11FFB04A00347AAD /* OCMockLogo.png in Resources */,
+				03B85C6C11FFB04A00347AAD /* Icon.png in Resources */,
 				03B85C4E11FFAF1100347AAD /* MainWindow.xib in Resources */,
 				03B85C4F11FFAF1100347AAD /* RootViewController.xib in Resources */,
 				03B85C6311FFB03900347AAD /* iPhoneExampleTests.octest in Resources */,
@@ -284,7 +284,7 @@
 			files = (
 				28AD73600D9D9599002E5188 /* MainWindow.xib in Resources */,
 				28F335F11007B36200424DE2 /* RootViewController.xib in Resources */,
-				03B85C6B11FFB04A00347AAD /* OCMockLogo.png in Resources */,
+				03B85C6B11FFB04A00347AAD /* Icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
