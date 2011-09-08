@@ -165,6 +165,12 @@
 		03F1FE8B10353A5F00E4962C /* NSMethodSignature+OCMAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F1FE8810353A5F00E4962C /* NSMethodSignature+OCMAdditions.m */; };
 		8DC2EF510486A6940098B216 /* OCMock_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 32DBCF5E0370ADEE00C91783 /* OCMock_Prefix.pch */; };
 		9F35D3DC0D349E7E00C05E52 /* OCMock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* OCMock.framework */; };
+		AD47FB3F129445E80029D8C6 /* OCMSaveObjects.h in Headers */ = {isa = PBXBuildFile; fileRef = AD47FB3D129445E80029D8C6 /* OCMSaveObjects.h */; };
+		AD47FB40129445E80029D8C6 /* OCMSaveObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = AD47FB3E129445E80029D8C6 /* OCMSaveObjects.m */; };
+		AD47FB41129445E80029D8C6 /* OCMSaveObjects.h in Headers */ = {isa = PBXBuildFile; fileRef = AD47FB3D129445E80029D8C6 /* OCMSaveObjects.h */; };
+		AD47FB42129445E80029D8C6 /* OCMSaveObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = AD47FB3E129445E80029D8C6 /* OCMSaveObjects.m */; };
+		AD47FB44129445E80029D8C6 /* OCMSaveObjects.h in Headers */ = {isa = PBXBuildFile; fileRef = AD47FB3D129445E80029D8C6 /* OCMSaveObjects.h */; };
+		AD47FB45129445E80029D8C6 /* OCMSaveObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = AD47FB3E129445E80029D8C6 /* OCMSaveObjects.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -259,6 +265,8 @@
 		32DBCF5E0370ADEE00C91783 /* OCMock_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMock_Prefix.pch; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist.xml; fileEncoding = 4; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* OCMock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OCMock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AD47FB3D129445E80029D8C6 /* OCMSaveObjects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMSaveObjects.h; sourceTree = "<group>"; };
+		AD47FB3E129445E80029D8C6 /* OCMSaveObjects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMSaveObjects.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -360,6 +368,8 @@
 		037C134A0FCC47B500257C8C /* Argument Handling */ = {
 			isa = PBXGroup;
 			children = (
+				AD47FB3D129445E80029D8C6 /* OCMSaveObjects.h */,
+				AD47FB3E129445E80029D8C6 /* OCMSaveObjects.m */,
 				0378606B0F6A32F800A4D9A0 /* OCMArg.h */,
 				0378606C0F6A32F800A4D9A0 /* OCMArg.m */,
 				0343133B0CCA771800A2E080 /* OCMConstraint.h */,
@@ -529,6 +539,7 @@
 				03E41DBA11F5A86A00147791 /* OCMBoxedReturnValueProvider.h in Headers */,
 				03E41DBC11F5A86C00147791 /* OCMReturnValueProvider.h in Headers */,
 				0340A5BB121E973000158484 /* OCMRealObjectForwarder.h in Headers */,
+				AD47FB41129445E80029D8C6 /* OCMSaveObjects.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -558,6 +569,7 @@
 				03DAC00411FEB771007AF17B /* OCMBoxedReturnValueProvider.h in Headers */,
 				03DAC00511FEB771007AF17B /* OCMReturnValueProvider.h in Headers */,
 				0340A5BD121E973000158484 /* OCMRealObjectForwarder.h in Headers */,
+				AD47FB3F129445E80029D8C6 /* OCMSaveObjects.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -588,6 +600,7 @@
 				03F1FE8A10353A5F00E4962C /* NSMethodSignature+OCMAdditions.h in Headers */,
 				03CFB08C117B308C00935C1E /* OCMBlockCaller.h in Headers */,
 				0340A5BF121E973000158484 /* OCMRealObjectForwarder.h in Headers */,
+				AD47FB44129445E80029D8C6 /* OCMSaveObjects.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -797,6 +810,7 @@
 				03E41DB911F5A86900147791 /* OCMBoxedReturnValueProvider.m in Sources */,
 				03E41DBB11F5A86B00147791 /* OCMReturnValueProvider.m in Sources */,
 				0340A5BC121E973000158484 /* OCMRealObjectForwarder.m in Sources */,
+				AD47FB42129445E80029D8C6 /* OCMSaveObjects.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -838,6 +852,7 @@
 				03DAC01911FEB771007AF17B /* OCMBoxedReturnValueProvider.m in Sources */,
 				03DAC01A11FEB771007AF17B /* OCMReturnValueProvider.m in Sources */,
 				0340A5BE121E973000158484 /* OCMRealObjectForwarder.m in Sources */,
+				AD47FB40129445E80029D8C6 /* OCMSaveObjects.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -866,6 +881,7 @@
 				03F1FE8B10353A5F00E4962C /* NSMethodSignature+OCMAdditions.m in Sources */,
 				03CFB08D117B308C00935C1E /* OCMBlockCaller.m in Sources */,
 				0340A5C0121E973000158484 /* OCMRealObjectForwarder.m in Sources */,
+				AD47FB45129445E80029D8C6 /* OCMSaveObjects.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

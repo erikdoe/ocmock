@@ -431,6 +431,29 @@ static NSString *TestNotification = @"TestNotification";
 	STAssertEqualObjects(expectedArray, actualArray, @"The two array objects should be equal");
 }
 
+- (void)testSaveObjects
+{
+  NSMutableArray *array = [NSMutableArray array];
+  [[[mock stub] andReturn:nil] initWithContentsOfURL:[OCMArg saveObjects:array] usedEncoding:nil error:NULL];
+  
+  NSURL *url1 = [NSURL URLWithString:@"http://example1.com/"];
+  NSURL *url2 = [NSURL URLWithString:@"http://example2.com/"];
+  [mock initWithContentsOfURL:url1 usedEncoding:nil error:NULL];
+  [mock initWithContentsOfURL:url2 usedEncoding:nil error:NULL];
+  
+  STAssertEqualObjects(url1, [array objectAtIndex:0], @"Should equal url1");
+  STAssertEqualObjects(url2, [array objectAtIndex:1], @"Should equal url2");
+}
+
+- (void)testSaveObjectsNil
+{
+  NSMutableArray *array = [NSMutableArray array];
+  [[[mock stub] andReturn:nil] initWithContentsOfURL:[OCMArg saveObjects:array] usedEncoding:nil error:NULL];
+  
+  [mock initWithContentsOfURL:nil usedEncoding:nil error:NULL];
+  
+  STAssertEqualObjects([NSNull null], [array objectAtIndex:0], @"Should be NSNull");
+}
 
 // --------------------------------------------------------------------------------------
 //	accepting expected methods

@@ -6,6 +6,7 @@
 #import <OCMock/OCMArg.h>
 #import <OCMock/OCMConstraint.h>
 #import "OCMPassByRefSetter.h"
+#import "OCMSaveObjects.h"
 #import "OCMConstraint.h"
 
 @implementation OCMArg
@@ -54,6 +55,10 @@
 + (id *)setTo:(id)value
 {
 	return (id *)[[[OCMPassByRefSetter alloc] initWithValue:value] autorelease];
+}
+
++ (id)saveObjects:(NSMutableArray *)array {
+  return [[[OCMSaveObjects alloc] initWithArray:array] autorelease];
 }
 
 + (id)resolveSpecialValues:(NSValue *)value

@@ -8,6 +8,7 @@
 #import <OCMock/OCMArg.h>
 #import <OCMock/OCMConstraint.h>
 #import "OCMPassByRefSetter.h"
+#import "OCMSaveObjects.h"
 #import "OCMReturnValueProvider.h"
 #import "OCMBoxedReturnValueProvider.h"
 #import "OCMExceptionReturnValueProvider.h"
@@ -162,6 +163,10 @@
 		{
 			// side effect but easier to do here than in handleInvocation
 			*(id *)[passedArg pointerValue] = [(OCMPassByRefSetter *)recordedArg value];
+		}
+		else if([recordedArg isKindOfClass:[OCMSaveObjects class]])
+		{
+			[recordedArg setObject:passedArg];
 		}
 		else if([recordedArg conformsToProtocol:objc_getProtocol("HCMatcher")])
 		{

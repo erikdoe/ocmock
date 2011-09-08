@@ -22,6 +22,7 @@
 // manipulating arguments
 
 + (id *)setTo:(id)value;
++ (id)saveObjects:(NSMutableArray*)array;
 
 // internal use only
 
