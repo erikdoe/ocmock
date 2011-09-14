@@ -273,8 +273,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				03BF2D4008F1C6BA00978C59 /* SenTestingKit.framework in Frameworks */,
 				03BF2D4108F1C6BC00978C59 /* Foundation.framework in Frameworks */,
+				03BF2D4008F1C6BA00978C59 /* SenTestingKit.framework in Frameworks */,
 				9F35D3DC0D349E7E00C05E52 /* OCMock.framework in Frameworks */,
 				032797870E09F40E006CA665 /* OCHamcrest.framework in Frameworks */,
 			);
@@ -402,7 +402,7 @@
 			name = "Invocation Handler";
 			sourceTree = "<group>";
 		};
-		03DE1F5D06DB911C00E5A2A8 /* Tests */ = {
+		03DE1F5D06DB911C00E5A2A8 /* OCMockTests */ = {
 			isa = PBXGroup;
 			children = (
 				03DE1F5E06DB914100E5A2A8 /* OCMockObjectTests.h */,
@@ -417,28 +417,20 @@
 				034313E90CCA7BC700A2E080 /* OCMConstraintTests.m */,
 				03A2D1F809F1533C008A1AFD /* NSInvocationOCMAdditionsTests.h */,
 				030106470A3B99F20049FED7 /* NSInvocationOCMAdditionsTests.m */,
+				C9842F01140D8818000A5924 /* Supporting Files */,
 			);
-			name = Tests;
-			sourceTree = "<group>";
-		};
-		03DE21B506DB95CB00E5A2A8 /* Public Headers */ = {
-			isa = PBXGroup;
-			children = (
-				03DE21B206DB95C500E5A2A8 /* OCMock.h */,
-			);
-			name = "Public Headers";
+			name = OCMockTests;
 			sourceTree = "<group>";
 		};
 		0867D691FE84028FC02AAC07 /* OCMock */ = {
 			isa = PBXGroup;
 			children = (
-				03DE21B506DB95CB00E5A2A8 /* Public Headers */,
-				08FB77AEFE84172EC02AAC07 /* Implementation */,
-				03DE1F5D06DB911C00E5A2A8 /* Tests */,
-				32C88DFF0371C24200C91783 /* Other Sources */,
-				089C1665FE841158C02AAC07 /* Resources */,
+				08FB77AEFE84172EC02AAC07 /* OCMock */,
+				03DE1F5D06DB911C00E5A2A8 /* OCMockTests */,
 				0867D69AFE84028FC02AAC07 /* Frameworks */,
 				034768DFFF38A50411DB9C8B /* Products */,
+				03D65B47094CA23B00DF6687 /* Changes.txt */,
+				03DE221606DB97DA00E5A2A8 /* License.txt */,
 			);
 			name = OCMock;
 			sourceTree = "<group>";
@@ -446,42 +438,42 @@
 		0867D69AFE84028FC02AAC07 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				032797860E09F40E006CA665 /* OCHamcrest.framework */,
 				03DE218F06DB91CF00E5A2A8 /* Foundation.framework */,
 				03BF2D1B08F1C26700978C59 /* SenTestingKit.framework */,
+				032797860E09F40E006CA665 /* OCHamcrest.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		089C1665FE841158C02AAC07 /* Resources */ = {
+		08FB77AEFE84172EC02AAC07 /* OCMock */ = {
 			isa = PBXGroup;
 			children = (
-				03DE221606DB97DA00E5A2A8 /* License.txt */,
-				03D65B47094CA23B00DF6687 /* Changes.txt */,
-				03BF2D3808F1C69500978C59 /* Test-Info.plist */,
-				8DC2EF5A0486A6940098B216 /* Info.plist */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-		};
-		08FB77AEFE84172EC02AAC07 /* Implementation */ = {
-			isa = PBXGroup;
-			children = (
+				03DE21B206DB95C500E5A2A8 /* OCMock.h */,
 				037C13470FCC475500257C8C /* Core Mocks */,
 				037C13480FCC478500257C8C /* Partial Mocks */,
 				037C13490FCC479D00257C8C /* Observer Mocks */,
 				037C134A0FCC47B500257C8C /* Argument Handling */,
 				037C134B0FCC47CA00257C8C /* Foundation Additions */,
+				32C88DFF0371C24200C91783 /* Supporting Files */,
 			);
-			name = Implementation;
+			name = OCMock;
 			sourceTree = "<group>";
 		};
-		32C88DFF0371C24200C91783 /* Other Sources */ = {
+		32C88DFF0371C24200C91783 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				8DC2EF5A0486A6940098B216 /* Info.plist */,
 				32DBCF5E0370ADEE00C91783 /* OCMock_Prefix.pch */,
 			);
-			name = "Other Sources";
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C9842F01140D8818000A5924 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				03BF2D3808F1C69500978C59 /* Test-Info.plist */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -919,7 +911,7 @@
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(TARGET_BUILD_DIR)/Frameworks",
-					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
+					"\"$(DEVELOPER_FRAMEWORKS_DIR)\"",
 				);
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_ENABLE_OBJC_GC = supported;
@@ -954,7 +946,7 @@
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(TARGET_BUILD_DIR)/Frameworks",
-					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
+					"\"$(DEVELOPER_FRAMEWORKS_DIR)\"",
 				);
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_ENABLE_OBJC_GC = supported;
