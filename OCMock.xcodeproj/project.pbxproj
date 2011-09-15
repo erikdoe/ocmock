@@ -6,22 +6,6 @@
 	objectVersion = 46;
 	objects = {
 
-/* Begin PBXAggregateTarget section */
-		03DAC03611FEB870007AF17B /* OCMockLib */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = 03DAC03E11FEB87D007AF17B /* Build configuration list for PBXAggregateTarget "OCMockLib" */;
-			buildPhases = (
-				03DAC04011FEB897007AF17B /* ShellScript */,
-			);
-			dependencies = (
-				03DAC03A11FEB87B007AF17B /* PBXTargetDependency */,
-				03DAC03C11FEB87B007AF17B /* PBXTargetDependency */,
-			);
-			name = OCMockLib;
-			productName = OCMockLib;
-		};
-/* End PBXAggregateTarget section */
-
 /* Begin PBXBuildFile section */
 		030106730A3B9B240049FED7 /* NSInvocationOCMAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 030106470A3B99F20049FED7 /* NSInvocationOCMAdditionsTests.m */; };
 		032797870E09F40E006CA665 /* OCHamcrest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032797860E09F40E006CA665 /* OCHamcrest.framework */; };
@@ -168,20 +152,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		03DAC03911FEB87B007AF17B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 033C84AE11F585CB0009B9CD;
-			remoteInfo = OCMockPhoneSim;
-		};
-		03DAC03B11FEB87B007AF17B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 03DABFEF11FEB771007AF17B;
-			remoteInfo = OCMockPhoneDevice;
-		};
 		9F35D3D40D349B5300C05E52 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
@@ -674,7 +644,6 @@
 				03BF2D3608F1C69500978C59 /* OCMockTests */,
 				033C84AE11F585CB0009B9CD /* OCMockPhoneSim */,
 				03DABFEF11FEB771007AF17B /* OCMockPhoneDevice */,
-				03DAC03611FEB870007AF17B /* OCMockLib */,
 			);
 		};
 /* End PBXProject section */
@@ -734,19 +703,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\nexport DYLD_FRAMEWORK_PATH=\"${TARGET_BUILD_DIR}/Frameworks\"\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
-		};
-		03DAC04011FEB897007AF17B /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# make a new output folder\nmkdir -p \"${BUILD_DIR}/${BUILD_STYLE}/Library\"\n \n# combine lib files for device and simulator platforms into one\nlipo -create \"${BUILD_DIR}/${BUILD_STYLE}-iphoneos/libOCMock.a\" \"${BUILD_DIR}/${BUILD_STYLE}-iphonesimulator/libOCMock.a\" -output \"${TARGET_BUILD_DIR}/Library/libOCMock.a\"\n\n# copy the headers (we could have used a copy files build phase, too)\ncp -R \"${BUILD_DIR}/${BUILD_STYLE}-iphoneos/Headers\" \"${TARGET_BUILD_DIR}/Library\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -851,16 +807,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		03DAC03A11FEB87B007AF17B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 033C84AE11F585CB0009B9CD /* OCMockPhoneSim */;
-			targetProxy = 03DAC03911FEB87B007AF17B /* PBXContainerItemProxy */;
-		};
-		03DAC03C11FEB87B007AF17B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 03DABFEF11FEB771007AF17B /* OCMockPhoneDevice */;
-			targetProxy = 03DAC03B11FEB87B007AF17B /* PBXContainerItemProxy */;
-		};
 		9F35D3D50D349B5300C05E52 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8DC2EF4F0486A6940098B216 /* OCMock */;
@@ -1012,26 +958,6 @@
 			};
 			name = Release;
 		};
-		03DAC03711FEB870007AF17B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				PRODUCT_NAME = OCMockLib;
-			};
-			name = Debug;
-		};
-		03DAC03811FEB870007AF17B /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				PRODUCT_NAME = OCMockLib;
-				ZERO_LINK = NO;
-			};
-			name = Release;
-		};
 		03DFEE0908F04987002E8661 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1163,15 +1089,6 @@
 			buildConfigurations = (
 				03DAC01D11FEB771007AF17B /* Debug */,
 				03DAC01E11FEB771007AF17B /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		03DAC03E11FEB87D007AF17B /* Build configuration list for PBXAggregateTarget "OCMockLib" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				03DAC03711FEB870007AF17B /* Debug */,
-				03DAC03811FEB870007AF17B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
