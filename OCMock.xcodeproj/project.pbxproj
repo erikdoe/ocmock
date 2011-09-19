@@ -481,9 +481,9 @@
 			productReference = 03BF2D3708F1C69500978C59 /* OCMockTests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
-		C907171E1421A05A00C20915 /* OCMockTouch */ = {
+		C907171E1421A05A00C20915 /* OCMockIOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C90717291421A05A00C20915 /* Build configuration list for PBXNativeTarget "OCMockTouch" */;
+			buildConfigurationList = C90717291421A05A00C20915 /* Build configuration list for PBXNativeTarget "OCMockIOS" */;
 			buildPhases = (
 				C907171B1421A05A00C20915 /* Sources */,
 				C907171C1421A05A00C20915 /* Frameworks */,
@@ -493,8 +493,8 @@
 			);
 			dependencies = (
 			);
-			name = OCMockTouch;
-			productName = OCMockTouch;
+			name = OCMockIOS;
+			productName = OCMockIOS;
 			productReference = C907171F1421A05A00C20915 /* libOCMock.a */;
 			productType = "com.apple.product-type.library.static";
 		};
@@ -542,8 +542,8 @@
 			projectRoot = "";
 			targets = (
 				C907176E1421BED300C20915 /* OCMock */,
+				C907171E1421A05A00C20915 /* OCMockIOS */,
 				03BF2D3608F1C69500978C59 /* OCMockTests */,
-				C907171E1421A05A00C20915 /* OCMockTouch */,
 			);
 		};
 /* End PBXProject section */
@@ -767,7 +767,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = NO;
-				DSTROOT = /tmp/OCMockTouch.dst;
+				DSTROOT = /tmp/OCMockIOS.dst;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -796,7 +796,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = YES;
-				DSTROOT = /tmp/OCMockTouch.dst;
+				DSTROOT = /tmp/OCMockIOS.dst;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OCMock/OCMock-Prefix.pch";
@@ -895,7 +895,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C90717291421A05A00C20915 /* Build configuration list for PBXNativeTarget "OCMockTouch" */ = {
+		C90717291421A05A00C20915 /* Build configuration list for PBXNativeTarget "OCMockIOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C90717271421A05A00C20915 /* Debug */,
