@@ -7,7 +7,7 @@
 
 @interface OCMockRecorderTests : SenTestCase
 {
-	NSInvocation *testInvocation;
+    NSInvocation *testInvocation;
 }
 
 @end

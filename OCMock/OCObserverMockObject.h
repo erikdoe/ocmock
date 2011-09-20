@@ -7,8 +7,8 @@
 
 @interface OCObserverMockObject : NSObject
 {
-	BOOL			expectationOrderMatters;
-	NSMutableArray	*recorders;
+    BOOL            expectationOrderMatters;
+    NSMutableArray    *recorders;
 }
 
 - (void)setExpectationOrderMatters:(BOOL)flag;

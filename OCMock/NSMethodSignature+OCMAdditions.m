@@ -10,10 +10,10 @@
 
 - (const char *)methodReturnTypeWithoutQualifiers
 {
-	const char *returnType = [self methodReturnType];
-	while(strchr("rnNoORV", returnType[0]) != NULL)
-		returnType += 1;
-	return returnType;
+    const char *returnType = [self methodReturnType];
+    while(strchr("rnNoORV", returnType[0]) != NULL)
+        returnType += 1;
+    return returnType;
 }
 
 @end

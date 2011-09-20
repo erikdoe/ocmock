@@ -9,7 +9,7 @@
 
 @interface OCMBlockCaller : NSObject
 {
-	void (^block)(NSInvocation *);
+    void (^block)(NSInvocation *);
 }
 
 - (id)initWithCallBlock:(void (^)(NSInvocation *))theBlock;

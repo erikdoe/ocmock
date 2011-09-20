@@ -13,68 +13,68 @@
 
 - (void)setUp
 {
-	NSMethodSignature *signature;
+    NSMethodSignature *signature;
 
-	signature = [NSString instanceMethodSignatureForSelector:@selector(initWithString:)];
-	testInvocation = [NSInvocation invocationWithMethodSignature:signature];
-	[testInvocation setSelector:@selector(initWithString:)];
+    signature = [NSString instanceMethodSignatureForSelector:@selector(initWithString:)];
+    testInvocation = [NSInvocation invocationWithMethodSignature:signature];
+    [testInvocation setSelector:@selector(initWithString:)];
 }
 
 
 - (void)testStoresAndMatchesInvocation
 {
-	OCMockRecorder *recorder;
-	NSString	   *arg;
+    OCMockRecorder *recorder;
+    NSString       *arg;
 
-	arg = @"I love mocks.";
-	[testInvocation setArgument:&arg atIndex:2];
+    arg = @"I love mocks.";
+    [testInvocation setArgument:&arg atIndex:2];
 
-	recorder = [[[OCMockRecorder alloc] initWithSignatureResolver:[NSString string]] autorelease];
-	[(id)recorder initWithString:arg];
+    recorder = [[[OCMockRecorder alloc] initWithSignatureResolver:[NSString string]] autorelease];
+    [(id)recorder initWithString:arg];
 
-	STAssertTrue([recorder matchesInvocation:testInvocation], @"Should match.");
+    STAssertTrue([recorder matchesInvocation:testInvocation], @"Should match.");
 }
 
 
 - (void)testOnlyMatchesInvocationWithRightArguments
 {
-	OCMockRecorder *recorder;
-	NSString	   *arg;
+    OCMockRecorder *recorder;
+    NSString       *arg;
 
-	arg = @"I love mocks.";
-	[testInvocation setArgument:&arg atIndex:2];
+    arg = @"I love mocks.";
+    [testInvocation setArgument:&arg atIndex:2];
 
-	recorder = [[[OCMockRecorder alloc] initWithSignatureResolver:[NSString string]] autorelease];
-	[(id)recorder initWithString:@"whatever"];
+    recorder = [[[OCMockRecorder alloc] initWithSignatureResolver:[NSString string]] autorelease];
+    [(id)recorder initWithString:@"whatever"];
 
-	STAssertFalse([recorder matchesInvocation:testInvocation], @"Should not match.");
+    STAssertFalse([recorder matchesInvocation:testInvocation], @"Should not match.");
 }
 
 
 - (void)testAddsReturnValueProvider
 {
-	OCMockRecorder *recorder;
-	NSArray		   *handlerList;
+    OCMockRecorder *recorder;
+    NSArray           *handlerList;
 
-	recorder = [[[OCMockRecorder alloc] initWithSignatureResolver:[NSString string]] autorelease];
-	[recorder andReturn:@"foo"];
-	handlerList = [recorder invocationHandlers];
+    recorder = [[[OCMockRecorder alloc] initWithSignatureResolver:[NSString string]] autorelease];
+    [recorder andReturn:@"foo"];
+    handlerList = [recorder invocationHandlers];
 
-	STAssertEquals((NSUInteger)1, [handlerList count], @"Should have added one handler.");
-	STAssertEqualObjects([OCMReturnValueProvider class], [[handlerList objectAtIndex:0] class], @"Should have added correct handler.");
+    STAssertEquals((NSUInteger)1, [handlerList count], @"Should have added one handler.");
+    STAssertEqualObjects([OCMReturnValueProvider class], [[handlerList objectAtIndex:0] class], @"Should have added correct handler.");
 }
 
 - (void)testAddsExceptionReturnValueProvider
 {
-	OCMockRecorder	*recorder;
-	NSArray			*handlerList;
+    OCMockRecorder    *recorder;
+    NSArray            *handlerList;
 
-	recorder = [[[OCMockRecorder alloc] initWithSignatureResolver:[NSString string]] autorelease];
-	[recorder andThrow:[NSException exceptionWithName:@"TestException" reason:@"A reason" userInfo:nil]];
-	handlerList = [recorder invocationHandlers];
+    recorder = [[[OCMockRecorder alloc] initWithSignatureResolver:[NSString string]] autorelease];
+    [recorder andThrow:[NSException exceptionWithName:@"TestException" reason:@"A reason" userInfo:nil]];
+    handlerList = [recorder invocationHandlers];
 
-	STAssertEquals((NSUInteger)1, [handlerList count], @"Should have added one handler.");
-	STAssertEqualObjects([OCMExceptionReturnValueProvider class], [[handlerList objectAtIndex:0] class], @"Should have added correct handler.");
+    STAssertEquals((NSUInteger)1, [handlerList count], @"Should have added one handler.");
+    STAssertEqualObjects([OCMExceptionReturnValueProvider class], [[handlerList objectAtIndex:0] class], @"Should have added correct handler.");
 
 }
 

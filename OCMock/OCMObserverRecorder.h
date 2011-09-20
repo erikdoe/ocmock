@@ -7,7 +7,7 @@
 
 @interface OCMObserverRecorder : NSObject
 {
-	NSNotification *recordedNotification;
+    NSNotification *recordedNotification;
 }
 
 - (void)notificationWithName:(NSString *)name object:(id)sender;

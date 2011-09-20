@@ -8,7 +8,7 @@
 
 @interface OCMConstraintTests : SenTestCase
 {
-	BOOL didCallCustomConstraint;
+    BOOL didCallCustomConstraint;
 }
 
 @end

@@ -10,20 +10,20 @@
 
 - (id)initWithValue:(id)aValue
 {
-	[super init];
-	value = [aValue retain];
-	return self;
+    [super init];
+    value = [aValue retain];
+    return self;
 }
 
 - (void)dealloc
 {
-	[value release];
-	[super dealloc];
+    [value release];
+    [super dealloc];
 }
 
 - (id)value
 {
-	return value;
+    return value;
 }
 
 @end

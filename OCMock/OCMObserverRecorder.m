@@ -21,8 +21,8 @@
 
 - (void)dealloc
 {
-	[recordedNotification release];
-	[super dealloc];
+    [recordedNotification release];
+    [super dealloc];
 }
 
 
@@ -30,12 +30,12 @@
 
 - (void)notificationWithName:(NSString *)name object:(id)sender
 {
-	recordedNotification = [[NSNotification notificationWithName:name object:sender] retain];
+    recordedNotification = [[NSNotification notificationWithName:name object:sender] retain];
 }
 
 - (void)notificationWithName:(NSString *)name object:(id)sender userInfo:(NSDictionary *)userInfo
 {
-	recordedNotification = [[NSNotification notificationWithName:name object:sender userInfo:userInfo] retain];
+    recordedNotification = [[NSNotification notificationWithName:name object:sender userInfo:userInfo] retain];
 }
 
 
@@ -43,32 +43,32 @@
 
 - (BOOL)matchesNotification:(NSNotification *)aNotification
 {
-	return [self argument:[recordedNotification name] matchesArgument:[aNotification name]] &&
-	[self argument:[recordedNotification object] matchesArgument:[aNotification object]] &&
-	[self argument:[recordedNotification userInfo] matchesArgument:[aNotification userInfo]];
+    return [self argument:[recordedNotification name] matchesArgument:[aNotification name]] &&
+    [self argument:[recordedNotification object] matchesArgument:[aNotification object]] &&
+    [self argument:[recordedNotification userInfo] matchesArgument:[aNotification userInfo]];
 }
 
 - (BOOL)argument:(id)expectedArg matchesArgument:(id)observedArg
 {
-	if([expectedArg isKindOfClass:[OCMConstraint class]])
-	{
-		if([expectedArg evaluate:observedArg] == NO)
-			return NO;
-	}
-	else if([expectedArg conformsToProtocol:objc_getProtocol("HCMatcher")])
-	{
-		if([expectedArg matches:observedArg] == NO)
-			return NO;
-	}
-	else
-	{
-		if([expectedArg class] != [observedArg class])
-			return NO;
-		if(([expectedArg isEqual:observedArg] == NO) &&
-		   !((expectedArg == nil) && (observedArg == nil)))
-			return NO;
-	}
-	return YES;
+    if([expectedArg isKindOfClass:[OCMConstraint class]])
+    {
+        if([expectedArg evaluate:observedArg] == NO)
+            return NO;
+    }
+    else if([expectedArg conformsToProtocol:objc_getProtocol("HCMatcher")])
+    {
+        if([expectedArg matches:observedArg] == NO)
+            return NO;
+    }
+    else
+    {
+        if([expectedArg class] != [observedArg class])
+            return NO;
+        if(([expectedArg isEqual:observedArg] == NO) &&
+           !((expectedArg == nil) && (observedArg == nil)))
+            return NO;
+    }
+    return YES;
 }
 
 

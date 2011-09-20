@@ -7,7 +7,7 @@
 
 @interface OCClassMockObject : OCMockObject
 {
-	Class	mockedClass;
+    Class    mockedClass;
 }
 
 - (id)initWithClass:(Class)aClass;

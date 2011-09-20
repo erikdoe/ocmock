@@ -7,7 +7,7 @@
 
 @interface OCPartialMockObject : OCClassMockObject
 {
-	NSObject	*realObject;
+    NSObject    *realObject;
 }
 
 - (id)initWithObject:(NSObject *)anObject;

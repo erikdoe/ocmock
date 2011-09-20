@@ -12,19 +12,19 @@
 
 - (id)initWithClass:(Class)aClass
 {
-	[super init];
-	mockedClass = aClass;
-	return self;
+    [super init];
+    mockedClass = aClass;
+    return self;
 }
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"OCMockObject[%@]", NSStringFromClass(mockedClass)];
+    return [NSString stringWithFormat:@"OCMockObject[%@]", NSStringFromClass(mockedClass)];
 }
 
 - (Class)mockedClass
 {
-	return mockedClass;
+    return mockedClass;
 }
 
 
@@ -32,7 +32,7 @@
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
-	return [mockedClass instanceMethodSignatureForSelector:aSelector];
+    return [mockedClass instanceMethodSignatureForSelector:aSelector];
 }
 
 - (BOOL)respondsToSelector:(SEL)selector

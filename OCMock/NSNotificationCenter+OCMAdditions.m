@@ -11,7 +11,7 @@
 
 - (void)addMockObserver:(OCMockObserver *)notificationObserver name:(NSString *)notificationName object:(id)notificationSender
 {
-	[self addObserver:notificationObserver selector:@selector(handleNotification:) name:notificationName object:notificationSender];
+    [self addObserver:notificationObserver selector:@selector(handleNotification:) name:notificationName object:notificationSender];
 }
 
 @end

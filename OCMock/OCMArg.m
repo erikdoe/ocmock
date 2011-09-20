@@ -12,62 +12,62 @@
 
 + (id)any
 {
-	return [OCMAnyConstraint constraint];
+    return [OCMAnyConstraint constraint];
 }
 
 + (void *)anyPointer
 {
-	return (void *)0x01234567;
+    return (void *)0x01234567;
 }
 
 + (id)isNil
 {
-	return [OCMIsNilConstraint constraint];
+    return [OCMIsNilConstraint constraint];
 }
 
 + (id)isNotNil
 {
-	return [OCMIsNotNilConstraint constraint];
+    return [OCMIsNotNilConstraint constraint];
 }
 
 + (id)isNotEqual:(id)value
 {
-	OCMIsNotEqualConstraint *constraint = [OCMIsNotEqualConstraint constraint];
-	constraint->testValue = value;
-	return constraint;
+    OCMIsNotEqualConstraint *constraint = [OCMIsNotEqualConstraint constraint];
+    constraint->testValue = value;
+    return constraint;
 }
 
 + (id)checkWithSelector:(SEL)selector onObject:(id)anObject
 {
-	return [OCMConstraint constraintWithSelector:selector onObject:anObject];
+    return [OCMConstraint constraintWithSelector:selector onObject:anObject];
 }
 
 #if NS_BLOCKS_AVAILABLE
 
 + (id)checkWithBlock:(BOOL (^)(id))block
 {
-	return [[[OCMBlockConstraint alloc] initWithConstraintBlock:block] autorelease];
+    return [[[OCMBlockConstraint alloc] initWithConstraintBlock:block] autorelease];
 }
 
 #endif
 
 + (id *)setTo:(id)value
 {
-	return (id *)[[[OCMPassByRefSetter alloc] initWithValue:value] autorelease];
+    return (id *)[[[OCMPassByRefSetter alloc] initWithValue:value] autorelease];
 }
 
 + (id)resolveSpecialValues:(NSValue *)value
 {
-	const char *type = [value objCType];
-	if(type[0] == '^')
-	{
-		void *pointer = [value pointerValue];
-		if(pointer == (void *)0x01234567)
-			return [OCMArg any];
-		if((pointer != NULL) && (((id)pointer)->isa == [OCMPassByRefSetter class]))
-			return (id)pointer;
-	}
-	return value;
+    const char *type = [value objCType];
+    if(type[0] == '^')
+    {
+        void *pointer = [value pointerValue];
+        if(pointer == (void *)0x01234567)
+            return [OCMArg any];
+        if((pointer != NULL) && (((id)pointer)->isa == [OCMPassByRefSetter class]))
+            return (id)pointer;
+    }
+    return value;
 }
 
 @end

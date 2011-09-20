@@ -7,7 +7,7 @@
 
 @interface OCMockObjectTests : SenTestCase
 {
-	id mock;
+    id mock;
 }
 
 @end

@@ -7,7 +7,7 @@
 
 @interface OCMPassByRefSetter : NSObject
 {
-	id value;
+    id value;
 }
 
 - (id)initWithValue:(id)value;

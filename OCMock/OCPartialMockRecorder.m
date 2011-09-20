@@ -12,16 +12,16 @@
 
 - (id)andForwardToRealObject
 {
-	[invocationHandlers addObject:[[[OCMRealObjectForwarder	alloc] init] autorelease]];
-	return self;
+    [invocationHandlers addObject:[[[OCMRealObjectForwarder    alloc] init] autorelease]];
+    return self;
 }
 
 
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
-	[super forwardInvocation:anInvocation];
-	// not as clean as I'd wish...
-	[(OCPartialMockObject *)signatureResolver setupForwarderForSelector:[anInvocation selector]];
+    [super forwardInvocation:anInvocation];
+    // not as clean as I'd wish...
+    [(OCPartialMockObject *)signatureResolver setupForwarderForSelector:[anInvocation selector]];
 }
 
 @end

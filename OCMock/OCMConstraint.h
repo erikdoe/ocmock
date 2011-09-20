@@ -32,16 +32,16 @@
 
 @interface OCMIsNotEqualConstraint : OCMConstraint
 {
-	@public
-	id testValue;
+    @public
+    id testValue;
 }
 
 @end
 
 @interface OCMInvocationConstraint : OCMConstraint
 {
-	@public
-	NSInvocation *invocation;
+    @public
+    NSInvocation *invocation;
 }
 
 @end
@@ -50,7 +50,7 @@
 
 @interface OCMBlockConstraint : OCMConstraint
 {
-	BOOL (^block)(id);
+    BOOL (^block)(id);
 }
 
 - (id)initWithConstraintBlock:(BOOL (^)(id))block;

@@ -14,14 +14,14 @@
 
 - (id)initWithProtocol:(Protocol *)aProtocol
 {
-	[super init];
-	mockedProtocol = aProtocol;
-	return self;
+    [super init];
+    mockedProtocol = aProtocol;
+    return self;
 }
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"OCMockObject[%s]", [mockedProtocol name]];
+    return [NSString stringWithFormat:@"OCMockObject[%s]", [mockedProtocol name]];
 }
 
 
@@ -30,16 +30,16 @@
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
-	struct objc_method_description methodDescription = protocol_getMethodDescription(mockedProtocol, aSelector, YES, YES);
+    struct objc_method_description methodDescription = protocol_getMethodDescription(mockedProtocol, aSelector, YES, YES);
     if(methodDescription.name == NULL)
-	{
+    {
         methodDescription = protocol_getMethodDescription(mockedProtocol, aSelector, NO, YES);
     }
     if(methodDescription.name == NULL)
-	{
+    {
         return nil;
     }
-	return [NSMethodSignature signatureWithObjCTypes:methodDescription.types];
+    return [NSMethodSignature signatureWithObjCTypes:methodDescription.types];
 }
 
 - (BOOL)conformsToProtocol:(Protocol *)aProtocol

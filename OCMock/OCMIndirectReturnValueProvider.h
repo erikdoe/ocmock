@@ -7,8 +7,8 @@
 
 @interface OCMIndirectReturnValueProvider : NSObject
 {
-	id	provider;
-	SEL	selector;
+    id    provider;
+    SEL    selector;
 }
 
 - (id)initWithProvider:(id)aProvider andSelector:(SEL)aSelector;

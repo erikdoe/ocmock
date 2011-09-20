@@ -8,9 +8,9 @@
 
 @interface OCObserverMockObjectTest : SenTestCase
 {
-	NSNotificationCenter *center;
+    NSNotificationCenter *center;
 
-	id mock;
+    id mock;
 }
 
 @end

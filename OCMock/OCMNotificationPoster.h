@@ -7,7 +7,7 @@
 
 @interface OCMNotificationPoster : NSObject
 {
-	NSNotification *notification;
+    NSNotification *notification;
 }
 
 - (id)initWithNotification:(id)aNotification;

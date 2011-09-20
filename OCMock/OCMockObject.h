@@ -7,12 +7,12 @@
 
 @interface OCMockObject : NSProxy
 {
-	BOOL			isNice;
-	BOOL			expectationOrderMatters;
-	NSMutableArray	*recorders;
-	NSMutableArray	*expectations;
-	NSMutableArray	*rejections;
-	NSMutableArray	*exceptions;
+    BOOL            isNice;
+    BOOL            expectationOrderMatters;
+    NSMutableArray    *recorders;
+    NSMutableArray    *expectations;
+    NSMutableArray    *rejections;
+    NSMutableArray    *exceptions;
 }
 
 + (id)mockForClass:(Class)aClass;

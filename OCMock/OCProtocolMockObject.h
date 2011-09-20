@@ -7,7 +7,7 @@
 
 @interface OCProtocolMockObject : OCMockObject
 {
-	Protocol	*mockedProtocol;
+    Protocol    *mockedProtocol;
 }
 
 - (id)initWithProtocol:(Protocol *)aProtocol;

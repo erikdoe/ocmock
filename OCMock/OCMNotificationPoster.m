@@ -10,20 +10,20 @@
 
 - (id)initWithNotification:(id)aNotification
 {
-	[super init];
-	notification = [aNotification retain];
-	return self;
+    [super init];
+    notification = [aNotification retain];
+    return self;
 }
 
 - (void)dealloc
 {
-	[notification release];
-	[super dealloc];
+    [notification release];
+    [super dealloc];
 }
 
 - (void)handleInvocation:(NSInvocation *)anInvocation
 {
-	[[NSNotificationCenter defaultCenter] postNotification:notification];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 
 

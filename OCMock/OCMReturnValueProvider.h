@@ -7,7 +7,7 @@
 
 @interface OCMReturnValueProvider : NSObject
 {
-	id	returnValue;
+    id    returnValue;
 }
 
 - (id)initWithValue:(id)aValue;
