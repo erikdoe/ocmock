@@ -6,10 +6,10 @@
 #import <SenTestingKit/SenTestingKit.h>
 
 
-@interface OCObserverMockObjectTest : SenTestCase 
+@interface OCObserverMockObjectTest : SenTestCase
 {
 	NSNotificationCenter *center;
-	
+
 	id mock;
 }
 

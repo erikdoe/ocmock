@@ -5,7 +5,7 @@
 
 #import "OCClassMockObject.h"
 
-@interface OCPartialMockObject : OCClassMockObject 
+@interface OCPartialMockObject : OCClassMockObject
 {
 	NSObject	*realObject;
 }

@@ -31,11 +31,11 @@
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
 	struct objc_method_description methodDescription = protocol_getMethodDescription(mockedProtocol, aSelector, YES, YES);
-    if(methodDescription.name == NULL) 
+    if(methodDescription.name == NULL)
 	{
         methodDescription = protocol_getMethodDescription(mockedProtocol, aSelector, NO, YES);
     }
-    if(methodDescription.name == NULL) 
+    if(methodDescription.name == NULL)
 	{
         return nil;
     }

@@ -5,7 +5,7 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 
-@interface NSInvocationOCMAdditionsTests : SenTestCase 
+@interface NSInvocationOCMAdditionsTests : SenTestCase
 {
 }
 

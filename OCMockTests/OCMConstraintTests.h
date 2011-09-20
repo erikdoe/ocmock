@@ -6,7 +6,7 @@
 #import <SenTestingKit/SenTestingKit.h>
 
 
-@interface OCMConstraintTests : SenTestCase 
+@interface OCMConstraintTests : SenTestCase
 {
 	BOOL didCallCustomConstraint;
 }

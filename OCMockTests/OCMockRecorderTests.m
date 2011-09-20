@@ -14,7 +14,7 @@
 - (void)setUp
 {
 	NSMethodSignature *signature;
- 
+
 	signature = [NSString instanceMethodSignatureForSelector:@selector(initWithString:)];
 	testInvocation = [NSInvocation invocationWithMethodSignature:signature];
 	[testInvocation setSelector:@selector(initWithString:)];
@@ -25,10 +25,10 @@
 {
 	OCMockRecorder *recorder;
 	NSString	   *arg;
-	
+
 	arg = @"I love mocks.";
 	[testInvocation setArgument:&arg atIndex:2];
-	
+
 	recorder = [[[OCMockRecorder alloc] initWithSignatureResolver:[NSString string]] autorelease];
 	[(id)recorder initWithString:arg];
 
@@ -40,13 +40,13 @@
 {
 	OCMockRecorder *recorder;
 	NSString	   *arg;
-	
+
 	arg = @"I love mocks.";
 	[testInvocation setArgument:&arg atIndex:2];
-	
+
 	recorder = [[[OCMockRecorder alloc] initWithSignatureResolver:[NSString string]] autorelease];
 	[(id)recorder initWithString:@"whatever"];
-	
+
 	STAssertFalse([recorder matchesInvocation:testInvocation], @"Should not match.");
 }
 
@@ -59,7 +59,7 @@
 	recorder = [[[OCMockRecorder alloc] initWithSignatureResolver:[NSString string]] autorelease];
 	[recorder andReturn:@"foo"];
 	handlerList = [recorder invocationHandlers];
-	
+
 	STAssertEquals((NSUInteger)1, [handlerList count], @"Should have added one handler.");
 	STAssertEqualObjects([OCMReturnValueProvider class], [[handlerList objectAtIndex:0] class], @"Should have added correct handler.");
 }
@@ -68,14 +68,14 @@
 {
 	OCMockRecorder	*recorder;
 	NSArray			*handlerList;
-	
+
 	recorder = [[[OCMockRecorder alloc] initWithSignatureResolver:[NSString string]] autorelease];
 	[recorder andThrow:[NSException exceptionWithName:@"TestException" reason:@"A reason" userInfo:nil]];
 	handlerList = [recorder invocationHandlers];
 
 	STAssertEquals((NSUInteger)1, [handlerList count], @"Should have added one handler.");
 	STAssertEqualObjects([OCMExceptionReturnValueProvider class], [[handlerList objectAtIndex:0] class], @"Should have added correct handler.");
-	
+
 }
 
 @end

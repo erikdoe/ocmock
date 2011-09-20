@@ -14,16 +14,16 @@ static NSString *TestNotificationOne = @"TestNotificationOne";
 - (void)setUp
 {
 	center = [[[NSNotificationCenter alloc] init] autorelease];
-	mock = [OCMockObject observerMock]; 
+	mock = [OCMockObject observerMock];
 }
 
 - (void)testAcceptsExpectedNotification
 {
 	[center addMockObserver:mock name:TestNotificationOne object:nil];
     [[mock expect] notificationWithName:TestNotificationOne object:[OCMArg any]];
-    
+
     [center postNotificationName:TestNotificationOne object:self];
-	
+
     [mock verify];
 }
 
@@ -32,9 +32,9 @@ static NSString *TestNotificationOne = @"TestNotificationOne";
 	[center addMockObserver:mock name:TestNotificationOne object:nil];
 	NSDictionary *info = [NSDictionary dictionaryWithObject:@"foo" forKey:@"key"];
     [[mock expect] notificationWithName:TestNotificationOne object:self userInfo:info];
-    
+
     [center postNotificationName:TestNotificationOne object:self userInfo:info];
-	
+
     [mock verify];
 }
 
@@ -43,7 +43,7 @@ static NSString *TestNotificationOne = @"TestNotificationOne";
 	[center addMockObserver:mock name:TestNotificationOne object:nil];
 	[[mock expect] notificationWithName:TestNotificationOne object:self];
     [[mock expect] notificationWithName:TestNotificationOne object:[OCMArg any]];
-	
+
 	[center postNotificationName:TestNotificationOne object:[NSString string]];
 	[center postNotificationName:TestNotificationOne object:self];
 }
@@ -55,7 +55,7 @@ static NSString *TestNotificationOne = @"TestNotificationOne";
 	[center addMockObserver:mock name:TestNotificationOne object:nil];
 	[[mock expect] notificationWithName:TestNotificationOne object:self];
     [[mock expect] notificationWithName:TestNotificationOne object:[OCMArg any]];
-	
+
 	[center postNotificationName:TestNotificationOne object:self];
 	[center postNotificationName:TestNotificationOne object:[NSString string]];
 }
@@ -63,11 +63,11 @@ static NSString *TestNotificationOne = @"TestNotificationOne";
 - (void)testRaisesExceptionWhenSequenceIsWrongAndOrderMatters
 {
 	[mock setExpectationOrderMatters:YES];
-	
+
 	[center addMockObserver:mock name:TestNotificationOne object:nil];
 	[[mock expect] notificationWithName:TestNotificationOne object:self];
     [[mock expect] notificationWithName:TestNotificationOne object:[OCMArg any]];
-	
+
 	STAssertThrows([center postNotificationName:TestNotificationOne object:[NSString string]], @"Should have complained about sequence.");
 }
 
@@ -77,7 +77,7 @@ static NSString *TestNotificationOne = @"TestNotificationOne";
 	[center addMockObserver:mock name:TestNotificationOne object:nil];
     [[mock expect] notificationWithName:TestNotificationOne object:[OCMArg any]];
 	[[mock expect] notificationWithName:TestNotificationOne object:self];
-	
+
 	[center postNotificationName:TestNotificationOne object:self];
 	STAssertThrows([center postNotificationName:TestNotificationOne object:[NSString string]], nil);
 }
@@ -85,7 +85,7 @@ static NSString *TestNotificationOne = @"TestNotificationOne";
 - (void)testRaisesExceptionWhenUnexpectedNotificationIsReceived
 {
 	[center addMockObserver:mock name:TestNotificationOne object:nil];
-	
+
     STAssertThrows([center postNotificationName:TestNotificationOne object:self], nil);
 }
 
@@ -93,16 +93,16 @@ static NSString *TestNotificationOne = @"TestNotificationOne";
 {
 	[center addMockObserver:mock name:TestNotificationOne object:nil];
     [[mock expect] notificationWithName:TestNotificationOne object:self];
-	
+
 	STAssertThrows([center postNotificationName:TestNotificationOne object:[NSString string]], nil);
 }
 
 - (void)testRaisesWhenNotificationWithWrongUserInfoIsReceived
 {
 	[center addMockObserver:mock name:TestNotificationOne object:nil];
-    [[mock expect] notificationWithName:TestNotificationOne object:self 
+    [[mock expect] notificationWithName:TestNotificationOne object:self
 							   userInfo:[NSDictionary dictionaryWithObject:@"foo" forKey:@"key"]];
-	STAssertThrows([center postNotificationName:TestNotificationOne object:[NSString string] 
+	STAssertThrows([center postNotificationName:TestNotificationOne object:[NSString string]
 									   userInfo:[NSDictionary dictionaryWithObject:@"bar" forKey:@"key"]], nil);
 }
 

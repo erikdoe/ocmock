@@ -5,7 +5,7 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 
-@interface OCMockRecorderTests : SenTestCase 
+@interface OCMockRecorderTests : SenTestCase
 {
 	NSInvocation *testInvocation;
 }

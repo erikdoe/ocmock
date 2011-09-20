@@ -44,7 +44,7 @@
 
 #if NS_BLOCKS_AVAILABLE
 
-+ (id)checkWithBlock:(BOOL (^)(id))block 
++ (id)checkWithBlock:(BOOL (^)(id))block
 {
 	return [[[OCMBlockConstraint alloc] initWithConstraintBlock:block] autorelease];
 }

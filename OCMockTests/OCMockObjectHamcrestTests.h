@@ -6,7 +6,7 @@
 #import <SenTestingKit/SenTestingKit.h>
 
 
-@interface OCMockObjectHamcrestTests : SenTestCase 
+@interface OCMockObjectHamcrestTests : SenTestCase
 {
 }
 

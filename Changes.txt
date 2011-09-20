@@ -1,11 +1,11 @@
 Chronological listing of changes. If a particular SVN revision has no entry, that
 check-in did not involve any code or feature changes.
-            
+
 2011-02-15 (r74)
 
 * Added feature to explicitly disable a partial mock
-			
-			
+
+
 2011-01-28 (r71)
 
 * Updated example to work with iOS 4.2.
@@ -14,7 +14,7 @@ check-in did not involve any code or feature changes.
 2010-08-21 (r69)
 
 * Added feature to explicitly reject methods on nice mocks (thanks to Heath Borders)
- 
+
 
 2010-08-20 (r68)
 
@@ -29,7 +29,7 @@ check-in did not involve any code or feature changes.
 2010-07-28 (r62-r65)
 
 * Now building OCMock library for simulator (i386) and device (armv7)
-* Updated example to run tests on device                    
+* Updated example to run tests on device
 * Changed OCMOCK_VALUE macro to be iOS compatible (thanks to Derek Clarkson)
 
 
@@ -132,7 +132,7 @@ check-in did not involve any code or feature changes.
 2009-02-22 (r32)
 
 * Added support for respondsToSelector (Dave Dribin)
-* Added constraint for any pointer 
+* Added constraint for any pointer
 * Now comparing selectors as strings (Dado Colussi)
 
 
@@ -160,7 +160,7 @@ check-in did not involve any code or feature changes.
 
 * Added support for void* parameters (Tuukka Norri)
 * Fixed a bug that could caused crashes when non-char const pointers were described
- 
+
 
 2007-11-22 (r19)
 
@@ -202,10 +202,10 @@ check-in did not involve any code or feature changes.
 
 2005-12-11 (r11)
 
-* Added slightly modified version of Jon Reid's contribution, which adds the possibility to stub 
+* Added slightly modified version of Jon Reid's contribution, which adds the possibility to stub
   primitive return values.
 
-* Added Jon Reid's bugfix that prevents a crash when trying to stub an unknown method on a 
+* Added Jon Reid's bugfix that prevents a crash when trying to stub an unknown method on a
   protocol.
 
 
