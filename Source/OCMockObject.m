@@ -164,7 +164,7 @@
 - (BOOL)handleInvocation:(NSInvocation *)anInvocation
 {
 	OCMockRecorder *recorder = nil;
-	int			   i;
+	unsigned int			   i;
 	
 	for(i = 0; i < [recorders count]; i++)
 	{
