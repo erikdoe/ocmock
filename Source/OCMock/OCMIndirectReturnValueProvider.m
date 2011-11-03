@@ -11,7 +11,7 @@
 
 - (id)initWithProvider:(id)aProvider andSelector:(SEL)aSelector
 {
-	[super init];
+	self = [super init];
 	provider = [aProvider retain];
 	selector = aSelector;
 	return self;

@@ -10,7 +10,7 @@
 
 - (id)initWithNotification:(id)aNotification
 {
-	[super init];
+	self = [super init];
 	notification = [aNotification retain];
 	return self;
 }

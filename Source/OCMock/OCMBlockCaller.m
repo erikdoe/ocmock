@@ -11,7 +11,7 @@
 
 -(id)initWithCallBlock:(void (^)(NSInvocation *))theBlock 
 {
-	[super init];
+	self = [super init];
 	block = [theBlock copy];
 	return self;
 }

@@ -10,7 +10,7 @@
 
 - (id)initWithValue:(id)aValue
 {
-	[super init];
+	self = [super init];
 	value = [aValue retain];
 	return self;
 }

@@ -121,7 +121,7 @@
 
 - (id)initWithConstraintBlock:(BOOL (^)(id))aBlock;
 {
-	[super init];
+	self = [super init];
 	block = aBlock;
 	return self;
 }

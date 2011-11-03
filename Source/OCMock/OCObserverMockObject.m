@@ -13,7 +13,7 @@
 
 - (id)init
 {
-	[super init];
+	self = [super init];
 	recorders = [[NSMutableArray alloc] init];
 	return self;
 }

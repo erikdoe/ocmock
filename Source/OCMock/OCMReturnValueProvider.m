@@ -11,7 +11,7 @@
 
 - (id)initWithValue:(id)aValue
 {
-	[super init];
+	self = [super init];
 	returnValue = [aValue retain];
 	return self;
 }
