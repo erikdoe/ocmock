@@ -142,7 +142,7 @@
 	
 	NSArray *selectorParts = [NSStringFromSelector([self selector]) componentsSeparatedByString:@":"];
 	NSMutableString *description = [[NSMutableString alloc] init];
-	int i;
+	unsigned int i;
 	for(i = 2; i < numberOfArgs; i++)
 	{
 		[description appendFormat:@"%@%@:", (i > 2 ? @" " : @""), [selectorParts objectAtIndex:(i - 2)]];
