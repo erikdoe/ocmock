@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------------------
 //  $Id$
-//  Copyright (c) 2004-2010 by Mulle Kybernetik. See License file for details.
+//  Copyright (c) 2004-2011 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import <objc/runtime.h>
@@ -170,8 +170,6 @@
 		}
 		else
 		{
-			if([recordedArg class] != [passedArg class])
-				return NO;
 			if(([recordedArg class] == [NSNumber class]) && 
 				([(NSNumber*)recordedArg compare:(NSNumber*)passedArg] != NSOrderedSame))
 				return NO;
