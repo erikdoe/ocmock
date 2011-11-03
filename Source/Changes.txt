@@ -1,6 +1,11 @@
 Chronological listing of changes. If a particular SVN revision has no entry, that
 check-in did not involve any code or feature changes.
 
+2011-11-03
+
+* Recreated project from scratch with new conventions in Xcode 4.2 (thanks to Matt Di Pasquale)
+
+
 2011-09-26 
 
 * Arguments only need to be equal, don't have to have same class
