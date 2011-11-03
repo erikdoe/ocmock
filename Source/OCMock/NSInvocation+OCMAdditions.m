@@ -121,7 +121,7 @@
         }
 		case '{': // structure
 		{
-			unsigned maxArgSize = [[self methodSignature] frameLength];
+			NSUInteger maxArgSize = [[self methodSignature] frameLength];
 			NSMutableData *argumentData = [[[NSMutableData alloc] initWithLength:maxArgSize] autorelease];
 			[self getArgument:[argumentData mutableBytes] atIndex:argIndex];
 			return [NSValue valueWithBytes:[argumentData bytes] objCType:argType];
@@ -135,7 +135,7 @@
 - (NSString *)invocationDescription
 {
 	NSMethodSignature *methodSignature = [self methodSignature];
-	unsigned int numberOfArgs = [methodSignature numberOfArguments];
+	NSUInteger numberOfArgs = [methodSignature numberOfArguments];
 	
 	if (numberOfArgs == 2)
 		return NSStringFromSelector([self selector]);

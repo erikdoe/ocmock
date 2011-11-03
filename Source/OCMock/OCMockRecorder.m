@@ -137,7 +137,7 @@
 	if([anInvocation selector] != [recordedInvocation selector])
 		return NO;
 	
-	n = [[recordedInvocation methodSignature] numberOfArguments];
+	n = (int)[[recordedInvocation methodSignature] numberOfArguments];
 	for(i = 2; i < n; i++)
 	{
 		recordedArg = [recordedInvocation getArgumentAtIndexAsObject:i];
