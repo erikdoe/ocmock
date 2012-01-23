@@ -1,5 +1,11 @@
-Chronological listing of changes. If a particular SVN revision has no entry, that
-check-in did not involve any code or feature changes.
+Chronological listing of changes. More detail is usually found in the Git commit messages
+and/or the pull requests.
+
+
+2012-01-23
+
+* Avoiding deprecated method to convert to a C string (thanks to Kushal Pisavadia)
+
 
 2011-11-03
 
@@ -10,6 +16,10 @@ check-in did not involve any code or feature changes.
 
 * Arguments only need to be equal, don't have to have same class
 
+
+
+Chronological listing of changes in the original Subversion code repository. If a particular 
+SVN revision has no entry, that check-in did not involve any code or feature changes.
             
 2011-02-15 (r74)
 
