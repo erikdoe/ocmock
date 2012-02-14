@@ -21,7 +21,7 @@
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"OCMockObject[%s]", [[mockedProtocol name] UTF8String]];
+	return [NSString stringWithFormat:@"OCMockObject[%s]", [mockedProtocol name]];
 }
 
 
