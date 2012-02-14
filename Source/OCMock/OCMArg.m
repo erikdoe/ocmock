@@ -64,7 +64,7 @@
 		void *pointer = [value pointerValue];
 		if(pointer == (void *)0x01234567)
 			return [OCMArg any];
-		if((pointer != NULL) && (((id)pointer)->isa == [OCMPassByRefSetter class]))
+		if((pointer != NULL) && ([(id)pointer isKindOfClass:[OCMPassByRefSetter class]]))
 			return (id)pointer;
 	}
 	return value;
