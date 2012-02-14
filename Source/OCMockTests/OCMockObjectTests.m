@@ -596,6 +596,12 @@ static NSString *TestNotification = @"TestNotification";
 	[mock verify];
 }
 
+- (void)testSetsCorrectNameForProtocolMockObjects
+{
+	mock = [OCMockObject mockForProtocol:@protocol(NSLocking)];
+	STAssertEqualObjects(@"OCMockObject[NSLocking]", [mock description], @"Should have returned correct description.");
+}
+
 - (void)testRaisesWhenUnknownMethodIsCalledOnProtocol
 {
 	mock = [OCMockObject mockForProtocol:@protocol(NSLocking)];
