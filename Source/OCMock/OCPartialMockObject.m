@@ -62,7 +62,7 @@ static NSMutableDictionary *mockTable;
 - (void)dealloc
 {
 	if(realObject != nil)
-		[self stop];
+		[self stopMockObject];
 	[super dealloc];
 }
 
@@ -76,7 +76,7 @@ static NSMutableDictionary *mockTable;
 	return realObject;
 }
 
-- (void)stop
+- (void)stopMockObject
 {
 	object_setClass(realObject, [self mockedClass]);
 	[realObject release];
