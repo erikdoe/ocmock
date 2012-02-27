@@ -257,7 +257,7 @@
 	long longValue;
 	
 	[self getArgument:&longValue atIndex:anInt];
-	return [NSString stringWithFormat:@"%d", longValue];
+	return [NSString stringWithFormat:@"%ld", longValue];
 }
 
 - (NSString *)unsignedLongDescriptionAtIndex:(int)anInt
@@ -265,7 +265,7 @@
 	unsigned long longValue;
 	
 	[self getArgument:&longValue atIndex:anInt];
-	return [NSString stringWithFormat:@"%u", longValue];
+	return [NSString stringWithFormat:@"%lu", longValue];
 }
 
 - (NSString *)longLongDescriptionAtIndex:(int)anInt
@@ -323,7 +323,7 @@
 	memset(buffer, 0x0, 128);
 	
 	[self getArgument:&buffer atIndex:anInt];
-	return [NSString stringWithFormat:@"\"%S\"", buffer];
+	return [NSString stringWithFormat:@"\"%s\"", buffer];
 }
 
 - (NSString *)selectorDescriptionAtIndex:(int)anInt

@@ -3,10 +3,10 @@
 //  Copyright (c) 2005-2008 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
+#import <objc/Protocol.h>
 #import <objc/runtime.h>
 #import "NSMethodSignature+OCMAdditions.h"
 #import "OCProtocolMockObject.h"
-
 
 @implementation OCProtocolMockObject
 
@@ -21,10 +21,9 @@
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"OCMockObject[%s]", [mockedProtocol name]];
+    const char* name = protocol_getName(mockedProtocol);
+    return [NSString stringWithFormat:@"OCMockObject[%s]", name];
 }
-
-
 
 #pragma mark  Proxy API
 
@@ -51,6 +50,5 @@
 {
     return ([self methodSignatureForSelector:selector] != nil);
 }
-
 
 @end
