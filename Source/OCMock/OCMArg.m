@@ -3,8 +3,7 @@
 //  Copyright (c) 2009-2010 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
-#import <objc/objc-class.h>
-
+#import <objc/runtime.h>
 #import <OCMock/OCMArg.h>
 #import <OCMock/OCMConstraint.h>
 #import "OCMPassByRefSetter.h"

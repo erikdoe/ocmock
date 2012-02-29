@@ -3,7 +3,6 @@
 //  Copyright (c) 2005-2008 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
-#import <objc/Protocol.h>
 #import <objc/runtime.h>
 #import "NSMethodSignature+OCMAdditions.h"
 #import "OCProtocolMockObject.h"
