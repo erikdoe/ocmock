@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		030EF0AC14632FD000B04273 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 030EF0AB14632FD000B04273 /* Cocoa.framework */; };
 		030EF0B614632FD000B04273 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 030EF0B414632FD000B04273 /* InfoPlist.strings */; };
 		030EF0C214632FD000B04273 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 030EF0C114632FD000B04273 /* SenTestingKit.framework */; };
-		030EF0C314632FD000B04273 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 030EF0AB14632FD000B04273 /* Cocoa.framework */; };
 		030EF0C614632FD000B04273 /* OCMock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 030EF0A814632FD000B04273 /* OCMock.framework */; };
 		030EF0CC14632FD000B04273 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 030EF0CA14632FD000B04273 /* InfoPlist.strings */; };
-		030EF0DE14632FF700B04273 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 030EF0DD14632FF700B04273 /* Foundation.framework */; };
+		033E1FF414FEF5E0004456B0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 033E1FF314FEF5E0004456B0 /* Foundation.framework */; };
+		033E1FF514FEF5FC004456B0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 033E1FF314FEF5E0004456B0 /* Foundation.framework */; };
+		033E1FF714FEF60C004456B0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 033E1FF614FEF60C004456B0 /* Foundation.framework */; };
 		03B315AF146333BF0052CD09 /* NSInvocation+OCMAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 03B31585146333BF0052CD09 /* NSInvocation+OCMAdditions.h */; };
 		03B315B0146333BF0052CD09 /* NSInvocation+OCMAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 03B31585146333BF0052CD09 /* NSInvocation+OCMAdditions.h */; };
 		03B315B1146333BF0052CD09 /* NSInvocation+OCMAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B31586146333BF0052CD09 /* NSInvocation+OCMAdditions.m */; };
@@ -127,10 +127,6 @@
 
 /* Begin PBXFileReference section */
 		030EF0A814632FD000B04273 /* OCMock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OCMock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		030EF0AB14632FD000B04273 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
-		030EF0AE14632FD000B04273 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		030EF0AF14632FD000B04273 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		030EF0B014632FD000B04273 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		030EF0B314632FD000B04273 /* OCMock-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OCMock-Info.plist"; sourceTree = "<group>"; };
 		030EF0B514632FD000B04273 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		030EF0B714632FD000B04273 /* OCMock-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OCMock-Prefix.pch"; sourceTree = "<group>"; };
@@ -140,8 +136,9 @@
 		030EF0C914632FD000B04273 /* OCMockTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OCMockTests-Info.plist"; sourceTree = "<group>"; };
 		030EF0CB14632FD000B04273 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		030EF0DC14632FF700B04273 /* libOCMock.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libOCMock.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		030EF0DD14632FF700B04273 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		030EF0E114632FF700B04273 /* OCMockLib-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OCMockLib-Prefix.pch"; sourceTree = "<group>"; };
+		033E1FF314FEF5E0004456B0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		033E1FF614FEF60C004456B0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		03B31585146333BF0052CD09 /* NSInvocation+OCMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSInvocation+OCMAdditions.h"; sourceTree = "<group>"; };
 		03B31586146333BF0052CD09 /* NSInvocation+OCMAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSInvocation+OCMAdditions.m"; sourceTree = "<group>"; };
 		03B31587146333BF0052CD09 /* NSMethodSignature+OCMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMethodSignature+OCMAdditions.h"; sourceTree = "<group>"; };
@@ -206,7 +203,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				030EF0AC14632FD000B04273 /* Cocoa.framework in Frameworks */,
+				033E1FF414FEF5E0004456B0 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,8 +211,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				033E1FF514FEF5FC004456B0 /* Foundation.framework in Frameworks */,
 				030EF0C214632FD000B04273 /* SenTestingKit.framework in Frameworks */,
-				030EF0C314632FD000B04273 /* Cocoa.framework in Frameworks */,
 				030EF0C614632FD000B04273 /* OCMock.framework in Frameworks */,
 				03B3168D14633B1D0052CD09 /* OCHamcrest.framework in Frameworks */,
 			);
@@ -225,7 +222,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				030EF0DE14632FF700B04273 /* Foundation.framework in Frameworks */,
+				033E1FF714FEF60C004456B0 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,7 +237,6 @@
 				030EF0B114632FD000B04273 /* OCMock */,
 				030EF0C714632FD000B04273 /* OCMockTests */,
 				030EF0DF14632FF700B04273 /* OCMockLib */,
-				030EF0AA14632FD000B04273 /* Frameworks */,
 				030EF0A914632FD000B04273 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -258,23 +254,11 @@
 		030EF0AA14632FD000B04273 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				030EF0AB14632FD000B04273 /* Cocoa.framework */,
 				030EF0C114632FD000B04273 /* SenTestingKit.framework */,
 				03B3168C14633B1D0052CD09 /* OCHamcrest.framework */,
-				030EF0DD14632FF700B04273 /* Foundation.framework */,
-				030EF0AD14632FD000B04273 /* Other Frameworks */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		030EF0AD14632FD000B04273 /* Other Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				030EF0AE14632FD000B04273 /* AppKit.framework */,
-				030EF0AF14632FD000B04273 /* CoreData.framework */,
-				030EF0B014632FD000B04273 /* Foundation.framework */,
-			);
-			name = "Other Frameworks";
+			path = ..;
 			sourceTree = "<group>";
 		};
 		030EF0B114632FD000B04273 /* OCMock */ = {
@@ -287,6 +271,7 @@
 				03B3161A146334320052CD09 /* Argument Handling */,
 				03B31618146333CA0052CD09 /* Foundation Additions */,
 				030EF0B214632FD000B04273 /* Supporting Files */,
+				033E1FF914FEF724004456B0 /* Frameworks */,
 			);
 			path = OCMock;
 			sourceTree = "<group>";
@@ -317,6 +302,7 @@
 				03B3161E1463350E0052CD09 /* NSInvocationOCMAdditionsTests.h */,
 				03B3161F1463350E0052CD09 /* NSInvocationOCMAdditionsTests.m */,
 				030EF0C814632FD000B04273 /* Supporting Files */,
+				030EF0AA14632FD000B04273 /* Frameworks */,
 			);
 			path = OCMockTests;
 			sourceTree = "<group>";
@@ -334,6 +320,7 @@
 			isa = PBXGroup;
 			children = (
 				030EF0E014632FF700B04273 /* Supporting Files */,
+				033E1FF814FEF6F4004456B0 /* Frameworks */,
 			);
 			path = OCMockLib;
 			sourceTree = "<group>";
@@ -344,6 +331,22 @@
 				030EF0E114632FF700B04273 /* OCMockLib-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		033E1FF814FEF6F4004456B0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				033E1FF614FEF60C004456B0 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		033E1FF914FEF724004456B0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				033E1FF314FEF5E0004456B0 /* Foundation.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		03B315841463334E0052CD09 /* Core Mocks */ = {
@@ -796,6 +799,10 @@
 				GCC_PREFIX_HEADER = "OCMock/OCMock-Prefix.pch";
 				INFOPLIST_FILE = "OCMock/OCMock-Info.plist";
 				LD_DYLIB_INSTALL_NAME = "@rpath/$(EXECUTABLE_PATH)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Versions/C\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = framework;
 			};
@@ -811,6 +818,10 @@
 				GCC_PREFIX_HEADER = "OCMock/OCMock-Prefix.pch";
 				INFOPLIST_FILE = "OCMock/OCMock-Info.plist";
 				LD_DYLIB_INSTALL_NAME = "@rpath/$(EXECUTABLE_PATH)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Versions/C\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = framework;
 			};
@@ -827,6 +838,10 @@
 				GCC_PREFIX_HEADER = "OCMock/OCMock-Prefix.pch";
 				INFOPLIST_FILE = "OCMockTests/OCMockTests-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Versions/C\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -843,6 +858,10 @@
 				GCC_PREFIX_HEADER = "OCMock/OCMock-Prefix.pch";
 				INFOPLIST_FILE = "OCMockTests/OCMockTests-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Versions/C\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -856,6 +875,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OCMockLib/OCMockLib-Prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Versions/C\"",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = OCMock;
 				PUBLIC_HEADERS_FOLDER_PATH = /include/OCMock;
@@ -873,6 +896,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OCMockLib/OCMockLib-Prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Versions/C\"",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = OCMock;
 				PUBLIC_HEADERS_FOLDER_PATH = /include/OCMock;
