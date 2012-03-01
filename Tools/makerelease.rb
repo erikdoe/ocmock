@@ -39,7 +39,7 @@ class ReleaseManager
         iosproductdir = "#{@env.productdir}/iOS"                                           
         @worker.run("mkdir -p #{iosproductdir}")
         @worker.run("cp -R build/Release/libOCMock.a #{iosproductdir}")      
-        @worker.run("cp -R build/Release-iphoneos/include #{iosproductdir}")      
+        @worker.run("cp -R build/Release-iphoneos/OCMock #{iosproductdir}")      
     end
 
     def createPackage(packagename, volumename)    
