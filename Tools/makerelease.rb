@@ -1,3 +1,73 @@
+   
+class ReleaseManager
+
+    def initialize
+        @env = Environment.new()
+        @worker = CompositeWorker.new([Logger.new(), Executer.new()])
+    end              
+    
+    def makeAll
+      createWorkingDirectories
+      downloadSource
+      buildModules
+      createPackage "OCMock-2.0.dmg", "OCMock 2.0"
+      #upload "OCMock-2.0.dmg" "muller.mulle-kybernetik.com:/www/sites/www.mulle-kybernetik.com/htdocs/software/OCMock/Downloads"
+      #cleanup
+    end
+    
+    def createWorkingDirectories
+        @worker.run("mkdir -p #{@env.sourcedir}")
+        @worker.run("mkdir -p #{@env.productdir}")
+        @worker.run("mkdir -p #{@env.packagedir}")
+    end
+    
+    def downloadSource
+        @worker.chdir(@env.sourcedir) 
+        @worker.run("curl https://nodeload.github.com/erikdoe/ocmock/tarball/master | tar -x --strip-components 1")
+        @worker.run("cp -R #{@env.sourcedir}/Source #{@env.productdir}")
+    end
+
+    def buildModules
+        @worker.chdir("#{@env.sourcedir}/Source")
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMock")         
+        osxproductdir = "#{@env.productdir}/OSX"                                        
+        @worker.run("mkdir -p #{osxproductdir}")
+        @worker.run("cp -R build/Release/OCMock.framework #{osxproductdir}")    
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphoneos5.0")                                                 
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphonesimulator5.0")                                                 
+        @worker.run("lipo -create -output build/Release/libOCMock.a build/Release-*/libOCMock.a")      
+        iosproductdir = "#{@env.productdir}/iOS"                                           
+        @worker.run("mkdir -p #{iosproductdir}")
+        @worker.run("cp -R build/Release/libOCMock.a #{iosproductdir}")      
+        @worker.run("cp -R build/Release-iphoneos/include #{iosproductdir}")      
+    end
+
+    def createPackage(packagename, volumename)    
+        @worker.chdir(@env.packagedir)  
+        @worker.run("hdiutil create -size 4m temp.dmg -layout NONE") 
+        disk_id = nil
+        @worker.run("hdid -nomount temp.dmg") { |hdid| disk_id = hdid.readline.split[0] }
+        @worker.run("newfs_hfs -v '#{volumename}' #{disk_id}")
+        @worker.run("hdiutil eject #{disk_id}")
+        @worker.run("hdid temp.dmg") { |hdid| disk_id = hdid.readline.split[0] }
+        @worker.run("cp -R #{@env.productdir}/* '/Volumes/#{volumename}'")
+        @worker.run("hdiutil eject #{disk_id}")
+        @worker.run("hdiutil convert -format UDZO temp.dmg -o #{@env.packagedir}/#{packagename} -imagekey zlib-level=9")
+        @worker.run("hdiutil internet-enable -yes #{@env.packagedir}/#{packagename}")
+        @worker.run("rm temp.dmg")
+    end
+    
+    def upload(packagename, dest)
+        @worker.run("scp #{@env.packagedir}/#{packagename} #{dest}")
+    end
+    
+    def cleanup
+        @worker.run("chmod -R u+w #{@env.tmpdir}")
+        @worker.run("rm -rf #{@env.tmpdir}");
+    end
+    
+end
+
 
 ## Environment
 ## use attributes to configure manager for your environment
@@ -65,78 +135,8 @@ class CompositeWorker
     def run(cmd, &block)
          @workers.each { |w| w.run(cmd, &block) }
     end
- end    
+end    
 
 
-## The ReleaseManager class
+ReleaseManager.new.makeAll
 
-class ReleaseManager
-
-    def initialize(env)
-        @env = env
-        @worker = CompositeWorker.new([Logger.new(), Executer.new()])
-    end
-    
-    def createWorkingDirectories
-        @worker.run("mkdir -p #{@env.sourcedir}")
-        @worker.run("mkdir -p #{@env.productdir}")
-        @worker.run("mkdir -p #{@env.packagedir}")
-    end
-    
-    def downloadSource
-        @worker.chdir(@env.sourcedir) 
-        @worker.run("curl https://nodeload.github.com/erikdoe/ocmock/tarball/master | tar -x --strip-components 1")
-        @worker.run("cp -R #{@env.sourcedir}/Source #{@env.productdir}")
-    end
-
-    def buildModules()
-        @worker.chdir("#{@env.sourcedir}/Source")
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMock")         
-        osxproductdir = "#{@env.productdir}/OSX"                                        
-        @worker.run("mkdir -p #{osxproductdir}")
-        @worker.run("cp -R build/Release/OCMock.framework #{osxproductdir}")    
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphoneos5.0")                                                 
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphonesimulator5.0")                                                 
-        @worker.run("lipo -create -output build/Release/libOCMock.a build/Release-*/libOCMock.a")      
-        iosproductdir = "#{@env.productdir}/iOS"                                           
-        @worker.run("mkdir -p #{iosproductdir}")
-        @worker.run("cp -R build/Release/libOCMock.a #{iosproductdir}")      
-        @worker.run("cp -R build/Release-iphoneos/include #{iosproductdir}")      
-    end
-
-    def createPackage(packagename, volumename)    
-        @worker.chdir(@env.packagedir)  
-        @worker.run("hdiutil create -size 4m temp.dmg -layout NONE") 
-        disk_id = nil
-        @worker.run("hdid -nomount temp.dmg") { |hdid| disk_id = hdid.readline.split[0] }
-        @worker.run("newfs_hfs -v '#{volumename}' #{disk_id}")
-        @worker.run("hdiutil eject #{disk_id}")
-        @worker.run("hdid temp.dmg") { |hdid| disk_id = hdid.readline.split[0] }
-        @worker.run("cp -R #{@env.productdir}/* '/Volumes/#{volumename}'")
-        @worker.run("hdiutil eject #{disk_id}")
-        @worker.run("hdiutil convert -format UDZO temp.dmg -o #{@env.packagedir}/#{packagename} -imagekey zlib-level=9")
-        @worker.run("hdiutil internet-enable -yes #{@env.packagedir}/#{packagename}")
-        @worker.run("rm temp.dmg")
-    end
-    
-    def upload(packagename, dest)
-        @worker.run("scp #{@env.packagedir}/#{packagename} #{dest}")
-    end
-    
-    def cleanup
-        @worker.run("chmod -R u+w #{@env.tmpdir}")
-        @worker.run("rm -rf #{@env.tmpdir}");
-    end
-    
-end
-
-  
-
-env = Environment.new()
-m = ReleaseManager.new(env)
-m.createWorkingDirectories
-m.downloadSource
-m.buildModules
-m.createPackage "OCMock-2.0.dmg", "OCMock 2.0"
-#m.upload "OCMock-2.0.dmg" "muller.mulle-kybernetik.com:/www/sites/www.mulle-kybernetik.com/htdocs/software/OCMock/Downloads"
-#m.cleanup
