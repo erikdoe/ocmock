@@ -11,7 +11,7 @@ class ReleaseManager
       downloadSource
       buildModules
       createPackage "OCMock-2.0.dmg", "OCMock 2.0"
-      #upload "OCMock-2.0.dmg" "muller.mulle-kybernetik.com:/www/sites/www.mulle-kybernetik.com/htdocs/software/OCMock/Downloads"
+      #upload "OCMock-2.0.dmg" "ocmock.org:/ocmock/Downloads"
       #cleanup
     end
     
