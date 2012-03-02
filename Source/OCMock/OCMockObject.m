@@ -4,6 +4,7 @@
 //---------------------------------------------------------------------------------------
 
 #import <OCMock/OCMockObject.h>
+#import "OCClassObjectMockObject.h"
 #import "OCClassMockObject.h"
 #import "OCProtocolMockObject.h"
 #import "OCPartialMockObject.h"
@@ -31,6 +32,11 @@
 
 
 #pragma mark  Factory methods
+
++ (id)classMockForClass:(Class)aClass
+{
+	return [[[OCClassObjectMockObject alloc] initWithClass:aClass] autorelease];
+}
 
 + (id)mockForClass:(Class)aClass
 {

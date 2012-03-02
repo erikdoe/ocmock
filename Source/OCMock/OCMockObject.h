@@ -15,6 +15,7 @@
 	NSMutableArray	*exceptions;
 }
 
++ (id)classMockForClass:(Class)aClass;
 + (id)mockForClass:(Class)aClass;
 + (id)mockForProtocol:(Protocol *)aProtocol;
 + (id)partialMockForObject:(NSObject *)anObject;

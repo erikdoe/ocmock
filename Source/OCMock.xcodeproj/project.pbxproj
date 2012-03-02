@@ -113,6 +113,10 @@
 		03B3168B14633A4F0052CD09 /* OCMock.h in Headers */ = {isa = PBXBuildFile; fileRef = 030EF0B814632FD000B04273 /* OCMock.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03B3168D14633B1D0052CD09 /* OCHamcrest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03B3168C14633B1D0052CD09 /* OCHamcrest.framework */; };
 		03B3168E14633D9C0052CD09 /* OCMock.h in Headers */ = {isa = PBXBuildFile; fileRef = 030EF0B814632FD000B04273 /* OCMock.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		63C5E4DD1500DD8D00726C53 /* OCClassObjectMockObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 63C5E4DB1500DD8D00726C53 /* OCClassObjectMockObject.h */; };
+		63C5E4DE1500DD8D00726C53 /* OCClassObjectMockObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 63C5E4DB1500DD8D00726C53 /* OCClassObjectMockObject.h */; };
+		63C5E4DF1500DD8D00726C53 /* OCClassObjectMockObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C5E4DC1500DD8D00726C53 /* OCClassObjectMockObject.m */; };
+		63C5E4E01500DD8D00726C53 /* OCClassObjectMockObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C5E4DC1500DD8D00726C53 /* OCClassObjectMockObject.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -196,6 +200,8 @@
 		03B3168C14633B1D0052CD09 /* OCHamcrest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OCHamcrest.framework; path = "../../../../Library/Developer/Xcode/DerivedData/OCMock-eiknerwmaxlkjybhjofygdhyagum/Build/Products/Debug/Frameworks/OCHamcrest.framework"; sourceTree = "<group>"; };
 		03B3168F14633FAB0052CD09 /* Changes.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Changes.txt; sourceTree = "<group>"; };
 		03B3169014633FAB0052CD09 /* License.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = License.txt; sourceTree = "<group>"; };
+		63C5E4DB1500DD8D00726C53 /* OCClassObjectMockObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCClassObjectMockObject.h; sourceTree = "<group>"; };
+		63C5E4DC1500DD8D00726C53 /* OCClassObjectMockObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCClassObjectMockObject.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -232,6 +238,7 @@
 		030EF09C14632FD000B04273 = {
 			isa = PBXGroup;
 			children = (
+				63C5E4EE1500E22B00726C53 /* OCHamcrest.framework */,
 				03B3168F14633FAB0052CD09 /* Changes.txt */,
 				03B3169014633FAB0052CD09 /* License.txt */,
 				030EF0B114632FD000B04273 /* OCMock */,
@@ -354,6 +361,8 @@
 			children = (
 				03B3159D146333BF0052CD09 /* OCMockObject.h */,
 				03B3159E146333BF0052CD09 /* OCMockObject.m */,
+				63C5E4DB1500DD8D00726C53 /* OCClassObjectMockObject.h */,
+				63C5E4DC1500DD8D00726C53 /* OCClassObjectMockObject.m */,
 				03B3158B146333BF0052CD09 /* OCClassMockObject.h */,
 				03B3158C146333BF0052CD09 /* OCClassMockObject.m */,
 				03B315AD146333BF0052CD09 /* OCProtocolMockObject.h */,
@@ -471,6 +480,7 @@
 				03B31609146333C00052CD09 /* OCPartialMockObject.h in Headers */,
 				03B3160E146333C00052CD09 /* OCPartialMockRecorder.h in Headers */,
 				03B31613146333C00052CD09 /* OCProtocolMockObject.h in Headers */,
+				63C5E4DD1500DD8D00726C53 /* OCClassObjectMockObject.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -506,6 +516,7 @@
 				03B3163A1463350E0052CD09 /* OCMockObjectTests.h in Headers */,
 				03B3163F1463350E0052CD09 /* OCMockRecorderTests.h in Headers */,
 				03B316441463350E0052CD09 /* OCObserverMockObjectTests.h in Headers */,
+				63C5E4DE1500DD8D00726C53 /* OCClassObjectMockObject.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -669,6 +680,7 @@
 				03B3160B146333C00052CD09 /* OCPartialMockObject.m in Sources */,
 				03B31610146333C00052CD09 /* OCPartialMockRecorder.m in Sources */,
 				03B31615146333C00052CD09 /* OCProtocolMockObject.m in Sources */,
+				63C5E4DF1500DD8D00726C53 /* OCClassObjectMockObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -710,6 +722,7 @@
 				03B3160D146333C00052CD09 /* OCPartialMockObject.m in Sources */,
 				03B31612146333C00052CD09 /* OCPartialMockRecorder.m in Sources */,
 				03B31617146333C00052CD09 /* OCProtocolMockObject.m in Sources */,
+				63C5E4E01500DD8D00726C53 /* OCClassObjectMockObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
