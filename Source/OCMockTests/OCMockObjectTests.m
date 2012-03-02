@@ -79,6 +79,31 @@ static NSString *TestNotification = @"TestNotification";
 	mock = [OCMockObject mockForClass:[NSString class]];
 }
 
+// --------------------------------------------------------------------------------------
+//	tests on class mock
+// --------------------------------------------------------------------------------------
+
+- (void)testCreatesClassMock
+{
+	[OCMockObject classMockForClass:[NSString class]];
+}
+
+- (void)testClassMockAcceptsStubbedMethods
+{
+	id classMock = [OCMockObject classMockForClass:[NSString class]];
+
+	NSString* testString = @"Test String";
+	[[[classMock stub] andReturn:testString] string];
+
+	NSString* mockString = [classMock string];
+	STAssertEquals(mockString, testString, @"The mocked class should return the test string when the '+ (NSString*)string' class methods is called.");
+}
+
+- (void)testClassMockRaisesExceptionWhenUnknownMethodIsCalled
+{
+	id classMock = [OCMockObject classMockForClass:[NSString class]];
+	STAssertThrows([classMock alloc], @"Should have raised an exception.");
+}
 
 // --------------------------------------------------------------------------------------
 //	accepting stubbed methods / rejecting methods not stubbed
