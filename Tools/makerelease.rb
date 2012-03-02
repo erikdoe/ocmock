@@ -10,9 +10,8 @@ class ReleaseManager
       createWorkingDirectories
       downloadSource
       buildModules
-      createPackage "OCMock-2.0.dmg", "OCMock 2.0"
-      #upload "OCMock-2.0.dmg" "ocmock.org:/ocmock/Downloads"
-      #cleanup
+      createPackage "ocmock-2.0.dmg", "OCMock 2.0" 
+      openPackageDir
     end
     
     def createWorkingDirectories
@@ -55,6 +54,10 @@ class ReleaseManager
         @worker.run("hdiutil convert -format UDZO temp.dmg -o #{@env.packagedir}/#{packagename} -imagekey zlib-level=9")
         @worker.run("hdiutil internet-enable -yes #{@env.packagedir}/#{packagename}")
         @worker.run("rm temp.dmg")
+    end           
+    
+    def openPackageDir
+        @worker.run("open #{@env.packagedir}") 
     end
     
     def upload(packagename, dest)
