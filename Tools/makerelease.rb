@@ -10,7 +10,7 @@ class ReleaseManager
       createWorkingDirectories
       downloadSource
       buildModules
-      createPackage "ocmock-2.0.dmg", "OCMock 2.0" 
+      createPackage "ocmock-2.0.1.dmg", "OCMock 2.0.1" 
       openPackageDir
     end
     
@@ -21,8 +21,8 @@ class ReleaseManager
     end
     
     def downloadSource
+        @worker.run("git archive master | tar -x -v -C #{@env.sourcedir}")
         @worker.chdir(@env.sourcedir) 
-        @worker.run("curl https://nodeload.github.com/erikdoe/ocmock/tarball/master | tar -x --strip-components 1")
         @worker.run("cp -R #{@env.sourcedir}/Source #{@env.productdir}")
     end
 
