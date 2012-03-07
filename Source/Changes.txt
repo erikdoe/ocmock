@@ -1,6 +1,9 @@
 Chronological listing of changes. More detail is usually found in the Git commit messages
 and/or the pull requests.
 
+2012-02-27
+
+* Import <objc/Protocol.h> to make it clear to the compiler that [Protocol -name] was deprecated in the 10.6+ SDK. Use protocol_getName() instead (Kushal Pisavadia).
 
 2012-01-23
 
