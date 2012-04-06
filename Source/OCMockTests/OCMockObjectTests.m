@@ -650,6 +650,11 @@ static NSString *TestNotification = @"TestNotification";
     STAssertFalse([mock respondsToSelector:@selector(fooBar)], nil);
 }
 
+- (void) testConformsToProtocol
+{
+    mock = [OCMockObject mockForProtocol:@protocol(TestProtocol)];
+    STAssertTrue([[mock class] conformsToProtocol:@protocol(TestProtocol)], @"Mock should conform to protocoll");
+}
 
 // --------------------------------------------------------------------------------------
 //	nice mocks don't complain about unknown methods
