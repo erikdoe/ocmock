@@ -47,8 +47,17 @@ static NSMutableDictionary *mockTable;
 	mockedClass = aClass;
 	[[self class] rememberMock:self forClass:aClass];
     [self setupClass:aClass];
+    mockedImpTable = [[NSMutableDictionary alloc] init];
 	return self;
 }
+
+- (void)dealloc
+{
+	if (mockedClass != nil)
+		[self stopMocking];
+	[super dealloc];
+}
+
 
 - (NSString *)description
 {
@@ -62,7 +71,17 @@ static NSMutableDictionary *mockTable;
 
 - (void)stopMocking
 {
+    Class metaClass = objc_getMetaClass(class_getName(mockedClass));
     
+    for (NSString *name in mockedImpTable) {
+        SEL selector = NSSelectorFromString(name);
+        IMP originalImp = (IMP)[[mockedImpTable valueForKey:name] nonretainedObjectValue];
+        Method method = class_getClassMethod(mockedClass, selector);
+        IMP forwarderImp = class_replaceMethod(metaClass, selector, originalImp, method_getTypeEncoding(method));
+        forwarderImp = nil;    // turn off  warning
+    }
+    
+    mockedClass = nil;
 }
 
 - (void)setupClass:(Class)aClass
@@ -79,11 +98,12 @@ static NSMutableDictionary *mockTable;
 	Method originalMethod = class_getClassMethod(mockedClass, selector);
     Class metaClass = objc_getMetaClass(class_getName(mockedClass));
     
-	IMP forwarderImp = [metaClass instanceMethodForSelector:@selector(aMethodThatMustNotExist)];
-	IMP originalImp = class_replaceMethod(metaClass, method_getName(originalMethod), forwarderImp, method_getTypeEncoding(originalMethod)); 
+    SEL forwarderSel = @selector(aMethodThatMustNotExist);
+	IMP forwarderImp = [metaClass instanceMethodForSelector:forwarderSel];
+	IMP originalImp = class_replaceMethod(metaClass, method_getName(originalMethod), forwarderImp, method_getTypeEncoding(originalMethod));
     
-//	SEL aliasSelector = NSSelectorFromString([OCMRealMethodAliasPrefix stringByAppendingString:NSStringFromSelector(selector)]);
-//	class_addMethod(subclass, aliasSelector, originalImp, method_getTypeEncoding(originalMethod));
+    NSString *name = NSStringFromSelector(selector);
+    [mockedImpTable setValue:[NSValue valueWithNonretainedObject:(id)originalImp] forKey:name];
 }
 
 - (void)forwardInvocationForRealObject:(NSInvocation *)anInvocation

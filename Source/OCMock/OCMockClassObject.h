@@ -7,7 +7,8 @@
 
 @interface OCMockClassObject : OCMockObject
 {
-	Class	mockedClass;
+	Class	             mockedClass;
+    NSMutableDictionary *mockedImpTable;
 }
 
 - (id)initWithClass:(Class)aClass;

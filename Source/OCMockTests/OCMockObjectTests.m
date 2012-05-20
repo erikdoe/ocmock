@@ -42,22 +42,6 @@
 @end
 
 
-@interface TestClassWithClassMethod : NSObject
-
-+ (NSString *)method1;
-
-@end
-
-@implementation TestClassWithClassMethod
-
-+ (NSString *)method1
-{
-    return @"Foo";
-}
-
-@end
-
-
 @interface TestObserver	: NSObject
 {
 	@public
@@ -770,27 +754,6 @@ static NSString *TestNotification = @"TestNotification";
 	[[[mock stub] andCall:@selector(aMethodWithVoidReturn) onObject:self] method1];
 	STAssertNoThrow([foo method1], @"Should have worked.");
 }
-
-
-// --------------------------------------------------------------------------------------
-//	class object mocks allow stubbing/expecting on class objects
-// --------------------------------------------------------------------------------------
-
-- (void)testStubsMethodOnClassObject
-{
-    mock = [OCMockObject mockForClassObject:[TestClassWithClassMethod class]];
-    
-	[[[mock stub] andReturn:@"TestFoo"] method1];
-	STAssertEqualObjects(@"TestFoo", [TestClassWithClassMethod method1], @"Should have stubbed method.");
-}
-
-//- (void)testForwardsUnstubbedMethodsToRealClassObjectAfterStopIsCalled
-//{
-//    mock = [OCMockObject mockForClassObject:[TestClassWithClassMethod class]];
-//	[[[mock stub] andReturn:@"TestFoo"] method1];
-//    [mock stopMocking];
-//	STAssertEqualObjects(@"Foo", [TestClassWithClassMethod method1], @"Should not have stubbed method.");
-//}
 
 
 // --------------------------------------------------------------------------------------
