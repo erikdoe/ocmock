@@ -3,12 +3,13 @@
 
 # Modified by Juan Batiz-Benet to fit GHUnit
 # Modified by Gabriel Handford for GHUnit
+# Modified by Philip Kuryloski for OCMock
 
 set -e
 
 # Define these to suit your nefarious purposes
-                 FRAMEWORK_NAME=GHUnitIOS
-                       LIB_NAME=libGHUnitIOS
+                 FRAMEWORK_NAME=OCMock
+                       LIB_NAME=libOCMock
               FRAMEWORK_VERSION=A
                      BUILD_TYPE=Release
 
@@ -44,8 +45,8 @@ ln -s Versions/Current/$FRAMEWORK_NAME $FRAMEWORK_DIR/$FRAMEWORK_NAME
 
 # Check that this is what your static libraries
 # are called
-ARM_FILES="build/$BUILD_TYPE-iphoneos/${LIB_NAME}Device.a"
-I386_FILES="build/$BUILD_TYPE-iphonesimulator/${LIB_NAME}Simulator.a"
+ARM_FILES="build/$BUILD_TYPE-iphoneos/${LIB_NAME}.a"
+I386_FILES="build/$BUILD_TYPE-iphonesimulator/${LIB_NAME}.a"
 
 # The trick for creating a fully usable library is
 # to use lipo to glue the different library
@@ -66,12 +67,7 @@ lipo \
 # Now copy the final assets over: your library
 # header files and the plist file
 echo "Framework: Copying assets into current version..."
-cp ../Classes/*.h $FRAMEWORK_DIR/Headers/
-cp ../Classes/Mock/*.h $FRAMEWORK_DIR/Headers/
-cp ../Classes/GHTest/*.h $FRAMEWORK_DIR/Headers/
-cp ../Classes/SharedUI/*.h $FRAMEWORK_DIR/Headers/
-cp ../Classes-iOS/*.h $FRAMEWORK_DIR/Headers/
-cp ../Classes/Mock/*.h $FRAMEWORK_DIR/Headers/
+cp OCMock/*.h $FRAMEWORK_DIR/Headers/
 cp Framework.plist $FRAMEWORK_DIR/Resources/Info.plist
 
 echo ""
