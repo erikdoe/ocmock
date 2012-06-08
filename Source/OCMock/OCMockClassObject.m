@@ -10,6 +10,8 @@
 
 @implementation OCMockClassObject
 
+@synthesize originalForwardIMP;
+
 #pragma mark  Mock table
 
 static NSMutableDictionary *mockTable;
@@ -81,16 +83,24 @@ static NSMutableDictionary *mockTable;
         forwarderImp = nil;    // turn off  warning
     }
     
+    Method forwardInvocationMethod = class_getClassMethod(metaClass, @selector(forwardInvocation:));
+	const char *forwardInvocationTypes = method_getTypeEncoding(forwardInvocationMethod);
+	class_replaceMethod(metaClass, @selector(forwardInvocation:), originalForwardIMP, forwardInvocationTypes);
+    originalForwardIMP = NULL;
+    
     [[self class] forgetMockForClass:mockedClass];
     mockedClass = nil;
 }
 
 - (void)setupClass:(Class)aClass
 {
+    Class metaClass = objc_getMetaClass(class_getName(aClass));
+    Method forwardInvocationMethod = class_getClassMethod(metaClass, @selector(forwardInvocation:));
+    originalForwardIMP = method_getImplementation(forwardInvocationMethod);
+
 	Method myForwardInvocationMethod = class_getInstanceMethod([self class], @selector(forwardInvocationForRealObject:));
 	IMP myForwardInvocationImp = method_getImplementation(myForwardInvocationMethod);
 	const char *forwardInvocationTypes = method_getTypeEncoding(myForwardInvocationMethod);
-    Class metaClass = objc_getMetaClass(class_getName(aClass));
 	class_replaceMethod(metaClass, @selector(forwardInvocation:), myForwardInvocationImp, forwardInvocationTypes);
 }
     

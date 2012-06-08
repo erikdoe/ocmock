@@ -11,6 +11,8 @@
     NSMutableDictionary *mockedImpTable;
 }
 
+@property (nonatomic, assign) IMP originalForwardIMP;
+
 + (OCMockClassObject *)existingMockForClass:(Class)aClass;
 
 - (id)initWithClass:(Class)aClass;
