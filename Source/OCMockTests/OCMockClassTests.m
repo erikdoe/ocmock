@@ -8,6 +8,7 @@
 
 #import <OCMock/OCMock.h>
 #import "OCMockClassTests.h"
+#import "OCMockClassObject.h"
 
 // --------------------------------------------------------------------------------------
 //	Helper class for testing
@@ -52,6 +53,14 @@
 	[[[mockClass stub] andReturn:@"TestFoo"] method1];
     [mockClass stopMocking];
 	STAssertEqualObjects(@"Foo", [TestClassWithClassMethod method1], @"Should not have stubbed method.");
+}
+
+- (void)testStopMockingUnmocksClass
+{
+    Class mockClassObject = [(OCMockClassObject *)mockClass class];
+    STAssertNotNil([mockClassObject existingMockForClass:[TestClassWithClassMethod class]], @"Should have mocked class to start");
+    [mockClass stopMocking];
+    STAssertThrowsSpecificNamed([mockClassObject existingMockForClass:[TestClassWithClassMethod class]], NSException, NSInternalInconsistencyException, @"Should not have mocked class");    
 }
 
 @end

@@ -81,6 +81,7 @@ static NSMutableDictionary *mockTable;
         forwarderImp = nil;    // turn off  warning
     }
     
+    [[self class] forgetMockForClass:mockedClass];
     mockedClass = nil;
 }
 

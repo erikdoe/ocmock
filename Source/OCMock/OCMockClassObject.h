@@ -11,6 +11,8 @@
     NSMutableDictionary *mockedImpTable;
 }
 
++ (OCMockClassObject *)existingMockForClass:(Class)aClass;
+
 - (id)initWithClass:(Class)aClass;
 
 - (Class)mockedClass;
