@@ -6,7 +6,7 @@
 #import <objc/runtime.h>
 #import "OCPartialMockRecorder.h"
 #import "OCPartialMockObject.h"
-
+#import "NSInvocation+OCMAdditions.h"
 
 @interface OCPartialMockObject (Private)
 - (void)forwardInvocationForRealObject:(NSInvocation *)anInvocation;
@@ -121,7 +121,7 @@ static NSMutableDictionary *mockTable;
 	OCPartialMockObject *mock = [OCPartialMockObject existingPartialMockForObject:self];
 	if([mock handleInvocation:anInvocation] == NO)
 		[NSException raise:NSInternalInconsistencyException format:@"Ended up in subclass forwarder for %@ with unstubbed method %@",
-		 [self class], NSStringFromSelector([anInvocation selector])];
+		 [self class], [anInvocation invocationDescription]];
 }
 
 
