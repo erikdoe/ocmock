@@ -64,6 +64,11 @@
 	return [self _makeNice:[self mockForProtocol:aProtocol]];
 }
 
++ (id)niceMockForClassObject:(Class)aClass;
+{
+    return [self _makeNice:[[[OCMockClassObject alloc] initWithClass:aClass] autorelease]];
+}
+
 
 + (id)_makeNice:(OCMockObject *)mock
 {
