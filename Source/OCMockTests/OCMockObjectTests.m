@@ -667,6 +667,19 @@ static NSString *TestNotification = @"TestNotification";
 	STAssertThrows([mock verify], @"Should have raised an exception because method was not called.");
 }
 
+- (void)testReturnDefaultValueWhenUnknownMethodIsCalledOnClassObjectMock
+{
+	mock = [OCMockObject niceMockForClassObject:[NSString class]];
+	STAssertNil([mock string], @"Should return nil on unexpected method call (for nice mock).");	
+	[mock verify];
+}
+
+- (void)testRaisesAnExceptionWenAnExpectedMethodIsNotCalledOnNiceClassObjectMock
+{
+	mock = [OCMockObject niceMockForClassObject:[NSString class]];	
+	[[mock expect] string];
+	STAssertThrows([mock verify], @"Should have raised an exception because method was not called.");
+}
 
 // --------------------------------------------------------------------------------------
 //	partial mocks forward unknown methods to a real instance
