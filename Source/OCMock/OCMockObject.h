@@ -22,6 +22,7 @@
 
 + (id)niceMockForClass:(Class)aClass;
 + (id)niceMockForProtocol:(Protocol *)aProtocol;
++ (id)niceMockForClassObject:(Class)aClass;
 
 + (id)observerMock;
 

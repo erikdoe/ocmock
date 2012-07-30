@@ -42,22 +42,6 @@
 @end
 
 
-@interface TestClassWithClassMethod : NSObject
-
-+ (NSString *)method1;
-
-@end
-
-@implementation TestClassWithClassMethod
-
-+ (NSString *)method1
-{
-    return @"Foo";
-}
-
-@end
-
-
 @interface TestObserver	: NSObject
 {
 	@public
@@ -683,6 +667,19 @@ static NSString *TestNotification = @"TestNotification";
 	STAssertThrows([mock verify], @"Should have raised an exception because method was not called.");
 }
 
+- (void)testReturnDefaultValueWhenUnknownMethodIsCalledOnClassObjectMock
+{
+	mock = [OCMockObject niceMockForClassObject:[NSString class]];
+	STAssertNil([mock string], @"Should return nil on unexpected method call (for nice mock).");	
+	[mock verify];
+}
+
+- (void)testRaisesAnExceptionWenAnExpectedMethodIsNotCalledOnNiceClassObjectMock
+{
+	mock = [OCMockObject niceMockForClassObject:[NSString class]];	
+	[[mock expect] string];
+	STAssertThrows([mock verify], @"Should have raised an exception because method was not called.");
+}
 
 // --------------------------------------------------------------------------------------
 //	partial mocks forward unknown methods to a real instance
@@ -770,27 +767,6 @@ static NSString *TestNotification = @"TestNotification";
 	[[[mock stub] andCall:@selector(aMethodWithVoidReturn) onObject:self] method1];
 	STAssertNoThrow([foo method1], @"Should have worked.");
 }
-
-
-// --------------------------------------------------------------------------------------
-//	class object mocks allow stubbing/expecting on class objects
-// --------------------------------------------------------------------------------------
-
-- (void)testStubsMethodOnClassObject
-{
-    mock = [OCMockObject mockForClassObject:[TestClassWithClassMethod class]];
-    
-	[[[mock stub] andReturn:@"TestFoo"] method1];
-	STAssertEqualObjects(@"TestFoo", [TestClassWithClassMethod method1], @"Should have stubbed method.");
-}
-
-//- (void)testForwardsUnstubbedMethodsToRealClassObjectAfterStopIsCalled
-//{
-//    mock = [OCMockObject mockForClassObject:[TestClassWithClassMethod class]];
-//	[[[mock stub] andReturn:@"TestFoo"] method1];
-//    [mock stopMocking];
-//	STAssertEqualObjects(@"Foo", [TestClassWithClassMethod method1], @"Should not have stubbed method.");
-//}
 
 
 // --------------------------------------------------------------------------------------
