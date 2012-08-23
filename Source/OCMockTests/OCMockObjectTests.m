@@ -725,6 +725,15 @@ static NSString *TestNotification = @"TestNotification";
 	STAssertEqualObjects(@"TestFoo", [realObject method1], @"Should have stubbed method.");
 }
 
+- (void)testReturnsToRealImplementationWhenExpectedCallOccurred
+{
+    TestClassThatCallsSelf *realObject = [[[TestClassThatCallsSelf alloc] init] autorelease];
+   	mock = [OCMockObject partialMockForObject:realObject];
+   	[[[mock expect] andReturn:@"TestFoo"] method2];
+   	STAssertEqualObjects(@"TestFoo", [realObject method2], @"Should have stubbed method.");
+   	STAssertEqualObjects(@"Foo", [realObject method2], @"Should have 'unstubbed' method.");
+}
+
 - (void)testRestoresObjectWhenStopped
 {
 	TestClassThatCallsSelf *realObject = [[[TestClassThatCallsSelf alloc] init] autorelease];
@@ -734,7 +743,6 @@ static NSString *TestNotification = @"TestNotification";
 	[mock stopMocking];
 	STAssertEqualObjects(@"Foo", [realObject method2], @"Should have 'unstubbed' method.");
 }
-
 
 - (void)testCallsToSelfInRealObjectAreShadowedByPartialMock
 {
