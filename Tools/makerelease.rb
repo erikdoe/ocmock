@@ -28,12 +28,12 @@ class ReleaseManager
 
     def buildModules
         @worker.chdir("#{@env.sourcedir}/Source")
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMock")         
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMock build SYMROOT=\"`pwd`/build\" OJBROOT=\"`pwd`/build\"")         
         osxproductdir = "#{@env.productdir}/OSX"                                        
         @worker.run("mkdir -p #{osxproductdir}")
         @worker.run("cp -R build/Release/OCMock.framework #{osxproductdir}")    
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphoneos5.0")                                                 
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphonesimulator5.0")                                                 
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphoneos5.1 build SYMROOT=\"`pwd`/build\" OJBROOT=\"`pwd`/build\"")
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphonesimulator5.1 build SYMROOT=\"`pwd`/build\" OJBROOT=\"`pwd`/build\"")
         @worker.run("lipo -create -output build/Release/libOCMock.a build/Release-*/libOCMock.a")      
         iosproductdir = "#{@env.productdir}/iOS"                                           
         @worker.run("mkdir -p #{iosproductdir}")
