@@ -16,4 +16,7 @@
 
 - (BOOL)argument:(id)expectedArg matchesArgument:(id)observedArg;
 
+@property (copy, nonatomic) NSString *file;
+@property (nonatomic) int line;
+
 @end

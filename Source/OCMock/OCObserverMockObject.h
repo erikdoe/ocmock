@@ -5,15 +5,20 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol OCMFailureHandler;
+
 @interface OCObserverMockObject : NSObject 
 {
+	id <OCMFailureHandler> failureHandler;
+	
 	BOOL			expectationOrderMatters;
 	NSMutableArray	*recorders;
 }
 
 - (void)setExpectationOrderMatters:(BOOL)flag;
+- (void)setFailureHandler:(id <OCMFailureHandler>)handler; // handler is retained
 
-- (id)expect;
+- (id)expectInFile:(NSString *)filename atLine:(int)lineNumber;
 
 - (void)verify;
 

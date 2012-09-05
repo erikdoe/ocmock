@@ -24,6 +24,7 @@
 
 
 @implementation OCMockRecorder
+@synthesize file, line;
 
 #pragma mark  Initialisers, description, accessors, etc.
 

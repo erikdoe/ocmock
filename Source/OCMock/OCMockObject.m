@@ -11,6 +11,8 @@
 #import "OCObserverMockObject.h"
 #import <OCMock/OCMockRecorder.h>
 #import "NSInvocation+OCMAdditions.h"
+#import "NSException+OCMAdditions.h"
+#import <OCMock/OCMFailureHandler.h>
 
 @interface OCMockObject(Private)
 + (id)_makeNice:(OCMockObject *)mock;
@@ -84,6 +86,7 @@
 - (id)init
 {
 	// no [super init], we're inheriting from NSProxy
+	failureHandler = nil;
 	expectationOrderMatters = NO;
 	recorders = [[NSMutableArray alloc] init];
 	expectations = [[NSMutableArray alloc] init];
@@ -94,6 +97,7 @@
 
 - (void)dealloc
 {
+	[failureHandler release];
 	[recorders release];
 	[expectations release];
 	[rejections	release];
@@ -113,27 +117,36 @@
 }
 
 
+- (void)setFailureHandler:(id<OCMFailureHandler>)handler {
+	if(handler != failureHandler)
+	{
+		[failureHandler release];
+		failureHandler = [handler retain];
+	}
+}
+
+
 #pragma mark  Public API
 
-- (id)stub
+- (id)stubInFile:(NSString *)filename atLine:(int)lineNumber
 {
-	OCMockRecorder *recorder = [self getNewRecorder];
+	OCMockRecorder *recorder = [self getNewRecorderInFile:filename atLine:lineNumber];
 	[recorders addObject:recorder];
 	return recorder;
 }
 
 
-- (id)expect
+- (id)expectInFile:(NSString *)filename atLine:(int)lineNumber
 {
-	OCMockRecorder *recorder = [self stub];
+	OCMockRecorder *recorder = [self stubInFile:filename atLine:lineNumber];
 	[expectations addObject:recorder];
 	return recorder;
 }
 
 
-- (id)reject
+- (id)rejectInFile:(NSString *)filename atLine:(int)lineNumber
 {
-	OCMockRecorder *recorder = [self stub];
+	OCMockRecorder *recorder = [self stubInFile:filename atLine:lineNumber];
 	[rejections addObject:recorder];
 	return recorder;
 }
@@ -141,20 +154,35 @@
 
 - (void)verify
 {
-	if([expectations count] == 1)
+	if(failureHandler)
 	{
-		[NSException raise:NSInternalInconsistencyException format:@"%@: expected method was not invoked: %@", 
-			[self description], [[expectations objectAtIndex:0] description]];
+		for(OCMockRecorder *expectation in expectations)
+		{
+			[failureHandler failWithException:[NSException failureInMockRecorder:expectation withDescription:@"%@: expected method was not invoked: %@",
+			[self description], [expectation description]]];
+		}
+		for(NSException *exception in exceptions)
+		{
+			[failureHandler failWithException:exception];
+		}
 	}
-	if([expectations count] > 0)
+	else
 	{
-		[NSException raise:NSInternalInconsistencyException format:@"%@ : %d expected methods were not invoked: %@", 
-			[self description], [expectations count], [self _recorderDescriptions:YES]];
-	}
-	if([exceptions count] > 0)
-	{
-		[[exceptions objectAtIndex:0] raise];
-	}
+		if([expectations count] == 1)
+		{
+			[NSException raise:NSInternalInconsistencyException format:@"%@: expected method was not invoked: %@",
+				[self description], [[expectations objectAtIndex:0] description]];
+		}
+		if([expectations count] > 0)
+		{
+			[NSException raise:NSInternalInconsistencyException format:@"%@ : %d expected methods were not invoked: %@",
+				[self description], [expectations count], [self _recorderDescriptions:YES]];
+		}
+		if([exceptions count] > 0)
+		{
+			[[exceptions objectAtIndex:0] raise];
+		}
+    }
 }
 
 - (void)stopMocking
@@ -188,9 +216,19 @@
 	
 	if([rejections containsObject:recorder]) 
 	{
-		NSException *exception = [NSException exceptionWithName:NSInternalInconsistencyException reason:
-								  [NSString stringWithFormat:@"%@: explicitly disallowed method invoked: %@", [self description], 
-								   [anInvocation invocationDescription]] userInfo:nil];
+		NSException *exception;
+		if(!failureHandler)
+		{
+			exception = [NSException exceptionWithName:NSInternalInconsistencyException reason:
+									  [NSString stringWithFormat:@"%@: explicitly disallowed method invoked: %@", [self description], 
+									   [anInvocation invocationDescription]] userInfo:nil];
+		}
+		else
+		{
+			exception = [NSException failureInMockRecorder:recorder withDescription:
+                                  [NSString stringWithFormat:@"%@: explicitly disallowed method invoked: %@", [self description],
+								   [anInvocation invocationDescription]]];
+		}
 		[exceptions addObject:exception];
 		[exception raise];
 	}
@@ -199,9 +237,16 @@
 	{
 		if(expectationOrderMatters && ([expectations objectAtIndex:0] != recorder))
 		{
-			[NSException raise:NSInternalInconsistencyException	format:@"%@: unexpected method invoked: %@\n\texpected:\t%@",  
-			 [self description], [recorder description], [[expectations objectAtIndex:0] description]];
-			
+			if(!failureHandler)
+			{
+				[NSException raise:NSInternalInconsistencyException	format:@"%@: unexpected method invoked: %@\n\texpected:\t%@",  
+				 [self description], [recorder description], [[expectations objectAtIndex:0] description]];
+			}
+			else
+			{
+				[failureHandler failWithException:[NSException failureInMockRecorder:recorder withDescription:@"%@: unexpected method invoked: %@\n\texpected:\t%@",
+				 [self description], [recorder description], [[expectations objectAtIndex:0] description]]];
+			}
 		}
 		[[recorder retain] autorelease];
 		[expectations removeObject:recorder];
@@ -230,6 +275,14 @@
 - (id)getNewRecorder
 {
 	return [[[OCMockRecorder alloc] initWithSignatureResolver:self] autorelease];
+}
+
+- (id)getNewRecorderInFile:(NSString *)filename atLine:(int)lineNumber
+{
+    OCMockRecorder *recorder = [self getNewRecorder];
+    recorder.file = [filename copy];
+    recorder.line = lineNumber;
+	return recorder;
 }
 
 
