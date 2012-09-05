@@ -121,6 +121,20 @@
 		03E6F05F152FA8E20079EAF7 /* OCClassMockRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 03E6F05C152FA8E20079EAF7 /* OCClassMockRecorder.h */; };
 		03E6F060152FA8E20079EAF7 /* OCClassMockRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E6F05D152FA8E20079EAF7 /* OCClassMockRecorder.m */; };
 		03E6F061152FA8E20079EAF7 /* OCClassMockRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E6F05D152FA8E20079EAF7 /* OCClassMockRecorder.m */; };
+		61B7578615F62E3600320647 /* NSException+OCMAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 61B7578415F62E3600320647 /* NSException+OCMAdditions.h */; };
+		61B7578715F62E3600320647 /* NSException+OCMAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 61B7578515F62E3600320647 /* NSException+OCMAdditions.m */; };
+		61B7578815F63B6800320647 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 030EF0C114632FD000B04273 /* SenTestingKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		61B7578915F63D7400320647 /* OCMockMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 61B7578215F628C200320647 /* OCMockMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		61B7578B15F6439000320647 /* OCMFailureHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 61B7578A15F6433E00320647 /* OCMFailureHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		61B7578C15F6439C00320647 /* OCMockMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 61B7578215F628C200320647 /* OCMockMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		61B7578D15F6439F00320647 /* OCMFailureHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 61B7578A15F6433E00320647 /* OCMFailureHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		61B7578E15F64AF100320647 /* NSException+OCMAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 61B7578515F62E3600320647 /* NSException+OCMAdditions.m */; };
+		61B7578F15F64AFE00320647 /* NSException+OCMAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 61B7578415F62E3600320647 /* NSException+OCMAdditions.h */; };
+		61B7579015F64B2100320647 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 030EF0C114632FD000B04273 /* SenTestingKit.framework */; };
+		61B7579715F76DDC00320647 /* NSObject+OCMFailureHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 61B7579515F76DDC00320647 /* NSObject+OCMFailureHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		61B7579815F76DDC00320647 /* NSObject+OCMFailureHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 61B7579515F76DDC00320647 /* NSObject+OCMFailureHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		61B7579915F76DDC00320647 /* NSObject+OCMFailureHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 61B7579615F76DDC00320647 /* NSObject+OCMFailureHandler.m */; };
+		61B7579A15F76DDC00320647 /* NSObject+OCMFailureHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 61B7579615F76DDC00320647 /* NSObject+OCMFailureHandler.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -208,6 +222,12 @@
 		03E6F057152FA60B0079EAF7 /* OCMockClassObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMockClassObject.m; sourceTree = "<group>"; };
 		03E6F05C152FA8E20079EAF7 /* OCClassMockRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCClassMockRecorder.h; sourceTree = "<group>"; };
 		03E6F05D152FA8E20079EAF7 /* OCClassMockRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCClassMockRecorder.m; sourceTree = "<group>"; };
+		61B7578215F628C200320647 /* OCMockMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OCMockMacros.h; sourceTree = "<group>"; };
+		61B7578415F62E3600320647 /* NSException+OCMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSException+OCMAdditions.h"; sourceTree = "<group>"; };
+		61B7578515F62E3600320647 /* NSException+OCMAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSException+OCMAdditions.m"; sourceTree = "<group>"; };
+		61B7578A15F6433E00320647 /* OCMFailureHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OCMFailureHandler.h; sourceTree = "<group>"; };
+		61B7579515F76DDC00320647 /* NSObject+OCMFailureHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+OCMFailureHandler.h"; sourceTree = "<group>"; };
+		61B7579615F76DDC00320647 /* NSObject+OCMFailureHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+OCMFailureHandler.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -215,6 +235,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				61B7578815F63B6800320647 /* SenTestingKit.framework in Frameworks */,
 				033E1FF414FEF5E0004456B0 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -234,6 +255,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				61B7579015F64B2100320647 /* SenTestingKit.framework in Frameworks */,
 				033E1FF714FEF60C004456B0 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -252,6 +274,7 @@
 				030EF0A914632FD000B04273 /* Products */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 1;
 		};
 		030EF0A914632FD000B04273 /* Products */ = {
 			isa = PBXGroup;
@@ -277,6 +300,7 @@
 			isa = PBXGroup;
 			children = (
 				030EF0B814632FD000B04273 /* OCMock.h */,
+				61B7578215F628C200320647 /* OCMockMacros.h */,
 				03B315841463334E0052CD09 /* Core Mocks */,
 				03B3161C1463348F0052CD09 /* Partial Mocks */,
 				03E6F054152FA5DC0079EAF7 /* Class Object Mocks */,
@@ -365,6 +389,7 @@
 		03B315841463334E0052CD09 /* Core Mocks */ = {
 			isa = PBXGroup;
 			children = (
+				61B7578A15F6433E00320647 /* OCMFailureHandler.h */,
 				03B3159D146333BF0052CD09 /* OCMockObject.h */,
 				03B3159E146333BF0052CD09 /* OCMockObject.m */,
 				03B3158B146333BF0052CD09 /* OCClassMockObject.h */,
@@ -387,6 +412,10 @@
 				03B31588146333BF0052CD09 /* NSMethodSignature+OCMAdditions.m */,
 				03B31589146333BF0052CD09 /* NSNotificationCenter+OCMAdditions.h */,
 				03B3158A146333BF0052CD09 /* NSNotificationCenter+OCMAdditions.m */,
+				61B7578415F62E3600320647 /* NSException+OCMAdditions.h */,
+				61B7578515F62E3600320647 /* NSException+OCMAdditions.m */,
+				61B7579515F76DDC00320647 /* NSObject+OCMFailureHandler.h */,
+				61B7579615F76DDC00320647 /* NSObject+OCMFailureHandler.m */,
 			);
 			name = "Foundation Additions";
 			sourceTree = "<group>";
@@ -474,6 +503,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				03B3168B14633A4F0052CD09 /* OCMock.h in Headers */,
+				61B7578915F63D7400320647 /* OCMockMacros.h in Headers */,
+				61B7578B15F6439000320647 /* OCMFailureHandler.h in Headers */,
 				03B315EB146333C00052CD09 /* OCMockObject.h in Headers */,
 				03B315F0146333C00052CD09 /* OCMockRecorder.h in Headers */,
 				03B315C3146333BF0052CD09 /* OCMArg.h in Headers */,
@@ -497,6 +528,8 @@
 				03B31613146333C00052CD09 /* OCProtocolMockObject.h in Headers */,
 				03E6F058152FA60B0079EAF7 /* OCMockClassObject.h in Headers */,
 				03E6F05E152FA8E20079EAF7 /* OCClassMockRecorder.h in Headers */,
+				61B7578615F62E3600320647 /* NSException+OCMAdditions.h in Headers */,
+				61B7579715F76DDC00320647 /* NSObject+OCMFailureHandler.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -505,6 +538,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				03B3168E14633D9C0052CD09 /* OCMock.h in Headers */,
+				61B7578C15F6439C00320647 /* OCMockMacros.h in Headers */,
+				61B7578D15F6439F00320647 /* OCMFailureHandler.h in Headers */,
 				03B315EC146333C00052CD09 /* OCMockObject.h in Headers */,
 				03B315F1146333C00052CD09 /* OCMockRecorder.h in Headers */,
 				03B315C4146333BF0052CD09 /* OCMArg.h in Headers */,
@@ -512,6 +547,7 @@
 				03B315BA146333BF0052CD09 /* NSNotificationCenter+OCMAdditions.h in Headers */,
 				03B315B0146333BF0052CD09 /* NSInvocation+OCMAdditions.h in Headers */,
 				03B315B5146333BF0052CD09 /* NSMethodSignature+OCMAdditions.h in Headers */,
+				61B7578F15F64AFE00320647 /* NSException+OCMAdditions.h in Headers */,
 				03B315BF146333BF0052CD09 /* OCClassMockObject.h in Headers */,
 				03B315C9146333BF0052CD09 /* OCMBlockCaller.h in Headers */,
 				03B315CE146333BF0052CD09 /* OCMBoxedReturnValueProvider.h in Headers */,
@@ -534,6 +570,7 @@
 				03B316441463350E0052CD09 /* OCObserverMockObjectTests.h in Headers */,
 				03E6F059152FA60B0079EAF7 /* OCMockClassObject.h in Headers */,
 				03E6F05F152FA8E20079EAF7 /* OCClassMockRecorder.h in Headers */,
+				61B7579815F76DDC00320647 /* NSObject+OCMFailureHandler.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -699,6 +736,8 @@
 				03B31615146333C00052CD09 /* OCProtocolMockObject.m in Sources */,
 				03E6F05A152FA60B0079EAF7 /* OCMockClassObject.m in Sources */,
 				03E6F060152FA8E20079EAF7 /* OCClassMockRecorder.m in Sources */,
+				61B7578715F62E3600320647 /* NSException+OCMAdditions.m in Sources */,
+				61B7579915F76DDC00320647 /* NSObject+OCMFailureHandler.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -722,6 +761,7 @@
 				03B315B3146333BF0052CD09 /* NSInvocation+OCMAdditions.m in Sources */,
 				03B315B8146333BF0052CD09 /* NSMethodSignature+OCMAdditions.m in Sources */,
 				03B315BD146333BF0052CD09 /* NSNotificationCenter+OCMAdditions.m in Sources */,
+				61B7578E15F64AF100320647 /* NSException+OCMAdditions.m in Sources */,
 				03B315C2146333BF0052CD09 /* OCClassMockObject.m in Sources */,
 				03B315C7146333BF0052CD09 /* OCMArg.m in Sources */,
 				03B315CC146333BF0052CD09 /* OCMBlockCaller.m in Sources */,
@@ -742,6 +782,7 @@
 				03B31617146333C00052CD09 /* OCProtocolMockObject.m in Sources */,
 				03E6F05B152FA60B0079EAF7 /* OCMockClassObject.m in Sources */,
 				03E6F061152FA8E20079EAF7 /* OCClassMockRecorder.m in Sources */,
+				61B7579A15F76DDC00320647 /* NSObject+OCMFailureHandler.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -827,6 +868,10 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OCMock/OCMock-Prefix.pch";
@@ -847,6 +892,10 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OCMock/OCMock-Prefix.pch";
@@ -897,7 +946,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"${TARGET_BUILD_DIR}/Frameworks",
+					"\"${TARGET_BUILD_DIR}/Frameworks\"",
 					"\"$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Versions/C\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -910,6 +959,10 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				DSTROOT = /tmp/OCMockLib.dst;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OCMockLib/OCMockLib-Prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
@@ -931,6 +984,10 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				DSTROOT = /tmp/OCMockLib.dst;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OCMockLib/OCMockLib-Prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;

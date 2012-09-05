@@ -5,8 +5,12 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol OCMFailureHandler;
+
 @interface OCMockObject : NSProxy
 {
+	id <OCMFailureHandler> failureHandler;
+	
 	BOOL			isNice;
 	BOOL			expectationOrderMatters;
 	NSMutableArray	*recorders;
@@ -28,10 +32,11 @@
 - (id)init;
 
 - (void)setExpectationOrderMatters:(BOOL)flag;
+- (void)setFailureHandler:(id <OCMFailureHandler>)handler; // handler is retained
 
-- (id)stub;
-- (id)expect;
-- (id)reject;
+- (id)stubInFile:(NSString *)filename atLine:(int)lineNumber;
+- (id)expectInFile:(NSString *)filename atLine:(int)lineNumber;
+- (id)rejectInFile:(NSString *)filename atLine:(int)lineNumber;
 
 - (void)verify;
 
@@ -40,6 +45,7 @@
 // internal use only
 
 - (id)getNewRecorder;
+- (id)getNewRecorderInFile:(NSString *)filename atLine:(int)lineNumber;
 - (BOOL)handleInvocation:(NSInvocation *)anInvocation;
 - (void)handleUnRecordedInvocation:(NSInvocation *)anInvocation;
 

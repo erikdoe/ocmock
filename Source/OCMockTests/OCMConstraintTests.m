@@ -19,8 +19,8 @@
 	OCMConstraint *constraint = [OCMAnyConstraint constraint];
 	
 	STAssertTrue([constraint evaluate:@"foo"], @"Should have accepted a value.");
-	STAssertTrue([constraint evaluate:@"foo"], @"Should have accepted another value.");
-	STAssertTrue([constraint evaluate:@"foo"], @"Should have accepted nil.");	
+	STAssertTrue([constraint evaluate:@"bar"], @"Should have accepted another value.");
+	STAssertTrue([constraint evaluate:nil], @"Should have accepted nil.");	
 }
 
 - (void)testIsNilAcceptsOnlyNil

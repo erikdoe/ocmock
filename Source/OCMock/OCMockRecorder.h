@@ -27,6 +27,9 @@
 #endif
 - (id)andForwardToRealObject;
 
+@property (copy, nonatomic) NSString *file;
+@property (nonatomic) int line;
+
 - (NSArray *)invocationHandlers;
 
 @end
