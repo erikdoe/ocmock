@@ -179,17 +179,15 @@ static NSString *TestNotification = @"TestNotification";
 - (void)testAcceptsStubbedMethodWithPointerArgument
 {
 	NSError *error;
-	BOOL yes = YES;
-	[[[mock stub] andReturnValue:OCMOCK_VALUE(yes)] writeToFile:OCMOCK_ANY atomically:YES encoding:NSMacOSRomanStringEncoding error:&error];
+	[[[mock stub] andReturnValue:OCMOCK_VALUE((BOOL){YES})] writeToFile:OCMOCK_ANY atomically:YES encoding:NSMacOSRomanStringEncoding error:&error];
 	
 	STAssertTrue([mock writeToFile:@"foo" atomically:YES encoding:NSMacOSRomanStringEncoding error:&error], nil);
 }
 
 - (void)testAcceptsStubbedMethodWithAnyPointerArgument
 {
-	BOOL yes = YES;
 	NSError *error;
-	[[[mock stub] andReturnValue:OCMOCK_VALUE(yes)] writeToFile:OCMOCK_ANY atomically:YES encoding:NSMacOSRomanStringEncoding error:[OCMArg anyPointer]];
+	[[[mock stub] andReturnValue:OCMOCK_VALUE((BOOL){YES})] writeToFile:OCMOCK_ANY atomically:YES encoding:NSMacOSRomanStringEncoding error:[OCMArg anyPointer]];
 	
 	STAssertTrue([mock writeToFile:@"foo" atomically:YES encoding:NSMacOSRomanStringEncoding error:&error], nil);
 }
@@ -725,6 +723,15 @@ static NSString *TestNotification = @"TestNotification";
 	STAssertEqualObjects(@"TestFoo", [realObject method1], @"Should have stubbed method.");
 }
 
+- (void)testReturnsToRealImplementationWhenExpectedCallOccurred
+{
+    TestClassThatCallsSelf *realObject = [[[TestClassThatCallsSelf alloc] init] autorelease];
+   	mock = [OCMockObject partialMockForObject:realObject];
+   	[[[mock expect] andReturn:@"TestFoo"] method2];
+   	STAssertEqualObjects(@"TestFoo", [realObject method2], @"Should have stubbed method.");
+   	STAssertEqualObjects(@"Foo", [realObject method2], @"Should have 'unstubbed' method.");
+}
+
 - (void)testRestoresObjectWhenStopped
 {
 	TestClassThatCallsSelf *realObject = [[[TestClassThatCallsSelf alloc] init] autorelease];
@@ -734,7 +741,6 @@ static NSString *TestNotification = @"TestNotification";
 	[mock stopMocking];
 	STAssertEqualObjects(@"Foo", [realObject method2], @"Should have 'unstubbed' method.");
 }
-
 
 - (void)testCallsToSelfInRealObjectAreShadowedByPartialMock
 {
