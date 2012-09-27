@@ -23,6 +23,7 @@
 		0395296C15043C7A00D25639 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0395296A15043C7A00D25639 /* InfoPlist.strings */; };
 		0395296F15043C7A00D25639 /* iOS5ExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0395296E15043C7A00D25639 /* iOS5ExampleTests.m */; };
 		0395297915043CF000D25639 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0395297815043CF000D25639 /* libOCMock.a */; };
+		03FA415E1614FCFD00F9324F /* ProtocolTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FA415D1614FCFD00F9324F /* ProtocolTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,8 @@
 		0395296D15043C7A00D25639 /* iOS5ExampleTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iOS5ExampleTests.h; sourceTree = "<group>"; };
 		0395296E15043C7A00D25639 /* iOS5ExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iOS5ExampleTests.m; sourceTree = "<group>"; };
 		0395297815043CF000D25639 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOCMock.a; path = usr/lib/libOCMock.a; sourceTree = "<group>"; };
+		03FA415C1614FCFD00F9324F /* ProtocolTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProtocolTests.h; sourceTree = "<group>"; };
+		03FA415D1614FCFD00F9324F /* ProtocolTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProtocolTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +152,8 @@
 			children = (
 				0395296D15043C7A00D25639 /* iOS5ExampleTests.h */,
 				0395296E15043C7A00D25639 /* iOS5ExampleTests.m */,
+				03FA415C1614FCFD00F9324F /* ProtocolTests.h */,
+				03FA415D1614FCFD00F9324F /* ProtocolTests.m */,
 				0395296815043C7A00D25639 /* Supporting Files */,
 			);
 			path = iOS5ExampleTests;
@@ -291,6 +296,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0395296F15043C7A00D25639 /* iOS5ExampleTests.m in Sources */,
+				03FA415E1614FCFD00F9324F /* ProtocolTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -482,6 +488,7 @@
 				0395297415043C7A00D25639 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0395297515043C7A00D25639 /* Build configuration list for PBXNativeTarget "iOS5ExampleTests" */ = {
 			isa = XCConfigurationList;
@@ -490,6 +497,7 @@
 				0395297715043C7A00D25639 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
