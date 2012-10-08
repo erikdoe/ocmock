@@ -7,6 +7,8 @@
 #import <OCMock/OCMockRecorder.h>
 #import <OCMock/OCMArg.h>
 #import <OCMock/OCMConstraint.h>
+#import <OCMock/OCChainTampolineProxy.h>
+#import <OCMock/OCMockObject.h>
 #import "OCMPassByRefSetter.h"
 #import "OCMReturnValueProvider.h"
 #import "OCMBoxedReturnValueProvider.h"
@@ -22,8 +24,12 @@
 
 #pragma mark  -
 
+@interface OCMockRecorder ()
+@property (retain) NSArray *invocationHandlers;
+@end
 
 @implementation OCMockRecorder
+@synthesize invocationHandlers;
 
 #pragma mark  Initialisers, description, accessors, etc.
 
@@ -102,6 +108,13 @@
 	return self; // keep compiler happy
 }
 
+- (void)setInvocationHandlers:(NSArray *)invocationHandlersNew
+{
+    [invocationHandlersNew retain];
+    [invocationHandlers release];
+    invocationHandlers = [[NSMutableArray alloc] initWithArray:invocationHandlersNew];
+    [invocationHandlersNew release];
+}
 
 - (NSArray *)invocationHandlers
 {
@@ -125,7 +138,73 @@
 	recordedInvocation = [anInvocation retain];
 }
 
+#pragma mark
 
+- (id)chainedPropertyWithPath:(NSString*)keyPath terminalObjectClass:(Class) klass
+{
+    if (keyPath.length) {
+        static NSString *const pathSeparator = @".";
+        
+        NSMutableArray *components  = [NSMutableArray arrayWithArray:[keyPath componentsSeparatedByString:pathSeparator]];
+        NSMutableArray *stack = [NSMutableArray arrayWithCapacity:components.count];
+        
+        // last path component is the "real" expectation
+        NSString *lastPath = components.lastObject;
+        [components removeLastObject];
+        
+        id mock = nil;
+        NSString *path = nil;
+        
+        for (NSUInteger i = components.count; i --> 0; ) {
+            
+            path = [components objectAtIndex:i];
+            
+            // Last object in chain - real mock returns actual value
+            if (i == components.count - 1) {
+                id realMock = [OCMockObject mockForClass:klass];
+                
+                // return value
+                OCMockRecorder *recorder = [realMock stub];
+                recorder.invocationHandlers = [invocationHandlers retain];
+                self.invocationHandlers = nil;
+                
+                // invocation for the mock
+                SEL sel = NSSelectorFromString(lastPath);
+                NSMethodSignature *sig = [klass instanceMethodSignatureForSelector:sel];
+                NSInvocation *inv = [NSInvocation invocationWithMethodSignature:sig];
+                inv.selector = sel;
+                [recorder forwardInvocation:inv];
+                
+                // now need a placeholder to return this...
+                mock = [OCChainTampolineProxy placeholderReturningObject:realMock
+                                                             forSelector:NSSelectorFromString(path)];
+            }
+            else if (i > 0) {
+                // Mid in chain = placeholder object
+                mock = [OCChainTampolineProxy placeholderReturningObject:[stack lastObject]
+                                                             forSelector:NSSelectorFromString(path)];
+            } else {
+                // First in chain
+                mock = [stack lastObject];
+            }
+            
+            [stack addObject:mock];
+        }
+        
+        // self returns the last mock for the last path
+        invocationHandlers = [[NSMutableArray alloc] init];
+        [self andReturn:mock];
+        
+        // the recorded invocation
+        SEL sel = NSSelectorFromString(path);
+        NSMethodSignature *sig = [signatureResolver methodSignatureForSelector:sel];
+        NSInvocation *inv = [NSInvocation invocationWithMethodSignature:sig];
+        inv.selector = sel;
+        [self forwardInvocation:inv];
+    }
+    
+    return self;
+}
 
 #pragma mark  Checking the invocation
 

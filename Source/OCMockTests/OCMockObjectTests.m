@@ -833,6 +833,19 @@ static NSString *TestNotification = @"TestNotification";
 	STAssertNoThrow([myMock aSpecialMethod:"foo"], @"Should not complain about method with type qualifiers.");
 }
 
+// --------------------------------------------------------------------------------------
+//  Property chain trampolining
+// --------------------------------------------------------------------------------------
+
+- (void)testValueWithStubbedPropertyChain
+{
+    mock = [OCMockObject mockForClass:[NSBundle class]];
+    NSUInteger length = 100;
+    [[[mock stub] andReturnValue:OCMOCK_VALUE(length)] chainedPropertyWithPath:@"bundleURL.absoluteString.length"
+                                                           terminalObjectClass:[NSString class]];
+    NSBundle *castedBundle = (NSBundle*) mock;
+    STAssertEquals(length, castedBundle.bundleURL.absoluteString.length, @"Didn't return the stubbed value");
+}
 
 // --------------------------------------------------------------------------------------
 //  some internal tests

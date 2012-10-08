@@ -121,6 +121,11 @@
 		03E6F05F152FA8E20079EAF7 /* OCClassMockRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 03E6F05C152FA8E20079EAF7 /* OCClassMockRecorder.h */; };
 		03E6F060152FA8E20079EAF7 /* OCClassMockRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E6F05D152FA8E20079EAF7 /* OCClassMockRecorder.m */; };
 		03E6F061152FA8E20079EAF7 /* OCClassMockRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E6F05D152FA8E20079EAF7 /* OCClassMockRecorder.m */; };
+		496731151612017700CC553A /* OCChainTampolineProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 496731131612017700CC553A /* OCChainTampolineProxy.h */; };
+		496731161612017700CC553A /* OCChainTampolineProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 496731131612017700CC553A /* OCChainTampolineProxy.h */; };
+		496731171612017700CC553A /* OCChainTampolineProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 496731141612017700CC553A /* OCChainTampolineProxy.m */; };
+		496731191612017700CC553A /* OCChainTampolineProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 496731141612017700CC553A /* OCChainTampolineProxy.m */; };
+		4967311D1612030100CC553A /* OCChainTampolineProxyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4967311C1612030100CC553A /* OCChainTampolineProxyTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -208,6 +213,10 @@
 		03E6F057152FA60B0079EAF7 /* OCMockClassObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMockClassObject.m; sourceTree = "<group>"; };
 		03E6F05C152FA8E20079EAF7 /* OCClassMockRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCClassMockRecorder.h; sourceTree = "<group>"; };
 		03E6F05D152FA8E20079EAF7 /* OCClassMockRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCClassMockRecorder.m; sourceTree = "<group>"; };
+		496731131612017700CC553A /* OCChainTampolineProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCChainTampolineProxy.h; sourceTree = "<group>"; };
+		496731141612017700CC553A /* OCChainTampolineProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCChainTampolineProxy.m; sourceTree = "<group>"; };
+		4967311B1612030100CC553A /* OCChainTampolineProxyTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCChainTampolineProxyTests.h; sourceTree = "<group>"; };
+		4967311C1612030100CC553A /* OCChainTampolineProxyTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCChainTampolineProxyTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -314,6 +323,8 @@
 				03B316291463350E0052CD09 /* OCObserverMockObjectTests.m */,
 				03B3161E1463350E0052CD09 /* NSInvocationOCMAdditionsTests.h */,
 				03B3161F1463350E0052CD09 /* NSInvocationOCMAdditionsTests.m */,
+				4967311B1612030100CC553A /* OCChainTampolineProxyTests.h */,
+				4967311C1612030100CC553A /* OCChainTampolineProxyTests.m */,
 				030EF0C814632FD000B04273 /* Supporting Files */,
 				030EF0AA14632FD000B04273 /* Frameworks */,
 			);
@@ -406,6 +417,8 @@
 				03B3159A146333BF0052CD09 /* OCMNotificationPoster.m */,
 				03B315A5146333BF0052CD09 /* OCMReturnValueProvider.h */,
 				03B315A6146333BF0052CD09 /* OCMReturnValueProvider.m */,
+				496731131612017700CC553A /* OCChainTampolineProxy.h */,
+				496731141612017700CC553A /* OCChainTampolineProxy.m */,
 			);
 			name = "Invocation Handler";
 			sourceTree = "<group>";
@@ -497,6 +510,7 @@
 				03B31613146333C00052CD09 /* OCProtocolMockObject.h in Headers */,
 				03E6F058152FA60B0079EAF7 /* OCMockClassObject.h in Headers */,
 				03E6F05E152FA8E20079EAF7 /* OCClassMockRecorder.h in Headers */,
+				496731151612017700CC553A /* OCChainTampolineProxy.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -534,6 +548,7 @@
 				03B316441463350E0052CD09 /* OCObserverMockObjectTests.h in Headers */,
 				03E6F059152FA60B0079EAF7 /* OCMockClassObject.h in Headers */,
 				03E6F05F152FA8E20079EAF7 /* OCClassMockRecorder.h in Headers */,
+				496731161612017700CC553A /* OCChainTampolineProxy.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -699,6 +714,7 @@
 				03B31615146333C00052CD09 /* OCProtocolMockObject.m in Sources */,
 				03E6F05A152FA60B0079EAF7 /* OCMockClassObject.m in Sources */,
 				03E6F060152FA8E20079EAF7 /* OCClassMockRecorder.m in Sources */,
+				496731171612017700CC553A /* OCChainTampolineProxy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -712,6 +728,7 @@
 				03B3163C1463350E0052CD09 /* OCMockObjectTests.m in Sources */,
 				03B316411463350E0052CD09 /* OCMockRecorderTests.m in Sources */,
 				03B316461463350E0052CD09 /* OCObserverMockObjectTests.m in Sources */,
+				4967311D1612030100CC553A /* OCChainTampolineProxyTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -742,6 +759,7 @@
 				03B31617146333C00052CD09 /* OCProtocolMockObject.m in Sources */,
 				03E6F05B152FA60B0079EAF7 /* OCMockClassObject.m in Sources */,
 				03E6F061152FA8E20079EAF7 /* OCClassMockRecorder.m in Sources */,
+				496731191612017700CC553A /* OCChainTampolineProxy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
