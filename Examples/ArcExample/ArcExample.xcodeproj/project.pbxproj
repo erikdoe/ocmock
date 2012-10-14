@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0351A22A152F65DA005B52FE /* OCMock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0351A229152F65DA005B52FE /* OCMock.framework */; };
 		035F7F1E14CDBBBC00D21121 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 035F7F1D14CDBBBC00D21121 /* Foundation.framework */; };
 		035F7F2114CDBBBC00D21121 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 035F7F2014CDBBBC00D21121 /* main.m */; };
 		035F7F2514CDBBBC00D21121 /* ArcExample.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 035F7F2414CDBBBC00D21121 /* ArcExample.1 */; };
-		035F7F2C14CDBCD700D21121 /* OCMock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 035F7F2B14CDBCD700D21121 /* OCMock.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -27,12 +27,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0351A229152F65DA005B52FE /* OCMock.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OCMock.framework; path = /Library/Frameworks/OCMock.framework; sourceTree = "<absolute>"; };
 		035F7F1914CDBBBC00D21121 /* ArcExample */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ArcExample; sourceTree = BUILT_PRODUCTS_DIR; };
 		035F7F1D14CDBBBC00D21121 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		035F7F2014CDBBBC00D21121 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		035F7F2314CDBBBC00D21121 /* ArcExample-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ArcExample-Prefix.pch"; sourceTree = "<group>"; };
 		035F7F2414CDBBBC00D21121 /* ArcExample.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = ArcExample.1; sourceTree = "<group>"; };
-		035F7F2B14CDBCD700D21121 /* OCMock.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OCMock.framework; path = ../../../../../../../Library/Frameworks/OCMock.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,7 +41,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				035F7F1E14CDBBBC00D21121 /* Foundation.framework in Frameworks */,
-				035F7F2C14CDBCD700D21121 /* OCMock.framework in Frameworks */,
+				0351A22A152F65DA005B52FE /* OCMock.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,7 +68,7 @@
 		035F7F1C14CDBBBC00D21121 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				035F7F2B14CDBCD700D21121 /* OCMock.framework */,
+				0351A229152F65DA005B52FE /* OCMock.framework */,
 				035F7F1D14CDBBBC00D21121 /* Foundation.framework */,
 			);
 			name = Frameworks;
@@ -118,7 +118,7 @@
 		035F7F1014CDBBBC00D21121 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0430;
 				ORGANIZATIONNAME = ThoughtWorks;
 			};
 			buildConfigurationList = 035F7F1314CDBBBC00D21121 /* Build configuration list for PBXProject "ArcExample" */;
@@ -154,7 +154,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_OBJCPP_ARC_ABI = YES;
 				COPY_PHASE_STRIP = NO;
@@ -182,7 +182,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_OBJCPP_ARC_ABI = YES;
 				COPY_PHASE_STRIP = YES;

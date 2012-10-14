@@ -20,6 +20,7 @@
 - (void)aSpecialMethod:(byref in void *)someArg;
 @end
 
+
 @interface TestClassThatCallsSelf : NSObject
 - (NSString *)method1;
 - (NSString *)method2;
@@ -39,6 +40,23 @@
 }
 
 @end
+
+
+@interface TestClassWithClassMethod : NSObject
+
++ (NSString *)method1;
+
+@end
+
+@implementation TestClassWithClassMethod
+
++ (NSString *)method1
+{
+    return @"Foo";
+}
+
+@end
+
 
 @interface TestObserver	: NSObject
 {
@@ -161,17 +179,15 @@ static NSString *TestNotification = @"TestNotification";
 - (void)testAcceptsStubbedMethodWithPointerArgument
 {
 	NSError *error;
-	BOOL yes = YES;
-	[[[mock stub] andReturnValue:OCMOCK_VALUE(yes)] writeToFile:OCMOCK_ANY atomically:YES encoding:NSMacOSRomanStringEncoding error:&error];
+	[[[mock stub] andReturnValue:OCMOCK_VALUE((BOOL){YES})] writeToFile:OCMOCK_ANY atomically:YES encoding:NSMacOSRomanStringEncoding error:&error];
 	
 	STAssertTrue([mock writeToFile:@"foo" atomically:YES encoding:NSMacOSRomanStringEncoding error:&error], nil);
 }
 
 - (void)testAcceptsStubbedMethodWithAnyPointerArgument
 {
-	BOOL yes = YES;
 	NSError *error;
-	[[[mock stub] andReturnValue:OCMOCK_VALUE(yes)] writeToFile:OCMOCK_ANY atomically:YES encoding:NSMacOSRomanStringEncoding error:[OCMArg anyPointer]];
+	[[[mock stub] andReturnValue:OCMOCK_VALUE((BOOL){YES})] writeToFile:OCMOCK_ANY atomically:YES encoding:NSMacOSRomanStringEncoding error:[OCMArg anyPointer]];
 	
 	STAssertTrue([mock writeToFile:@"foo" atomically:YES encoding:NSMacOSRomanStringEncoding error:&error], nil);
 }
@@ -596,6 +612,12 @@ static NSString *TestNotification = @"TestNotification";
 	[mock verify];
 }
 
+- (void)testSetsCorrectNameForProtocolMockObjects
+{
+	mock = [OCMockObject mockForProtocol:@protocol(NSLocking)];
+	STAssertEqualObjects(@"OCMockObject[NSLocking]", [mock description], @"Should have returned correct description.");
+}
+
 - (void)testRaisesWhenUnknownMethodIsCalledOnProtocol
 {
 	mock = [OCMockObject mockForProtocol:@protocol(NSLocking)];
@@ -701,16 +723,24 @@ static NSString *TestNotification = @"TestNotification";
 	STAssertEqualObjects(@"TestFoo", [realObject method1], @"Should have stubbed method.");
 }
 
+- (void)testReturnsToRealImplementationWhenExpectedCallOccurred
+{
+    TestClassThatCallsSelf *realObject = [[[TestClassThatCallsSelf alloc] init] autorelease];
+   	mock = [OCMockObject partialMockForObject:realObject];
+   	[[[mock expect] andReturn:@"TestFoo"] method2];
+   	STAssertEqualObjects(@"TestFoo", [realObject method2], @"Should have stubbed method.");
+   	STAssertEqualObjects(@"Foo", [realObject method2], @"Should have 'unstubbed' method.");
+}
+
 - (void)testRestoresObjectWhenStopped
 {
 	TestClassThatCallsSelf *realObject = [[[TestClassThatCallsSelf alloc] init] autorelease];
 	mock = [OCMockObject partialMockForObject:realObject];
 	[[[mock stub] andReturn:@"TestFoo"] method2];
 	STAssertEqualObjects(@"TestFoo", [realObject method2], @"Should have stubbed method.");
-	[mock stop];
+	[mock stopMocking];
 	STAssertEqualObjects(@"Foo", [realObject method2], @"Should have 'unstubbed' method.");
 }
-
 
 - (void)testCallsToSelfInRealObjectAreShadowedByPartialMock
 {
@@ -746,6 +776,27 @@ static NSString *TestNotification = @"TestNotification";
 	[[[mock stub] andCall:@selector(aMethodWithVoidReturn) onObject:self] method1];
 	STAssertNoThrow([foo method1], @"Should have worked.");
 }
+
+
+// --------------------------------------------------------------------------------------
+//	class object mocks allow stubbing/expecting on class objects
+// --------------------------------------------------------------------------------------
+
+- (void)testStubsMethodOnClassObject
+{
+    mock = [OCMockObject mockForClassObject:[TestClassWithClassMethod class]];
+    
+	[[[mock stub] andReturn:@"TestFoo"] method1];
+	STAssertEqualObjects(@"TestFoo", [TestClassWithClassMethod method1], @"Should have stubbed method.");
+}
+
+//- (void)testForwardsUnstubbedMethodsToRealClassObjectAfterStopIsCalled
+//{
+//    mock = [OCMockObject mockForClassObject:[TestClassWithClassMethod class]];
+//	[[[mock stub] andReturn:@"TestFoo"] method1];
+//    [mock stopMocking];
+//	STAssertEqualObjects(@"Foo", [TestClassWithClassMethod method1], @"Should not have stubbed method.");
+//}
 
 
 // --------------------------------------------------------------------------------------

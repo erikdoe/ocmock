@@ -11,7 +11,7 @@
 - (void)handleInvocation:(NSInvocation *)anInvocation
 {
 	if(strcmp([[anInvocation methodSignature] methodReturnType], [(NSValue *)returnValue objCType]) != 0)
-		@throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Return value does not match method signature." userInfo:nil];
+		@throw [NSException exceptionWithName:NSInvalidArgumentException reason:[NSString stringWithFormat:@"Return value does not match method signature; signature declares '%s' but value is '%s'.", [[anInvocation methodSignature] methodReturnType], [(NSValue *)returnValue objCType]] userInfo:nil];
 	void *buffer = malloc([[anInvocation methodSignature] methodReturnLength]);
 	[returnValue getValue:buffer];
 	[anInvocation setReturnValue:buffer];

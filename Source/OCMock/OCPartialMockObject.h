@@ -14,7 +14,7 @@
 
 - (NSObject *)realObject;
 
-- (void)stopMockObject;
+- (void)stopMocking;
 
 - (void)setupSubclassForObject:(id)anObject;
 - (void)setupForwarderForSelector:(SEL)selector;

@@ -62,7 +62,7 @@ static NSMutableDictionary *mockTable;
 - (void)dealloc
 {
 	if(realObject != nil)
-		[self stopMockObject];
+		[self stopMocking];
 	[super dealloc];
 }
 
@@ -76,7 +76,7 @@ static NSMutableDictionary *mockTable;
 	return realObject;
 }
 
-- (void)stopMockObject
+- (void)stopMocking
 {
 	object_setClass(realObject, [self mockedClass]);
 	[realObject release];
@@ -96,10 +96,10 @@ static NSMutableDictionary *mockTable;
 	objc_registerClassPair(subclass);
 	object_setClass(anObject, subclass);
 	
-	Method forwardInvocationMethod = class_getInstanceMethod([self class], @selector(forwardInvocationForRealObject:));
-	IMP forwardInvocationImp = method_getImplementation(forwardInvocationMethod);
-	const char *forwardInvocationTypes = method_getTypeEncoding(forwardInvocationMethod);
-	class_addMethod(subclass, @selector(forwardInvocation:), forwardInvocationImp, forwardInvocationTypes);
+	Method myForwardInvocationMethod = class_getInstanceMethod([self class], @selector(forwardInvocationForRealObject:));
+	IMP myForwardInvocationImp = method_getImplementation(myForwardInvocationMethod);
+	const char *forwardInvocationTypes = method_getTypeEncoding(myForwardInvocationMethod);
+	class_addMethod(subclass, @selector(forwardInvocation:), myForwardInvocationImp, forwardInvocationTypes);
 }
 
 - (void)setupForwarderForSelector:(SEL)selector
@@ -115,13 +115,26 @@ static NSMutableDictionary *mockTable;
 	class_addMethod(subclass, aliasSelector, originalImp, method_getTypeEncoding(originalMethod));
 }
 
+- (void)removeForwarderForSelector:(SEL)selector
+{
+    Class subclass = [[self realObject] class];
+    SEL aliasSelector = NSSelectorFromString([OCMRealMethodAliasPrefix stringByAppendingString:NSStringFromSelector(selector)]);
+    Method originalMethod = class_getInstanceMethod([subclass superclass], aliasSelector);
+  	IMP originalImp = method_getImplementation(originalMethod);
+    class_replaceMethod(subclass, selector, originalImp, method_getTypeEncoding(originalMethod));
+}
+
 - (void)forwardInvocationForRealObject:(NSInvocation *)anInvocation
 {
 	// in here "self" is a reference to the real object, not the mock
 	OCPartialMockObject *mock = [OCPartialMockObject existingPartialMockForObject:self];
 	if([mock handleInvocation:anInvocation] == NO)
-		[NSException raise:NSInternalInconsistencyException format:@"Ended up in subclass forwarder for %@ with unstubbed method %@",
-		 [self class], NSStringFromSelector([anInvocation selector])];
+    {
+        // if mock doesn't want to handle the invocation, maybe all expects have occurred, we forward to real object
+        SEL aliasSelector = NSSelectorFromString([OCMRealMethodAliasPrefix stringByAppendingString:NSStringFromSelector([anInvocation selector])]);
+        [anInvocation setSelector:aliasSelector];
+        [anInvocation invoke];
+    }
 }
 
 
