@@ -85,10 +85,12 @@
 {
 	// no [super init], we're inheriting from NSProxy
 	expectationOrderMatters = NO;
+  shouldSynchroniseExpectations = NO;
 	recorders = [[NSMutableArray alloc] init];
 	expectations = [[NSMutableArray alloc] init];
 	rejections = [[NSMutableArray alloc] init];
 	exceptions = [[NSMutableArray alloc] init];
+  synchronisationQueue = dispatch_queue_create("com.ocmock.synchronisation", DISPATCH_QUEUE_CONCURRENT);
 	return self;
 }
 
@@ -98,6 +100,7 @@
 	[expectations release];
 	[rejections	release];
 	[exceptions release];
+  dispatch_release(synchronisationQueue);
 	[super dealloc];
 }
 
@@ -112,6 +115,10 @@
     expectationOrderMatters = flag;
 }
 
+- (void)setShouldSynchroniseExpectations:(BOOL)flag
+{
+    shouldSynchroniseExpectations = flag;
+}
 
 #pragma mark  Public API
 
@@ -141,6 +148,14 @@
 
 - (void)verify
 {
+  if (shouldSynchroniseExpectations && (dispatch_get_current_queue() != synchronisationQueue))
+  {
+  dispatch_sync(synchronisationQueue,^{
+    [self verify];
+  });
+  return;
+  }
+
 	if([expectations count] == 1)
 	{
 		[NSException raise:NSInternalInconsistencyException format:@"%@: expected method was not invoked: %@", 
@@ -173,6 +188,16 @@
 
 - (BOOL)handleInvocation:(NSInvocation *)anInvocation
 {
+  
+  if (shouldSynchroniseExpectations && (dispatch_get_current_queue() != synchronisationQueue))
+    {
+    __block BOOL handled = NO;
+    dispatch_barrier_sync(synchronisationQueue,^{
+      handled = [self handleInvocation:anInvocation];
+    });
+    return handled;
+    }
+  
 	OCMockRecorder *recorder = nil;
 	unsigned int			   i;
 	
@@ -214,6 +239,15 @@
 
 - (void)handleUnRecordedInvocation:(NSInvocation *)anInvocation
 {
+  
+  if (shouldSynchroniseExpectations && (dispatch_get_current_queue() != synchronisationQueue))
+    {
+    dispatch_barrier_sync(synchronisationQueue,^{
+      [self handleUnRecordedInvocation:anInvocation];
+    });
+    return;
+    }
+  
 	if(isNice == NO)
 	{
 		NSException *exception = [NSException exceptionWithName:NSInternalInconsistencyException reason:
