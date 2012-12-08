@@ -121,6 +121,10 @@
 		03E6F05F152FA8E20079EAF7 /* OCClassMockRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 03E6F05C152FA8E20079EAF7 /* OCClassMockRecorder.h */; };
 		03E6F060152FA8E20079EAF7 /* OCClassMockRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E6F05D152FA8E20079EAF7 /* OCClassMockRecorder.m */; };
 		03E6F061152FA8E20079EAF7 /* OCClassMockRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E6F05D152FA8E20079EAF7 /* OCClassMockRecorder.m */; };
+		21079E3D1673B4AC003161D8 /* OCMPassCTypeByRefSetter.h in Headers */ = {isa = PBXBuildFile; fileRef = 21079E3B1673B4AC003161D8 /* OCMPassCTypeByRefSetter.h */; };
+		21079E3E1673B4AC003161D8 /* OCMPassCTypeByRefSetter.h in Headers */ = {isa = PBXBuildFile; fileRef = 21079E3B1673B4AC003161D8 /* OCMPassCTypeByRefSetter.h */; };
+		21079E3F1673B4AC003161D8 /* OCMPassCTypeByRefSetter.m in Sources */ = {isa = PBXBuildFile; fileRef = 21079E3C1673B4AC003161D8 /* OCMPassCTypeByRefSetter.m */; };
+		21079E401673B4AC003161D8 /* OCMPassCTypeByRefSetter.m in Sources */ = {isa = PBXBuildFile; fileRef = 21079E3C1673B4AC003161D8 /* OCMPassCTypeByRefSetter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -208,6 +212,8 @@
 		03E6F057152FA60B0079EAF7 /* OCMockClassObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMockClassObject.m; sourceTree = "<group>"; };
 		03E6F05C152FA8E20079EAF7 /* OCClassMockRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCClassMockRecorder.h; sourceTree = "<group>"; };
 		03E6F05D152FA8E20079EAF7 /* OCClassMockRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCClassMockRecorder.m; sourceTree = "<group>"; };
+		21079E3B1673B4AC003161D8 /* OCMPassCTypeByRefSetter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMPassCTypeByRefSetter.h; sourceTree = "<group>"; };
+		21079E3C1673B4AC003161D8 /* OCMPassCTypeByRefSetter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMPassCTypeByRefSetter.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -419,6 +425,8 @@
 				03B31594146333BF0052CD09 /* OCMConstraint.m */,
 				03B315A1146333BF0052CD09 /* OCMPassByRefSetter.h */,
 				03B315A2146333BF0052CD09 /* OCMPassByRefSetter.m */,
+				21079E3B1673B4AC003161D8 /* OCMPassCTypeByRefSetter.h */,
+				21079E3C1673B4AC003161D8 /* OCMPassCTypeByRefSetter.m */,
 			);
 			name = "Argument Handling";
 			sourceTree = "<group>";
@@ -497,6 +505,7 @@
 				03B31613146333C00052CD09 /* OCProtocolMockObject.h in Headers */,
 				03E6F058152FA60B0079EAF7 /* OCMockClassObject.h in Headers */,
 				03E6F05E152FA8E20079EAF7 /* OCClassMockRecorder.h in Headers */,
+				21079E3D1673B4AC003161D8 /* OCMPassCTypeByRefSetter.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -534,6 +543,7 @@
 				03B316441463350E0052CD09 /* OCObserverMockObjectTests.h in Headers */,
 				03E6F059152FA60B0079EAF7 /* OCMockClassObject.h in Headers */,
 				03E6F05F152FA8E20079EAF7 /* OCClassMockRecorder.h in Headers */,
+				21079E3E1673B4AC003161D8 /* OCMPassCTypeByRefSetter.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -699,6 +709,7 @@
 				03B31615146333C00052CD09 /* OCProtocolMockObject.m in Sources */,
 				03E6F05A152FA60B0079EAF7 /* OCMockClassObject.m in Sources */,
 				03E6F060152FA8E20079EAF7 /* OCClassMockRecorder.m in Sources */,
+				21079E3F1673B4AC003161D8 /* OCMPassCTypeByRefSetter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -742,6 +753,7 @@
 				03B31617146333C00052CD09 /* OCProtocolMockObject.m in Sources */,
 				03E6F05B152FA60B0079EAF7 /* OCMockClassObject.m in Sources */,
 				03E6F061152FA8E20079EAF7 /* OCClassMockRecorder.m in Sources */,
+				21079E401673B4AC003161D8 /* OCMPassCTypeByRefSetter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -779,7 +791,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = NO;
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -805,7 +817,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = NO;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";

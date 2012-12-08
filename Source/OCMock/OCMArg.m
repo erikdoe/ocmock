@@ -7,6 +7,7 @@
 #import <OCMock/OCMArg.h>
 #import <OCMock/OCMConstraint.h>
 #import "OCMPassByRefSetter.h"
+#import "OCMPassCTypeByRefSetter.h"
 #import "OCMConstraint.h"
 
 @implementation OCMArg
@@ -57,6 +58,11 @@
 	return (id *)[[[OCMPassByRefSetter alloc] initWithValue:value] autorelease];
 }
 
++ (void *)setValueTo:(NSValue *)value
+{
+    return [[[OCMPassCTypeByRefSetter alloc] initWithValue:value] autorelease];
+}
+
 + (id)resolveSpecialValues:(NSValue *)value
 {
 	const char *type = [value objCType];
@@ -65,7 +71,7 @@
 		void *pointer = [value pointerValue];
 		if(pointer == (void *)0x01234567)
 			return [OCMArg any];
-		if((pointer != NULL) && (object_getClass((id)pointer) == [OCMPassByRefSetter class]))
+		if((pointer != NULL) && ((object_getClass((id)pointer) == [OCMPassByRefSetter class]) || (object_getClass((id)pointer) == [OCMPassCTypeByRefSetter class])))
 			return (id)pointer;
 	}
 	return value;

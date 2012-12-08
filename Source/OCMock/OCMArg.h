@@ -22,6 +22,7 @@
 // manipulating arguments
 
 + (id *)setTo:(id)value;
++ (void *)setValueTo:(NSValue *)value;
 
 // internal use only
 
