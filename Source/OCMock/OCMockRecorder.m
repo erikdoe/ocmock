@@ -129,6 +129,11 @@
 
 #pragma mark  Checking the invocation
 
+- (BOOL)matchesSelector:(SEL)sel
+{
+    return (sel == [recordedInvocation selector]);
+}
+
 - (BOOL)matchesInvocation:(NSInvocation *)anInvocation
 {
 	id  recordedArg, passedArg;
