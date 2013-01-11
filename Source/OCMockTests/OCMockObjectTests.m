@@ -10,6 +10,16 @@
 //	Helper classes and protocols for testing
 // --------------------------------------------------------------------------------------
 
+@interface InterfaceForTypedef : NSObject
+@end
+
+@implementation InterfaceForTypedef
+@end
+
+typedef InterfaceForTypedef TypedefInterface;
+typedef InterfaceForTypedef* PointerTypedefInterface;
+typedef int intTypedef;
+
 @protocol TestProtocol
 - (int)primitiveValue;
 @optional
@@ -20,6 +30,37 @@
 - (void)aSpecialMethod:(byref in void *)someArg;
 @end
 
+@protocol ProtocolWithTypedefs
+- (TypedefInterface*)typedefReturnValue1;
+- (PointerTypedefInterface)typedefReturnValue2;
+- (void)typedefParameter:(TypedefInterface*)parameter;
+- (void)typedefPointerParameter:(PointerTypedefInterface)parameter;
+@end
+
+@interface ProtocolWithTypedefsImplementation : NSObject<ProtocolWithTypedefs>
+- (TypedefInterface*)typedefReturnValue1;
+- (PointerTypedefInterface)typedefReturnValue2;
+- (void)typedefParameter:(TypedefInterface*)parameter;
+- (void)typedefPointerParameter:(PointerTypedefInterface)parameter;
+@end
+
+@implementation ProtocolWithTypedefsImplementation
+
+- (TypedefInterface*)typedefReturnValue1 {
+    return nil;
+}
+
+- (PointerTypedefInterface)typedefReturnValue2 {
+    return nil;
+}
+
+- (void)typedefParameter:(TypedefInterface*)parameter {
+}
+
+-(void)typedefPointerParameter:(PointerTypedefInterface)parameter {
+}
+
+@end
 
 @interface TestClassThatCallsSelf : NSObject
 - (NSString *)method1;
@@ -648,6 +689,23 @@ static NSString *TestNotification = @"TestNotification";
     STAssertFalse([mock respondsToSelector:@selector(fooBar)], nil);
 }
 
+- (void)testWithTypedefReturnType {
+	mock = [OCMockObject mockForProtocol:@protocol(ProtocolWithTypedefs)];
+    STAssertNoThrow([[[mock stub] andReturn:[TypedefInterface new]] typedefReturnValue1], @"Should accept a typedefed return-type");
+    STAssertNoThrow([mock typedefReturnValue1], @"bla");
+}
+
+- (void)testWithTypedefPointerReturnType {
+	mock = [OCMockObject mockForProtocol:@protocol(ProtocolWithTypedefs)];
+    STAssertNoThrow([[[mock stub] andReturn:[TypedefInterface new]] typedefReturnValue2], @"Should accept a typedefed return-type");
+    STAssertNoThrow([mock typedefReturnValue2], @"bla");
+}
+
+- (void)testWithTypedefParameter {
+	mock = [OCMockObject mockForProtocol:@protocol(ProtocolWithTypedefs)];
+    STAssertNoThrow([[mock stub] typedefParameter:nil], @"Should accept a typedefed parameter-type");
+    STAssertNoThrow([mock typedefParameter:nil], @"bla");
+}
 
 // --------------------------------------------------------------------------------------
 //	nice mocks don't complain about unknown methods
