@@ -126,6 +126,11 @@
 	return self;
 }
 
+- (void)dealloc {
+    [block release];
+    [super dealloc];
+}
+
 - (BOOL)evaluate:(id)value 
 {
 	return block(value);
