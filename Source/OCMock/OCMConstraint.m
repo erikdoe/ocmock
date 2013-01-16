@@ -122,13 +122,19 @@
 - (id)initWithConstraintBlock:(BOOL (^)(id))aBlock;
 {
 	self = [super init];
-	block = aBlock;
+	block = [aBlock copy];
 	return self;
 }
 
 - (BOOL)evaluate:(id)value 
 {
 	return block(value);
+}
+
+-(void)dealloc
+{
+	[block release];
+	[super dealloc];
 }
 
 @end
