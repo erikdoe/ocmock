@@ -131,6 +131,12 @@
 	return block(value);
 }
 
+-(void)dealloc
+{
+	[block release];
+	[super dealloc];
+}
+
 @end
 
 #endif
