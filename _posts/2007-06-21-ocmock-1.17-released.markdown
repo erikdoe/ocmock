@@ -1,0 +1,10 @@
+---
+layout: post
+title: OCMock 1.17 released
+tags:
+- Release
+status: publish
+type: post
+published: true
+---
+New release which combines several contributions, adding support for mock observers of notifications, setters for pass-by-reference arguments, and several improvements to existing features. The default binary release now uses @rpath, which allows for more flexible deployment, and it supports garbage collection.

@@ -1,0 +1,10 @@
+---
+layout: post
+title: OCMock 2.0 released
+tags:
+- Release
+status: publish
+type: post
+published: true
+---
+New binary release (2.0) bringing compatibility with iOS 5 and Xcode 4.2/4.3. The version is 2.0 not because of a major change in OCMock itself but because the 1.x numbering scheme depended on Subversion, and the code is now on Github.

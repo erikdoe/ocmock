@@ -1,0 +1,10 @@
+---
+layout: post
+title: OCMock 1.55 released
+tags:
+- Release
+status: publish
+type: post
+published: true
+---
+New release offering several new features, including partial mocks, method swizzling, posting of notifications, and verification of call sequence, as well as a handful of bug fixes. Details in the "Features" tab on this page and in the <a href="http://svn.mulle-kybernetik.com/OCMock/trunk/Source/Changes.txt">change notes</a>.

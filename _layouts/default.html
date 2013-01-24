@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+<html>
+  	<head>
+
+		<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+		<title>{% if page.title %}{{ page.title }} &middot; {% endif %}OCMock</title>
+
+		<link type="text/css" rel="stylesheet" href="/stylesheets/reset.css">
+		<link type="text/css" rel="stylesheet" href="/stylesheets/screen.css">
+		<link type="text/css" rel="stylesheet" href="/stylesheets/pygmentize.css">
+
+		<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
+
+  	</head>
+
+  	<body class="{{ page.layout }}">
+
+		<div id="masthead" class="group">
+			<header>
+				<h1><a href="http://www.mulle-kybernetik.com">Mulle kybernetiK</a></h1>
+				<p>presents</p>
+			</header>
+			<nav id="site">
+				<ul>
+					<li><a href="/"><img src="/images/logo-126x41.png" width="126" height="41" alt="OCMock"></a></li>
+					<li><a href="/download">Download</a></li>
+					<li><a href="/features">Features</a></li>
+					<li><a href="/ios">iOS</a></li>
+					<li><a href="/tutorials">Tutorials</a></li>
+					<li><a href="/support">Support</a></li>
+			  	</ul>
+			</nav>
+	 	</div>
+
+		<div id="main"class="group">
+
+			<section id="content">
+				{{ content }}
+		  	</section>
+
+			{% unless page.nosidebar %}
+		  	<section id="sidebar">
+				<aside>
+					<header>
+						<h2>Latest News</h2>
+				  	</header>
+					{% for post in site.posts limit: 3 %}
+					<div class="postinfo">
+						<h3>{{ post.title }}</h3>
+						<p class="postdate">{{ post.date | date:"%d %b %Y" }}
+						<p>{{ post.content }}
+					</div>
+					{% endfor %}
+					<p><a href="/news">more news &rarr;</a>
+			  	</aside>
+			</section>
+			{% endunless %}
+
+		</div>
+
+		<div id="footernav" class="group">
+	  		<footer class="group">
+				<nav id="site">
+					<h2>Site</h2>
+					<ul>
+						<li><a href="/">Home</a></li>
+						<li><a href="/download">Download</a></li>
+						<li><a href="/news">News Archive</a></li>
+				  	</ul>
+				</nav>
+				<nav id="sitedoc">
+					<h2>Docs</h2>
+					<ul>
+						<li><a href="/features">Feature List</a></li>
+						<li><a href="/ios">iOS Project Setup</a></li>
+						<li><a href="/tutorials">Tutorials</a></li>
+				  	</ul>
+				</nav>
+				<nav id="sitedoc">
+					<h2>Support</h2>
+					<ul>
+						<li><a href="http://www.mulle-kybernetik.com/forum/viewforum.php?f=4">OCMock Forum</a></li>
+						<li><a href="http://stackoverflow.com/questions/tagged/ocmock">StackOverflow</a></li>
+						<li><a href="/support">More info</a></li>
+				  	</ul>
+				</nav>
+			</footer>
+		</div>
+
+		<div id="footercopy" class="group">
+	  		<footer class="group">
+		  		<p class="copyright">Copyright &copy; 2004-2013 Mulle Kybernetik
+	  		</footer>
+		</div>
+
+  </body>
+</html>

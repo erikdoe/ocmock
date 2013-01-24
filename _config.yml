@@ -1,0 +1,6 @@
+url: "http://ocmock.org"
+pygments: true
+exclude: [bin, Gemfile, Gemfile.lock, Makefile]
+permalink: pretty
+paginate: 100
+date_format: "%d %B %Y"

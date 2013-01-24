@@ -1,0 +1,10 @@
+---
+layout: post
+title: OCMock 1.77 released
+tags:
+- Release
+status: publish
+type: post
+published: true
+---
+New release bringing Xcode 4 compatibility, an explicit check to see whether the static library has been linked correctly, and a feature to stop a partial mock from intercepting calls to the underlying object.

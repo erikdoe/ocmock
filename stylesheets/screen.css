@@ -1,0 +1,326 @@
+
+/* layout */
+
+div#main, div#footernav footer, div#footercopy footer  {
+	max-width: 980px;
+	min-width: 320px;
+	margin: 0 auto 0 auto;
+	padding: 1em 2em;
+}
+
+div#footercopy footer {
+	padding: 0.2em 2em 0.5em 2em;
+}
+
+section#content {
+	float: left;
+	width: 75%;
+	margin-bottom: 4em;
+}
+
+section#sidebar {
+   	float: right;
+  	width: 20%;
+}
+
+article {
+	margin-bottom: 2em;
+}
+
+@media screen and (max-width: 800px) {
+  	section#content {
+		width: 100%;
+	}
+  	section#sidebar {
+	  	width: 100%;
+    	float: none;
+  	}
+}
+
+.group:after {
+	visibility: hidden;
+	display:    block;
+	font-size:  0;
+	content:    " ";
+	clear:      both;
+	height:     0;
+}
+
+
+/* General typography and formatting */
+
+h1, h2, h3 {
+	font-family: "Helvetica Neue", Helvetica, arial, sans-serif;
+	font-weight:bold;
+	color: #444;
+}
+
+h1 {
+	font-size: 1.75em;
+	margin-bottom: 1em;
+}
+
+h2 {
+	font-size: 1.25em;
+	margin-top: 1.5em;
+}
+
+h2:first-child {
+	margin-top: 0em;
+}
+
+p, th, td, ul, li { 
+	font-size: 0.875em; 
+	color: #444;
+	font-family: sans-serif;
+	line-height: 1.5em;
+}   
+
+p {
+	margin-top: 0.715em;
+}
+	
+a {
+	color: #374FA8;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+nav a {
+	color: #444;
+	text-decoration: none;
+}
+
+nav a:hover {
+	color: #137EEF;
+	text-decoration: none;
+}
+
+
+/* content specific formatting */
+
+#content h2 {
+	padding-bottom: 3px;
+	border-bottom: 1px solid #CCC;
+}
+
+#main li {
+	font-size: 100%;
+	list-style-type: disc;
+	margin-left: 1.8em;
+	line-height: 1.8em;
+}
+
+#main li:first-child {
+	margin-top: .8em;
+}
+
+#main p:first-child {
+	margin-top: 0;
+}
+
+#main table {
+	margin-top: 1em;
+}
+
+th {
+	font-weight: bold;
+}
+
+th, td {
+	background: #DDD;
+	text-align: left;
+	padding: 5px 10px 2px 8px;
+	border-right: 2px solid white;
+	border-bottom: 2px solid white;
+}
+
+p.postdate {
+	margin-top: 0em;
+	margin-bottom: 0.2em;
+}
+	
+.tag {
+	border: 1px solid #444;
+	background: #DDD;
+	padding: 1px 3px 0px 2px;
+	border-radius: 3px 3px 3px 3px;
+}
+
+/* code, hightlighted code boxes, etc */
+
+#main pre {
+	margin-top: 1em;
+	overflow-x: auto;
+}
+
+code {
+	padding-left: 0;
+	margin-bottom: 0.5em;
+	font-family: "Menlo", monospace;
+	font-size: 0.875em;;
+}
+
+#main pre {
+  	margin: 0.6em 0;
+  	padding: .5em 1.5em;
+  	background-color: #FAFAFA;
+  	border: 1px solid #CCC;
+	border-radius: 3px 3px 3px 3px;
+ 	overflow-x: auto;
+	font-size: 0.875em;
+}
+
+.highlight pre {
+  	text-align: left;
+  	font-family: "Menlo", monospace;
+}
+
+.newfeature {
+	background: #FEEED0;
+	border-right: solid 5px #FFCA65;
+	padding-right: 3px;
+}
+
+.newishfeature {
+	background: #FEF9EF;
+	border-right: solid 5px #FEDEA3;
+	padding-right: 3px;
+}
+
+
+/* aside formatting */
+
+aside header h2 {
+	margin: 0 0 0.5em 0;
+	font-size: 1.2em;
+	letter-spacing: 80%;
+	text-transform: uppercase;
+}
+
+aside h3 {
+	margin-top: 0.7em;
+}
+
+div.postinfo p {
+	font-size: 0.75em;
+}
+
+div.postinfo {
+	margin-bottom: 1.5em;
+}
+
+aside {
+	margin-bottom: 2em;
+}
+
+aside:last-child {
+	margin-bottom: 0;
+}
+
+
+/* masthead */
+
+div#masthead header {
+ 	background: black;
+	padding: 0.3em 0 0.4em 0;
+}
+
+div#masthead header h1 {
+  	text-align: center;
+ 	font-family: cochin,garamond,verdana,sans-serif;
+  	font-size: 1.25em;
+	font-variant:small-caps;
+	color: #AAA;
+	margin: 0;
+}
+
+div#masthead header p {
+ 	font-family: cochin,garamond,verdana,sans-serif;
+  	text-align:  center;
+	font-size: 0.75em;
+	font-variant:small-caps;
+	color: #AAA;
+	margin: 0;
+	padding: 0;
+	line-height: 0.9em;
+	max-width: 100%;
+}
+
+div#masthead header a {
+	color: #AAA;
+	text-decoration: none;
+}
+
+div#masthead header a:hover {
+	color: #CCC;
+}
+
+
+div#masthead ul {
+	max-width: 980px;
+	margin: 2.5em auto 1em auto;
+	padding: 0 2em 0.3em 2em;
+	border-bottom: 1px solid #CCC;
+	height: 50px;
+}
+
+div#masthead nav li {
+	display: inline;
+	margin-right: 1em;
+	font-size: 1.2em;
+	vertical-align: text-bottom;
+}
+
+div#masthead nav li:first-child {
+	margin-right: 1.5em;
+}
+
+
+/* footer formatting */
+
+div#footernav {
+	background: #DDD;
+}
+
+div#footercopy {
+	background: #BBB;
+}
+
+footer nav {
+	float: left;
+	min-width: 220px;
+	margin-bottom: 1em;
+}
+
+footer h2 {
+	font-size: 1em;
+	margin-bottom: 0.5em;
+}
+
+footer p {
+	font-size: 75%;
+}
+
+/* misc stuff */
+
+del {
+  display: none;
+}
+
+q:before {
+  content: "\201C";
+}
+
+q:after {
+  content: "\201D";
+}
+
+::selection {
+	background: #ef3e5b;
+	color: white;
+	text-shadow: none;
+}

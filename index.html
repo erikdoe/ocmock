@@ -1,0 +1,56 @@
+---
+layout: default
+---
+		
+	<p>OCMock is an Objective-C implementation of mock objects. If you are unfamiliar with the concept of mock objects please visit <a href="http://www.mockobjects.com/">mockobjects.com</a> which has more details and discussions about this approach to testing software.
+
+	<p>This implementation fully utilises the dynamic nature of Objective-C. It creates mock objects on the fly and uses the trampoline pattern so that you can define expectations and stubs using the same syntax that you use to call methods. No strings, no @selector, just method invocations like this:
+	<p><pre><code>[[myMockObject expect] doSomethingWithObject:someObject];</code></pre>
+
+	<p>The remainder of this page should have everything to get you started. Enjoy!
+
+	<h2>Getting ready</h2>
+	<ul>
+		<li><a href="/download">Download</a> the binary distribution.
+		<li>For iOS development <a href="/ios">set up</a> the static library.
+		<li>For OS X development add <code>OCMock.framework</code> to your test target.
+		<li>Import <code>&lt;OCMock/OCMock.h&gt;</code> at the top of your unit test.
+	</ul>
+
+	<h2 id="simplestub">Using a simple Stub</h2>	
+
+	<h2 id="simplemock">Using a simple Mock</h2>	
+		
+		
+	<h2 id="complicated">A slightly more complicated case</h2>	
+		
+	{% highlight objc %}
+
+- (void)testConnectionTestUnsuccessfulWhenServerReturns404StatusCode
+{
+    CCMConnection *connection = [[[CCMConnection alloc] init] autorelease];
+    id connectionMock = [OCMockObject partialMockForObject:connection];
+
+    id responseMock = [OCMockObject mockForClass:[NSHTTPURLResponse class]];
+    [[[responseMock stub] andReturnValue:OCMOCK_VALUE(404)] statusCode];
+    [[connectionMock stub] sendSynchronousRequest:[OCMArg any] returningResponse:[OCMArg setTo:responseMock] error:[OCMArg anyPointer]];
+
+    BOOL success = [connection testConnection];
+
+    STAssertTrue(success, @"Should have indicated success.");
+}
+	{% endhighlight %}	
+
+	<h2>Next steps</h2>
+	<ul>
+		<li>Check out <a href="/features">all the features</a> that OCMock offers.
+		<li>Browse through the <a href="/tutorials">tutorials</a> written by OCMock users.
+		<li>Have a look at the <a href="https://github.com/erikdoe/ocmock/blob/master/Source/OCMockTests/OCMockObjectTests.m">source</a> for the main top-level tests of OCMock itself. 
+		<li>Read why <a href="http://martinfowler.com/articles/mocksArentStubs.html">Mocks aren't stubs</a>. OCMock supports both, stubs and mocks.
+	</ul>
+	
+	<h2>Need help?</h2>
+	<ul>
+		<li>For feedback and questions please use the <a href="http://www.mulle-kybernetik.com/forum/viewforum.php?f=4">OCMock forum</a> on this site or...
+		<li>...post a question on StackOverflow with the <a href="http://stackoverflow.com/questions/tagged/ocmock"><span class="tag">ocmock</span></a> tag. 
+	</ul>
