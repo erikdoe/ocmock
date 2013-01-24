@@ -3,7 +3,7 @@
 
 div#main, div#footernav footer, div#footercopy footer  {
 	max-width: 980px;
-	min-width: 320px;
+	min-width: 200px;
 	margin: 0 auto 0 auto;
 	padding: 1em 2em;
 }
@@ -13,28 +13,31 @@ div#footercopy footer {
 }
 
 section#content {
-	float: left;
-	width: 75%;
 	margin-bottom: 4em;
 }
 
 section#sidebar {
-   	float: right;
-  	width: 20%;
 }
 
 article {
 	margin-bottom: 2em;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (min-width: 800px) {
   	section#content {
-		width: 100%;
+		float: left;
+		width: 75%;
 	}
   	section#sidebar {
-	  	width: 100%;
-    	float: none;
+	   	float: right;
+	  	width: 20%;
   	}
+}
+@media screen and (max-width: 599px) {
+	div#main, div#footernav footer, div#footercopy footer  {
+		margin: 0 auto 0 auto;
+		padding: 1em 0.5em;
+	}
 }
 
 .group:after {
