@@ -19,18 +19,18 @@ nosidebar: true
 	
 <p>To use the library in an iOS project, you have to make the actual library, ie. libOCMock.a, as well as the header files available to the target containing the tests. In the <a href="https://github.com/erikdoe/ocmock/tree/master/Examples/iOS5Example">iOS5 example project</a> we're using this directory structure:
 	
-<p><img src="/images/ios5ex-step1-directories.png">
+<p><img src="{{ site.baseurl }}/images/ios5ex-step1-directories.png">
 	
 <p>The library must be added to the the test target in the "Link Binaries With Libraries" build phase. Click on the plus (+) icon, choose "Add other..." and find the library in the filesystem.
                                               
-<p><img src="/images/ios5ex-step2-adding-lib.png">
+<p><img src="{{ site.baseurl }}/images/ios5ex-step2-adding-lib.png">
 
 <p>Adding the library this way automatically adds a library search path to the project so that the linker can find the library. Unfortunately, it does not add a header search path, which is needed for the compiler to resolve includes/imports. This must be done manually in the build settings. Search for "header" which should bring up the "Header Search Paths" setting. Following the directory layout above the best way to point to the header directory is by adding a reference relative to the project's source directory. Don't be confused, the table view will show what that resolves to, but the setting saved does retain the variable.                                                     
-<p><img src="/images/ios5ex-step3-setting-headers.png">
+<p><img src="{{ site.baseurl }}/images/ios5ex-step3-setting-headers.png">
 	
 <p>One further step is required to work around an issue in the linker. For static libraries the linker tries to be clever and only includes those symbols that it thinks are used. It gets this wrong with Objective-C categories, and we need to tell it that (a) we're dealing with Objective-C and (b) that it should load all symbols for the OCMock library.
 	     
-<p><img src="/images/ios5ex-step4-setting-ldflags.png">
+<p><img src="{{ site.baseurl }}/images/ios5ex-step4-setting-ldflags.png">
 	
 <p>If you forget this step or you get the force load path wrong you will get an appropriate warning (in the form of an exception) the first time you try to use a mock object in your tests. Different linker flags have been suggested but I do recommend -force_load; it works, as long as the path following it is correct. More details in Apple's <a href="http://developer.apple.com/mac/library/qa/qa2006/qa1490.html">Technical Q&amp;A QA1490</a>.
  									
@@ -44,7 +44,7 @@ nosidebar: true
 	
 <p>If you modify the test to fail, for example by changing the call to the method under test, the most useful output is available from the log section with the output expanded:
 	
-<p><img src="/images/ios5ex-verification.png">
+<p><img src="{{ site.baseurl }}/images/ios5ex-verification.png">
 	
 <p>It's great that Xcode has some support for running unit tests. I find <a href="http://www.jetbrains.com/objc/">AppCode</a> a much better experience for writing test-driven code though.
 		
