@@ -13,6 +13,13 @@
 
 		<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
 
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+		<script>
+		$(document).ready(function() {
+		$('#navmenu-btn').click(function() {
+		  $('li.textnav').toggle();
+		})});
+		</script>
   	</head>
 
   	<body class="{{ page.layout }}">
@@ -22,15 +29,16 @@
 				<h1><a href="http://www.mulle-kybernetik.com">Mulle kybernetiK</a></h1>
 				<p>presents</p>
 			</header>
-			<nav id="site">
+			<div id="navmenu-btn">≡</div>
+			<nav>
 				<ul>
 					<li><a href="{{ site.baseurl }}/"><img src="{{ site.baseurl }}/images/logo-126x41.png" width="126" height="41" alt="OCMock"></a></li>
-					<li><a href="{{ site.baseurl }}/download">Download</a></li>
-					<li><a href="{{ site.baseurl }}/features">Features</a></li>
-					<li><a href="{{ site.baseurl }}/ios">iOS</a></li>
-					<li><a href="{{ site.baseurl }}/tutorials">Tutorials</a></li>
-					<li><a href="{{ site.baseurl }}/support">Support</a></li>
-			  	</ul>
+					<li class="textnav"><a href="{{ site.baseurl }}/download">Download</a></li>
+					<li class="textnav"><a href="{{ site.baseurl }}/features">Features</a></li>
+					<li class="textnav"><a href="{{ site.baseurl }}/ios">iOS</a></li>
+					<li class="textnav"><a href="{{ site.baseurl }}/tutorials">Tutorials</a></li>
+					<li class="textnav"><a href="{{ site.baseurl }}/support">Support</a></li>
+				</ul>
 			</nav>
 	 	</div>
 
@@ -41,7 +49,7 @@
 		  	</section>
 
 			{% unless page.nosidebar %}
-		  	<section id="sidebar">
+		  <section id="sidebar">
 				<aside>
 					<header>
 						<h2>Latest News</h2>
