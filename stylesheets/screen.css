@@ -1,7 +1,7 @@
 
 /* layout */
 
-div#main, div#footernav footer, div#footercopy footer  {
+div#main, div#footernav nav, div#footercopy footer  {
 	max-width: 980px;
 	min-width: 300px;
 	margin: 0 auto 0 auto;
@@ -9,7 +9,7 @@ div#main, div#footernav footer, div#footercopy footer  {
 }
 
 div#footercopy footer {
-	padding: 0.2em 2em 0.5em 2em;
+	padding: 0.5em 2em 0.5em 2em;
 }
 
 section#content {
@@ -38,7 +38,7 @@ article {
 h1, h2, h3 {
 	font-family: "Helvetica Neue", Helvetica, arial, sans-serif;
 	font-weight:bold;
-	color: #444;
+	color: #333;
 }
 
 h1 {
@@ -56,16 +56,23 @@ h2:first-child {
 }
 
 p, th, td, ul, li { 
-	font-size: 0.875em; 
-	color: #444;
 	font-family: sans-serif;
+	font-size: 0.875em; 
 	line-height: 1.5em;
+	color: #444;
 }   
 
 p {
 	margin-top: 0.715em;
 }
 	
+code {
+	font-family: "Menlo", monospace;
+	font-size: 0.857em; 
+	line-height: 1.3em;
+	color: #444;
+}
+
 a {
 	color: #374FA8;
 	text-decoration: none;
@@ -85,46 +92,6 @@ nav a:hover {
 	text-decoration: none;
 }
 
-
-/* content specific formatting */
-
-#main li {
-	font-size: 100%;
-	list-style-type: disc;
-	margin-left: 1.8em;
-	line-height: 1.8em;
-}
-
-#main li:first-child {
-	margin-top: .8em;
-}
-
-#main p:first-child {
-	margin-top: 0;
-}
-
-#main table {
-	margin-top: 1em;
-}
-
-#main th {
-	font-weight: bold;
-}
-
-#main th, td {
-	background: #DDD;
-	text-align: left;
-	padding: 5px 10px 2px 8px;
-	border-right: 2px solid white;
-	border-bottom: 2px solid white;
-}
-
-#content h2, aside header h2 {
-	padding-bottom: 3px;
-	border-bottom: 1px solid #CCC;
-}
-
-
 p.postdate {
 	margin-top: 0em;
 	margin-bottom: 0.2em;
@@ -137,33 +104,56 @@ p.postdate {
 	border-radius: 3px 3px 3px 3px;
 }
 
-/* code, hightlighted code boxes, etc */
 
-#main pre {
+/* main sections formatting */
+
+div#main h2 {
+	padding-bottom: 3px;
+	border-bottom: 1px solid #CCC;
+}
+
+div#main p:first-child {
+	margin-top: 0;
+}
+
+div#main li {
+	font-size: 100%;
+	list-style-type: disc;
+	margin-left: 1.8em;
+	line-height: 1.8em;
+}
+
+div#main li:first-child {
+	margin-top: .8em;
+}
+
+div#main table {
 	margin-top: 1em;
-	overflow-x: auto;
 }
 
-code {
-	padding-left: 0;
-	margin-bottom: 0.5em;
-	font-family: "Menlo", monospace;
-	font-size: 0.875em;;
+div#main th {
+	font-weight: bold;
 }
 
-#main pre {
-  	margin: 0.6em 0;
-  	padding: .5em 1.5em;
+div#main th, td {
+	background: #EEE;
+	text-align: left;
+	padding: 5px 10px 2px 8px;
+	border-right: 2px solid white;
+	border-bottom: 2px solid white;
+}
+
+
+/* hightlighted code boxes, etc */
+
+pre {
+  	margin: .3em 0;
+  	padding: .5em .7em;
   	background-color: #FAFAFA;
   	border: 1px solid #CCC;
 	border-radius: 3px 3px 3px 3px;
  	overflow-x: auto;
 	font-size: 0.875em;
-}
-
-.highlight pre {
-  	text-align: left;
-  	font-family: "Menlo", monospace;
 }
 
 .newfeature {
@@ -179,30 +169,26 @@ code {
 }
 
 
-/* aside formatting */
+/* sidebar formatting */
 
-aside h3 {
+section#sidebar h3 {
 	margin-top: 0.7em;
 }
 
-div.postinfo p {
-	font-size: 0.75em;
-}
-
-div.postinfo {
+section#sidebar article {
 	margin-bottom: 1.5em;
 }
 
-aside {
+section#sidebar article p {
+	font-size: 0.75em;
+}
+
+section#sidebar {
 	margin-bottom: 2em;
 }
 
-aside:last-child {
-	margin-bottom: 0;
-}
 
-
-/* masthead */
+/* masthead header */
 
 div#masthead header {
  	background: black;
@@ -211,7 +197,7 @@ div#masthead header {
 
 div#masthead header h1 {
   	text-align: center;
- 	font-family: Cochin,Garamond,Verdana,sans-serif;
+ 	font-family: Cochin, Georgia, serif;
 	font-variant: small-caps;
   	font-size: 1.25em;
 	color: #AAA;
@@ -220,7 +206,7 @@ div#masthead header h1 {
 
 div#masthead header p {
   	text-align: center;
- 	font-family: Cochin,Garamond,Verdana,sans-serif;
+ 	font-family: Cochin, Georgia, serif;
 	font-variant: small-caps;
 	font-size: 0.75em;
 	color: #AAA;
@@ -239,6 +225,7 @@ div#masthead header a:hover {
 	color: #CCC;
 }
 
+/* masthead navigation */
 
 div#masthead nav ul {
 	max-width: 980px;
@@ -271,53 +258,35 @@ div#navmenu-btn {
 
 /* footer formatting */
 
-div#footernav {
-	background: #DDD;
+div#footernav, div#footercopy {
+	background: #CCC;
 }
 
-div#footercopy {
-	background: #BBB;
+div#footernav, div#footercopy footer {
+	border-top: 1px solid #AAA
 }
 
-footer nav {
+div#footernav nav div.navblock {
 	float: left;
-	min-width: 300px;
+	min-width: 250px;
 	margin-bottom: 1em;
 }
 
-footer h2 {
+div#footernav h2 {
 	font-size: 1em;
-	margin-bottom: 0.5em;
+	margin-bottom: 0.2em;
 }
 
-footer p {
-	font-size: 75%;
+div#footercopy p {
+	font-size: 0.75em;
+	margin-top: 0;
 }
 
-/* misc stuff */
 
-del {
-  display: none;
-}
-
-q:before {
-  content: "\201C";
-}
-
-q:after {
-  content: "\201D";
-}
-
-::selection {
-	background: #ef3e5b;
-	color: white;
-	text-shadow: none;
-}
-
-/* responsive top nav */
+/* responsive top nav for small (presumably touch) screens */
 
 @media screen and (max-width: 650px) {
-	div#main, div#footernav footer, div#footercopy footer  {
+	div#main, div#footernav nav, div#footercopy footer  {
 		margin: 0 auto 0 auto;
 		padding: 1em 0.5em;
 	}
@@ -358,7 +327,7 @@ q:after {
 }
 
 
-/* responsive aside */
+/* responsive sidebar for reasonably wide screens */
 
 @media screen and (min-width: 800px) {
   	section#content {
@@ -369,7 +338,7 @@ q:after {
 	   	float: right;
 	  	width: 20%;
   	}
-	aside header h2 {
+	section#sidebar header h2 {
 		border-bottom: none;
 		letter-spacing: 80%;
 		text-transform: uppercase;

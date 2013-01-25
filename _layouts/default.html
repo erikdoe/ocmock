@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <html>
-  	<head>
+  <head>
 
 		<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 
@@ -20,9 +20,10 @@
 		  $('li.textnav').toggle();
 		})});
 		</script>
-  	</head>
+  	
+	</head>
 
-  	<body class="{{ page.layout }}">
+  <body class="{{ page.layout }}">
 
 		<div id="masthead" class="group">
 			<header>
@@ -46,61 +47,59 @@
 
 			<section id="content">
 				{{ content }}
-		  	</section>
+		  </section>
 
 			{% unless page.nosidebar %}
 		  <section id="sidebar">
-				<aside>
-					<header>
-						<h2>Latest News</h2>
-				  	</header>
-					{% for post in site.posts limit: 3 %}
-					<div class="postinfo">
-						<h3>{{ post.title }}</h3>
-						<p class="postdate">{{ post.date | date:"%d %b %Y" }}
-						<p>{{ post.content }}
-					</div>
-					{% endfor %}
-					<p><a href="{{ site.baseurl }}/news">more news &rarr;</a>
-			  	</aside>
+				<header>
+					<h2>Latest News</h2>
+				</header>
+				{% for post in site.posts limit: 3 %}
+				<article>
+					<h3>{{ post.title }}</h3>
+					<p class="postdate">{{ post.date | date:"%d %b %Y" }}
+					<p>{{ post.content }}
+				</article>
+				{% endfor %}
+				<p><a href="{{ site.baseurl }}/news">more news &rarr;</a>
 			</section>
 			{% endunless %}
 
 		</div>
 
 		<div id="footernav" class="group">
-	  		<footer class="group">
-				<nav id="site">
+			<nav>
+				<div class="navblock">
 					<h2>Site</h2>
 					<ul>
 						<li><a href="{{ site.baseurl }}/">Home</a></li>
 						<li><a href="{{ site.baseurl }}/download">Download</a></li>
 						<li><a href="{{ site.baseurl }}/news">News Archive</a></li>
-				  	</ul>
-				</nav>
-				<nav id="sitedoc">
+				  </ul>
+				</div>
+				<div class="navblock">
 					<h2>Docs</h2>
 					<ul>
 						<li><a href="{{ site.baseurl }}/features">Feature List</a></li>
 						<li><a href="{{ site.baseurl }}/ios">iOS Project Setup</a></li>
 						<li><a href="{{ site.baseurl }}/tutorials">Tutorials</a></li>
-				  	</ul>
-				</nav>
-				<nav id="sitedoc">
+				  </ul>
+				</div>
+				<div class="navblock">
 					<h2>Support</h2>
 					<ul>
 						<li><a href="http://www.mulle-kybernetik.com/forum/viewforum.php?f=4">OCMock Forum</a></li>
 						<li><a href="http://stackoverflow.com/questions/tagged/ocmock">StackOverflow</a></li>
 						<li><a href="{{ site.baseurl }}/support">More info</a></li>
-				  	</ul>
-				</nav>
-			</footer>
+				  </ul>
+				</div>
+			</nav>
 		</div>
 
 		<div id="footercopy" class="group">
-	  		<footer class="group">
-		  		<p class="copyright">Copyright &copy; 2004-2013 Mulle Kybernetik
-	  		</footer>
+	  	<footer>
+		  	<p class="copyright">Copyright &copy; 2004-2013 Mulle Kybernetik
+	  	</footer>
 		</div>
 
   </body>
