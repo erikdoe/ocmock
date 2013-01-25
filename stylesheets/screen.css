@@ -116,6 +116,10 @@ div#main p:first-child {
 	margin-top: 0;
 }
 
+section#content p {
+	padding-left: 0.1em;
+}
+
 div#main li {
 	font-size: 100%;
 	list-style-type: disc;
@@ -179,7 +183,7 @@ section#sidebar article {
 	margin-bottom: 1.5em;
 }
 
-section#sidebar article p {
+section#sidebar p {
 	font-size: 0.75em;
 }
 

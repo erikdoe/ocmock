@@ -5,8 +5,9 @@ layout: default
 	<p>OCMock is an Objective-C implementation of mock objects. If you are unfamiliar with the concept of mock objects please visit <a href="http://www.mockobjects.com/">mockobjects.com</a> which has more details and discussions about this approach to testing software.
 
 	<p>This implementation fully utilises the dynamic nature of Objective-C. It creates mock objects on the fly and uses the trampoline pattern so that you can define expectations and stubs using the same syntax that you use to call methods. No strings, no @selector, just method invocations like this:
-	<p><pre><code>[[myMockObject expect] doSomethingWithObject:someObject];</code></pre>
+	<pre><code>[[myMockObject expect] doSomethingWithObject:someObject];</code></pre>
 
+	<p>OCMock provides stub objects that return pre-determined values for specific method invocations, dynamic mocks that can be used to verify interaction patterns, and partial mocks to overwrite selected methods of existing objects.
 	<p>The remainder of this page should have everything to get you started. Enjoy!
 
 	<h2>Getting ready</h2>
@@ -16,32 +17,106 @@ layout: default
 		<li>For OS X development add <code>OCMock.framework</code> to your test target.
 		<li>Import <code>&lt;OCMock/OCMock.h&gt;</code> at the top of your unit test.
 	</ul>
+	
+	<h2 id="simplestub">First steps: Using a simple Stub</h2>
 
-	<h2 id="simplestub">Using a simple Stub</h2>	
+	<p>The simplest use case for OCMock is the creation of stub objects, that is objects that are set up to return pre-determined values for specific method invocations. 
 
-	<h2 id="simplemock">Using a simple Mock</h2>	
-		
-		
-	<h2 id="complicated">A slightly more complicated case</h2>	
-		
-	{% highlight objc %}
+	<p>To make this more concrete let's assume we are writing a little application that receives tweets from Twitter. We have a controller class, which for the purpose of this example with just call <code>Controller</code>, and another class that wraps the calls to Twitter's API, which we call <code>TwitterConnection</code>. 
+			
+	<p>The controller has references to the connection and a view to display the tweets in. It also has a property with which the search term can be set and a method to start the process and display the tweets.
+				
+{% highlight objc %}
+@interface Controller
 
-- (void)testConnectionTestUnsuccessfulWhenServerReturns404StatusCode
+@property(retain) TwitterConnection *connection;
+@property(retain) TweetView *tweetView;
+@property(retain) NSString *searchTerm;
+
+- (void)displayTweets;
+
+@end
+{% endhighlight objc %}	
+
+	<p>The interface for <code>TwitterConnection</code> looks like this:
+
+{% highlight objc %}
+@interface TwitterConnection 
+
+- (NSArray *)retrieveTweetsForSearchTerm:(NSString *)searchTerm;
+
+@end
+{% endhighlight objc %}	
+
+	<p>The method takes a search term and returns an array of <code>Tweet</code> objects, or <code>nil</code> if the request could not be handled.
+
+	<p>Some code in <code>Controller</code> that uses this method looks like this:
+	
+{% highlight objc %}
+  NSArray *tweets = [connection retrieveTweetsForSearchTerm:searchTerm];
+  if (tweets != nil) {
+    for (Tweet t in tweets)
+      [tweetView addTweet:t];
+  } else {
+    /* handle error cases */
+  }
+{% endhighlight objc %}	
+		
+	<p>If we want to test this code we could instantiate a real Twitter connection and use that. The first problem is that using a real connection would make the test slow. The bigger problem is that we never really know what Twitter returns at any given moment. And, finally, it is hard to test the error cases because Twitter usually does not return errors. 
+		
+	<p>The solution to these problems is to replace the connection object with a stub. Using OCMock we can set up the test like this:
+		
+{% highlight objc %}
+- (void)testRetrievesAndDisplaysTweets
 {
-    CCMConnection *connection = [[[CCMConnection alloc] init] autorelease];
-    id connectionMock = [OCMockObject partialMockForObject:connection];
+  Controller *controller = [[Controller alloc] init];
 
-    id responseMock = [OCMockObject mockForClass:[NSHTTPURLResponse class]];
-    [[[responseMock stub] andReturnValue:OCMOCK_VALUE(404)] statusCode];
-    [[connectionMock stub] sendSynchronousRequest:[OCMArg any] returningResponse:[OCMArg setTo:responseMock] error:[OCMArg anyPointer]];
+  id connection = [OCMockObject mockForClass:[TwitterConnection class]];
+  controller.connection = connection;
 
-    BOOL success = [connection testConnection];
+  Tweet *testTweet = /* create a tweet somehow */;   
+  NSArray *tweetArray = [NSArray arrayWithObject:testTweet1];
+  [[[connection stub] andReturn:tweetArray] retrieveTweetsForSearchTerm:[OCMArg any]];
+{% endhighlight objc %}	
 
-    STAssertTrue(success, @"Should have indicated success.");
-}
-	{% endhighlight %}	
+	<p>At this point we have a controller and a mock connection. The controller doesn't know that the connection  is not a real connection but when it makes a call to the <code>retrieveTweetsForSearchTerm:</code> method it actually calls the mock connection, and that returns the array with the test tweet. The <code>[OCMarg any]</code> parameter simply tells OCMock to match all invocations of the method, no matter what argument is passed. We'll return to this later.	
 
-	<h2>Next steps</h2>
+
+	<h2 id="simplemock">Next step: Verifying interactions with a mock object</h2>	
+		
+	<p>In contrast to stubs, which simply provide canned answers, mocks are set up with expectations that form a specification of the calls they are expected to receive. In our case they come in handy when we want to ensure that the controller makes the calls to the view.
+		
+{% highlight objc %}
+  id view = [OCMockObject mockForClass:[TweetView class]];
+  controller.tweetView = view;
+
+  [[view expect] addTweet:[OCMArg any]];
+{% endhighlight objc %}
+
+  <p>Now the controller has a reference to the mock view, and the mock view is set to expect an invocation of the <code>addTweet:</code> method.
+	
+	<p>Following this setup we can finally invoke the method under test and then tell the mock object to verify its expectations:
+		
+{% highlight objc %}
+  [controller displayTweets];
+
+  [view verify];
+{% endhighlight objc %}
+		
+	<p>With the <code>displayTweets</code> imeplementation from above the test will pass. If we remove the <code>addTweet:</code> call then test test will fail in the mock view's verify method, which will throw an exception stating that it expected an invocation of <code>addTweet:</code>.
+	
+	<p>This test can be improved, though. At the moment it passes as long as the controller calls the <code>addTweet:</code> method. The controller could pass a wrong tweet, or even nil, and the test would still pass. To improve this we use a simple argument constraint:
+		
+{% highlight objc %}
+  [[view expect] addTweet:testTweet];
+{% endhighlight objc %}
+	  
+	<p>This is the simplest argument constraint. The mock object compares whether the object that is passed when the method is invoked is equal to the object that was passed when the expectation was set up. Now the verify method will throw an exception unless the method is called with the right argument.
+		
+	<p>Apart from the <i>any</i> and <i>equal</i> constraints OCMock provides a whole set of different constraints. Stubs can also be set up not only to return values but to throw exceptions or post notifications. This is described on the <a href="{{ site.baseurl }}/features">features page</a>.
+
+
+	<h2>Further reading</h2>
 	<ul>
 		<li>Check out <a href="{{ site.baseurl }}/features">all the features</a> that OCMock offers.
 		<li>Browse through the <a href="{{ site.baseurl }}/tutorials">tutorials</a> written by OCMock users.
