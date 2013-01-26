@@ -75,11 +75,11 @@ layout: default
   controller.connection = connection;
 
   Tweet *testTweet = /* create a tweet somehow */;   
-  NSArray *tweetArray = [NSArray arrayWithObject:testTweet1];
+  NSArray *tweetArray = [NSArray arrayWithObject:testTweet];
   [[[connection stub] andReturn:tweetArray] retrieveTweetsForSearchTerm:[OCMArg any]];
 {% endhighlight objc %}	
 
-	<p>At this point we have a controller and a mock connection. The controller doesn't know that the connection  is not a real connection but when it makes a call to the <code>retrieveTweetsForSearchTerm:</code> method it actually calls the mock connection, and that returns the array with the test tweet. The <code>[OCMarg any]</code> parameter simply tells OCMock to match all invocations of the method, no matter what argument is passed. We'll return to this later.	
+	<p>At this point we have a controller and a mock connection. The controller doesn't know that the connection  is not a real connection but when it makes a call to the <code>retrieveTweetsForSearchTerm:</code> method it actually calls the mock connection, and that returns the array with the test tweet. The <code>[OCMArg any]</code> parameter simply tells OCMock to match all invocations of the method, no matter what argument is passed. We'll return to this later.	
 
 
 	<h2 id="simplemock">Next step: Verifying interactions with a mock object</h2>	
