@@ -73,6 +73,14 @@ code {
 	color: #444;
 }
 
+i {
+	font-style: italic;
+}
+
+b {
+	font-weight: bold;
+}
+
 a {
 	color: #374FA8;
 	text-decoration: none;
