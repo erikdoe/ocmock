@@ -7,7 +7,6 @@
 #import "OCClassMockRecorder.h"
 #import "OCMockClassObject.h"
 
-
 @implementation OCMockClassObject
 
 #pragma mark  Mock table
@@ -45,8 +44,9 @@ static NSMutableDictionary *mockTable;
 {
 	[super init];
 	mockedClass = aClass;
+	replacedClassMethods = [NSMutableDictionary dictionary ];
 	[[self class] rememberMock:self forClass:aClass];
-    [self setupClass:aClass];
+	[self setupClass:aClass];
 	return self;
 }
 
@@ -62,7 +62,18 @@ static NSMutableDictionary *mockTable;
 
 - (void)stopMocking
 {
-    
+	Class metaClass = objc_getMetaClass(class_getName(mockedClass));
+
+	for (NSString *replacedMethod in replacedClassMethods) {
+		NSValue *originalMethodPointer = [replacedClassMethods objectForKey:replacedMethod];
+		IMP originalMethod = [originalMethodPointer pointerValue];
+		if (originalMethod) {
+			class_replaceMethod(metaClass, NSSelectorFromString(replacedMethod), originalMethod, 0);
+		} else {
+			IMP forwarderImp = [metaClass instanceMethodForSelector:@selector(aMethodThatMustNotExist)];
+			class_replaceMethod(metaClass, NSSelectorFromString(replacedMethod), forwarderImp, 0);
+		}
+	}
 }
 
 - (void)setupClass:(Class)aClass
@@ -70,18 +81,23 @@ static NSMutableDictionary *mockTable;
 	Method myForwardInvocationMethod = class_getInstanceMethod([self class], @selector(forwardInvocationForRealObject:));
 	IMP myForwardInvocationImp = method_getImplementation(myForwardInvocationMethod);
 	const char *forwardInvocationTypes = method_getTypeEncoding(myForwardInvocationMethod);
-    Class metaClass = objc_getMetaClass(class_getName(aClass));
-	class_replaceMethod(metaClass, @selector(forwardInvocation:), myForwardInvocationImp, forwardInvocationTypes);
+	Class metaClass = objc_getMetaClass(class_getName(aClass));
+
+	IMP replacedForwardInvocationImp = class_replaceMethod(metaClass, @selector(forwardInvocation:), myForwardInvocationImp, forwardInvocationTypes);
+
+	[replacedClassMethods setObject:[NSValue valueWithPointer:replacedForwardInvocationImp] forKey:NSStringFromSelector(@selector(forwardInvocation:))];
 }
-    
+	
 - (void)setupForwarderForSelector:(SEL)selector
 {
 	Method originalMethod = class_getClassMethod(mockedClass, selector);
-    Class metaClass = objc_getMetaClass(class_getName(mockedClass));
-    
+	Class metaClass = objc_getMetaClass(class_getName(mockedClass));
+	
 	IMP forwarderImp = [metaClass instanceMethodForSelector:@selector(aMethodThatMustNotExist)];
-	(void)class_replaceMethod(metaClass, method_getName(originalMethod), forwarderImp, method_getTypeEncoding(originalMethod));
-    
+	IMP replacedMethod = class_replaceMethod(metaClass, method_getName(originalMethod), forwarderImp, method_getTypeEncoding(originalMethod));
+
+	[replacedClassMethods setObject:[NSValue valueWithPointer:replacedMethod] forKey:NSStringFromSelector(selector)];
+	
 //	SEL aliasSelector = NSSelectorFromString([OCMRealMethodAliasPrefix stringByAppendingString:NSStringFromSelector(selector)]);
 //	class_addMethod(subclass, aliasSelector, originalImp, method_getTypeEncoding(originalMethod));
 }
@@ -105,7 +121,7 @@ static NSMutableDictionary *mockTable;
 
 - (BOOL)respondsToSelector:(SEL)selector
 {
-    return [mockedClass respondsToSelector:selector];
+	return [mockedClass respondsToSelector:selector];
 }
 
 
