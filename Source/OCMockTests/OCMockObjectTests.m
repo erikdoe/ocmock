@@ -407,7 +407,7 @@ static NSString *TestNotification = @"TestNotification";
 
 - (NSString *)valueForString:(NSString *)aString andMask:(NSStringCompareOptions)mask
 {
-	return [NSString stringWithFormat:@"[%@, %d]", aString, mask];
+	return [NSString stringWithFormat:@"[%@, %ld]", aString, mask];
 }
 
 - (void)testCallsAlternativeMethodAndPassesOriginalArgumentsAndReturnsValue
@@ -473,7 +473,7 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testReturnsValuesInPassByReferenceArguments
 {
-	NSString *expectedName = [NSString stringWithString:@"Test"];
+	NSString *expectedName = @"Test";
 	NSArray *expectedArray = [NSArray array];
 	
 	[[mock expect] completePathIntoString:[OCMArg setTo:expectedName] caseSensitive:YES 
