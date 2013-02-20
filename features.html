@@ -74,7 +74,7 @@ If Objective-C blocks are available a block can be used to handle the invocation
 <div class="newishfeature">
 <p>If Objective-C blocks are available it is possible to check the argument with a block as follows:
 	
-<pre><code>[[mock expect] someMethod:[OCMArg checkWithBlock:^(id value) { /* return YES if value is ok */ }]];</code></pre>
+<pre><code>[[mock expect] someMethod:[OCMArg checkWithBlock:^BOOL(id value) { /* return YES if value is ok */ }]];</code></pre>
 </div>
 
 <p>Last but not least it is also possible to use <a href="http://code.google.com/p/hamcrest/wiki/TutorialObjectiveC">Hamcrest matchers</a> like this:</p>
