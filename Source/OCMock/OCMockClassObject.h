@@ -8,6 +8,7 @@
 @interface OCMockClassObject : OCMockObject
 {
 	Class	mockedClass;
+	NSMutableDictionary *replacedClassMethods;
 }
 
 - (id)initWithClass:(Class)aClass;
