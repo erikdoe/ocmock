@@ -82,6 +82,21 @@ typedef int intTypedef;
 
 @end
 
+@interface TestClassWithIntPointerMethod : NSObject
+
+- (void)returnValueInPointer:(int *)ptr;
+
+@end
+
+@implementation TestClassWithIntPointerMethod
+
+- (void)returnValueInPointer:(int *)ptr
+{
+    *ptr = 555;
+}
+
+@end
+
 
 @interface TestClassWithClassMethod : NSObject
 
@@ -486,6 +501,20 @@ static NSString *TestNotification = @"TestNotification";
 	STAssertNoThrow([mock verify], @"An unexpected exception was thrown");
 	STAssertEqualObjects(expectedName, actualName, @"The two string objects should be equal");
 	STAssertEqualObjects(expectedArray, actualArray, @"The two array objects should be equal");
+}
+
+
+- (void)testReturnsValuesInNonObjectPassByReferenceArguments
+{
+    int expectedValue = 1234;
+    mock = [OCMockObject mockForClass:[TestClassWithIntPointerMethod class]];
+    [[mock stub] returnValueInPointer:[OCMArg setToValue:[NSValue value:&expectedValue withObjCType:@encode(int)]]];
+    
+    int actualValue = 0;
+    [mock returnValueInPointer:&actualValue];
+    
+    STAssertEquals(expectedValue, actualValue, @"Should have returned value via pass by ref argument.");
+    
 }
 
 

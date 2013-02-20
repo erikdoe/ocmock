@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------------------
 //  $Id$
-//  Copyright (c) 2009-2010 by Mulle Kybernetik. See License file for details.
+//  Copyright (c) 2009-2013 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import <Foundation/Foundation.h>
@@ -22,6 +22,7 @@
 // manipulating arguments
 
 + (id *)setTo:(id)value;
++ (void *)setToValue:(NSValue *)value;
 
 // internal use only
 

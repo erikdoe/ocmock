@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------------------
 //  $Id$
-//  Copyright (c) 2004-2011 by Mulle Kybernetik. See License file for details.
+//  Copyright (c) 2004-2013 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import <objc/runtime.h>
@@ -160,8 +160,12 @@
 		}
 		else if([recordedArg isKindOfClass:[OCMPassByRefSetter class]])
 		{
+            id valueToSet = [(OCMPassByRefSetter *)recordedArg value];
 			// side effect but easier to do here than in handleInvocation
-			*(id *)[passedArg pointerValue] = [(OCMPassByRefSetter *)recordedArg value];
+            if(![valueToSet isKindOfClass:[NSValue class]])
+                *(id *)[passedArg pointerValue] = valueToSet;
+            else
+                [(NSValue *)valueToSet getValue:[passedArg pointerValue]];
 		}
 		else if([recordedArg conformsToProtocol:objc_getProtocol("HCMatcher")])
 		{

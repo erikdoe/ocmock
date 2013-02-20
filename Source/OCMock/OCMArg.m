@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------------------
 //  $Id$
-//  Copyright (c) 2009-2010 by Mulle Kybernetik. See License file for details.
+//  Copyright (c) 2009-2013 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import <objc/runtime.h>
@@ -53,6 +53,11 @@
 #endif
 
 + (id *)setTo:(id)value
+{
+	return (id *)[[[OCMPassByRefSetter alloc] initWithValue:value] autorelease];
+}
+
++ (void *)setToValue:(NSValue *)value
 {
 	return (id *)[[[OCMPassByRefSetter alloc] initWithValue:value] autorelease];
 }
