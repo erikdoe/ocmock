@@ -9,10 +9,12 @@
 {
 	BOOL			isNice;
 	BOOL			expectationOrderMatters;
+  BOOL      shouldSynchroniseExpectations;
 	NSMutableArray	*recorders;
 	NSMutableArray	*expectations;
 	NSMutableArray	*rejections;
 	NSMutableArray	*exceptions;
+  dispatch_queue_t synchronisationQueue;
 }
 
 + (id)mockForClass:(Class)aClass;
@@ -28,6 +30,7 @@
 - (id)init;
 
 - (void)setExpectationOrderMatters:(BOOL)flag;
+- (void)setShouldSynchroniseExpectations:(BOOL)flag;
 
 - (id)stub;
 - (id)expect;
