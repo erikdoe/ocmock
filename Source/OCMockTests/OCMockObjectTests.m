@@ -877,13 +877,13 @@ static NSString *TestNotification = @"TestNotification";
 	STAssertEqualObjects(@"TestFoo", [TestClassWithClassMethod method1], @"Should have stubbed method.");
 }
 
-//- (void)testForwardsUnstubbedMethodsToRealClassObjectAfterStopIsCalled
-//{
-//    mock = [OCMockObject mockForClassObject:[TestClassWithClassMethod class]];
-//	[[[mock stub] andReturn:@"TestFoo"] method1];
-//    [mock stopMocking];
-//	STAssertEqualObjects(@"Foo", [TestClassWithClassMethod method1], @"Should not have stubbed method.");
-//}
+- (void)testForwardsUnstubbedMethodsToRealClassObjectAfterStopIsCalled
+{
+    mock = [OCMockObject mockForClassObject:[TestClassWithClassMethod class]];
+	[[[mock stub] andReturn:@"TestFoo"] method1];
+    [mock stopMocking];
+	STAssertEqualObjects(@"Foo", [TestClassWithClassMethod method1], @"Should not have stubbed method.");
+}
 
 
 // --------------------------------------------------------------------------------------
