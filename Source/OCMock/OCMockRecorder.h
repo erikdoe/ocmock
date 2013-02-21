@@ -17,6 +17,9 @@
 - (BOOL)matchesInvocation:(NSInvocation *)anInvocation;
 - (void)releaseInvocation;
 
+- (id)chainedPropertyWithPath:(NSString*)keyPath
+        terminalObjectClass:(Class) klass;
+
 - (id)andReturn:(id)anObject;
 - (id)andReturnValue:(NSValue *)aValue;
 - (id)andThrow:(NSException *)anException;
