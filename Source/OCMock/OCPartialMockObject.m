@@ -95,11 +95,21 @@ static NSMutableDictionary *mockTable;
 	Class subclass = objc_allocateClassPair(realClass, className, 0);
 	objc_registerClassPair(subclass);
 	object_setClass(anObject, subclass);
-	
+
 	Method myForwardInvocationMethod = class_getInstanceMethod([self class], @selector(forwardInvocationForRealObject:));
 	IMP myForwardInvocationImp = method_getImplementation(myForwardInvocationMethod);
 	const char *forwardInvocationTypes = method_getTypeEncoding(myForwardInvocationMethod);
 	class_addMethod(subclass, @selector(forwardInvocation:), myForwardInvocationImp, forwardInvocationTypes);
+
+
+    Method myForwardingTargetForSelectorMethod = class_getInstanceMethod([self class], @selector(forwardingTargetForSelectorForRealObject:));
+    IMP myForwardingTargetForSelectorImp = method_getImplementation(myForwardingTargetForSelectorMethod);
+    const char *forwardingTargetForSelectorTypes = method_getTypeEncoding(myForwardingTargetForSelectorMethod);
+
+    IMP originalForwardingTargetForSelectorImp = [realClass instanceMethodForSelector:@selector(forwardingTargetForSelector:)];
+
+    class_addMethod(subclass, @selector(forwardingTargetForSelector:), myForwardingTargetForSelectorImp, forwardingTargetForSelectorTypes);
+    class_addMethod(subclass, @selector(forwardingTargetForSelector_Original:), originalForwardingTargetForSelectorImp, forwardingTargetForSelectorTypes);
 }
 
 - (void)setupForwarderForSelector:(SEL)selector
@@ -109,7 +119,7 @@ static NSMutableDictionary *mockTable;
 	IMP originalImp = method_getImplementation(originalMethod);
 
 	IMP forwarderImp = [subclass instanceMethodForSelector:@selector(aMethodThatMustNotExist)];
-	class_addMethod(subclass, method_getName(originalMethod), forwarderImp, method_getTypeEncoding(originalMethod)); 
+	class_addMethod(subclass, method_getName(originalMethod), forwarderImp, method_getTypeEncoding(originalMethod));
 
 	SEL aliasSelector = NSSelectorFromString([OCMRealMethodAliasPrefix stringByAppendingString:NSStringFromSelector(selector)]);
 	class_addMethod(subclass, aliasSelector, originalImp, method_getTypeEncoding(originalMethod));
@@ -122,6 +132,21 @@ static NSMutableDictionary *mockTable;
     Method originalMethod = class_getInstanceMethod([subclass superclass], aliasSelector);
   	IMP originalImp = method_getImplementation(originalMethod);
     class_replaceMethod(subclass, selector, originalImp, method_getTypeEncoding(originalMethod));
+}
+
+//  Make the compiler happy in -forwardingTargetForSelectorForRealObject: because it can't find the message…
+- (id)forwardingTargetForSelector_Original:(SEL)sel
+{
+    return nil;
+}
+
+- (id)forwardingTargetForSelectorForRealObject:(SEL)sel
+{
+    OCPartialMockObject *mock = [OCPartialMockObject existingPartialMockForObject:self];
+    if ([mock handleSelector:sel])
+        return self;
+
+    return [self forwardingTargetForSelector_Original:sel];
 }
 
 - (void)forwardInvocationForRealObject:(NSInvocation *)anInvocation

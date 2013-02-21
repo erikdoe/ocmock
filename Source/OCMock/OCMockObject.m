@@ -165,6 +165,15 @@
 
 #pragma mark  Handling invocations
 
+- (BOOL)handleSelector:(SEL)sel
+{
+    for (OCMockRecorder *recorder in recorders)
+        if ([recorder matchesSelector:sel])
+            return YES;
+
+    return NO;
+}
+
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
 	if([self handleInvocation:anInvocation] == NO)
