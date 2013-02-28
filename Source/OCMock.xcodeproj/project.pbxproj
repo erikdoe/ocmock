@@ -121,6 +121,7 @@
 		03E6F05F152FA8E20079EAF7 /* OCClassMockRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 03E6F05C152FA8E20079EAF7 /* OCClassMockRecorder.h */; };
 		03E6F060152FA8E20079EAF7 /* OCClassMockRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E6F05D152FA8E20079EAF7 /* OCClassMockRecorder.m */; };
 		03E6F061152FA8E20079EAF7 /* OCClassMockRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E6F05D152FA8E20079EAF7 /* OCClassMockRecorder.m */; };
+		1F970E3816DFC32400578123 /* OCMockForwardingTargetTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F970E3716DFC32400578123 /* OCMockForwardingTargetTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -208,6 +209,8 @@
 		03E6F057152FA60B0079EAF7 /* OCMockClassObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMockClassObject.m; sourceTree = "<group>"; };
 		03E6F05C152FA8E20079EAF7 /* OCClassMockRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCClassMockRecorder.h; sourceTree = "<group>"; };
 		03E6F05D152FA8E20079EAF7 /* OCClassMockRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCClassMockRecorder.m; sourceTree = "<group>"; };
+		1F970E3616DFC32400578123 /* OCMockForwardingTargetTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockForwardingTargetTests.h; sourceTree = "<group>"; };
+		1F970E3716DFC32400578123 /* OCMockForwardingTargetTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMockForwardingTargetTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -302,6 +305,8 @@
 		030EF0C714632FD000B04273 /* OCMockTests */ = {
 			isa = PBXGroup;
 			children = (
+				1F970E3616DFC32400578123 /* OCMockForwardingTargetTests.h */,
+				1F970E3716DFC32400578123 /* OCMockForwardingTargetTests.m */,
 				03B316241463350E0052CD09 /* OCMockObjectTests.h */,
 				03B316251463350E0052CD09 /* OCMockObjectTests.m */,
 				03B316221463350E0052CD09 /* OCMockObjectHamcrestTests.h */,
@@ -601,7 +606,7 @@
 		030EF09E14632FD000B04273 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Mulle Kybernetik";
 			};
 			buildConfigurationList = 030EF0A114632FD000B04273 /* Build configuration list for PBXProject "OCMock" */;
@@ -712,6 +717,7 @@
 				03B3163C1463350E0052CD09 /* OCMockObjectTests.m in Sources */,
 				03B316411463350E0052CD09 /* OCMockRecorderTests.m in Sources */,
 				03B316461463350E0052CD09 /* OCObserverMockObjectTests.m in Sources */,
+				1F970E3816DFC32400578123 /* OCMockForwardingTargetTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -779,8 +785,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -795,8 +805,10 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -805,8 +817,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -815,6 +831,7 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				SDKROOT = macosx;
@@ -908,7 +925,6 @@
 		030EF0E614632FF700B04273 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				DSTROOT = /tmp/OCMockLib.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OCMockLib/OCMockLib-Prefix.pch";
@@ -929,7 +945,6 @@
 		030EF0E714632FF700B04273 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				DSTROOT = /tmp/OCMockLib.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OCMockLib/OCMockLib-Prefix.pch";
