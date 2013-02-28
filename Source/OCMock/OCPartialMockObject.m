@@ -148,6 +148,7 @@ static NSMutableDictionary *mockTable;
 
 - (id)forwardingTargetForSelectorForRealObject:(SEL)sel
 {
+	// in here "self" is a reference to the real object, not the mock
     OCPartialMockObject *mock = [OCPartialMockObject existingPartialMockForObject:self];
     if ([mock handleSelector:sel])
         return self;
