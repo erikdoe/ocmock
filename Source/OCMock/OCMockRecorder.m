@@ -114,7 +114,7 @@
 
 - (id)classMethod
 {
-    recordingClassMethod = YES;
+    recordedAsClassMethod = YES;
     [signatureResolver setupClassForClassMethodMocking];
     return self;
 }
@@ -124,7 +124,7 @@
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
-    if(recordingClassMethod)
+    if(recordedAsClassMethod)
         return [[signatureResolver mockedClass] methodSignatureForSelector:aSelector];
     
     NSMethodSignature *signature = [signatureResolver methodSignatureForSelector:aSelector];
@@ -143,7 +143,7 @@
 
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
-    if(recordingClassMethod)
+    if(recordedAsClassMethod)
         [signatureResolver setupForwarderForClassMethodSelector:[anInvocation selector]];
 	if(recordedInvocation != nil)
 		[NSException raise:NSInternalInconsistencyException format:@"Recorder received two methods to record."];
@@ -163,9 +163,15 @@
 
 - (BOOL)matchesInvocation:(NSInvocation *)anInvocation
 {
-	id  recordedArg, passedArg;
-	int i, n;
+	id      target, recordedArg, passedArg;
+	int     i, n;
+    BOOL    isClassMethodInvocation;
 	
+    target = [anInvocation target];
+    isClassMethodInvocation = (target != nil) && (target == [target class]);
+    if(isClassMethodInvocation != recordedAsClassMethod)
+        return NO;
+    
 	if([anInvocation selector] != [recordedInvocation selector])
 		return NO;
 	

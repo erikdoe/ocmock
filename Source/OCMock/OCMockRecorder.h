@@ -8,7 +8,7 @@
 @interface OCMockRecorder : NSProxy 
 {
 	id				signatureResolver;
-    BOOL            recordingClassMethod;
+    BOOL            recordedAsClassMethod;
 	NSInvocation	*recordedInvocation;
 	NSMutableArray	*invocationHandlers;
 }

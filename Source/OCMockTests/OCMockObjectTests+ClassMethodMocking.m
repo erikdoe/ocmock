@@ -46,7 +46,7 @@
     STAssertEqualObjects(@"mocked", [TestClassWithClassMethods foo], @"Should have stubbed class method.");
 }
 
-- (void)testRealClassReceivesMethodsAfterStopWasCalled
+- (void)testClassReceivesMethodsAfterStopWasCalled
 {
     mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
     
@@ -56,7 +56,7 @@
     STAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo], @"Should not have stubbed class method.");
 }
 
-- (void)testReturnsToClassImplementationWhenExpectedCallOccurred
+- (void)testClassReceivesMethodAgainWhenExpectedCallOccurred
 {
     mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
 
@@ -66,13 +66,14 @@
    	STAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo], @"Should have 'unstubbed' method.");
 }
 
-- (void)testCanStubClassMethodWhenInstanceMethodWithSameNameExists
+- (void)testStubsOnlyClassMethodWhenInstanceMethodWithSameNameExists
 {
     mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
     
     [[[[mock stub] classMethod] andReturn:@"mocked"] bar];
     
     STAssertEqualObjects(@"mocked", [TestClassWithClassMethods bar], @"Should have stubbed class method.");
+    STAssertThrows([mock bar], @"Should not have stubbed instance method.");
 }
 
 - (void)testStubsClassMethodWhenNoInstanceMethodExistsWithName
@@ -83,5 +84,17 @@
     
     STAssertEqualObjects(@"mocked", [TestClassWithClassMethods foo], @"Should have stubbed class method.");
 }
+
+- (void)testStubsCanDistinguishInstanceAndClassMethods
+{
+    mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    
+    [[[[mock stub] classMethod] andReturn:@"mocked-class"] bar];
+    [[[mock stub] andReturn:@"mocked-instance"] bar];
+    
+    STAssertEqualObjects(@"mocked-class", [TestClassWithClassMethods bar], @"Should have stubbed class method.");
+    STAssertEqualObjects(@"mocked-instance", [mock bar], @"Should have stubbed instance method.");
+}
+
 
 @end
