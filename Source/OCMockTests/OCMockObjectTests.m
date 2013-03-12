@@ -80,22 +80,6 @@ typedef int intTypedef;
 
 
 
-@interface TestClassWithClassMethod : NSObject
-
-+ (NSString *)method1;
-
-@end
-
-@implementation TestClassWithClassMethod
-
-+ (NSString *)method1
-{
-    return @"Foo";
-}
-
-@end
-
-
 @interface TestObserver	: NSObject
 {
 	@public
@@ -754,6 +738,11 @@ static NSString *TestNotification = @"TestNotification";
 	returnValue = [mock valueForKey:@"SomeKey"];
 	
 	STAssertEqualObjects(@"SomeValue", returnValue, @"Should have returned value that was set up.");
+}
+
+- (void)testForwardsIsKindOfClass
+{
+    STAssertTrue([mock isKindOfClass:[NSString class]], @"Should have pretended to be the mocked class.");
 }
 
 - (void)testWorksWithTypeQualifiers

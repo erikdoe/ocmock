@@ -149,4 +149,9 @@ static NSMutableDictionary *mockTable;
     return [mockedClass instancesRespondToSelector:selector];
 }
 
+- (BOOL)isKindOfClass:(Class)aClass
+{
+    return [mockedClass isSubclassOfClass:aClass];
+}
+
 @end
