@@ -16,7 +16,6 @@
 }
 
 + (id)mockForClass:(Class)aClass;
-+ (id)mockForClassObject:(Class)aClass;
 + (id)mockForProtocol:(Protocol *)aProtocol;
 + (id)partialMockForObject:(NSObject *)anObject;
 

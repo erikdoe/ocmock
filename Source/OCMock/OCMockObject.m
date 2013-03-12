@@ -7,7 +7,6 @@
 #import "OCClassMockObject.h"
 #import "OCProtocolMockObject.h"
 #import "OCPartialMockObject.h"
-#import "OCMockClassObject.h"
 #import "OCObserverMockObject.h"
 #import <OCMock/OCMockRecorder.h>
 #import "NSInvocation+OCMAdditions.h"
@@ -36,11 +35,6 @@
 + (id)mockForClass:(Class)aClass
 {
 	return [[[OCClassMockObject alloc] initWithClass:aClass] autorelease];
-}
-
-+ (id)mockForClassObject:(Class)aClass;
-{
-    return [[[OCMockClassObject alloc] initWithClass:aClass] autorelease];
 }
 
 + (id)mockForProtocol:(Protocol *)aProtocol

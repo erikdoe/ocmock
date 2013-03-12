@@ -7,6 +7,7 @@
 #import <OCMock/OCMockRecorder.h>
 #import <OCMock/OCMArg.h>
 #import <OCMock/OCMConstraint.h>
+#import "OCClassMockObject.h"
 #import "OCMPassByRefSetter.h"
 #import "OCMReturnValueProvider.h"
 #import "OCMBoxedReturnValueProvider.h"
@@ -109,15 +110,29 @@
 }
 
 
+#pragma mark  Switching to class methods
+
+- (id)classMethod
+{
+    recordingClassMethod = YES;
+    [signatureResolver setupClassForClassMethodMocking];
+    return self;
+}
+
+
 #pragma mark  Recording the actual invocation
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
-	return [signatureResolver methodSignatureForSelector:aSelector];
+    if(recordingClassMethod)
+        return [[signatureResolver mockedClass] methodSignatureForSelector:aSelector];
+    return [signatureResolver methodSignatureForSelector:aSelector];
 }
 
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
+    if(recordingClassMethod)
+        [signatureResolver setupForwarderForClassMethodSelector:[anInvocation selector]];
 	if(recordedInvocation != nil)
 		[NSException raise:NSInternalInconsistencyException format:@"Recorder received two methods to record."];
 	[anInvocation setTarget:nil];

@@ -731,27 +731,6 @@ static NSString *TestNotification = @"TestNotification";
 
 
 // --------------------------------------------------------------------------------------
-//	class object mocks allow stubbing/expecting on class objects
-// --------------------------------------------------------------------------------------
-
-- (void)testStubsMethodOnClassObject
-{
-    mock = [OCMockObject mockForClassObject:[TestClassWithClassMethod class]];
-    
-	[[[mock stub] andReturn:@"TestFoo"] method1];
-	STAssertEqualObjects(@"TestFoo", [TestClassWithClassMethod method1], @"Should have stubbed method.");
-}
-
-- (void)testForwardsUnstubbedMethodsToRealClassObjectAfterStopIsCalled
-{
-    mock = [OCMockObject mockForClassObject:[TestClassWithClassMethod class]];
-	[[[mock stub] andReturn:@"TestFoo"] method1];
-    [mock stopMocking];
-	STAssertEqualObjects(@"Foo", [TestClassWithClassMethod method1], @"Should not have stubbed method.");
-}
-
-
-// --------------------------------------------------------------------------------------
 //	mocks should honour the NSObject contract, etc.
 // --------------------------------------------------------------------------------------
 
