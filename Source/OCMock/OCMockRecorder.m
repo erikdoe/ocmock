@@ -126,7 +126,19 @@
 {
     if(recordingClassMethod)
         return [[signatureResolver mockedClass] methodSignatureForSelector:aSelector];
-    return [signatureResolver methodSignatureForSelector:aSelector];
+    
+    NSMethodSignature *signature = [signatureResolver methodSignatureForSelector:aSelector];
+    if(signature == nil)
+    {
+        // if we're a working with a class mock and there is a class method, auto-switch
+        if(([[signatureResolver class] isSubclassOfClass:[OCClassMockObject class]]) &&
+           ([[signatureResolver mockedClass] respondsToSelector:aSelector]))
+        {
+            [self classMethod];
+            signature = [self methodSignatureForSelector:aSelector];
+        }
+    }
+    return signature;
 }
 
 - (void)forwardInvocation:(NSInvocation *)anInvocation

@@ -75,4 +75,13 @@
     STAssertEqualObjects(@"mocked", [TestClassWithClassMethods bar], @"Should have stubbed class method.");
 }
 
+- (void)testStubsClassMethodWhenNoInstanceMethodExistsWithName
+{
+    mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    
+    [[[mock stub] andReturn:@"mocked"] foo];
+    
+    STAssertEqualObjects(@"mocked", [TestClassWithClassMethods foo], @"Should have stubbed class method.");
+}
+
 @end
