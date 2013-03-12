@@ -139,6 +139,13 @@
     STAssertEqualObjects(@"Foo", [(id)realObject foo], @"Should have returned value from forwarding target");
 }
 
+- (void)testPartialMockDoesNotInterfereWithForwardingTargetWhenCalledOnRealObject
+{
+    TestClassThatUsesForwardingTargetForSelector *realObject = [[[TestClassThatUsesForwardingTargetForSelector alloc] init] autorelease];
+    mock = [OCMockObject partialMockForObject:realObject];
+    STAssertEqualObjects(@"Foo", [(id)realObject foo], @"Should have been able to forward method.");
+}
+
 //- (void)testStubsMethodsImplementedThroughForwardingTargetForSelector
 //{
 //    TestClassThatUsesForwardingTargetForSelector *realObject = [[[TestClassThatUsesForwardingTargetForSelector alloc] init] autorelease];
