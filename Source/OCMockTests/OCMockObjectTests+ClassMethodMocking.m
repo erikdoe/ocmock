@@ -56,6 +56,16 @@
     STAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo], @"Should not have stubbed class method.");
 }
 
+- (void)testReturnsToClassImplementationWhenExpectedCallOccurred
+{
+    mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+
+   	[[[[mock expect] classMethod] andReturn:@"mocked"] foo];
+   	
+    STAssertEqualObjects(@"mocked", [TestClassWithClassMethods foo], @"Should have stubbed method.");
+   	STAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo], @"Should have 'unstubbed' method.");
+}
+
 - (void)testCanStubClassMethodWhenInstanceMethodWithSameNameExists
 {
     mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];

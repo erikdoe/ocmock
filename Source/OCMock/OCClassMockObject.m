@@ -60,6 +60,7 @@ static NSMutableDictionary *mockTable;
 	if(replacedClassMethods != nil)
     {
 		[self stopMocking];
+        [[self class] forgetMockForClass:mockedClass];
         [replacedClassMethods release];
     }
 	[super dealloc];
@@ -80,10 +81,10 @@ static NSMutableDictionary *mockTable;
 
 - (void)setupClassForClassMethodMocking
 {
-    [[self class] rememberMock:self forClass:mockedClass];
     replacedClassMethods = [[NSMutableDictionary alloc] init];
+    [[self class] rememberMock:self forClass:mockedClass];
     
-	Method myForwardInvocationMethod = class_getInstanceMethod([self class], @selector(forwardInvocationForRealObject:));
+	Method myForwardInvocationMethod = class_getInstanceMethod([self class], @selector(forwardInvocationForClassObject:));
 	IMP myForwardInvocationImp = method_getImplementation(myForwardInvocationMethod);
 	const char *forwardInvocationTypes = method_getTypeEncoding(myForwardInvocationMethod);
 	Class metaClass = objc_getMetaClass(class_getName(mockedClass));
@@ -104,29 +105,35 @@ static NSMutableDictionary *mockTable;
 	[replacedClassMethods setObject:[NSValue valueWithPointer:replacedMethod] forKey:NSStringFromSelector(selector)];
 }
 
-- (void)forwardInvocationForRealObject:(NSInvocation *)anInvocation
+- (void)removeForwarderForClassMethodSelector:(SEL)selector
+{
+	Class metaClass = objc_getMetaClass(class_getName(mockedClass));
+    NSValue *originalMethodPointer = [replacedClassMethods objectForKey:NSStringFromSelector(selector)];
+	IMP originalMethod = [originalMethodPointer pointerValue];
+	if (originalMethod) {
+		class_replaceMethod(metaClass, selector, originalMethod, 0);
+	} else {
+		IMP forwarderImp = [metaClass instanceMethodForSelector:@selector(aMethodThatMustNotExist)];
+		class_replaceMethod(metaClass, selector, forwarderImp, 0);
+    }
+}
+
+- (void)forwardInvocationForClassObject:(NSInvocation *)anInvocation
 {
 	// in here "self" is a reference to the real class, not the mock
 	OCClassMockObject *mock = [OCClassMockObject existingMockForClass:(Class)self];
 	if([mock handleInvocation:anInvocation] == NO)
-		[NSException raise:NSInternalInconsistencyException format:@"Ended up in subclass forwarder for %@ with unstubbed method %@",
-		 [self class], NSStringFromSelector([anInvocation selector])];
+    {
+        // if mock doesn't want to handle the invocation, maybe all expects have occurred, we remove the forwarder and try again
+        [mock removeForwarderForClassMethodSelector:[anInvocation selector]];
+        [anInvocation invoke];
+    }
 }
 
 - (void)stopMocking
 {
-	Class metaClass = objc_getMetaClass(class_getName(mockedClass));
-    
-	for (NSString *replacedMethod in replacedClassMethods) {
-		NSValue *originalMethodPointer = [replacedClassMethods objectForKey:replacedMethod];
-		IMP originalMethod = [originalMethodPointer pointerValue];
-		if (originalMethod) {
-			class_replaceMethod(metaClass, NSSelectorFromString(replacedMethod), originalMethod, 0);
-		} else {
-			IMP forwarderImp = [metaClass instanceMethodForSelector:@selector(aMethodThatMustNotExist)];
-			class_replaceMethod(metaClass, NSSelectorFromString(replacedMethod), forwarderImp, 0);
-		}
-	}
+	for (NSString *replacedMethod in replacedClassMethods)
+        [self removeForwarderForClassMethodSelector:NSSelectorFromString(replacedMethod)];
 }
 
 
