@@ -1,6 +1,11 @@
 Chronological listing of changes. More detail is usually found in the Git commit messages
 and/or the pull requests.
 
+2013-02-12
+
+* Added class method mocking capability to class mock objects
+* Added implementation of isKindOfClass: to class mock objects
+
 2013-02-20
 
 * Allowing to set non-object pass-by-ref args (thanks to Glenn L. Austin)
