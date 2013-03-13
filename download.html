@@ -57,6 +57,21 @@ published: true
 <code> 
 	&nbsp;&nbsp;<a href="https://github.com/erikdoe/ocmock">https://github.com/erikdoe/ocmock</a>
 </code>
+<p>
+	The easiest way to build OCMock from source is to use the supplied build script.
+</p>
+<pre><code>cd Tools
+ruby build.rb
+</code></pre>	
+<p>
+	Running this script should create binary versions of the OCMock framework and library in a directory under <code>/tmp</code>. When the build is complete a finder window for the directory should open up automatically.
+</p>
+<p>
+	If you pass the <code>-r</code> flag to the script it creates a disk image with all the artefacts in it. This is what we use to create the binary distribution. 
+</p>
+<p>
+	If you have switched compilers using the <code>CC</code> enviromnent variable the build might fail. In such cases, please reset the variable before running the script.
+</p>
 <h2>
 	License
 </h2>
