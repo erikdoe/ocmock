@@ -754,6 +754,21 @@ static NSString *TestNotification = @"TestNotification";
 }
 
 
+- (void)testAdjustsRetainCountWhenStubbingMethodsThatCreateObjects
+{
+    NSString *objectToReturn = [NSString stringWithFormat:@"This is not a %@.", @"string constant"];
+    [[[mock stub] andReturn:objectToReturn] mutableCopy];
+
+    NSUInteger retainCountBefore = [objectToReturn retainCount];
+    id returnedObject = [mock mutableCopy];
+    [returnedObject release]; // the expectation is that we have to call release after a copy
+    NSUInteger retainCountAfter = [objectToReturn retainCount];
+
+    STAssertEqualObjects(objectToReturn, returnedObject, @"Should not stubbed copy method");
+    STAssertEquals(retainCountBefore, retainCountAfter, @"Should have incremented retain count in copy stub.");
+}
+
+
 // --------------------------------------------------------------------------------------
 //  some internal tests
 // --------------------------------------------------------------------------------------

@@ -35,6 +35,12 @@
             @throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Expected invocation with object return type. Did you mean to use andReturnValue: instead?" userInfo:nil];
         }
     }
+    NSString *sel = NSStringFromSelector([anInvocation selector]);
+    if([sel hasPrefix:@"alloc"] || [sel hasPrefix:@"new"] || [sel hasPrefix:@"copy"] || [sel hasPrefix:@"mutableCopy"])
+    {
+        // methods that "create" an object return it with an extra retain count
+        [returnValue retain];
+    }
 	[anInvocation setReturnValue:&returnValue];
 }
 
