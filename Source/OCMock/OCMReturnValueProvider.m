@@ -31,12 +31,14 @@
         NSError *error= nil;
         NSRegularExpression *regex= [NSRegularExpression regularExpressionWithPattern:regexString options:0 error:&error];
         NSString *type= [NSString stringWithCString:returnType encoding:NSASCIIStringEncoding];
-        NSUInteger match= [regex numberOfMatchesInString:type options:0 range:NSMakeRange(0, type.length)];
+        NSUInteger match = [regex numberOfMatchesInString:type options:0 range:NSMakeRange(0, type.length)];
         if(!match) {
             // it's no typedef to an class and no class itself
             @throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Expected invocation with object return type. Did you mean to use andReturnValue: instead?" userInfo:nil];
         }
-    }
+    } else {
+		[returnValue retain];
+	}
 	[anInvocation setReturnValue:&returnValue];
 }
 
