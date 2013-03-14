@@ -43,21 +43,6 @@
 @end
 
 
-@interface TestClassThatUsesForwardingTargetForSelector : NSObject
-
-@end
-
-@implementation TestClassThatUsesForwardingTargetForSelector
-
-- (id)forwardingTargetForSelector:(SEL)aSelector
-{
-    if(aSelector == @selector(foo))
-        return [[[TestClassWithSimpleMethod alloc] init] autorelease];
-    return nil;
-}
-
-@end
-
 
 @implementation OCMockObjectPartialMocksTests
 
@@ -129,30 +114,6 @@
 	[mock stopMocking];
 	STAssertEqualObjects(@"Foo", [realObject foo], @"Should have 'unstubbed' method.");
 }
-
-
-#pragma mark   Tests for stubbing with partial mocks for objects using forwardingTargetForSelector
-
-- (void)testForwardingTargetForSelectorBehavesAsExpected
-{
-    TestClassThatUsesForwardingTargetForSelector *realObject = [[[TestClassThatUsesForwardingTargetForSelector alloc] init] autorelease];
-    STAssertEqualObjects(@"Foo", [(id)realObject foo], @"Should have returned value from forwarding target");
-}
-
-- (void)testPartialMockDoesNotInterfereWithForwardingTargetWhenCalledOnRealObject
-{
-    TestClassThatUsesForwardingTargetForSelector *realObject = [[[TestClassThatUsesForwardingTargetForSelector alloc] init] autorelease];
-    [OCMockObject partialMockForObject:realObject];
-    STAssertEqualObjects(@"Foo", [(id)realObject foo], @"Should have been able to forward method.");
-}
-
-//- (void)testStubsMethodsImplementedThroughForwardingTargetForSelector
-//{
-//    TestClassThatUsesForwardingTargetForSelector *realObject = [[[TestClassThatUsesForwardingTargetForSelector alloc] init] autorelease];
-//    mock = [OCMockObject partialMockForObject:realObject];
-//    [[[mock stub] andReturn:@"FooFoo"] foo];
-//	STAssertEqualObjects(@"FooFoo", [mock foo], @"Should have stubbed method.");
-//}
 
 
 #pragma mark   Tests for explicit forward to real object with partial mocks
