@@ -110,7 +110,7 @@ static NSMutableDictionary *mockTable;
 	Class metaClass = objc_getMetaClass(class_getName(mockedClass));
     NSValue *originalMethodPointer = [replacedClassMethods objectForKey:NSStringFromSelector(selector)];
 	IMP originalMethod = [originalMethodPointer pointerValue];
-	if (originalMethod) {
+	if(originalMethod) {
 		class_replaceMethod(metaClass, selector, originalMethod, 0);
 	} else {
 		IMP forwarderImp = [metaClass instanceMethodForSelector:@selector(aMethodThatMustNotExist)];
@@ -132,7 +132,7 @@ static NSMutableDictionary *mockTable;
 
 - (void)stopMocking
 {
-	for (NSString *replacedMethod in replacedClassMethods)
+	for(NSString *replacedMethod in replacedClassMethods)
         [self removeForwarderForClassMethodSelector:NSSelectorFromString(replacedMethod)];
 }
 
