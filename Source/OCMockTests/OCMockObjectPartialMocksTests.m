@@ -4,7 +4,7 @@
 //---------------------------------------------------------------------------------------
 
 #import <OCMock/OCMock.h>
-#import "OCMockObjectTests+PartialMocks.h"
+#import "OCMockObjectPartialMocksTests.h"
 
 #pragma mark   Helper classes
 
@@ -59,14 +59,14 @@
 @end
 
 
-@implementation OCMockObjectTests(PartialMocks)
+@implementation OCMockObjectPartialMocksTests
 
 #pragma mark   Tests for stubbing with partial mocks
 
 - (void)testStubsMethodsOnPartialMock
 {
 	TestClassWithSimpleMethod *object = [[[TestClassWithSimpleMethod alloc] init] autorelease];
-	mock = [OCMockObject partialMockForObject:object];
+	id mock = [OCMockObject partialMockForObject:object];
 	[[[mock stub] andReturn:@"hi"] foo];
 	STAssertEqualObjects(@"hi", [mock foo], @"Should have returned stubbed value");
 }
@@ -81,7 +81,7 @@
 - (void)testForwardsUnstubbedMethodsCallsToRealObjectOnPartialMock
 {
 	TestClassWithSimpleMethod *object = [[[TestClassWithSimpleMethod alloc] init] autorelease];
-	mock = [OCMockObject partialMockForObject:object];
+	id mock = [OCMockObject partialMockForObject:object];
 	STAssertEqualObjects(@"Foo", [mock foo], @"Should have returned value from real object.");
 }
 
@@ -94,7 +94,7 @@
 - (void)testStubsMethodOnRealObjectReference
 {
 	TestClassWithSimpleMethod *realObject = [[[TestClassWithSimpleMethod alloc] init] autorelease];
-	mock = [OCMockObject partialMockForObject:realObject];
+	id mock = [OCMockObject partialMockForObject:realObject];
 	[[[mock stub] andReturn:@"TestFoo"] foo];
 	STAssertEqualObjects(@"TestFoo", [realObject foo], @"Should have stubbed method.");
 }
@@ -102,7 +102,7 @@
 - (void)testCallsToSelfInRealObjectAreShadowedByPartialMock
 {
 	TestClassThatCallsSelf *realObject = [[[TestClassThatCallsSelf alloc] init] autorelease];
-	mock = [OCMockObject partialMockForObject:realObject];
+	id mock = [OCMockObject partialMockForObject:realObject];
 	[[[mock stub] andReturn:@"FooFoo"] method2];
 	STAssertEqualObjects(@"FooFoo", [mock method1], @"Should have called through to stubbed method.");
 }
@@ -113,7 +113,7 @@
 - (void)testReturnsToRealImplementationWhenExpectedCallOccurred
 {
     TestClassWithSimpleMethod *realObject = [[[TestClassWithSimpleMethod alloc] init] autorelease];
-   	mock = [OCMockObject partialMockForObject:realObject];
+   	id mock = [OCMockObject partialMockForObject:realObject];
    	[[[mock expect] andReturn:@"TestFoo"] foo];
    	STAssertEqualObjects(@"TestFoo", [realObject foo], @"Should have stubbed method.");
    	STAssertEqualObjects(@"Foo", [realObject foo], @"Should have 'unstubbed' method.");
@@ -122,7 +122,7 @@
 - (void)testRestoresObjectWhenStopped
 {
 	TestClassWithSimpleMethod *realObject = [[[TestClassWithSimpleMethod alloc] init] autorelease];
-	mock = [OCMockObject partialMockForObject:realObject];
+	id mock = [OCMockObject partialMockForObject:realObject];
 	[[[mock stub] andReturn:@"TestFoo"] foo];
 	STAssertEqualObjects(@"TestFoo", [realObject foo], @"Should have stubbed method.");
 	STAssertEqualObjects(@"TestFoo", [realObject foo], @"Should have stubbed method.");
@@ -142,7 +142,7 @@
 - (void)testPartialMockDoesNotInterfereWithForwardingTargetWhenCalledOnRealObject
 {
     TestClassThatUsesForwardingTargetForSelector *realObject = [[[TestClassThatUsesForwardingTargetForSelector alloc] init] autorelease];
-    mock = [OCMockObject partialMockForObject:realObject];
+    [OCMockObject partialMockForObject:realObject];
     STAssertEqualObjects(@"Foo", [(id)realObject foo], @"Should have been able to forward method.");
 }
 
@@ -160,7 +160,7 @@
 - (void)testForwardsToRealObjectWhenSetUpAndCalledOnMock
 {
 	TestClassWithSimpleMethod *realObject = [[[TestClassWithSimpleMethod alloc] init] autorelease];
-	mock = [OCMockObject partialMockForObject:realObject];
+	id mock = [OCMockObject partialMockForObject:realObject];
     
 	[[[mock expect] andForwardToRealObject] foo];
 	STAssertEquals(@"Foo", [mock foo], @"Should have called method on real object.");
@@ -171,7 +171,7 @@
 - (void)testForwardsToRealObjectWhenSetUpAndCalledOnRealObject
 {
 	TestClassWithSimpleMethod *realObject = [[[TestClassWithSimpleMethod alloc] init] autorelease];
-	mock = [OCMockObject partialMockForObject:realObject];
+	id mock = [OCMockObject partialMockForObject:realObject];
 	
 	[[[mock expect] andForwardToRealObject] foo];
 	STAssertEquals(@"Foo", [realObject foo], @"Should have called method on real object.");
@@ -191,7 +191,7 @@
 {
 	// using partial mocks and the indirect return value provider
 	TestClassThatCallsSelf *foo = [[[TestClassThatCallsSelf alloc] init] autorelease];
-	mock = [OCMockObject partialMockForObject:foo];
+	id mock = [OCMockObject partialMockForObject:foo];
 	[[[mock stub] andCall:@selector(differentMethodInDifferentClass) onObject:self] method1];
 	STAssertEqualObjects(@"swizzled!", [foo method1], @"Should have returned value from different method");
 }
@@ -204,7 +204,7 @@
 - (void)testMethodSwizzlingWorksForVoidReturns
 {
 	TestClassThatCallsSelf *foo = [[[TestClassThatCallsSelf alloc] init] autorelease];
-	mock = [OCMockObject partialMockForObject:foo];
+	id mock = [OCMockObject partialMockForObject:foo];
 	[[[mock stub] andCall:@selector(aMethodWithVoidReturn) onObject:self] method1];
 	STAssertNoThrow([foo method1], @"Should have worked.");
 }

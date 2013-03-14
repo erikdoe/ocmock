@@ -3,8 +3,8 @@
 //  Copyright (c) 2013 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
-#import "OCMockObjectTests.h"
+#import <SenTestingKit/SenTestingKit.h>
 
-@interface OCMockObjectTests(PartialMocks)
+@interface OCMockObjectPartialMocksTests : SenTestCase
 
 @end

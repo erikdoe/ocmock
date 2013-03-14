@@ -4,7 +4,7 @@
 //---------------------------------------------------------------------------------------
 
 #import <OCMock/OCMock.h>
-#import "OCMockObjectTests+ClassMethodMocking.h"
+#import "OCMockObjectClassMethodMockingTests.h"
 
 #pragma mark   Helper classes
 
@@ -35,11 +35,13 @@
 
 
 
-@implementation OCMockObjectTests(ClassMethodMocking)
+@implementation OCMockObjectClassMethodMockingTests
+
+#pragma mark   Tests stubbing class methods
 
 - (void)testCanStubClassMethod
 {
-    mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
 
     [[[[mock stub] classMethod] andReturn:@"mocked"] foo];
     
@@ -48,7 +50,7 @@
 
 - (void)testClassReceivesMethodsAfterStopWasCalled
 {
-    mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
     
     [[[[mock stub] classMethod] andReturn:@"mocked"] foo];
     [mock stopMocking];
@@ -58,7 +60,7 @@
 
 - (void)testClassReceivesMethodAgainWhenExpectedCallOccurred
 {
-    mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
 
    	[[[[mock expect] classMethod] andReturn:@"mocked"] foo];
    	
@@ -68,7 +70,7 @@
 
 - (void)testStubsOnlyClassMethodWhenInstanceMethodWithSameNameExists
 {
-    mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
     
     [[[[mock stub] classMethod] andReturn:@"mocked"] bar];
     
@@ -78,7 +80,7 @@
 
 - (void)testStubsClassMethodWhenNoInstanceMethodExistsWithName
 {
-    mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
     
     [[[mock stub] andReturn:@"mocked"] foo];
     
@@ -87,7 +89,7 @@
 
 - (void)testStubsCanDistinguishInstanceAndClassMethods
 {
-    mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
     
     [[[[mock stub] classMethod] andReturn:@"mocked-class"] bar];
     [[[mock stub] andReturn:@"mocked-instance"] bar];
