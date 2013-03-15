@@ -81,6 +81,9 @@ static NSMutableDictionary *mockTable;
 
 - (void)setupClassForClassMethodMocking
 {
+    if(replacedClassMethods != nil)
+        return;
+
     replacedClassMethods = [[NSMutableDictionary alloc] init];
     [[self class] rememberMock:self forClass:mockedClass];
     
