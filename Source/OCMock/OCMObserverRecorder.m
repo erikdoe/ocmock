@@ -60,7 +60,11 @@
 		if([expectedArg matches:observedArg] == NO)
 			return NO;
 	}
-	else
+	else if ([expectedArg isKindOfClass:[NSString class]])
+    {
+        return [expectedArg isEqualToString:observedArg];
+    }
+    else
 	{
 		if([expectedArg class] != [observedArg class])
 			return NO;

@@ -124,4 +124,16 @@ static NSString *TestNotificationOne = @"TestNotificationOne";
 	STAssertThrows([mock verify], nil);
 }
 
+- (void)testChecksNotificationNamesCorrectly
+{
+    NSString *notificationName = @"MyNotification";
+    
+    [center addMockObserver:mock name:notificationName object:nil];
+    [[mock expect] notificationWithName:[notificationName mutableCopy] object:[OCMArg any]];
+    
+    [center postNotificationName:notificationName object:self];
+    
+    [mock verify];
+}
+
 @end
