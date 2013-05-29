@@ -914,8 +914,9 @@
 					"\"$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Versions/C\"",
 				);
 				OTHER_LDFLAGS = "-ObjC";
+				PRIVATE_HEADERS_FOLDER_PATH = "../../Headers/${PRODUCT_NAME}";
 				PRODUCT_NAME = OCMock;
-				PUBLIC_HEADERS_FOLDER_PATH = "$(PRODUCT_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "../../Headers/$(PRODUCT_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -935,8 +936,9 @@
 					"\"$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Versions/C\"",
 				);
 				OTHER_LDFLAGS = "-ObjC";
+				PRIVATE_HEADERS_FOLDER_PATH = "../../Headers/${PRODUCT_NAME}";
 				PRODUCT_NAME = OCMock;
-				PUBLIC_HEADERS_FOLDER_PATH = "$(PRODUCT_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "../../Headers/$(PRODUCT_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
