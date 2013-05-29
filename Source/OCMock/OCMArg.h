@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------------------
 //  $Id$
-//  Copyright (c) 2009-2010 by Mulle Kybernetik. See License file for details.
+//  Copyright (c) 2009-2013 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import <Foundation/Foundation.h>
@@ -16,12 +16,13 @@
 + (id)isNotEqual:(id)value;
 + (id)checkWithSelector:(SEL)selector onObject:(id)anObject;
 #if NS_BLOCKS_AVAILABLE
-+ (id)checkWithBlock:(BOOL (^)(id))block;
++ (id)checkWithBlock:(BOOL (^)(id obj))block;
 #endif
 
 // manipulating arguments
 
 + (id *)setTo:(id)value;
++ (void *)setToValue:(NSValue *)value;
 
 // internal use only
 

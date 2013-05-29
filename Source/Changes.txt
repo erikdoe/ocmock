@@ -1,6 +1,27 @@
 Chronological listing of changes. More detail is usually found in the Git commit messages
 and/or the pull requests.
 
+2013-03-14
+
+* Stubbing an object creation method now handles retain count correctly.
+* Added support for forwardingTagetForSelector: (thanks to Jeff Watkins)
+
+
+2013-03-12
+
+* Added class method mocking capability to class mock objects
+* Added implementation of isKindOfClass: to class mock objects
+
+
+2013-02-20
+
+* Allowing to set non-object pass-by-ref args (thanks to Glenn L. Austin)
+
+
+2012-08-23
+
+* Calling a previously expected method on a partial mock is no longer an error.
+
 
 2012-01-23
 

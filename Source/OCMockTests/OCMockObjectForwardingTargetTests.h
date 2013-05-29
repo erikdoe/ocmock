@@ -1,12 +1,10 @@
 //---------------------------------------------------------------------------------------
 //  $Id$
-//  Copyright (c) 2012 by Mulle Kybernetik. See License file for details.
+//  Copyright (c) 2013 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
-#import "OCMockRecorder.h"
+#import <SenTestingKit/SenTestingKit.h>
 
-@interface OCClassMockRecorder : OCMockRecorder 
-{
-}
+@interface OCMockForwardingTargetTests : SenTestCase
 
 @end
