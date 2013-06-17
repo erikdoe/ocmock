@@ -103,7 +103,13 @@ static NSMutableDictionary *mockTable;
 	Class metaClass = objc_getMetaClass(class_getName(mockedClass));
 	
 	IMP forwarderImp = [metaClass instanceMethodForSelector:@selector(aMethodThatMustNotExist)];
-	IMP replacedMethod = class_replaceMethod(metaClass, method_getName(originalMethod), forwarderImp, method_getTypeEncoding(originalMethod));
+    
+    IMP replacedMethod = nil;
+    if (class_addMethod(metaClass, selector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod))) {
+        replacedMethod = class_replaceMethod(metaClass, method_getName(originalMethod), forwarderImp, method_getTypeEncoding(originalMethod));
+    } else {
+        replacedMethod = method_setImplementation(originalMethod, forwarderImp);
+    }
     
 	[replacedClassMethods setObject:[NSValue valueWithPointer:replacedMethod] forKey:NSStringFromSelector(selector)];
 }
