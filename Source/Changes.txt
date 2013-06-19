@@ -1,6 +1,11 @@
 Chronological listing of changes. More detail is usually found in the Git commit messages
 and/or the pull requests.
 
+2013-06-19
+
+* Constraints implement NSCopying for Xcode 5 compatibility.
+
+
 2013-03-14
 
 * Stubbing an object creation method now handles retain count correctly.
