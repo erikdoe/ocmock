@@ -163,7 +163,7 @@ static NSString *TestNotification = @"TestNotification";
 - (void)testAcceptsStubbedMethodWithPointerArgument
 {
 	NSError *error;
-	[[[mock stub] andReturnValue:OCMOCK_VALUE((BOOL){YES})] writeToFile:OCMOCK_ANY atomically:YES encoding:NSMacOSRomanStringEncoding error:&error];
+	[[[mock stub] andReturnValue:@YES] writeToFile:[OCMArg any] atomically:YES encoding:NSMacOSRomanStringEncoding error:&error];
 	
 	STAssertTrue([mock writeToFile:@"foo" atomically:YES encoding:NSMacOSRomanStringEncoding error:&error], nil);
 }
@@ -171,7 +171,7 @@ static NSString *TestNotification = @"TestNotification";
 - (void)testAcceptsStubbedMethodWithAnyPointerArgument
 {
 	NSError *error;
-	[[[mock stub] andReturnValue:OCMOCK_VALUE((BOOL){YES})] writeToFile:OCMOCK_ANY atomically:YES encoding:NSMacOSRomanStringEncoding error:[OCMArg anyPointer]];
+	[[[mock stub] andReturnValue:@YES] writeToFile:[OCMArg any] atomically:YES encoding:NSMacOSRomanStringEncoding error:[OCMArg anyPointer]];
 	
 	STAssertTrue([mock writeToFile:@"foo" atomically:YES encoding:NSMacOSRomanStringEncoding error:&error], nil);
 }
@@ -182,9 +182,9 @@ static NSString *TestNotification = @"TestNotification";
 	NSString *anotherString;
 	NSArray *array;
 	
-	[[mock stub] completePathIntoString:&string caseSensitive:YES matchesIntoArray:&array filterTypes:OCMOCK_ANY];
+	[[mock stub] completePathIntoString:&string caseSensitive:YES matchesIntoArray:&array filterTypes:[OCMArg any]];
 	
-	STAssertThrows([mock completePathIntoString:&anotherString caseSensitive:YES matchesIntoArray:&array filterTypes:OCMOCK_ANY], nil);
+	STAssertThrows([mock completePathIntoString:&anotherString caseSensitive:YES matchesIntoArray:&array filterTypes:[OCMArg any]], nil);
 }
 
 - (void)testAcceptsStubbedMethodWithVoidPointerArgument
@@ -272,28 +272,23 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testReturnsStubbedReturnValue
 {
-	id returnValue;  
-
 	[[[mock stub] andReturn:@"megamock"] lowercaseString];
-	returnValue = [mock lowercaseString];
+	id returnValue = [mock lowercaseString];
 	
 	STAssertEqualObjects(@"megamock", returnValue, @"Should have returned stubbed value.");
-	
 }
 
 - (void)testReturnsStubbedIntReturnValue
 {
-    int expectedValue = 42;
-	[[[mock stub] andReturnValue:OCMOCK_VALUE(expectedValue)] intValue];
+	[[[mock stub] andReturnValue:@42] intValue];
 	int returnValue = [mock intValue];
     
-	STAssertEquals(expectedValue, returnValue, @"Should have returned stubbed value.");
+	STAssertEquals(42, returnValue, @"Should have returned stubbed value.");
 }
 
 - (void)testRaisesWhenBoxedValueTypesDoNotMatch
 {
-    double expectedValue = 42;
-	[[[mock stub] andReturnValue:OCMOCK_VALUE(expectedValue)] intValue];
+	[[[mock stub] andReturnValue:@42.0] intValue];
     
 	STAssertThrows([mock intValue], @"Should have raised an exception.");
 }
@@ -309,7 +304,7 @@ static NSString *TestNotification = @"TestNotification";
 
 
 // --------------------------------------------------------------------------------------
-//	raising exceptions, posting notifications, etc.
+//	beyond stubbing: raising exceptions, posting notifications, etc.
 // --------------------------------------------------------------------------------------
 
 - (void)testRaisesExceptionWhenAskedTo
@@ -335,7 +330,7 @@ static NSString *TestNotification = @"TestNotification";
 	STAssertEqualObjects(self, [observer->notification object], @"Object should match posted one.");
 }
 
-- (void)testPostsNotificationInAddtionToReturningValue
+- (void)testPostsNotificationInAdditionToReturningValue
 {
 	NotificationRecorderForTesting *observer = [[[NotificationRecorderForTesting alloc] init] autorelease];
 	[[NSNotificationCenter defaultCenter] addObserver:observer selector:@selector(receiveNotification:) name:TestNotification object:nil];
@@ -398,7 +393,7 @@ static NSString *TestNotification = @"TestNotification";
 	NSArray *expectedArray = [NSArray array];
 	
 	[[mock expect] completePathIntoString:[OCMArg setTo:expectedName] caseSensitive:YES 
-						 matchesIntoArray:[OCMArg setTo:expectedArray] filterTypes:OCMOCK_ANY];
+						 matchesIntoArray:[OCMArg setTo:expectedArray] filterTypes:[OCMArg any]];
 	
 	NSString *actualName = nil;
 	NSArray *actualArray = nil;
@@ -412,14 +407,13 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testReturnsValuesInNonObjectPassByReferenceArguments
 {
-    int expectedValue = 1234;
     mock = [OCMockObject mockForClass:[TestClassWithIntPointerMethod class]];
-    [[mock stub] returnValueInPointer:[OCMArg setToValue:[NSValue value:&expectedValue withObjCType:@encode(int)]]];
+    [[mock stub] returnValueInPointer:[OCMArg setToValue:@1234]];
     
     int actualValue = 0;
     [mock returnValueInPointer:&actualValue];
     
-    STAssertEquals(expectedValue, actualValue, @"Should have returned value via pass by ref argument.");
+    STAssertEquals(1234, actualValue, @"Should have returned value via pass by ref argument.");
     
 }
 
@@ -437,10 +431,8 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testAcceptsExpectedMethodAndReturnsValue
 {
-	id returnValue;
-
 	[[[mock expect] andReturn:@"Objective-C"] lowercaseString];
-	returnValue = [mock lowercaseString];
+	id returnValue = [mock lowercaseString];
 
 	STAssertEqualObjects(@"Objective-C", returnValue, @"Should have returned stubbed value.");
 }
@@ -562,20 +554,7 @@ static NSString *TestNotification = @"TestNotification";
 
 
 // --------------------------------------------------------------------------------------
-//	explicitly rejecting methods (mostly for nice mocks, see below)
-// --------------------------------------------------------------------------------------
-
-- (void)testThrowsWhenRejectedMethodIsCalledOnNiceMock
-{
-	mock = [OCMockObject niceMockForClass:[NSString class]];
-	
-	[[mock reject] uppercaseString];
-	STAssertThrows([mock uppercaseString], @"Should have complained about rejected method being called.");
-}
-
-
-// --------------------------------------------------------------------------------------
-//	nice mocks don't complain about unknown methods
+//	nice mocks don't complain about unknown methods, unless told to
 // --------------------------------------------------------------------------------------
 
 - (void)testReturnsDefaultValueWhenUnknownMethodIsCalledOnNiceClassMock
@@ -590,6 +569,14 @@ static NSString *TestNotification = @"TestNotification";
 	mock = [OCMockObject niceMockForClass:[NSString class]];	
 	[[[mock expect] andReturn:@"HELLO!"] uppercaseString];
 	STAssertThrows([mock verify], @"Should have raised an exception because method was not called.");
+}
+
+- (void)testThrowsWhenRejectedMethodIsCalledOnNiceMock
+{
+    mock = [OCMockObject niceMockForClass:[NSString class]];
+
+    [[mock reject] uppercaseString];
+    STAssertThrows([mock uppercaseString], @"Should have complained about rejected method being called.");
 }
 
 
