@@ -42,7 +42,7 @@
 @end
 
 
-@interface TestObserver	: NSObject
+@interface NotificationRecorderForTesting : NSObject
 {
 	@public
 	NSNotification *notification;
@@ -50,7 +50,7 @@
 
 @end
 
-@implementation TestObserver
+@implementation NotificationRecorderForTesting
 
 - (void)dealloc
 {
@@ -322,7 +322,7 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testPostsNotificationWhenAskedTo
 {
-	TestObserver *observer = [[[TestObserver alloc] init] autorelease];
+	NotificationRecorderForTesting *observer = [[[NotificationRecorderForTesting alloc] init] autorelease];
 	[[NSNotificationCenter defaultCenter] addObserver:observer selector:@selector(receiveNotification:) name:TestNotification object:nil];
 	
 	NSNotification *notification = [NSNotification notificationWithName:TestNotification object:self];
@@ -337,7 +337,7 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testPostsNotificationInAddtionToReturningValue
 {
-	TestObserver *observer = [[[TestObserver alloc] init] autorelease];
+	NotificationRecorderForTesting *observer = [[[NotificationRecorderForTesting alloc] init] autorelease];
 	[[NSNotificationCenter defaultCenter] addObserver:observer selector:@selector(receiveNotification:) name:TestNotification object:nil];
 	
 	NSNotification *notification = [NSNotification notificationWithName:TestNotification object:self];
