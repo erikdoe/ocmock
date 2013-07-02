@@ -7,26 +7,30 @@
 #import <OCMock/OCMockRecorder.h>
 #import "OCMReturnValueProvider.h"
 #import "OCMExceptionReturnValueProvider.h"
+#import "OCMArg.h"
 
 
 @implementation OCMockRecorderTests
 
-- (void)setUp
+
+- (NSInvocation *)invocationForSelector:(SEL)aSelector
 {
-	NSMethodSignature *signature = [NSString instanceMethodSignatureForSelector:@selector(initWithString:)];
-	testInvocation = [NSInvocation invocationWithMethodSignature:signature];
-	[testInvocation setSelector:@selector(initWithString:)];
+    NSMethodSignature *signature = [NSString instanceMethodSignatureForSelector:aSelector];
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+    [invocation setSelector:aSelector];
+    return invocation;
 }
 
 
 - (void)testStoresAndMatchesInvocation
 {
     NSString *arg = @"I love mocks.";
-	[testInvocation setArgument:&arg atIndex:2];
 
     OCMockRecorder *recorder = [[[OCMockRecorder alloc] initWithSignatureResolver:[NSString string]] autorelease];
 	[(id)recorder initWithString:arg];
 
+    NSInvocation *testInvocation = [self invocationForSelector:@selector(initWithString:)];
+    [testInvocation setArgument:&arg atIndex:2];
 	STAssertTrue([recorder matchesInvocation:testInvocation], @"Should match.");
 }
 
@@ -34,12 +38,28 @@
 - (void)testOnlyMatchesInvocationWithRightArguments
 {
     NSString *arg = @"I love mocks.";
-	[testInvocation setArgument:&arg atIndex:2];
 
     OCMockRecorder *recorder = [[[OCMockRecorder alloc] initWithSignatureResolver:[NSString string]] autorelease];
 	[(id)recorder initWithString:@"whatever"];
-	
+
+    NSInvocation *testInvocation = [self invocationForSelector:@selector(initWithString:)];
+    [testInvocation setArgument:&arg atIndex:2];
 	STAssertFalse([recorder matchesInvocation:testInvocation], @"Should not match.");
+}
+
+-(void)testSelectivelyIgnoresNonObjectArguments
+{
+    NSString *arg1 = @"I (.*) mocks.";
+    NSUInteger arg2 = NSRegularExpressionSearch;
+
+    OCMockRecorder *recorder = [[[OCMockRecorder alloc] initWithSignatureResolver:[NSString string]] autorelease];
+    [(id)recorder rangeOfString:[OCMArg any] options:0];
+    [recorder ignoringNonObjectArgs];
+
+    NSInvocation *testInvocation = [self invocationForSelector:@selector(rangeOfString:options:)];
+    [testInvocation setArgument:&arg1 atIndex:2];
+    [testInvocation setArgument:&arg2 atIndex:3];
+    STAssertTrue([recorder matchesInvocation:testInvocation], @"Should match.");
 }
 
 

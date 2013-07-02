@@ -266,6 +266,19 @@ static NSString *TestNotification = @"TestNotification";
 }
 
 
+- (void)testAcceptsStubbedMethodWithAnyNonObjectArgument
+{
+    [[[mock stub] ignoringNonObjectArgs] rangeOfString:@"foo" options:0];
+    [mock rangeOfString:@"foo" options:NSRegularExpressionSearch];
+}
+
+- (void)testRaisesExceptionWhenMethodWithMixedArgumentsIsCalledWithWrongObjectArgument
+{
+    [[[mock stub] ignoringNonObjectArgs] rangeOfString:@"foo" options:0];
+    STAssertThrows([mock rangeOfString:@"bar" options:NSRegularExpressionSearch], @"Should have raised an exception.");
+}
+
+
 // --------------------------------------------------------------------------------------
 //	returning values from stubbed methods
 // --------------------------------------------------------------------------------------
