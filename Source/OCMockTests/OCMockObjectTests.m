@@ -6,58 +6,21 @@
 #import <OCMock/OCMock.h>
 #import "OCMockObjectTests.h"
 
+
 // --------------------------------------------------------------------------------------
 //	Helper classes and protocols for testing
 // --------------------------------------------------------------------------------------
 
-@interface InterfaceForTypedef : NSObject
-@end
+@interface TestClassWithTypeQualifierMethod : NSObject
 
-@implementation InterfaceForTypedef
-@end
-
-typedef InterfaceForTypedef TypedefInterface;
-typedef InterfaceForTypedef* PointerTypedefInterface;
-typedef int intTypedef;
-
-@protocol TestProtocol
-- (int)primitiveValue;
-@optional
-- (id)objectValue;
-@end
-
-@protocol ProtocolWithTypeQualifierMethod
 - (void)aSpecialMethod:(byref in void *)someArg;
+
 @end
 
-@protocol ProtocolWithTypedefs
-- (TypedefInterface*)typedefReturnValue1;
-- (PointerTypedefInterface)typedefReturnValue2;
-- (void)typedefParameter:(TypedefInterface*)parameter;
-- (void)typedefPointerParameter:(PointerTypedefInterface)parameter;
-@end
+@implementation TestClassWithTypeQualifierMethod
 
-@interface ProtocolWithTypedefsImplementation : NSObject<ProtocolWithTypedefs>
-- (TypedefInterface*)typedefReturnValue1;
-- (PointerTypedefInterface)typedefReturnValue2;
-- (void)typedefParameter:(TypedefInterface*)parameter;
-- (void)typedefPointerParameter:(PointerTypedefInterface)parameter;
-@end
-
-@implementation ProtocolWithTypedefsImplementation
-
-- (TypedefInterface*)typedefReturnValue1 {
-    return nil;
-}
-
-- (PointerTypedefInterface)typedefReturnValue2 {
-    return nil;
-}
-
-- (void)typedefParameter:(TypedefInterface*)parameter {
-}
-
--(void)typedefPointerParameter:(PointerTypedefInterface)parameter {
+- (void)aSpecialMethod:(byref in void *)someArg
+{
 }
 
 @end
@@ -77,7 +40,6 @@ typedef int intTypedef;
 }
 
 @end
-
 
 
 @interface TestObserver	: NSObject
@@ -613,74 +575,6 @@ static NSString *TestNotification = @"TestNotification";
 
 
 // --------------------------------------------------------------------------------------
-//	protocol mocks
-// --------------------------------------------------------------------------------------
-
-- (void)testCanMockFormalProtocol
-{
-	mock = [OCMockObject mockForProtocol:@protocol(NSLocking)];
-	[[mock expect] lock];
-	
-	[mock lock];
-	
-	[mock verify];
-}
-
-- (void)testSetsCorrectNameForProtocolMockObjects
-{
-	mock = [OCMockObject mockForProtocol:@protocol(NSLocking)];
-	STAssertEqualObjects(@"OCMockObject[NSLocking]", [mock description], @"Should have returned correct description.");
-}
-
-- (void)testRaisesWhenUnknownMethodIsCalledOnProtocol
-{
-	mock = [OCMockObject mockForProtocol:@protocol(NSLocking)];
-	STAssertThrows([mock lowercaseString], @"Should have raised an exception.");
-}
-
-- (void)testConformsToMockedProtocol
-{
-	mock = [OCMockObject mockForProtocol:@protocol(NSLocking)];
-	STAssertTrue([mock conformsToProtocol:@protocol(NSLocking)], nil);
-}
-
-- (void)testRespondsToValidProtocolRequiredSelector
-{
-	mock = [OCMockObject mockForProtocol:@protocol(TestProtocol)];	
-    STAssertTrue([mock respondsToSelector:@selector(primitiveValue)], nil);
-}
-
-- (void)testRespondsToValidProtocolOptionalSelector
-{
-	mock = [OCMockObject mockForProtocol:@protocol(TestProtocol)];	
-    STAssertTrue([mock respondsToSelector:@selector(objectValue)], nil);
-}
-
-- (void)testDoesNotRespondToInvalidProtocolSelector
-{
-	mock = [OCMockObject mockForProtocol:@protocol(TestProtocol)];	
-    STAssertFalse([mock respondsToSelector:@selector(fooBar)], nil);
-}
-
-- (void)testWithTypedefReturnType {
-	mock = [OCMockObject mockForProtocol:@protocol(ProtocolWithTypedefs)];
-    STAssertNoThrow([[[mock stub] andReturn:[TypedefInterface new]] typedefReturnValue1], @"Should accept a typedefed return-type");
-    STAssertNoThrow([mock typedefReturnValue1], @"bla");
-}
-
-- (void)testWithTypedefPointerReturnType {
-	mock = [OCMockObject mockForProtocol:@protocol(ProtocolWithTypedefs)];
-    STAssertNoThrow([[[mock stub] andReturn:[TypedefInterface new]] typedefReturnValue2], @"Should accept a typedefed return-type");
-    STAssertNoThrow([mock typedefReturnValue2], @"bla");
-}
-
-- (void)testWithTypedefParameter {
-	mock = [OCMockObject mockForProtocol:@protocol(ProtocolWithTypedefs)];
-    STAssertNoThrow([[mock stub] typedefParameter:nil], @"Should accept a typedefed parameter-type");
-    STAssertNoThrow([mock typedefParameter:nil], @"bla");
-}
-
-// --------------------------------------------------------------------------------------
 //	nice mocks don't complain about unknown methods
 // --------------------------------------------------------------------------------------
 
@@ -697,21 +591,6 @@ static NSString *TestNotification = @"TestNotification";
 	[[[mock expect] andReturn:@"HELLO!"] uppercaseString];
 	STAssertThrows([mock verify], @"Should have raised an exception because method was not called.");
 }
-
-- (void)testReturnDefaultValueWhenUnknownMethodIsCalledOnProtocolMock
-{
-	mock = [OCMockObject niceMockForProtocol:@protocol(TestProtocol)];
-	STAssertTrue(0 == [mock primitiveValue], @"Should return 0 on unexpected method call (for nice mock).");
-	[mock verify];
-}
-
-- (void)testRaisesAnExceptionWenAnExpectedMethodIsNotCalledOnNiceProtocolMock
-{
-	mock = [OCMockObject niceMockForProtocol:@protocol(TestProtocol)];	
-	[[mock expect] primitiveValue];
-	STAssertThrows([mock verify], @"Should have raised an exception because method was not called.");
-}
-
 
 
 // --------------------------------------------------------------------------------------
@@ -747,12 +626,11 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testWorksWithTypeQualifiers
 {
-	id myMock = [OCMockObject mockForProtocol:@protocol(ProtocolWithTypeQualifierMethod)];
-	
-	STAssertNoThrow([[myMock expect] aSpecialMethod:"foo"], @"Should not complain about method with type qualifiers.");
-	STAssertNoThrow([myMock aSpecialMethod:"foo"], @"Should not complain about method with type qualifiers.");
-}
+    id myMock = [OCMockObject mockForClass:[TestClassWithTypeQualifierMethod class]];
 
+    STAssertNoThrow([[myMock expect] aSpecialMethod:"foo"], @"Should not complain about method with type qualifiers.");
+    STAssertNoThrow([myMock aSpecialMethod:"foo"], @"Should not complain about method with type qualifiers.");
+}
 
 - (void)testAdjustsRetainCountWhenStubbingMethodsThatCreateObjects
 {

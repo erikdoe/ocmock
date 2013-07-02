@@ -116,6 +116,7 @@
 		03B3168B14633A4F0052CD09 /* OCMock.h in Headers */ = {isa = PBXBuildFile; fileRef = 030EF0B814632FD000B04273 /* OCMock.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03B3168D14633B1D0052CD09 /* OCHamcrest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03B3168C14633B1D0052CD09 /* OCHamcrest.framework */; };
 		03B3168E14633D9C0052CD09 /* OCMock.h in Headers */ = {isa = PBXBuildFile; fileRef = 030EF0B814632FD000B04273 /* OCMock.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2FA2859DB0F5EF004A3FD0D3 /* OCMockObjectProtocolMocksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA286BFBD8B9D068B41E7EF /* OCMockObjectProtocolMocksTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -205,6 +206,8 @@
 		03B3168C14633B1D0052CD09 /* OCHamcrest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OCHamcrest.framework; path = "$(BUILT_PRODUCTS_DIR)/Debug/Frameworks/OCHamcrest.framework"; sourceTree = "<group>"; };
 		03B3168F14633FAB0052CD09 /* Changes.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Changes.txt; sourceTree = "<group>"; };
 		03B3169014633FAB0052CD09 /* License.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = License.txt; sourceTree = "<group>"; };
+		2FA286BFBD8B9D068B41E7EF /* OCMockObjectProtocolMocksTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMockObjectProtocolMocksTests.m; sourceTree = "<group>"; };
+		2FA28CDB493350BF1DD26DC3 /* OCMockObjectProtocolMocksTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockObjectProtocolMocksTests.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -318,6 +321,8 @@
 				03B3161F1463350E0052CD09 /* NSInvocationOCMAdditionsTests.m */,
 				030EF0C814632FD000B04273 /* Supporting Files */,
 				030EF0AA14632FD000B04273 /* Frameworks */,
+				2FA286BFBD8B9D068B41E7EF /* OCMockObjectProtocolMocksTests.m */,
+				2FA28CDB493350BF1DD26DC3 /* OCMockObjectProtocolMocksTests.h */,
 			);
 			path = OCMockTests;
 			sourceTree = "<group>";
@@ -700,6 +705,7 @@
 				03AC5C1516DF9FA500D82ECD /* OCMockObjectPartialMocksTests.m in Sources */,
 				039F91C616EFB493006C3D70 /* OCMockObjectClassMethodMockingTests.m in Sources */,
 				0354D72016F23AF5001766BB /* OCMockObjectForwardingTargetTests.m in Sources */,
+				2FA2859DB0F5EF004A3FD0D3 /* OCMockObjectProtocolMocksTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
