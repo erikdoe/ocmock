@@ -12,7 +12,7 @@ class Builder
       downloadSource
       copySource
       buildModules
-      createPackage "ocmock-2.1.2.dmg", "OCMock 2.1.2" 
+      createPackage "ocmock-2.2.dmg", "OCMock 2.2" 
       openPackageDir
     end
     
