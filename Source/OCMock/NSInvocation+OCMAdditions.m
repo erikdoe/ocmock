@@ -32,8 +32,7 @@
  		{
  			SEL s = (SEL)0;
  			[self getArgument:&s atIndex:argIndex];
- 			id value = NSStringFromSelector(s);
- 			return value;
+            return [NSValue valueWithBytes:&s objCType:":"];
  		}
 		case 'i': 
 		{

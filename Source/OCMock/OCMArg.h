@@ -10,6 +10,7 @@
 // constraining arguments
 
 + (id)any;
++ (SEL)anySelector;
 + (void *)anyPointer;
 + (id)isNil;
 + (id)isNotNil;
