@@ -34,6 +34,13 @@
 
 @end
 
+@interface TestSubClassWithClassMethods : TestClassWithClassMethods
+
+@end
+
+@implementation TestSubClassWithClassMethods
+
+@end
 
 
 @implementation OCMockObjectClassMethodMockingTests
@@ -68,6 +75,16 @@
     [mock stopMocking];
     
     STAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo], @"Should not have stubbed class method.");
+}
+
+- (void)testSubClassReceivesMethodsAfterStopWasCalled
+{
+    id mock = [OCMockObject mockForClass:[TestSubClassWithClassMethods class]];
+    
+    [[[[mock stub] classMethod] andReturn:@"mocked"] foo];
+    [mock stopMocking];
+    
+    STAssertEqualObjects(@"Foo-ClassMethod", [TestSubClassWithClassMethods foo], @"Should not have stubbed class method.");
 }
 
 - (void)testClassReceivesMethodAgainWhenExpectedCallOccurred
