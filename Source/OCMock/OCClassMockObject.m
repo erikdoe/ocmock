@@ -99,6 +99,9 @@ static NSMutableDictionary *mockTable;
 
 - (void)setupForwarderForClassMethodSelector:(SEL)selector
 {
+    if([replacedClassMethods objectForKey:NSStringFromSelector(selector)] != nil)
+        return;
+
 	Method originalMethod = class_getClassMethod(mockedClass, selector);
 	Class metaClass = objc_getMetaClass(class_getName(mockedClass));
 	

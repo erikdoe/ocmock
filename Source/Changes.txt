@@ -1,6 +1,11 @@
 Chronological listing of changes. More detail is usually found in the Git commit messages
 and/or the pull requests.
 
+2013-07-03
+
+* Fixed bug preventing the same class method to be expected more than once.
+
+
 2013-07-02
 
 * Can ignore non-object arguments on a per-invocation basis.

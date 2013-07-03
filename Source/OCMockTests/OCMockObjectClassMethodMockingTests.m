@@ -49,6 +49,17 @@
     STAssertEqualObjects(@"mocked", [TestClassWithClassMethods foo], @"Should have stubbed class method.");
 }
 
+- (void)testCanExpectTheSameClassMethodMoreThanOnce
+{
+    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    [[[[mock expect] classMethod] andReturn:@"mocked-foo"] foo];
+    [[[[mock expect] classMethod] andReturn:@"mocked-foo2"] foo];
+
+    STAssertEqualObjects(@"mocked-foo", [TestClassWithClassMethods foo], @"Should have stubbed class method 'foo'.");
+    STAssertEqualObjects(@"mocked-foo2", [TestClassWithClassMethods foo], @"Should have stubbed class method 'foo2'.");
+}
+
+
 - (void)testClassReceivesMethodsAfterStopWasCalled
 {
     id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
