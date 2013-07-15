@@ -1,6 +1,11 @@
 Chronological listing of changes. More detail is usually found in the Git commit messages
 and/or the pull requests.
 
+2013-07-15
+
+* Fixed several bugs regarding class method mocking in class hierarchies.
+
+
 2013-07-03
 
 * Fixed bug preventing the same class method to be expected more than once.
@@ -14,7 +19,7 @@ and/or the pull requests.
 
 2013-06-19
 
-* Constraints implement NSCopying for Xcode 5 compatibility.
+* Constraints implement NSCopying for OS X 10.9 SDK compatibility.
 
 
 2013-03-14
