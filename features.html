@@ -25,12 +25,12 @@ nosidebar: true
 <h2>Stubs</h2>
 <pre><code>[[[mock stub] andReturn:aValue] someMethod:someArgument]</code></pre>
 <p>Tells the mock object that when <b>someMethod:</b> is called with <i>someArgument</i> it should return <i>aValue</i>.</p>
-<p>If the method returns a primitive type the return value must be wrapped as follows. It is not possible to pass primitive types directly.</p> 
-<pre><code>[[[mock stub] andReturnValue:OCMOCK_VALUE((BOOL){YES})] someMethod:someArgument]</code></pre>
+<p>If the method returns a primitive type then <b>andReturnValue:</b> must be used with a value argument. It is not possible to pass primitive types directly.</p> 
+<pre><code>[[[mock stub] andReturnValue:@YES] aMethodReturnABoolean:someArgument]</code></pre>
 
 <p>Values can also be returned in pass-by-reference arguments:</p>
 <pre><code>[[mock stub] someMethodWithReferenceArgument:[OCMArg setTo:anObject]]</code></pre>
-<div class="newfeature">
+<div class="newishfeature">
 <pre><code>[[mock stub] someMethodWithReferenceArgument:[OCMArg setToValue:OCMOCK_VALUE((int){aValue})]]</code></pre>
 </div>
 <p>In this case the mock object will set the reference that is passed to the method to <i>anObject</i> and <i>aValue</i>.</p>
@@ -61,7 +61,7 @@ If Objective-C blocks are available a block can be used to handle the invocation
 
 
 <h2>Class methods</h2>
-<div class="newfeature">
+<div class="newishfeature">
 <pre><code>[[[mock stub] andReturn:aValue] someClassMethod]</code></pre>
 <p>Tells the mock object that when <b>someClassMethod</b> is called on the class for which the mock object was created it should return <i>aValue</i>. This is the same syntax that is used to stub instance methods.</p>
 <p>In cases where a class method should be stubbed but the class also has an instance method with the same name as the class method, the intent to mock the class method must be made explicit:
@@ -75,10 +75,20 @@ If Objective-C blocks are available a block can be used to handle the invocation
 
 <h2>Argument constraints</h2>
 <pre><code>[[mock expect] someMethod:[OCMArg any]]</code></pre>
-<p>Tells the mock object that <b>someMethod:</b> should be called and it does not matter what the argument is. Pointers require special treatment:</p>
+<p>Tells the mock object that <b>someMethod:</b> should be called and it does not matter what the argument is. This only works for object arguments.</p> 
+<p>Pointers and selectors require special treatment:</p>
 <pre><code>[[mock expect] someMethodWithPointerArgument:[OCMArg anyPointer]]</code></pre>
-                    
-<p>Other constraints available are:</p>
+<div class="newfeature">
+<pre><code>[[mock expect] someMethodWithSelectorArgument:[OCMArg anySelector]]</code></pre>
+</div>
+<div class="newfeature">
+<p>Arguments that are neither objects nor pointers or selectors cannot be ignored using an <i>any</i> placeholder (for details see this <a href="http://www.mulle-kybernetik.com/forum/viewtopic.php?f=4&t=72">forum thread</a>). It is possible, though, to tell the mock to ignore all non-object arguments in an invocation:
+<pre><code>[[[mock expect] ignoringNonObjectArgs] someMethodWithIntArgument:0]</code></pre>
+<p>In this case the mock will accept any invocation of <b>someMethodWithIntArgument:</b> no matter what argument is actually passed. If the method has object arguments as well as non-object arguments, the object arguments can still be constrained as usual using the methods on <b>OCMArg</b>.</p>
+</div>
+   
+	                  
+<p>Other constraints available for object arguments are:</p>
 <pre><code>[[mock expect] someMethod:[OCMArg isNil]]</code></pre>
 <pre><code>[[mock expect] someMethod:[OCMArg isNotNil]]</code></pre>
 <pre><code>[[mock expect] someMethod:[OCMArg isNotEqual:aValue]]</code></pre>
@@ -99,10 +109,8 @@ If Objective-C blocks are available a block can be used to handle the invocation
 <p>When a method is called on a mock object that has not been set up with either <b>expect</b> or <b>stub</b> the mock object will raise an exception. This fail-fast mode can be turned off by creating a "nice" mock:</p>
 <pre><code>id mock = [OCMockObject niceMockForClass:[SomeClass class]]</code></pre>
 
-<div class="newishfeature">
 <p>While nice mocks will simply ignore all unexpected methods it is possible to disallow specific methods:
 <pre><code>[[mock reject] someMethod]</code></pre>
-</div>
                                            
 <p>Note that in fail-fast mode, if the exception is ignored, it will be rethrown when verify is called. This makes it possible to ensure that unwanted invocations from notifications etc. can be detected.</p>
 
@@ -116,11 +124,9 @@ If Objective-C blocks are available a block can be used to handle the invocation
 <pre><code>id aMock = [OCMockObject partialMockForObject:anObject]</code></pre>
 <p>Creates a mock object that can be used in the same way as <i>anObject</i>. When a method that is not stubbed is invoked it will be forwarded to <i>anObject</i>. When a stubbed method is invoked using a reference to <i>anObject</i>, rather than the mock, it will still be handled by the mock.</p>
 
-<div class="newishfeature">
 <p>The real object can be returned to its original state, i.e. all stubs will be removed:
 <pre><code>[aMock stopMocking]</code></pre>
 <p>This is only necessary if the original state must be restored before the end of the test. The partial mock automatically calls <b>stopMocking</b> during its own deallocation.
-</div>
 
 <p>Note that currently partial mocks cannot be created for instances of toll-free bridged classes, e.g. NSString.</p>
 

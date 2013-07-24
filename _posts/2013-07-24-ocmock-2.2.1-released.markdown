@@ -1,0 +1,11 @@
+---
+layout: post
+title: OCMock 2.2.1 released
+tags:
+- Release
+status: publish
+type: post
+published: true
+---
+New minor release (2.2.1) that fixes some bugs related to mocking class methods.
+
