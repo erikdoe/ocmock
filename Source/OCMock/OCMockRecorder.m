@@ -158,7 +158,10 @@
 	recordedInvocation = [anInvocation retain];
 }
 
-
+- (void)doesNotRecognizeSelector:(SEL)aSelector
+{
+    [NSException raise:NSInvalidArgumentException format:@"%@: cannot stub or expect method '%@' because no such method exists in the mocked class.", signatureResolver, NSStringFromSelector(aSelector)];
+}
 
 #pragma mark  Checking the invocation
 
