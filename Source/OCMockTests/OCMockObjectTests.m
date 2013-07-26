@@ -351,6 +351,18 @@ static NSString *TestNotification = @"TestNotification";
 	STAssertNil(returnValue, @"Should have returned stubbed value, which is nil.");
 }
 
+- (void)testReturnsStrubbedStructReturnValue
+{
+    NSString* string = @"This is a test string";
+    
+    NSRange range = NSMakeRange(3, 1);
+    OCMockObject* mockString = [OCMockObject partialMockForObject:string];
+    [[[mockString stub] andReturnStruct:&range objCType:@encode(NSRange)] rangeOfString:OCMOCK_ANY];
+    
+    NSRange fakeRange = [string rangeOfString:@"Not here"];
+    
+    STAssertEquals(fakeRange, range, @"Should have returned overriding range");
+}
 
 // --------------------------------------------------------------------------------------
 //	beyond stubbing: raising exceptions, posting notifications, etc.

@@ -68,6 +68,13 @@
 	return self;
 }
 
+- (id)andReturnStruct:(void*)aValue objCType:(const char*)type
+{
+    NSValue *wrappedValue = [NSValue valueWithBytes:aValue objCType:type];
+    
+    return [self andReturnValue:wrappedValue];
+}
+
 - (id)andThrow:(NSException *)anException
 {
 	[invocationHandlers addObject:[[[OCMExceptionReturnValueProvider alloc] initWithValue:anException] autorelease]];
