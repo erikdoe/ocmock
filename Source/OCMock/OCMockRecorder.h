@@ -22,6 +22,7 @@
 
 - (id)andReturn:(id)anObject;
 - (id)andReturnValue:(NSValue *)aValue;
+- (id)andReturnStruct:(void*)aValue objCType:(const char*)type;
 - (id)andThrow:(NSException *)anException;
 - (id)andPost:(NSNotification *)aNotification;
 - (id)andCall:(SEL)selector onObject:(id)anObject;

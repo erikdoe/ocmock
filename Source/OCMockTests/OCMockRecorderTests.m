@@ -6,6 +6,7 @@
 #import "OCMockRecorderTests.h"
 #import <OCMock/OCMockRecorder.h>
 #import "OCMReturnValueProvider.h"
+#import "OCMBoxedReturnValueProvider.h"
 #import "OCMExceptionReturnValueProvider.h"
 #import "OCMArg.h"
 
@@ -82,6 +83,19 @@
 	STAssertEquals((NSUInteger)1, [handlerList count], @"Should have added one handler.");
 	STAssertEqualObjects([OCMExceptionReturnValueProvider class], [[handlerList objectAtIndex:0] class], @"Should have added correct handler.");
 	
+}
+
+- (void)testAndReturnsStruct
+{
+    NSRange range = NSMakeRange(1, 2);
+    
+    OCMockRecorder *recorder = [[[OCMockRecorder alloc] initWithSignatureResolver:[NSString string]] autorelease];
+	[recorder andReturnStruct:&range objCType:@encode(NSRange)];
+    
+    NSArray *handlerList = [recorder invocationHandlers];
+	
+	STAssertEquals((NSUInteger)1, [handlerList count], @"Should have added one handler.");
+	STAssertEqualObjects([OCMBoxedReturnValueProvider class], [[handlerList objectAtIndex:0] class], @"Should have added correct handler.");
 }
 
 @end
