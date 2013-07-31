@@ -32,4 +32,10 @@
 @end
 
 #define OCMOCK_ANY [OCMArg any]
-#define OCMOCK_VALUE(variable) [NSValue value:&variable withObjCType:@encode(__typeof__(variable))]
+
+#if defined(__GNUC__) && !defined(__STRICT_ANSI__)
+  #define OCMOCK_VALUE(variable) \
+    ({ __typeof__(variable) __v = (variable); [NSValue value:&__v withObjCType:@encode(__typeof__(__v))]; })
+#else
+  #define OCMOCK_VALUE(variable) [NSValue value:&variable withObjCType:@encode(__typeof__(variable))]
+#endif
