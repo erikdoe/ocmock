@@ -126,9 +126,35 @@ static NSMutableDictionary *mockTable;
 	Class subclass = [[self realObject] class];
 	Method originalMethod = class_getInstanceMethod([subclass superclass], selector);
 	IMP originalImp = method_getImplementation(originalMethod);
+	const char *types = method_getTypeEncoding(originalMethod);
+	BOOL needSpecialStructureReturn = NO;
 
-	IMP forwarderImp = [subclass instanceMethodForSelector:@selector(aMethodThatMustNotExist)];
-	class_addMethod(subclass, method_getName(originalMethod), forwarderImp, method_getTypeEncoding(originalMethod));
+	if (types && types[0] == '{')
+	{
+		/* We might need the special objc_msgForward_stret IMP instead of the more usual
+		   objc_msgForward, depending on architecture.
+		   ppc -- always;
+		   i386 -- if methodReturnLength is other than 1, 2, 4, or 8 bytes;
+		   arm -- looks like any methodReturnLength more than 4 bytes;
+		   x86_64 -- eeeeek;
+		   ppc64 -- I'm not going to even guess.
+		   
+		   NSMethodSignature knows the details but has no API to return it, though it is in
+		   the debugDescription.  Horribly kludgy but... I don't want to even attempt to implement
+		   it per the ABI specs.
+		 */
+		NSMethodSignature *sig = [NSMethodSignature signatureWithObjCTypes:types];
+		NSString *debugDesc = [sig debugDescription];
+		NSRange range = [debugDesc rangeOfString:@"is special struct return? YES"];
+		needSpecialStructureReturn = range.length > 0;
+	}
+	
+	IMP forwarderImp;
+	if (needSpecialStructureReturn)
+		forwarderImp = class_getMethodImplementation_stret(subclass, @selector(aMethodThatMustNotExist));
+	else
+		forwarderImp = class_getMethodImplementation(subclass, @selector(aMethodThatMustNotExist));
+	class_addMethod(subclass, method_getName(originalMethod), forwarderImp, types);
 
 	SEL aliasSelector = NSSelectorFromString([OCMRealMethodAliasPrefix stringByAppendingString:NSStringFromSelector(selector)]);
 	class_addMethod(subclass, aliasSelector, originalImp, method_getTypeEncoding(originalMethod));
