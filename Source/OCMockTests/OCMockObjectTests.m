@@ -351,6 +351,19 @@ static NSString *TestNotification = @"TestNotification";
 	STAssertNil(returnValue, @"Should have returned stubbed value, which is nil.");
 }
 
+- (void)testOCMOCK_VALUE
+{
+    NSRange range = NSMakeRange(5, 5);
+    STAssertEqualObjects(OCMOCK_VALUE(range), [NSValue valueWithRange:range], nil);
+#if defined(__GNUC__) && !defined(__STRICT_ANSI__)
+    /* Should work with constant values and some expressions */
+    STAssertEqualObjects(OCMOCK_VALUE(YES), @YES, nil);
+    STAssertEqualObjects(OCMOCK_VALUE(42), @42, nil);
+    STAssertEqualObjects(OCMOCK_VALUE(NSZeroRect), [NSValue valueWithRect:NSZeroRect], nil);
+    STAssertEqualObjects(OCMOCK_VALUE([@"0123456789" rangeOfString:@"56789"]), [NSValue valueWithRange:range], nil);
+#endif
+}
+
 
 // --------------------------------------------------------------------------------------
 //	beyond stubbing: raising exceptions, posting notifications, etc.
@@ -394,7 +407,7 @@ static NSString *TestNotification = @"TestNotification";
 
 - (NSString *)valueForString:(NSString *)aString andMask:(NSStringCompareOptions)mask
 {
-	return [NSString stringWithFormat:@"[%@, %ld]", aString, mask];
+	return [NSString stringWithFormat:@"[%@, %ld]", aString, (long)mask];
 }
 
 - (void)testCallsAlternativeMethodAndPassesOriginalArgumentsAndReturnsValue
