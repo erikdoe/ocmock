@@ -218,7 +218,7 @@ static NSString *TestNotification = @"TestNotification";
 - (void)testAcceptsStubbedMethodWithAnyPointerArgument
 {
     NSError *error;
-    [[[mock stub] andReturnValue:OCMOCK_VALUE(YES)] writeToFile:[OCMArg any] atomically:YES encoding:NSMacOSRomanStringEncoding error:[OCMArg anyPointer]];
+    [[[mock stub] andReturnValue:@YES] writeToFile:[OCMArg any] atomically:YES encoding:NSMacOSRomanStringEncoding error:[OCMArg anyPointer]];
 
     STAssertTrue([mock writeToFile:@"foo" atomically:YES encoding:NSMacOSRomanStringEncoding error:&error], nil);
 }
@@ -349,6 +349,19 @@ static NSString *TestNotification = @"TestNotification";
 	id returnValue = [mock uppercaseString];
 
 	STAssertNil(returnValue, @"Should have returned stubbed value, which is nil.");
+}
+
+- (void)testOCMOCK_VALUE
+{
+    NSRange range = NSMakeRange(5, 5);
+    STAssertEqualObjects(OCMOCK_VALUE(range), [NSValue valueWithRange:range], nil);
+#if defined(__GNUC__) && !defined(__STRICT_ANSI__)
+    /* Should work with constant values and some expressions */
+    STAssertEqualObjects(OCMOCK_VALUE(YES), @YES, nil);
+    STAssertEqualObjects(OCMOCK_VALUE(42), @42, nil);
+    STAssertEqualObjects(OCMOCK_VALUE(NSZeroRect), [NSValue valueWithRect:NSZeroRect], nil);
+    STAssertEqualObjects(OCMOCK_VALUE([@"0123456789" rangeOfString:@"56789"]), [NSValue valueWithRange:range], nil);
+#endif
 }
 
 
