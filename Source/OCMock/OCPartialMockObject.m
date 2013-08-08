@@ -6,6 +6,7 @@
 #import <objc/runtime.h>
 #import "OCPartialMockRecorder.h"
 #import "OCPartialMockObject.h"
+#import "NSMethodSignature+OCMAdditions.h"
 
 
 @interface OCPartialMockObject (Private)
@@ -126,35 +127,15 @@ static NSMutableDictionary *mockTable;
 	Class subclass = [[self realObject] class];
 	Method originalMethod = class_getInstanceMethod([subclass superclass], selector);
 	IMP originalImp = method_getImplementation(originalMethod);
-	const char *types = method_getTypeEncoding(originalMethod);
-	BOOL needSpecialStructureReturn = NO;
 
-	if (types && types[0] == '{')
-	{
-		/* We might need the special objc_msgForward_stret IMP instead of the more usual
-		   objc_msgForward, depending on architecture.
-		   ppc -- always;
-		   i386 -- if methodReturnLength is other than 1, 2, 4, or 8 bytes;
-		   arm -- looks like any methodReturnLength more than 4 bytes;
-		   x86_64 -- eeeeek;
-		   ppc64 -- I'm not going to even guess.
-		   
-		   NSMethodSignature knows the details but has no API to return it, though it is in
-		   the debugDescription.  Horribly kludgy but... I don't want to even attempt to implement
-		   it per the ABI specs.
-		 */
-		NSMethodSignature *sig = [NSMethodSignature signatureWithObjCTypes:types];
-		NSString *debugDesc = [sig debugDescription];
-		NSRange range = [debugDesc rangeOfString:@"is special struct return? YES"];
-		needSpecialStructureReturn = range.length > 0;
-	}
-	
+    NSMethodSignature *signature = [[subclass superclass] instanceMethodSignatureForSelector:selector];
+    // TODO: below we shouldn't really use getTypeEncoding because that doesn't work for methods implemented with -forwardingTargetForSelector:
 	IMP forwarderImp;
-	if (needSpecialStructureReturn)
+	if([signature usesSpecialStructureReturn])
 		forwarderImp = class_getMethodImplementation_stret(subclass, @selector(aMethodThatMustNotExist));
 	else
 		forwarderImp = class_getMethodImplementation(subclass, @selector(aMethodThatMustNotExist));
-	class_addMethod(subclass, method_getName(originalMethod), forwarderImp, types);
+	class_addMethod(subclass, method_getName(originalMethod), forwarderImp, method_getTypeEncoding(originalMethod));
 
 	SEL aliasSelector = NSSelectorFromString([OCMRealMethodAliasPrefix stringByAppendingString:NSStringFromSelector(selector)]);
 	class_addMethod(subclass, aliasSelector, originalImp, method_getTypeEncoding(originalMethod));

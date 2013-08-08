@@ -110,22 +110,10 @@
 {
 	TestClassThatCallsSelf *realObject = [[[TestClassThatCallsSelf alloc] init] autorelease];
 	id mock = [OCMockObject partialMockForObject:realObject];
-	NSRect rect = NSZeroRect;
-	[[[mock stub] andReturnValue:OCMOCK_VALUE(rect)] methodRect2];
+    [[[mock stub] andReturnValue:OCMOCK_VALUE(NSZeroRect)] methodRect2];
 	STAssertEquals(NSZeroRect, [mock methodRect1], @"Should have called through to stubbed method.");
 }
 
-- (void)testNSMethodSignatureDebugDescription
-{
-	const char *types = "{CATransform3D=ffffffffffffffff}";
-	NSMethodSignature *sig = [NSMethodSignature signatureWithObjCTypes:types];
-	NSString *debugDescription = [sig debugDescription];
-	NSRange stretYESRange = [debugDescription rangeOfString:@"is special struct return? YES"];
-	NSRange stretNORange = [debugDescription rangeOfString:@"is special struct return? NO"];
-	
-	STAssertTrue(stretYESRange.length > 0 || stretNORange.length > 0,
-	             @"NSMethodSignature debugDescription has changed; need to change OCPartialMockObject impl");
-}
 
 #pragma mark   Tests for end of stubbing with partial mocks
 
