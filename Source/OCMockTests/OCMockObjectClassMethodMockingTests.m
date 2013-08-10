@@ -5,6 +5,7 @@
 
 #import <OCMock/OCMock.h>
 #import "OCClassMockObject.h"
+#import "OCPartialMockObject.h"
 #import "OCMockObjectClassMethodMockingTests.h"
 
 #pragma mark   Helper classes
@@ -201,6 +202,22 @@
 
     [mock release];
 
+    STAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo], @"Should have 'unstubbed' class method 'foo'.");
+    STAssertEqualObjects(@"Bar-ClassMethod", [TestClassWithClassMethods bar], @"Should have 'unstubbed' class method 'bar'.");
+}
+
+- (void)testRevertsAllStubbedMethodsOnPartialMockDealloc
+{
+    id mock = [[OCPartialMockObject alloc] initWithClass:[TestClassWithClassMethods class]];
+    
+    [[[[mock stub] classMethod] andReturn:@"mocked-foo"] foo];
+    [[[[mock stub] classMethod] andReturn:@"mocked-bar"] bar];
+    
+    STAssertEqualObjects(@"mocked-foo", [TestClassWithClassMethods foo], @"Should have stubbed class method 'foo'.");
+    STAssertEqualObjects(@"mocked-bar", [TestClassWithClassMethods bar], @"Should have stubbed class method 'bar'.");
+    
+    [mock release];
+    
     STAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo], @"Should have 'unstubbed' class method 'foo'.");
     STAssertEqualObjects(@"Bar-ClassMethod", [TestClassWithClassMethods bar], @"Should have 'unstubbed' class method 'bar'.");
 }
