@@ -91,6 +91,8 @@ static NSMutableDictionary *mockTable;
 	[realObject release];
 	[[self class] forgetPartialMockForObject:realObject];
 	realObject = nil;
+    
+    [super stopMocking];
 }
 
 
