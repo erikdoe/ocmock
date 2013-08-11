@@ -6,5 +6,8 @@
 #import <SenTestingKit/SenTestingKit.h>
 
 @interface OCMockObjectPartialMocksTests : SenTestCase
+{
+    int numKVOCallbacks;
+}
 
 @end

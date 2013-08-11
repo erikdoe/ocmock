@@ -60,10 +60,25 @@ static NSMutableDictionary *mockTable;
 
 #pragma mark  Initialisers, description, accessors, etc.
 
+- (Class)_classToMock:(id)anObject
+{
+	/*
+	 * Using [anObject class] here is not really correct; it will not get the true runtime Class in
+	 * some situations such as KVO or NSProxy subclasses. However, changing it would be a change in
+	 * behavior for OCMock, and it would likely cause users to start crashing on KVO-observed
+	 * objects (when setting observed properties) since KVO requires the isa to actually be the
+	 * KVO-created class.  Doing it the old way, the KVO class gets obliterated and no observation
+	 * notifications get sent, but at least it does not crash.
+	 */
+//	return object_getClass(anObject);
+	return [anObject class];
+}
+
 - (id)initWithObject:(NSObject *)anObject
 {
-	[super initWithClass:[anObject class]];
+	[super initWithClass:[self _classToMock:anObject]];
 	realObject = [anObject retain];
+	realObjectReportedClass = [anObject class];
 	[[self class] rememberPartialMock:self forObject:anObject];
 	[self setupSubclassForObject:realObject];
 	return self;
@@ -86,6 +101,11 @@ static NSMutableDictionary *mockTable;
 	return realObject;
 }
 
+- (Class)realObjectReportedClass
+{
+	return realObjectReportedClass;
+}
+
 - (void)stopMocking
 {
 	object_setClass(realObject, [self mockedClass]);
@@ -99,9 +119,9 @@ static NSMutableDictionary *mockTable;
 
 - (void)setupSubclassForObject:(id)anObject
 {
-	Class realClass = [anObject class];
+	Class realClass = [self _classToMock:anObject];
 	double timestamp = [NSDate timeIntervalSinceReferenceDate];
-	const char *className = [[NSString stringWithFormat:@"%@-%p-%f", realClass, anObject, timestamp] UTF8String];
+	const char *className = [[NSString stringWithFormat:@"%@-%p-%f", NSStringFromClass(realClass), anObject, timestamp] UTF8String];
 	Class subclass = objc_allocateClassPair(realClass, className, 0);
 	objc_registerClassPair(subclass);
 	object_setClass(anObject, subclass);
@@ -120,15 +140,24 @@ static NSMutableDictionary *mockTable;
 
     class_addMethod(subclass, @selector(forwardingTargetForSelector:), myForwardingTargetForSelectorImp, forwardingTargetForSelectorTypes);
     class_addMethod(subclass, @selector(forwardingTargetForSelector_Original:), originalForwardingTargetForSelectorImp, forwardingTargetForSelectorTypes);
+    
+    /* We also override the -class method to return the original class */
+    Method myObjectClassMethod = class_getInstanceMethod([self class], @selector(classForRealObject));
+    const char *objectClassTypes = method_getTypeEncoding(myObjectClassMethod);
+    IMP myObjectClassImp = method_getImplementation(myObjectClassMethod);
+    IMP originalClassImp = [realClass instanceMethodForSelector:@selector(class)];
+    
+    class_addMethod(subclass, @selector(class), myObjectClassImp, objectClassTypes);
+    class_addMethod(subclass, @selector(class_Original), originalClassImp, objectClassTypes);
 }
 
 - (void)setupForwarderForSelector:(SEL)selector
 {
-	Class subclass = [[self realObject] class];
-	Method originalMethod = class_getInstanceMethod([subclass superclass], selector);
+	Class subclass = object_getClass([self realObject]);
+	Method originalMethod = class_getInstanceMethod([self mockedClass], selector);
 	IMP originalImp = method_getImplementation(originalMethod);
 
-    NSMethodSignature *signature = [[subclass superclass] instanceMethodSignatureForSelector:selector];
+    NSMethodSignature *signature = [[self mockedClass] instanceMethodSignatureForSelector:selector];
     // TODO: below we shouldn't really use getTypeEncoding because that doesn't work for methods implemented with -forwardingTargetForSelector:
 	IMP forwarderImp;
 	if([signature usesSpecialStructureReturn])
@@ -143,9 +172,9 @@ static NSMutableDictionary *mockTable;
 
 - (void)removeForwarderForSelector:(SEL)selector
 {
-    Class subclass = [[self realObject] class];
+    Class subclass = object_getClass([self realObject]);
     SEL aliasSelector = NSSelectorFromString([OCMRealMethodAliasPrefix stringByAppendingString:NSStringFromSelector(selector)]);
-    Method originalMethod = class_getInstanceMethod([subclass superclass], aliasSelector);
+    Method originalMethod = class_getInstanceMethod([self mockedClass], aliasSelector);
   	IMP originalImp = method_getImplementation(originalMethod);
     class_replaceMethod(subclass, selector, originalImp, method_getTypeEncoding(originalMethod));
 }
@@ -179,7 +208,22 @@ static NSMutableDictionary *mockTable;
     }
 }
 
+// Make the compiler happy; we add a method with this name to the real class
+- (Class)class_Original
+{
+    return nil;
+}
 
+// Implementation of the -class method; return the Class that was reported with [realObject class] prior to mocking
+- (Class)classForRealObject
+{
+    // "self" is the real object, not the mock
+    OCPartialMockObject *mock = [OCPartialMockObject existingPartialMockForObject:self];
+    if (mock != nil)
+        return [mock realObjectReportedClass];
+
+    return [self class_Original];
+}
 
 #pragma mark  Overrides
 

@@ -8,11 +8,13 @@
 @interface OCPartialMockObject : OCClassMockObject 
 {
 	NSObject	*realObject;
+	Class		realObjectReportedClass;
 }
 
 - (id)initWithObject:(NSObject *)anObject;
 
 - (NSObject *)realObject;
+- (Class)realObjectReportedClass;
 
 - (void)stopMocking;
 
