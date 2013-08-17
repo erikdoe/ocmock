@@ -186,7 +186,7 @@
 	{
         if(ignoreNonObjectArgs && strcmp([signature getArgumentTypeAtIndex:i], @encode(id)))
         {
-            return YES;
+            continue;
         }
 
 		id recordedArg = [recordedInvocation getArgumentAtIndexAsObject:i];
