@@ -12,6 +12,7 @@
 + (id)any;
 + (SEL)anySelector;
 + (void *)anyPointer;
++ (id __autoreleasing *)anyObjectRef;
 + (id)isNil;
 + (id)isNotNil;
 + (id)isNotEqual:(id)value;
