@@ -6,6 +6,7 @@
 #import <objc/runtime.h>
 #import "OCPartialMockRecorder.h"
 #import "OCPartialMockObject.h"
+#import "NSMethodSignature+OCMAdditions.h"
 
 
 @interface OCPartialMockObject (Private)
@@ -127,7 +128,13 @@ static NSMutableDictionary *mockTable;
 	Method originalMethod = class_getInstanceMethod([subclass superclass], selector);
 	IMP originalImp = method_getImplementation(originalMethod);
 
-	IMP forwarderImp = [subclass instanceMethodForSelector:@selector(aMethodThatMustNotExist)];
+    NSMethodSignature *signature = [[subclass superclass] instanceMethodSignatureForSelector:selector];
+    // TODO: below we shouldn't really use getTypeEncoding because that doesn't work for methods implemented with -forwardingTargetForSelector:
+	IMP forwarderImp;
+	if([signature usesSpecialStructureReturn])
+		forwarderImp = class_getMethodImplementation_stret(subclass, @selector(aMethodThatMustNotExist));
+	else
+		forwarderImp = class_getMethodImplementation(subclass, @selector(aMethodThatMustNotExist));
 	class_addMethod(subclass, method_getName(originalMethod), forwarderImp, method_getTypeEncoding(originalMethod));
 
 	SEL aliasSelector = NSSelectorFromString([OCMRealMethodAliasPrefix stringByAppendingString:NSStringFromSelector(selector)]);

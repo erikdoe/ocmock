@@ -39,9 +39,14 @@ static NSMutableDictionary *mockTable;
 {
     @synchronized(mockTable)
     {
-        OCClassMockObject *mock = [[mockTable objectForKey:[NSValue valueWithNonretainedObject:aClass]] nonretainedObjectValue];
+        OCClassMockObject *mock = nil;
+        while((mock == nil) && (aClass != nil))
+        {
+            mock = [[mockTable objectForKey:[NSValue valueWithNonretainedObject:aClass]] nonretainedObjectValue];
+            aClass = class_getSuperclass(aClass);
+        }
         if(mock == nil)
-            [NSException raise:NSInternalInconsistencyException format:@"No mock for class %p", aClass];
+            [NSException raise:NSInternalInconsistencyException format:@"No mock for class %@", NSStringFromClass(aClass)];
         return mock;
     }
 }
@@ -86,39 +91,46 @@ static NSMutableDictionary *mockTable;
 
     replacedClassMethods = [[NSMutableDictionary alloc] init];
     [[self class] rememberMock:self forClass:mockedClass];
-    
-	Method myForwardInvocationMethod = class_getInstanceMethod([self class], @selector(forwardInvocationForClassObject:));
-	IMP myForwardInvocationImp = method_getImplementation(myForwardInvocationMethod);
-	const char *forwardInvocationTypes = method_getTypeEncoding(myForwardInvocationMethod);
-	Class metaClass = objc_getMetaClass(class_getName(mockedClass));
-    
-	IMP replacedForwardInvocationImp = class_replaceMethod(metaClass, @selector(forwardInvocation:), myForwardInvocationImp, forwardInvocationTypes);
-    
-	[replacedClassMethods setObject:[NSValue valueWithPointer:replacedForwardInvocationImp] forKey:NSStringFromSelector(@selector(forwardInvocation:))];
+
+    Method method = class_getClassMethod(mockedClass, @selector(forwardInvocation:));
+    IMP originalIMP = method_getImplementation(method);
+    [replacedClassMethods setObject:[NSValue valueWithPointer:originalIMP] forKey:NSStringFromSelector(@selector(forwardInvocation:))];
+
+    Method myForwardMethod = class_getInstanceMethod([self class], @selector(forwardInvocationForClassObject:));
+   	IMP myForwardIMP = method_getImplementation(myForwardMethod);
+    Class metaClass = objc_getMetaClass(class_getName(mockedClass));
+	class_replaceMethod(metaClass, @selector(forwardInvocation:), myForwardIMP, method_getTypeEncoding(myForwardMethod));
 }
 
 - (void)setupForwarderForClassMethodSelector:(SEL)selector
 {
-	Method originalMethod = class_getClassMethod(mockedClass, selector);
-	Class metaClass = objc_getMetaClass(class_getName(mockedClass));
-	
-	IMP forwarderImp = [metaClass instanceMethodForSelector:@selector(aMethodThatMustNotExist)];
-	IMP replacedMethod = class_replaceMethod(metaClass, method_getName(originalMethod), forwarderImp, method_getTypeEncoding(originalMethod));
+    if([replacedClassMethods objectForKey:NSStringFromSelector(selector)] != nil)
+        return;
+
+    // We're using class_replaceMethod and not method_setImplementation to make sure
+    // the stub is definitely added to the mocked class, and not a superclass. However,
+    // we still get the originalIMP from the method in case it was actually implemented
+    // in a superclass.
+    Method method = class_getClassMethod(mockedClass, selector);
+    IMP originalIMP = method_getImplementation(method);
+    [replacedClassMethods setObject:[NSValue valueWithPointer:originalIMP] forKey:NSStringFromSelector(selector)];
+
+    Class metaClass = objc_getMetaClass(class_getName(mockedClass));
+    IMP forwarderIMP = [metaClass instanceMethodForSelector:@selector(aMethodThatMustNotExist)];
+    class_replaceMethod(metaClass, method_getName(method), forwarderIMP, method_getTypeEncoding(method));
     
-	[replacedClassMethods setObject:[NSValue valueWithPointer:replacedMethod] forKey:NSStringFromSelector(selector)];
 }
 
 - (void)removeForwarderForClassMethodSelector:(SEL)selector
 {
-	Class metaClass = objc_getMetaClass(class_getName(mockedClass));
-    NSValue *originalMethodPointer = [replacedClassMethods objectForKey:NSStringFromSelector(selector)];
-	IMP originalMethod = [originalMethodPointer pointerValue];
-	if(originalMethod) {
-		class_replaceMethod(metaClass, selector, originalMethod, 0);
-	} else {
-		IMP forwarderImp = [metaClass instanceMethodForSelector:@selector(aMethodThatMustNotExist)];
-		class_replaceMethod(metaClass, selector, forwarderImp, 0);
-    }
+    IMP originalIMP = [[replacedClassMethods objectForKey:NSStringFromSelector(selector)] pointerValue];
+	if(originalIMP == NULL)
+    {
+        [NSException raise:NSInternalInconsistencyException format:@"%@: Trying to remove stub for class method %@, but no previous implementation available.",
+            [self description], NSStringFromSelector(selector)];
+	}
+    Method method = class_getClassMethod(mockedClass, selector);
+    method_setImplementation(method, originalIMP);
 }
 
 - (void)forwardInvocationForClassObject:(NSInvocation *)anInvocation

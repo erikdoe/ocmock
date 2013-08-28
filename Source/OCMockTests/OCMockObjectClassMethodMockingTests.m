@@ -35,6 +35,15 @@
 @end
 
 
+@interface TestSubclassWithClassMethods : TestClassWithClassMethods
+
+@end
+
+@implementation TestSubclassWithClassMethods
+
+@end
+
+
 
 @implementation OCMockObjectClassMethodMockingTests
 
@@ -47,6 +56,16 @@
     [[[[mock stub] classMethod] andReturn:@"mocked"] foo];
     
     STAssertEqualObjects(@"mocked", [TestClassWithClassMethods foo], @"Should have stubbed class method.");
+}
+
+- (void)testCanExpectTheSameClassMethodMoreThanOnce
+{
+    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    [[[[mock expect] classMethod] andReturn:@"mocked-foo"] foo];
+    [[[[mock expect] classMethod] andReturn:@"mocked-foo2"] foo];
+
+    STAssertEqualObjects(@"mocked-foo", [TestClassWithClassMethods foo], @"Should have stubbed class method 'foo'.");
+    STAssertEqualObjects(@"mocked-foo2", [TestClassWithClassMethods foo], @"Should have stubbed class method 'foo2'.");
 }
 
 - (void)testClassReceivesMethodsAfterStopWasCalled
@@ -67,6 +86,77 @@
    	
     STAssertEqualObjects(@"mocked", [TestClassWithClassMethods foo], @"Should have stubbed method.");
    	STAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo], @"Should have 'unstubbed' method.");
+}
+
+- (void)testCanStubClassMethodFromMockForSubclass
+{
+    id subclassMock = [OCMockObject mockForClass:[TestSubclassWithClassMethods class]];
+
+    [[[[subclassMock stub] classMethod] andReturn:@"mocked-subclass"] foo];
+    STAssertEqualObjects(@"mocked-subclass", [TestSubclassWithClassMethods foo], @"Should have stubbed method.");
+    STAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo], @"Should not have stubbed method in superclass.");
+}
+
+- (void)testSuperclassReceivesMethodsAfterStopWasCalled
+{
+    id mock = [OCMockObject mockForClass:[TestSubclassWithClassMethods class]];
+
+    [[[[mock stub] classMethod] andReturn:@"mocked"] foo];
+    [mock stopMocking];
+
+    STAssertEqualObjects(@"Foo-ClassMethod", [TestSubclassWithClassMethods foo], @"Should not have stubbed class method.");
+}
+
+- (void)testCanReplaceSameMethodInSubclassAfterSuperclassMockWasStopped
+{
+    id superclassMock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    id subclassMock = [OCMockObject mockForClass:[TestSubclassWithClassMethods class]];
+
+    [[[[superclassMock stub] classMethod] andReturn:@"mocked-superclass"] foo];
+    [superclassMock stopMocking];
+
+    [[[[subclassMock stub] classMethod] andReturn:@"mocked-subclass"] foo];
+    STAssertEqualObjects(@"mocked-subclass", [TestSubclassWithClassMethods foo], @"Should have stubbed method");
+}
+
+- (void)testCanReplaceSameMethodInSuperclassAfterSubclassMockWasStopped
+{
+    id superclassMock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    id subclassMock = [OCMockObject mockForClass:[TestSubclassWithClassMethods class]];
+
+    [[[[subclassMock stub] classMethod] andReturn:@"mocked-subclass"] foo];
+    [subclassMock stopMocking];
+
+    [[[[superclassMock stub] classMethod] andReturn:@"mocked-superclass"] foo];
+    STAssertEqualObjects(@"mocked-superclass", [TestClassWithClassMethods foo], @"Should have stubbed method");
+}
+
+// The following test does not verify behaviour; it shows a problem. It only passes when run in
+// isolation because otherwise the other tests cause the problem that this test demonstrates.
+
+- (void)_ignore_testShowThatStubbingSuperclassMethodInSubclassLeavesImplementationInSubclass
+{
+    // stage 1: stub in superclass affects both superclass and subclass
+    id superclassMock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    [[[[superclassMock stub] classMethod] andReturn:@"mocked-superclass"] foo];
+    STAssertEqualObjects(@"mocked-superclass", [TestClassWithClassMethods foo], @"Should have stubbed method");
+    STAssertEqualObjects(@"mocked-superclass", [TestSubclassWithClassMethods foo], @"Should have stubbed method");
+    [superclassMock stopMocking];
+
+    // stage 2: stub in subclass affects only subclass
+    id subclassMock = [OCMockObject mockForClass:[TestSubclassWithClassMethods class]];
+    [[[[subclassMock stub] classMethod] andReturn:@"mocked-subclass"] foo];
+    STAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo], @"Should NOT have stubbed method");
+    STAssertEqualObjects(@"mocked-subclass", [TestSubclassWithClassMethods foo], @"Should have stubbed method");
+    [subclassMock stopMocking];
+
+    // stage 3: should be like stage 1, but it isn't (see last assert)
+    // This is because the subclass mock can't remove the method added to the subclass in stage 2
+    // and instead has to point the method in the subclass to the real implementation.
+    id superclassMock2 = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    [[[[superclassMock2 stub] classMethod] andReturn:@"mocked-superclass"] foo];
+    STAssertEqualObjects(@"mocked-superclass", [TestClassWithClassMethods foo], @"Should have stubbed method");
+    STAssertEqualObjects(@"Foo-ClassMethod", [TestSubclassWithClassMethods foo], @"Should NOT have stubbed method");
 }
 
 - (void)testStubsOnlyClassMethodWhenInstanceMethodWithSameNameExists

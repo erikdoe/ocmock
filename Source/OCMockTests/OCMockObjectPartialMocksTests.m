@@ -25,6 +25,8 @@
 @interface TestClassThatCallsSelf : NSObject
 - (NSString *)method1;
 - (NSString *)method2;
+- (NSRect)methodRect1;
+- (NSRect)methodRect2;
 @end
 
 @implementation TestClassThatCallsSelf
@@ -38,6 +40,18 @@
 - (NSString *)method2
 {
 	return @"Foo";
+}
+
+
+- (NSRect)methodRect1
+{
+	NSRect retVal = [self methodRect2];
+	return retVal;
+}
+
+- (NSRect)methodRect2
+{
+	return NSMakeRect(10, 10, 10, 10);
 }
 
 @end
@@ -90,6 +104,14 @@
 	id mock = [OCMockObject partialMockForObject:realObject];
 	[[[mock stub] andReturn:@"FooFoo"] method2];
 	STAssertEqualObjects(@"FooFoo", [mock method1], @"Should have called through to stubbed method.");
+}
+
+- (void)testCallsToSelfInRealObjectStructReturnAreShadowedByPartialMock
+{
+	TestClassThatCallsSelf *realObject = [[[TestClassThatCallsSelf alloc] init] autorelease];
+	id mock = [OCMockObject partialMockForObject:realObject];
+    [[[mock stub] andReturnValue:OCMOCK_VALUE(NSZeroRect)] methodRect2];
+	STAssertEquals(NSZeroRect, [mock methodRect1], @"Should have called through to stubbed method.");
 }
 
 

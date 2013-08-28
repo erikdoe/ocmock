@@ -110,12 +110,18 @@
 }
 
 
-#pragma mark  Switching to class methods
+#pragma mark  Modifying the recorder
 
 - (id)classMethod
 {
     recordedAsClassMethod = YES;
     [signatureResolver setupClassForClassMethodMocking];
+    return self;
+}
+
+- (id)ignoringNonObjectArgs
+{
+    ignoreNonObjectArgs = YES;
     return self;
 }
 
@@ -152,7 +158,10 @@
 	recordedInvocation = [anInvocation retain];
 }
 
-
+- (void)doesNotRecognizeSelector:(SEL)aSelector
+{
+    [NSException raise:NSInvalidArgumentException format:@"%@: cannot stub or expect method '%@' because no such method exists in the mocked class.", signatureResolver, NSStringFromSelector(aSelector)];
+}
 
 #pragma mark  Checking the invocation
 
@@ -163,23 +172,25 @@
 
 - (BOOL)matchesInvocation:(NSInvocation *)anInvocation
 {
-	id      target, recordedArg, passedArg;
-	int     i, n;
-    BOOL    isClassMethodInvocation;
-	
-    target = [anInvocation target];
-    isClassMethodInvocation = (target != nil) && (target == [target class]);
+    id target = [anInvocation target];
+    BOOL isClassMethodInvocation = (target != nil) && (target == [target class]);
     if(isClassMethodInvocation != recordedAsClassMethod)
         return NO;
     
 	if([anInvocation selector] != [recordedInvocation selector])
 		return NO;
-	
-	n = (int)[[recordedInvocation methodSignature] numberOfArguments];
-	for(i = 2; i < n; i++)
+
+    NSMethodSignature *signature = [recordedInvocation methodSignature];
+    int n = (int)[signature numberOfArguments];
+	for(int i = 2; i < n; i++)
 	{
-		recordedArg = [recordedInvocation getArgumentAtIndexAsObject:i];
-		passedArg = [anInvocation getArgumentAtIndexAsObject:i];
+        if(ignoreNonObjectArgs && strcmp([signature getArgumentTypeAtIndex:i], @encode(id)))
+        {
+            continue;
+        }
+
+		id recordedArg = [recordedInvocation getArgumentAtIndexAsObject:i];
+		id passedArg = [anInvocation getArgumentAtIndexAsObject:i];
 
 		if([recordedArg isProxy])
 		{
@@ -222,8 +233,6 @@
 	}
 	return YES;
 }
-
-
 
 
 @end

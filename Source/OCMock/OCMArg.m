@@ -21,6 +21,16 @@
 	return (void *)0x01234567;
 }
 
++ (id __autoreleasing *)anyObjectRef
+{
+    return (id *)0x01234567;
+}
+
++ (SEL)anySelector
+{
+    return @selector(aSelectorThatMatchesAnySelector);
+}
+
 + (id)isNil
 {
 	return [OCMIsNilConstraint constraint];
@@ -73,7 +83,15 @@
 		if((pointer != NULL) && (object_getClass((id)pointer) == [OCMPassByRefSetter class]))
 			return (id)pointer;
 	}
+    else if(type[0] == ':')
+    {
+        SEL selector;
+        [value getValue:&selector];
+        if(selector == @selector(aSelectorThatMatchesAnySelector))
+            return [OCMArg any];
+    }
 	return value;
 }
+
 
 @end

@@ -9,6 +9,7 @@
 {
 	id				signatureResolver;
     BOOL            recordedAsClassMethod;
+    BOOL            ignoreNonObjectArgs;
 	NSInvocation	*recordedInvocation;
 	NSMutableArray	*invocationHandlers;
 }
@@ -30,6 +31,7 @@
 - (id)andForwardToRealObject;
 
 - (id)classMethod;
+- (id)ignoringNonObjectArgs;
 
 - (NSArray *)invocationHandlers;
 

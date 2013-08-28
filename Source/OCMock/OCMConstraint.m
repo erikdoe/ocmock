@@ -18,6 +18,10 @@
 	return NO;
 }
 
+- (id)copyWithZone:(struct _NSZone *)zone
+{
+    return [self retain];
+}
 
 + (id)constraintWithSelector:(SEL)aSelector onObject:(id)anObject
 {
