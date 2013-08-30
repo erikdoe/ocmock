@@ -11,6 +11,37 @@
 #import <OCMock/OCMockRecorder.h>
 #import "NSInvocation+OCMAdditions.h"
 
+@interface OCClassMockObject (CollectionDescriptionDummy)
+- (BOOL)isNSString__;
+- (BOOL)isNSDictionary__;
+- (BOOL)isNSArray__;
+- (BOOL)isNSData__;
+@end
+
+@implementation OCClassMockObject (CollectionDescriptionDummy)
+
+- (BOOL)isNSString__
+{
+    return [mockedClass isSubclassOfClass:[NSString class]];
+}
+
+- (BOOL)isNSDictionary__
+{
+    return [mockedClass isSubclassOfClass:[NSDictionary class]];
+}
+
+- (BOOL)isNSData__
+{
+    return [mockedClass isSubclassOfClass:[NSData class]];
+}
+
+- (BOOL)isNSArray__
+{
+    return [mockedClass isSubclassOfClass:[NSArray class]];
+}
+
+@end
+
 @interface OCMockObject(Private)
 + (id)_makeNice:(OCMockObject *)mock;
 - (NSString *)_recorderDescriptions:(BOOL)onlyExpectations;
