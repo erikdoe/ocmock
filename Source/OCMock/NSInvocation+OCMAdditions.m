@@ -283,7 +283,7 @@
 	return [NSString stringWithFormat:@"%qu", longLongValue];
 }
 
-- (NSString *)doubleDescriptionAtIndex:(int)anInt;
+- (NSString *)doubleDescriptionAtIndex:(int)anInt
 {
 	double doubleValue;
 	
@@ -299,7 +299,7 @@
 	return [NSString stringWithFormat:@"%f", floatValue];
 }
 
-- (NSString *)structDescriptionAtIndex:(int)anInt;
+- (NSString *)structDescriptionAtIndex:(int)anInt
 {
 	void *buffer;
 	
