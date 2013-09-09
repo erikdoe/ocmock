@@ -123,7 +123,7 @@
 
 @implementation OCMBlockConstraint
 
-- (id)initWithConstraintBlock:(BOOL (^)(id))aBlock;
+- (id)initWithConstraintBlock:(BOOL (^)(id))aBlock
 {
 	self = [super init];
 	block = [aBlock copy];
