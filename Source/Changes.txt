@@ -1,6 +1,24 @@
 Chronological listing of changes. More detail is usually found in the Git commit messages
 and/or the pull requests.
 
+2013-08-27
+
+* Added a specially typed method for object references to OCMArg.
+
+
+2013-08-17
+
+* Fixed bug that caused matching to be aborted on first ignored non-object arg.
+
+
+2013-07-30
+
+* Improved value macro so it can take constant arguments and expressions. (Carl
+  Lindberg)
+* Fixed a bug that caused crashes when methods that require "special" struct returns
+  were mocked in partial mocks. (Carl Lindberg)
+
+
 2013-07-15
 
 * Fixed several bugs regarding class method mocking in class hierarchies.

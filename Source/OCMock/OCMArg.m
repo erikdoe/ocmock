@@ -21,6 +21,11 @@
 	return (void *)0x01234567;
 }
 
++ (id __autoreleasing *)anyObjectRef
+{
+    return (id *)0x01234567;
+}
+
 + (SEL)anySelector
 {
     return @selector(aSelectorThatMatchesAnySelector);

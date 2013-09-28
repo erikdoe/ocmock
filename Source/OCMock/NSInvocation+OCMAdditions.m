@@ -291,7 +291,7 @@
 	return [NSString stringWithFormat:@"%qu", longLongValue];
 }
 
-- (NSString *)doubleDescriptionAtIndex:(int)anInt;
+- (NSString *)doubleDescriptionAtIndex:(int)anInt
 {
 	double doubleValue;
 	
@@ -315,7 +315,7 @@
 	return [NSString stringWithFormat:@"%Lf", longDoubleValue];
 }
 
-- (NSString *)structDescriptionAtIndex:(int)anInt;
+- (NSString *)structDescriptionAtIndex:(int)anInt
 {
 	const char *type = [[self methodSignature] getArgumentTypeAtIndex:anInt];
 	const char *equalIndex = type? strchr(type, '=') : NULL;

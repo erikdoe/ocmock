@@ -217,8 +217,19 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testAcceptsStubbedMethodWithAnyPointerArgument
 {
+    [[[mock stub] andReturn:@"foo"] initWithCharacters:[OCMArg anyPointer] length:3];
+
+    unichar characters[] = { 'b', 'a', 'r' };
+    id result = [mock initWithCharacters:characters length:3];
+
+    STAssertEqualObjects(@"foo", result, @"Should have mocked method.");
+}
+
+
+- (void)testAcceptsStubbedMethodWithAnyObjectRefArgument
+{
     NSError *error;
-    [[[mock stub] andReturnValue:@YES] writeToFile:[OCMArg any] atomically:YES encoding:NSMacOSRomanStringEncoding error:[OCMArg anyPointer]];
+    [[[mock stub] andReturnValue:@YES] writeToFile:[OCMArg any] atomically:YES encoding:NSMacOSRomanStringEncoding error:[OCMArg anyObjectRef]];
 
     STAssertTrue([mock writeToFile:@"foo" atomically:YES encoding:NSMacOSRomanStringEncoding error:&error], nil);
 }
