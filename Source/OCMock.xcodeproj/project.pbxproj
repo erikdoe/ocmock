@@ -119,6 +119,11 @@
 		2FA281C641E64586FE9A506D /* NSMethodSignatureOCMAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28DEDB9163597B7C49F3D /* NSMethodSignatureOCMAdditionsTests.m */; };
 		2FA2859DB0F5EF004A3FD0D3 /* OCMockObjectProtocolMocksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA286BFBD8B9D068B41E7EF /* OCMockObjectProtocolMocksTests.m */; };
 		2FA28896D9AFD309D59C9CFB /* OCMArgTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28EDBF243639C57F88A1B /* OCMArgTests.m */; };
+		4D4754FB17D663BE0060108B /* OCMArgumentCaptureConstraint.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D4754F917D663BE0060108B /* OCMArgumentCaptureConstraint.h */; };
+		4D4754FC17D663BE0060108B /* OCMArgumentCaptureConstraint.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D4754F917D663BE0060108B /* OCMArgumentCaptureConstraint.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4D4754FD17D663BE0060108B /* OCMArgumentCaptureConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D4754FA17D663BE0060108B /* OCMArgumentCaptureConstraint.m */; };
+		4D4754FE17D663BE0060108B /* OCMArgumentCaptureConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D4754FA17D663BE0060108B /* OCMArgumentCaptureConstraint.m */; };
+		4D4754FF17D663BE0060108B /* OCMArgumentCaptureConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D4754FA17D663BE0060108B /* OCMArgumentCaptureConstraint.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -214,6 +219,8 @@
 		2FA28CDB493350BF1DD26DC3 /* OCMockObjectProtocolMocksTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockObjectProtocolMocksTests.h; sourceTree = "<group>"; };
 		2FA28DEDB9163597B7C49F3D /* NSMethodSignatureOCMAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSMethodSignatureOCMAdditionsTests.m; sourceTree = "<group>"; };
 		2FA28EDBF243639C57F88A1B /* OCMArgTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMArgTests.m; sourceTree = "<group>"; };
+		4D4754F917D663BE0060108B /* OCMArgumentCaptureConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMArgumentCaptureConstraint.h; sourceTree = "<group>"; };
+		4D4754FA17D663BE0060108B /* OCMArgumentCaptureConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMArgumentCaptureConstraint.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -430,6 +437,8 @@
 		03B3161A146334320052CD09 /* Argument Handling */ = {
 			isa = PBXGroup;
 			children = (
+				4D4754F917D663BE0060108B /* OCMArgumentCaptureConstraint.h */,
+				4D4754FA17D663BE0060108B /* OCMArgumentCaptureConstraint.m */,
 				03B3158D146333BF0052CD09 /* OCMArg.h */,
 				03B3158E146333BF0052CD09 /* OCMArg.m */,
 				03B31593146333BF0052CD09 /* OCMConstraint.h */,
@@ -492,6 +501,7 @@
 				03B315CD146333BF0052CD09 /* OCMBoxedReturnValueProvider.h in Headers */,
 				03B315D7146333BF0052CD09 /* OCMExceptionReturnValueProvider.h in Headers */,
 				03B315DC146333BF0052CD09 /* OCMIndirectReturnValueProvider.h in Headers */,
+				4D4754FB17D663BE0060108B /* OCMArgumentCaptureConstraint.h in Headers */,
 				03B315E1146333BF0052CD09 /* OCMNotificationPoster.h in Headers */,
 				03B315E6146333BF0052CD09 /* OCMObserverRecorder.h in Headers */,
 				03B315F5146333C00052CD09 /* OCMPassByRefSetter.h in Headers */,
@@ -513,6 +523,7 @@
 				03B315F1146333C00052CD09 /* OCMockRecorder.h in Headers */,
 				03B315C4146333BF0052CD09 /* OCMArg.h in Headers */,
 				03B315D3146333BF0052CD09 /* OCMConstraint.h in Headers */,
+				4D4754FC17D663BE0060108B /* OCMArgumentCaptureConstraint.h in Headers */,
 				03B315BA146333BF0052CD09 /* NSNotificationCenter+OCMAdditions.h in Headers */,
 				03B315B0146333BF0052CD09 /* NSInvocation+OCMAdditions.h in Headers */,
 				03B315B5146333BF0052CD09 /* NSMethodSignature+OCMAdditions.h in Headers */,
@@ -698,6 +709,7 @@
 				03B31606146333C00052CD09 /* OCObserverMockObject.m in Sources */,
 				03B3160B146333C00052CD09 /* OCPartialMockObject.m in Sources */,
 				03B31610146333C00052CD09 /* OCPartialMockRecorder.m in Sources */,
+				4D4754FD17D663BE0060108B /* OCMArgumentCaptureConstraint.m in Sources */,
 				03B31615146333C00052CD09 /* OCProtocolMockObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -706,6 +718,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D4754FE17D663BE0060108B /* OCMArgumentCaptureConstraint.m in Sources */,
 				03B3162D1463350E0052CD09 /* NSInvocationOCMAdditionsTests.m in Sources */,
 				03B316321463350E0052CD09 /* OCMConstraintTests.m in Sources */,
 				03B316371463350E0052CD09 /* OCMockObjectHamcrestTests.mm in Sources */,
@@ -745,6 +758,7 @@
 				03B31608146333C00052CD09 /* OCObserverMockObject.m in Sources */,
 				03B3160D146333C00052CD09 /* OCPartialMockObject.m in Sources */,
 				03B31612146333C00052CD09 /* OCPartialMockRecorder.m in Sources */,
+				4D4754FF17D663BE0060108B /* OCMArgumentCaptureConstraint.m in Sources */,
 				03B31617146333C00052CD09 /* OCProtocolMockObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
