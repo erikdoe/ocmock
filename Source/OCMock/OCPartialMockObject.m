@@ -142,7 +142,7 @@ static NSMutableDictionary *mockTable;
 	/* Might be NULL if the selector is forwarded to another class */
 	if (types == NULL) types = [[[self mockedClass] instanceMethodSignatureForSelector:selector] fullObjCTypes];
 	if (types == NULL) types = [[[self mockedClass] methodSignatureForSelector:selector] fullObjCTypes];
-	class_addMethod(subclass, method_getName(originalMethod), forwarderImp, types);
+	class_addMethod(subclass, selector, forwarderImp, types);
 
 	SEL aliasSelector = NSSelectorFromString([OCMRealMethodAliasPrefix stringByAppendingString:NSStringFromSelector(selector)]);
 	class_addMethod(subclass, aliasSelector, originalImp, types);

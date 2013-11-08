@@ -6,6 +6,9 @@
 #import "OCMConstraintTests.h"
 #import <OCMock/OCMConstraint.h>
 
+@interface OCMConstraintTests (UnknownSelectorDeclarationAvoidClangWarning)
+- (void)checkArgXXX:(id)arg;
+@end
 
 @implementation OCMConstraintTests
 

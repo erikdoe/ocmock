@@ -9,6 +9,10 @@
 #define TestString @"foo"
 #define TestInt 1
 
+@interface NSInvocationOCMAdditionsTests (UnknownSelectorDeclarationAvoidClangWarning)
+- (id)foo;
+@end
+
 @implementation NSValue (OCMTestAdditions)
 
 - (id)ocmtest_initWithLongDouble:(long double)ldbl
