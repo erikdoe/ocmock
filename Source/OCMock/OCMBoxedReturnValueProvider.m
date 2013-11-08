@@ -4,14 +4,17 @@
 //---------------------------------------------------------------------------------------
 
 #import "OCMBoxedReturnValueProvider.h"
-
+#import <objc/runtime.h>
 
 @implementation OCMBoxedReturnValueProvider
 
 - (void)handleInvocation:(NSInvocation *)anInvocation
 {
-	if(strcmp([[anInvocation methodSignature] methodReturnType], [(NSValue *)returnValue objCType]) != 0)
-		@throw [NSException exceptionWithName:NSInvalidArgumentException reason:[NSString stringWithFormat:@"Return value does not match method signature; signature declares '%s' but value is '%s'.", [[anInvocation methodSignature] methodReturnType], [(NSValue *)returnValue objCType]] userInfo:nil];
+	const char *returnType = [[anInvocation methodSignature] methodReturnType];
+	const char *valueType = [(NSValue *)returnValue objCType];
+	/* ARM64 uses 'B' for BOOLs in method signatures but 'c' in NSValue; that case should match */
+	if(strcmp(returnType, valueType) != 0 && !(returnType[0] == _C_BOOL && valueType[0] == _C_CHR))
+		@throw [NSException exceptionWithName:NSInvalidArgumentException reason:[NSString stringWithFormat:@"Return value does not match method signature; signature declares '%s' but value is '%s'.", returnType, valueType] userInfo:nil];
 	void *buffer = malloc([[anInvocation methodSignature] methodReturnLength]);
 	[returnValue getValue:buffer];
 	[anInvocation setReturnValue:buffer];

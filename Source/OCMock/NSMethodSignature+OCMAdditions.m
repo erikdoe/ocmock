@@ -4,9 +4,27 @@
 //---------------------------------------------------------------------------------------
 
 #import "NSMethodSignature+OCMAdditions.h"
+#import <objc/runtime.h>
 
 
 @implementation NSMethodSignature(OCMAdditions)
+
++ (IMP)forwarderForClass:(Class)targetClass selector:(SEL)selector
+{
+    // use NSSelectorFromString to avoid warning about unknown @selector
+    SEL selectorWithNoImplementation = NSSelectorFromString(@"methodWhichMustNotExist::::");
+
+#ifndef __arm64__
+    NSMethodSignature *sig = [targetClass instanceMethodSignatureForSelector:selector];
+    if (sig == nil) sig = [targetClass methodSignatureForSelector:selector];
+    BOOL needStretFunction = (sig == nil)? NO : [sig usesSpecialStructureReturn];
+    
+    if (needStretFunction)
+        return class_getMethodImplementation_stret(targetClass, selectorWithNoImplementation);
+#endif
+
+    return class_getMethodImplementation(targetClass, selectorWithNoImplementation);
+}
 
 - (const char *)methodReturnTypeWithoutQualifiers
 {
@@ -20,7 +38,7 @@
 {
     const char *types = [self methodReturnTypeWithoutQualifiers];
 
-    if((types == NULL) || (types[0] != '{'))
+    if((types == NULL) || (types[0] != _C_STRUCT_B))
         return NO;
 
     /* In some cases structures are returned by ref. The rules are complex and depend on the
@@ -30,6 +48,7 @@
        http://developer.apple.com/library/mac/#documentation/DeveloperTools/Conceptual/LowLevelABI/000-Introduction/introduction.html
        https://github.com/atgreen/libffi/blob/master/src/x86/ffi64.c
        http://www.uclibc.org/docs/psABI-x86_64.pdf
+       http://infocenter.arm.com/help/topic/com.arm.doc.ihi0042e/IHI0042E_aapcs.pdf
 
        NSMethodSignature knows the details but has no API to return it, though it is in
        the debugDescription. Horribly kludgy.
@@ -38,5 +57,18 @@
     return range.length > 0;
 }
 
+- (NSString *)fullTypeString
+{
+    NSMutableString *typeString = [NSMutableString string];
+    [typeString appendFormat:@"%s", [self methodReturnType]];
+    for (NSUInteger i=0; i<[self numberOfArguments]; i++)
+        [typeString appendFormat:@"%s", [self getArgumentTypeAtIndex:i]];
+    return typeString;
+}
+
+- (const char *)fullObjCTypes
+{
+    return [[self fullTypeString] UTF8String];
+}
 
 @end
