@@ -137,13 +137,20 @@ static NSMutableDictionary *mockTable;
 	Method originalMethod = class_getInstanceMethod([self mockedClass], selector);
 	IMP originalImp = method_getImplementation(originalMethod);
 
+	IMP forwarderImp;
+    
+#if defined(__LP64__) && __LP64__
+    forwarderImp = class_getMethodImplementation(subclass, @selector(aMethodThatMustNotExist));
+#else
     NSMethodSignature *signature = [[self mockedClass] instanceMethodSignatureForSelector:selector];
     // TODO: below we shouldn't really use getTypeEncoding because that doesn't work for methods implemented with -forwardingTargetForSelector:
-	IMP forwarderImp;
+
+    
 	if([signature usesSpecialStructureReturn])
 		forwarderImp = class_getMethodImplementation_stret(subclass, @selector(aMethodThatMustNotExist));
 	else
 		forwarderImp = class_getMethodImplementation(subclass, @selector(aMethodThatMustNotExist));
+#endif
 	class_addMethod(subclass, method_getName(originalMethod), forwarderImp, method_getTypeEncoding(originalMethod));
 
 	SEL aliasSelector = NSSelectorFromString([OCMRealMethodAliasPrefix stringByAppendingString:NSStringFromSelector(selector)]);
