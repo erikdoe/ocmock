@@ -116,7 +116,7 @@ static NSMutableDictionary *mockTable;
     [replacedClassMethods setObject:[NSValue valueWithPointer:originalIMP] forKey:NSStringFromSelector(selector)];
 
     Class metaClass = objc_getMetaClass(class_getName(mockedClass));
-    IMP forwarderIMP = [metaClass instanceMethodForSelector:@selector(aMethodThatMustNotExist)];
+    IMP forwarderIMP = [metaClass instanceMethodForSelector:NSSelectorFromString(@"aMethodThatMustNotExist")];
     class_replaceMethod(metaClass, method_getName(method), forwarderIMP, method_getTypeEncoding(method));
     
 }
