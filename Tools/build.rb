@@ -43,8 +43,8 @@ class Builder
         osxproductdir = "#{@env.productdir}/OSX"                                        
         @worker.run("mkdir -p #{osxproductdir}")
         @worker.run("cp -R build/Release/OCMock.framework #{osxproductdir}")    
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphoneos7.0")
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphonesimulator7.0")                                                 
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphoneos -arch armv7 -arch armv7s -arch arm64 IPHONEOS_DEPLOYMENT_TARGET=7.0")
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphonesimulator -arch i386 -arch x86_64 IPHONEOS_DEPLOYMENT_TARGET=7.0")
         @worker.run("lipo -create -output build/Release/libOCMock.a build/Release-*/libOCMock.a")      
         iosproductdir = "#{@env.productdir}/iOS"                                           
         @worker.run("mkdir -p #{iosproductdir}")
