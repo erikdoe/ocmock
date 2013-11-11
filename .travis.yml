@@ -1,3 +1,6 @@
 language: objective-c  
 before_install: cd Source
+script: "~/travis-utils/osx-cibuild.sh OCMock"
+env:
+ - XCCONFIGURATION=Release
  
