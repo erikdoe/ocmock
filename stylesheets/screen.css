@@ -140,7 +140,8 @@ div#main li:first-child {
 }
 
 div#main table {
-	margin-top: 1em;
+	margin-top: 1em;    
+	width: 100%;
 }
 
 div#main th {
@@ -154,7 +155,10 @@ div#main th, td {
 	border-right: 2px solid white;
 	border-bottom: 2px solid white;
 }
-
+   
+span#cistatus {
+	float: right;
+}
 
 /* hightlighted code boxes, etc */
 
