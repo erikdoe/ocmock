@@ -1,0 +1,3 @@
+ language: objective-c
+ script: sh -c 'cd Source' && ~/travis-utils/osx-cibuild.sh
+ 
