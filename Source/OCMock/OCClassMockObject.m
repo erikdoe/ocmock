@@ -116,7 +116,7 @@ static NSMutableDictionary *mockTable;
     IMP originalIMP = method_getImplementation(method);
     [replacedClassMethods setObject:[NSValue valueWithPointer:originalIMP] forKey:NSStringFromSelector(selector)];
 
-    Class metaClass = objc_getMetaClass(class_getName(mockedClass));
+    Class metaClass = object_getClass(mockedClass);
     IMP forwarderIMP = [NSMethodSignature forwarderForClass:mockedClass selector:selector];
     class_replaceMethod(metaClass, method_getName(method), forwarderIMP, method_getTypeEncoding(method));
 }
