@@ -5,6 +5,7 @@
 
 #import <objc/runtime.h>
 #import "OCClassMockObject.h"
+#import "NSMethodSignature+OCMAdditions.h"
 
 
 @implementation OCClassMockObject
@@ -98,7 +99,7 @@ static NSMutableDictionary *mockTable;
 
     Method myForwardMethod = class_getInstanceMethod([self class], @selector(forwardInvocationForClassObject:));
    	IMP myForwardIMP = method_getImplementation(myForwardMethod);
-    Class metaClass = objc_getMetaClass(class_getName(mockedClass));
+    Class metaClass = object_getClass(mockedClass);
 	class_replaceMethod(metaClass, @selector(forwardInvocation:), myForwardIMP, method_getTypeEncoding(myForwardMethod));
 }
 
@@ -116,9 +117,8 @@ static NSMutableDictionary *mockTable;
     [replacedClassMethods setObject:[NSValue valueWithPointer:originalIMP] forKey:NSStringFromSelector(selector)];
 
     Class metaClass = objc_getMetaClass(class_getName(mockedClass));
-    IMP forwarderIMP = [metaClass instanceMethodForSelector:NSSelectorFromString(@"aMethodThatMustNotExist")];
+    IMP forwarderIMP = [NSMethodSignature forwarderForClass:mockedClass selector:selector];
     class_replaceMethod(metaClass, method_getName(method), forwarderIMP, method_getTypeEncoding(method));
-    
 }
 
 - (void)removeForwarderForClassMethodSelector:(SEL)selector

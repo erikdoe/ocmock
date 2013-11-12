@@ -83,6 +83,9 @@
 
 static NSString *TestNotification = @"TestNotification";
 
+@interface OCMockObjectTests (UnknownSelectorDeclarationAvoidClangWarning)
+- (id)fooBar;
+@end
 
 // --------------------------------------------------------------------------------------
 //  setup

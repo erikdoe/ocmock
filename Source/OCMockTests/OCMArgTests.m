@@ -6,6 +6,13 @@
 #import "OCMArg.h"
 #import "OCMArgTests.h"
 
+#if TARGET_OS_IPHONE
+#define NSRect CGRect
+#define NSZeroRect CGRectZero
+#define NSMakeRect CGRectMake
+#define valueWithRect valueWithCGRect
+#endif
+
 
 @implementation OCMArgTests
 

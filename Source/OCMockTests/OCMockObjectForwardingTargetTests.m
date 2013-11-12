@@ -10,14 +10,22 @@
 #pragma mark   Helper classes
 
 @interface InternalObject : NSObject
+{
+    NSString *_name;
+}
 @property (nonatomic, strong) NSString *name;
 @end
 
 @interface PublicObject : NSObject
+{
+    InternalObject *_internal;
+};
 @property (nonatomic, strong) NSString *name;
 @end
 
 @implementation InternalObject
+
+@synthesize name = _name;
 
 - (void)dealloc
 {
@@ -29,9 +37,6 @@
 
 
 @implementation PublicObject
-{
-    InternalObject *_internal;
-};
 
 @dynamic name;
 
