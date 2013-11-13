@@ -9,23 +9,6 @@
 
 @implementation NSMethodSignature(OCMAdditions)
 
-+ (IMP)forwarderForClass:(Class)targetClass selector:(SEL)selector
-{
-    // use NSSelectorFromString to avoid warning about unknown @selector
-    SEL selectorWithNoImplementation = NSSelectorFromString(@"methodWhichMustNotExist::::");
-
-#ifndef __arm64__
-    NSMethodSignature *sig = [targetClass instanceMethodSignatureForSelector:selector];
-    if (sig == nil) sig = [targetClass methodSignatureForSelector:selector];
-    BOOL needStretFunction = (sig == nil)? NO : [sig usesSpecialStructureReturn];
-    
-    if (needStretFunction)
-        return class_getMethodImplementation_stret(targetClass, selectorWithNoImplementation);
-#endif
-
-    return class_getMethodImplementation(targetClass, selectorWithNoImplementation);
-}
-
 - (const char *)methodReturnTypeWithoutQualifiers
 {
 	const char *returnType = [self methodReturnType];

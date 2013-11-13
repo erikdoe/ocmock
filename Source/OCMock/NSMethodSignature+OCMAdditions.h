@@ -13,7 +13,6 @@
 
 @interface NSMethodSignature(OCMAdditions)
 
-+ (IMP)forwarderForClass:(Class)targetClass selector:(SEL)selector;
 - (const char *)methodReturnTypeWithoutQualifiers;
 - (BOOL)usesSpecialStructureReturn;
 - (NSString *)fullTypeString;

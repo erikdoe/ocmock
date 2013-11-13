@@ -6,6 +6,7 @@
 #import <objc/runtime.h>
 #import "OCClassMockObject.h"
 #import "NSMethodSignature+OCMAdditions.h"
+#import "NSObject+OCMAdditions.h"
 
 
 @implementation OCClassMockObject
@@ -117,7 +118,7 @@ static NSMutableDictionary *mockTable;
     [replacedClassMethods setObject:[NSValue valueWithPointer:originalIMP] forKey:NSStringFromSelector(selector)];
 
     Class metaClass = object_getClass(mockedClass);
-    IMP forwarderIMP = [NSMethodSignature forwarderForClass:mockedClass selector:selector];
+    IMP forwarderIMP = [metaClass instanceMethodForwarderForSelector:selector];
     class_replaceMethod(metaClass, method_getName(method), forwarderIMP, method_getTypeEncoding(method));
 }
 

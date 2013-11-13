@@ -7,6 +7,7 @@
 #import "OCPartialMockRecorder.h"
 #import "OCPartialMockObject.h"
 #import "NSMethodSignature+OCMAdditions.h"
+#import "NSObject+OCMAdditions.h"
 
 
 @interface OCPartialMockObject (Private)
@@ -136,12 +137,13 @@ static NSMutableDictionary *mockTable;
 	Class subclass = object_getClass([self realObject]);
 	Method originalMethod = class_getInstanceMethod([self mockedClass], selector);
 	IMP originalImp = method_getImplementation(originalMethod);
-	IMP forwarderImp = [NSMethodSignature forwarderForClass:[self mockedClass] selector:selector];
+    IMP forwarderImp = [[self mockedClass] instanceMethodForwarderForSelector:selector];
 
 	const char *types = method_getTypeEncoding(originalMethod);
 	/* Might be NULL if the selector is forwarded to another class */
-	if (types == NULL) types = [[[self mockedClass] instanceMethodSignatureForSelector:selector] fullObjCTypes];
-	if (types == NULL) types = [[[self mockedClass] methodSignatureForSelector:selector] fullObjCTypes];
+    // TODO: check the fallback implementation is actually sufficient
+    if(types == NULL)
+        types = ([[[self mockedClass] instanceMethodSignatureForSelector:selector] fullObjCTypes]);
 	class_addMethod(subclass, selector, forwarderImp, types);
 
 	SEL aliasSelector = NSSelectorFromString([OCMRealMethodAliasPrefix stringByAppendingString:NSStringFromSelector(selector)]);
