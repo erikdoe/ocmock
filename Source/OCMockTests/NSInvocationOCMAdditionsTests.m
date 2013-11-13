@@ -296,11 +296,11 @@
 	[invocation setSelector:selector];
 	// Give it an argument
 	NSRange range;
-	range.location = 1;
-	range.length = 1;
+	range.location = 2;
+	range.length = 4;
 	[invocation setArgument:&range atIndex:2];
 	
-	NSString *expected = @"substringWithRange:{_NSRange}";
+	NSString *expected = @"substringWithRange:(NSRange: {2, 4})";
 	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
@@ -311,11 +311,11 @@
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it an argument
-	NSString *string = @"foo";
+	NSString *string = @"A string that is longer than 100 characters. 123456789 123456789 123456789 123456789 123456789 123456789";
 	const char *cString = [string UTF8String]; 
 	[invocation setArgument:&cString atIndex:2];
 
-	NSString *expected = @"initWithUTF8String:\"foo\"";
+	NSString *expected = [NSString stringWithFormat:@"initWithUTF8String:\"%@...\"", [string substringToIndex:100]];
 	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 

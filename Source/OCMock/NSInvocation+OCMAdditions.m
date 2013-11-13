@@ -128,7 +128,8 @@
 		{
 			NSUInteger argSize;
 			NSGetSizeAndAlignment([[self methodSignature] getArgumentTypeAtIndex:argIndex], &argSize, NULL);
-			if (argSize == 0) argSize = [[self methodSignature] frameLength];
+			if(argSize == 0) // TODO: Can this happen? Is frameLength a good choice in that case?
+                argSize = [[self methodSignature] frameLength];
 			NSMutableData *argumentData = [[[NSMutableData alloc] initWithLength:argSize] autorelease];
 			[self getArgument:[argumentData mutableBytes] atIndex:argIndex];
 			return [NSValue valueWithBytes:[argumentData bytes] objCType:argType];
@@ -325,17 +326,7 @@
 
 - (NSString *)structDescriptionAtIndex:(int)anInt
 {
-	const char *type = [[self methodSignature] getArgumentTypeAtIndex:anInt];
-	const char *equalIndex = type? strchr(type, '=') : NULL;
-	if (equalIndex)
-	{
-		intptr_t len = equalIndex - type - 1L;
-		char name[len+1];
-		strncpy(name, type+1, len);
-		name[len] = '\0';
-		return [NSString stringWithFormat:@"{%s}", name];
-	}
-	return @"{?}";
+    return [NSString stringWithFormat:@"(%@)", [[self getArgumentAtIndexAsObject:anInt] description]];
 }
 
 - (NSString *)pointerDescriptionAtIndex:(int)anInt
@@ -348,13 +339,12 @@
 
 - (NSString *)cStringDescriptionAtIndex:(int)anInt
 {
-#define BUF_LEN 128
-	char buffer[BUF_LEN+1];
+	char buffer[104];
 	char *cStringPtr;
 	
 	[self getArgument:&cStringPtr atIndex:anInt];
-	strncpy(buffer, cStringPtr, BUF_LEN);
-	buffer[BUF_LEN] = '\0';
+	strncpy(buffer, cStringPtr, 100);
+    strcpy(buffer + 100, "...");
 	return [NSString stringWithFormat:@"\"%s\"", buffer];
 }
 
