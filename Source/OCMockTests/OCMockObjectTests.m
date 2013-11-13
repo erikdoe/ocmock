@@ -83,9 +83,6 @@
 
 static NSString *TestNotification = @"TestNotification";
 
-@interface OCMockObjectTests (UnknownSelectorDeclarationAvoidClangWarning)
-- (id)fooBar;
-@end
 
 // --------------------------------------------------------------------------------------
 //  setup
@@ -654,7 +651,8 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testDoesNotRespondToInvalidSelector
 {
-	STAssertFalse([mock respondsToSelector:@selector(fooBar)], nil);
+    // We use a selector that's not implemented by the mock, which is an NSString
+	STAssertFalse([mock respondsToSelector:@selector(arrayWithArray:)], nil);
 }
 
 - (void)testCanStubValueForKeyMethod

@@ -6,10 +6,6 @@
 #import "OCMConstraintTests.h"
 #import <OCMock/OCMConstraint.h>
 
-@interface OCMConstraintTests (UnknownSelectorDeclarationAvoidClangWarning)
-- (void)checkArgXXX:(id)arg;
-@end
-
 @implementation OCMConstraintTests
 
 - (void)setUp
@@ -93,7 +89,8 @@
 
 - (void)testRaisesExceptionOnUnknownSelector
 {
-	STAssertThrows(CONSTRAINTV(@selector(checkArgXXX:), @"bar"), @"Should have thrown for unknown constraint method.");	
+    // We use a selector that this test does not implement
+	STAssertThrows(CONSTRAINTV(@selector(arrayWithArray:), @"bar"), @"Should have thrown for unknown constraint method.");
 }
 
 
