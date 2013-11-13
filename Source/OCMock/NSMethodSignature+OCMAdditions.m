@@ -38,7 +38,7 @@
 {
     const char *types = [self methodReturnTypeWithoutQualifiers];
 
-    if((types == NULL) || (types[0] != _C_STRUCT_B))
+    if((types == NULL) || (types[0] != '{'))
         return NO;
 
     /* In some cases structures are returned by ref. The rules are complex and depend on the
