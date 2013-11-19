@@ -22,22 +22,22 @@
 
 - (BOOL)isNSString__
 {
-    return [mockedClass isSubclassOfClass:[NSString class]];
+    return [mockedClass isKindOfClass:[NSString class]];
 }
 
 - (BOOL)isNSDictionary__
 {
-    return [mockedClass isSubclassOfClass:[NSDictionary class]];
+    return [mockedClass isKindOfClass:[NSDictionary class]];
 }
 
 - (BOOL)isNSData__
 {
-    return [mockedClass isSubclassOfClass:[NSData class]];
+    return [mockedClass isKindOfClass:[NSData class]];
 }
 
 - (BOOL)isNSArray__
 {
-    return [mockedClass isSubclassOfClass:[NSArray class]];
+    return [mockedClass isKindOfClass:[NSArray class]];
 }
 
 @end

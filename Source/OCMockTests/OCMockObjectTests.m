@@ -752,4 +752,19 @@ static NSString *TestNotification = @"TestNotification";
                     @"asking for the description of a mock shouldn't cause a test to fail.");
 }
 
+- (void)testPartialMockShouldNotRaiseWhenDescribing
+{
+    mock = [OCMockObject partialMockForObject:@"foo"];
+    
+    STAssertNoThrow(NSLog(@"Testing description handling dummy methods... %@ %@ %@ %@ %@",
+                          @{@"bar": mock},
+                          @[mock],
+                          [NSSet setWithObject:mock],
+                          [mock description],
+                          mock),
+                    @"asking for the description of a mock shouldn't cause a test to fail.");
+    [mock stopMocking];
+}
+
+
 @end
