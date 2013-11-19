@@ -10,9 +10,3 @@
 + (IMP)instanceMethodForwarderForSelector:(SEL)aSelector;
 
 @end
-
-@interface NSProxy(OCMAdditions)
-
-+ (IMP)instanceMethodForwarderForSelector:(SEL)aSelector;
-
-@end

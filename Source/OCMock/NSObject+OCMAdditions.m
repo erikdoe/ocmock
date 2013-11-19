@@ -7,34 +7,20 @@
 #import "NSMethodSignature+OCMAdditions.h"
 #import <objc/runtime.h>
 
-static IMP InstanceMethodForwarderForSelector(id obj, SEL aSelector)
+@implementation NSObject(OCMAdditions)
+
++ (IMP)instanceMethodForwarderForSelector:(SEL)aSelector
 {
     // use NSSelectorFromString and not @selector to avoid warning
     SEL selectorWithNoImplementation = NSSelectorFromString(@"methodWhichMustNotExist::::");
 
 #ifndef __arm64__
-    NSMethodSignature *sig = [obj instanceMethodSignatureForSelector:aSelector];
+    NSMethodSignature *sig = [self instanceMethodSignatureForSelector:aSelector];
     if([sig usesSpecialStructureReturn])
-        return class_getMethodImplementation_stret(obj, selectorWithNoImplementation);
+        return class_getMethodImplementation_stret(self, selectorWithNoImplementation);
 #endif
-
-    return class_getMethodImplementation(obj, selectorWithNoImplementation);
-}
-
-@implementation NSObject(OCMAdditions)
-
-+ (IMP)instanceMethodForwarderForSelector:(SEL)aSelector
-{
-    return InstanceMethodForwarderForSelector(self, aSelector);
-}
-
-@end
-
-@implementation NSProxy(OCMAdditions)
-
-+ (IMP)instanceMethodForwarderForSelector:(SEL)aSelector
-{
-    return InstanceMethodForwarderForSelector(self, aSelector);
+    
+    return class_getMethodImplementation(self, selectorWithNoImplementation);
 }
 
 @end
