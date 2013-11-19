@@ -739,24 +739,9 @@ static NSString *TestNotification = @"TestNotification";
 //  -description handling
 // --------------------------------------------------------------------------------------
 
-- (void)testShouldNotRaiseWhenDescribing
+- (void)testMockShouldNotRaiseWhenDescribing
 {
     mock = [OCMockObject mockForClass:[NSObject class]];
-    id partialMock = [OCMockObject partialMockForObject:mock];
-
-#if TARGET_IPHONE || TARGET_IPHONE_SIMULATOR
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] < 7.0)
-#endif
-    {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wobjc-method-access"
-        // isNS*__ methods aren't declared publicly, so use pragmas to suppress annoying warnings
-        [[[partialMock expect] andForwardToRealObject] isNSString__];
-        [[[partialMock expect] andForwardToRealObject] isNSDictionary__];
-        [[[partialMock expect] andForwardToRealObject] isNSData__];
-        [[[partialMock expect] andForwardToRealObject] isNSArray__];
-#pragma clang diagnostic pop
-    }
 
     STAssertNoThrow(NSLog(@"Testing description handling dummy methods... %@ %@ %@ %@ %@",
                           @{@"foo": mock},
@@ -765,8 +750,6 @@ static NSString *TestNotification = @"TestNotification";
                           [mock description],
                           mock),
                     @"asking for the description of a mock shouldn't cause a test to fail.");
-    STAssertNoThrow([partialMock verify], @"Not all description-handling methods were exercised");
-    [partialMock stopMocking];
 }
 
 @end
