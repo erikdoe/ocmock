@@ -25,7 +25,7 @@ static NSMutableDictionary *mockTable;
 {
     @synchronized(mockTable)
     {
-        [mockTable setObject:[NSValue valueWithNonretainedObject:mock] forKey:[NSValue valueWithNonretainedObject:aClass]];
+        [mockTable setObject:[NSValue valueWithNonretainedObject:mock] forKey:NSStringFromClass(aClass)];
     }
 }
 
@@ -33,7 +33,7 @@ static NSMutableDictionary *mockTable;
 {
     @synchronized(mockTable)
     {
-        [mockTable removeObjectForKey:[NSValue valueWithNonretainedObject:aClass]];
+        [mockTable removeObjectForKey:NSStringFromClass(aClass)];
     }
 }
 
@@ -44,7 +44,7 @@ static NSMutableDictionary *mockTable;
         OCClassMockObject *mock = nil;
         while((mock == nil) && (aClass != nil))
         {
-            mock = [[mockTable objectForKey:[NSValue valueWithNonretainedObject:aClass]] nonretainedObjectValue];
+            mock = [[mockTable objectForKey:NSStringFromClass(aClass)] nonretainedObjectValue];
             aClass = class_getSuperclass(aClass);
         }
         if(mock == nil)
