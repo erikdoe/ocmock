@@ -42,14 +42,14 @@ class Builder
         @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMock")         
         osxproductdir = "#{@env.productdir}/OSX"                                        
         @worker.run("mkdir -p #{osxproductdir}")
-        @worker.run("cp -R build/Release/OCMock.framework #{osxproductdir}")    
+        @worker.run("cp -R #{@env.builddir}/Release/OCMock.framework #{osxproductdir}")    
         @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphoneos7.0")
         @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphonesimulator7.0")                                                 
-        @worker.run("lipo -create -output build/Release/libOCMock.a build/Release-*/libOCMock.a")      
+        @worker.run("lipo -create -output #{@env.builddir}/Release/libOCMock.a #{@env.builddir}/Release-*/libOCMock.a")      
         iosproductdir = "#{@env.productdir}/iOS"                                           
         @worker.run("mkdir -p #{iosproductdir}")
-        @worker.run("cp -R build/Release/libOCMock.a #{iosproductdir}")      
-        @worker.run("cp -R build/Release-iphoneos/OCMock #{iosproductdir}")      
+        @worker.run("cp -R #{@env.builddir}/Release/libOCMock.a #{iosproductdir}")      
+        @worker.run("cp -R #{@env.builddir}/Release-iphoneos/OCMock #{iosproductdir}")      
     end
 
     def createPackage(packagename, volumename)    
@@ -92,9 +92,17 @@ class Environment
         @sourcedir = tmpdir + "/Source"
         @productdir = tmpdir + "/Products"
         @packagedir = tmpdir
+        xcode = `xcodebuild -showBuildSettings -project ./Source/OCMock.xcodeproj`
+        splitStrs = xcode.split("\n")
+        splitStrs.each_with_index do | str, index |
+            if str.match(/.*SYMROOT.*/)
+                @builddir = str.split(" = ")[1]
+                puts "got #{index} #{str} #{@builddir}"
+            end
+        end
     end
     
-    attr_accessor :tmpdir, :sourcedir, :productdir, :packagedir
+    attr_accessor :tmpdir, :sourcedir, :productdir, :packagedir, :builddir
 end
 
 
