@@ -98,7 +98,6 @@ class Environment
         splitStrs.each_with_index do | str, index |
             if str.match(/.*SYMROOT.*/)
                 @builddir = str.split(" = ")[1]
-                puts "got #{index} #{str} #{@builddir}"
             end
         end
     end
