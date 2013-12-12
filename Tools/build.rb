@@ -92,6 +92,7 @@ class Environment
         @sourcedir = tmpdir + "/Source"
         @productdir = tmpdir + "/Products"
         @packagedir = tmpdir
+        @builddir = 'build'
         xcode = `xcodebuild -showBuildSettings -project ./Source/OCMock.xcodeproj`
         splitStrs = xcode.split("\n")
         splitStrs.each_with_index do | str, index |
