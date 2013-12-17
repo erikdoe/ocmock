@@ -735,9 +735,6 @@ static NSString *TestNotification = @"TestNotification";
 	[mock expect];
 }
 
-// --------------------------------------------------------------------------------------
-//  -description handling
-// --------------------------------------------------------------------------------------
 
 - (void)testMockShouldNotRaiseWhenDescribing
 {
