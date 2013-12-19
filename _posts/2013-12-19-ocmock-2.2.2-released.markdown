@@ -1,0 +1,11 @@
+---
+layout: post
+title: OCMock 2.2.2 released
+tags:
+- Release
+status: publish
+type: post
+published: true
+---
+New minor release (2.2.2) that brings full support for ARM 64-bit builds on iOS. Also included are several bug fixes. For details see the [change log](https://raw.github.com/erikdoe/ocmock/master/Source/Changes.txt).
+

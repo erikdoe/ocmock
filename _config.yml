@@ -4,3 +4,4 @@ exclude: [bin, Gemfile, Gemfile.lock, Makefile]
 permalink: pretty
 paginate: 100
 date_format: "%d %B %Y"
+baseurl: "http://ocmock.org"
