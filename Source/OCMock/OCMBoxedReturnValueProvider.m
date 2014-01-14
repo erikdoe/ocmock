@@ -12,9 +12,15 @@
 {
 	const char *returnType = [[anInvocation methodSignature] methodReturnType];
 	const char *valueType = [(NSValue *)returnValue objCType];
-	/* ARM64 uses 'B' for BOOLs in method signatures but 'c' in NSValue; that case should match */
-	if((strcmp(returnType, valueType) != 0) && !(returnType[0] == 'B' && valueType[0] == 'c'))
+
+	BOOL typesAreNotEqual = strcmp(returnType, valueType) != 0;
+	// It's impossible to rely on the implementation of NSNumber, which may internally represent a different type than the given one upon construction.
+	BOOL valueIsNotNSNumber = ![returnValue isKindOfClass:[NSNumber class]];
+
+	if(typesAreNotEqual && valueIsNotNSNumber)
+	{
 		@throw [NSException exceptionWithName:NSInvalidArgumentException reason:[NSString stringWithFormat:@"Return value does not match method signature; signature declares '%s' but value is '%s'.", returnType, valueType] userInfo:nil];
+	}
 	void *buffer = malloc([[anInvocation methodSignature] methodReturnLength]);
 	[returnValue getValue:buffer];
 	[anInvocation setReturnValue:buffer];

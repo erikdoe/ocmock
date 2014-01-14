@@ -346,9 +346,25 @@ static NSString *TestNotification = @"TestNotification";
 	STAssertEquals(42, returnValue, @"Should have returned stubbed value.");
 }
 
+- (void)testReturnsStubbedUnsignedIntReturnValue
+{
+	[[[mock stub] andReturnValue:@42U] unsignedIntValue];
+	unsigned int returnValue = [mock unsignedIntValue];
+
+	STAssertEquals(42U, returnValue, @"Should have returned stubbed value.");
+}
+
+- (void)testReturnsStubbedBoolReturnValue
+{
+	[[[mock stub] andReturnValue:@YES] boolValue];
+	BOOL returnValue = [mock boolValue];
+
+	STAssertEquals(YES, returnValue, @"Should have returned stubbed value.");
+}
+
 - (void)testRaisesWhenBoxedValueTypesDoNotMatch
 {
-	[[[mock stub] andReturnValue:@42.0] intValue];
+	[[[mock stub] andReturnValue:[NSValue valueWithCGSize:CGSizeZero]] intValue];
 
 	STAssertThrows([mock intValue], @"Should have raised an exception.");
 }
