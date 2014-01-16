@@ -152,6 +152,21 @@
 	}
 }
 
+- (void)verifyWithDelay:(NSTimeInterval)delay {
+    NSTimeInterval i = 0;
+    while (i < delay) {
+        @try {
+            [self verify];
+            return;
+        } @catch (NSException *e) {}
+        
+        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.5]];
+        i += 0.5;
+    }
+    
+    [self verify];
+}
+
 - (void)stopMocking
 {
     // no-op for mock objects that are not class object or partial mocks

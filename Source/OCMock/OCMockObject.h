@@ -33,6 +33,7 @@
 - (id)reject;
 
 - (void)verify;
+- (void)verifyWithDelay:(NSTimeInterval)delay;
 
 - (void)stopMocking;
 

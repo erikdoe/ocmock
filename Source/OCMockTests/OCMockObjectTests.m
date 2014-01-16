@@ -763,5 +763,57 @@ static NSString *TestNotification = @"TestNotification";
     [mock stopMocking];
 }
 
+- (void)testAcceptsAndVerifiesExpectedMethodsWithDelay
+{
+	[[mock expect] lowercaseString];
+	[[mock expect] uppercaseString];
+    
+	[mock lowercaseString];
+	[mock uppercaseString];
+    
+	[mock verifyWithDelay:1];
+}
+
+- (void)testAcceptsAndVerifiesExpectedMethodsWithDelayBlock
+{
+    dispatch_async(dispatch_queue_create("mockqueue", nil), ^{
+        [NSThread sleepForTimeInterval:0.1];
+        [mock lowercaseString];
+    });
+        
+	[[mock expect] lowercaseString];
+	[mock verifyWithDelay:1];
+}
+
+- (void)testFailsVerifyExpectedMethodsWithoutDelay
+{
+    dispatch_async(dispatch_queue_create("mockqueue", nil), ^{
+        [NSThread sleepForTimeInterval:0.1];
+        [mock lowercaseString];
+    });
+    
+	[[mock expect] lowercaseString];
+	STAssertThrows([mock verify], @"Should have raised an exception because method was not called in time.");
+}
+
+- (void)testFailsVerifyExpectedMethodsWithDelay
+{
+	[[mock expect] lowercaseString];
+	STAssertThrows([mock verifyWithDelay:0.5], @"Should have raised an exception because method was not called.");
+}
+
+- (void)testAcceptsAndVerifiesExpectedMethodsWithDelayBlockTimeout
+{
+    [mock retain];
+    
+    dispatch_async(dispatch_queue_create("mockqueue", nil), ^{
+        [NSThread sleepForTimeInterval:1];
+        [mock lowercaseString];
+        [mock release];
+    });
+    
+	[[mock expect] lowercaseString];
+	STAssertThrows([mock verifyWithDelay:0.1], @"Should have raised an exception because method was not called.");
+}
 
 @end
