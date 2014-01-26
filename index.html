@@ -7,7 +7,12 @@ layout: default
 	<p>This implementation fully utilises the dynamic nature of Objective-C. It creates mock objects on the fly and uses the trampoline pattern so that you can define expectations and stubs using the same syntax that you use to call methods. No strings, no @selector, just method invocations like this:
 	<pre><code>[[myMockObject expect] doSomethingWithObject:someObject];</code></pre>
 
-	<p>OCMock provides stub objects that return pre-determined values for specific method invocations, dynamic mocks that can be used to verify interaction patterns, and partial mocks to overwrite selected methods of existing objects.
+	<p>OCMock provides
+   <ul>
+		 <li style="margin-top: 4px;">stub objects that return pre-determined values for specific method invocations, 
+	   <li>dynamic mocks that can be used to verify interaction patterns, and
+		 <li>partial mocks to overwrite selected methods of existing objects.
+	</ul>
 	<p>The remainder of this page should have everything to get you started. Enjoy!
 
 	<h2>Getting ready</h2>
