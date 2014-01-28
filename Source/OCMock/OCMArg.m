@@ -7,7 +7,6 @@
 #import <OCMock/OCMArg.h>
 #import <OCMock/OCMConstraint.h>
 #import "OCMPassByRefSetter.h"
-#import "OCMConstraint.h"
 
 @implementation OCMArg
 
