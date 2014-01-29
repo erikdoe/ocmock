@@ -102,7 +102,7 @@
  */
 - (id)reject;
 /**
- @abstract Used to verify the mock has recieved all the messages you told it to expect
+ Used to verify the mock has recieved all the messages you told it to expect
  @discussion The verify method will raise an exception if the expected method has not been invoked.
  */
 - (void)verify;
