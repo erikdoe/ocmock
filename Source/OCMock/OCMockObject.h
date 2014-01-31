@@ -30,6 +30,7 @@
 
 - (id)stub;
 - (id)expect;
+- (id)expectZeroOrMoreTimes;
 - (id)reject;
 
 - (void)verify;
