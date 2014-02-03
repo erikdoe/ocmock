@@ -93,7 +93,7 @@
 
 - (BOOL)canRemoveExpectation
 {
-	return (actualCallsIntercepted > minCallsExpected) && (actualCallsIntercepted >= maxCallsExpected);
+	return (actualCallsIntercepted >= minCallsExpected) && (actualCallsIntercepted <= maxCallsExpected);
 }
 
 - (BOOL)wasCallExpectationViolated
