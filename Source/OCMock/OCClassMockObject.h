@@ -18,4 +18,6 @@
 - (void)setupClassForClassMethodMocking;
 - (void)setupForwarderForClassMethodSelector:(SEL)selector;
 
+- (Class)proxyClass;  // since -class returns the mockedClass
+
 @end

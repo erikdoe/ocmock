@@ -145,6 +145,7 @@
 	Class origClass = [realObject class];
 	id mock = [OCMockObject partialMockForObject:realObject];
 	STAssertEqualObjects([realObject class], origClass, @"Override of -class method did not work");
+	STAssertEqualObjects([mock class], origClass, @"Mock proxy -class method did not work");
 	STAssertFalse(origClass == object_getClass(realObject), @"Subclassing did not work");
 	[mock stopMocking];
 	STAssertEqualObjects([realObject class], origClass, @"Classes different after stopMocking");

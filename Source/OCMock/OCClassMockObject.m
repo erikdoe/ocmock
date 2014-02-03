@@ -67,7 +67,7 @@ static NSMutableDictionary *mockTable;
 	if(replacedClassMethods != nil)
     {
 		[self stopMocking];
-        [[self class] forgetMockForClass:mockedClass];
+        [[self proxyClass] forgetMockForClass:mockedClass];
         [replacedClassMethods release];
     }
 	[super dealloc];
@@ -92,13 +92,13 @@ static NSMutableDictionary *mockTable;
         return;
 
     replacedClassMethods = [[NSMutableDictionary alloc] init];
-    [[self class] rememberMock:self forClass:mockedClass];
+    [[self proxyClass] rememberMock:self forClass:mockedClass];
 
     Method method = class_getClassMethod(mockedClass, @selector(forwardInvocation:));
     IMP originalIMP = method_getImplementation(method);
     [replacedClassMethods setObject:[NSValue valueWithPointer:originalIMP] forKey:NSStringFromSelector(@selector(forwardInvocation:))];
 
-    Method myForwardMethod = class_getInstanceMethod([self class], @selector(forwardInvocationForClassObject:));
+    Method myForwardMethod = class_getInstanceMethod([self proxyClass], @selector(forwardInvocationForClassObject:));
    	IMP myForwardIMP = method_getImplementation(myForwardMethod);
     Class metaClass = object_getClass(mockedClass);
 	class_replaceMethod(metaClass, @selector(forwardInvocation:), myForwardIMP, method_getTypeEncoding(myForwardMethod));
@@ -160,6 +160,16 @@ static NSMutableDictionary *mockTable;
 	return [mockedClass instanceMethodSignatureForSelector:aSelector];
 }
 
+- (Class)proxyClass
+{
+    return [super class];
+}
+
+- (Class)class
+{
+    return mockedClass;
+}
+
 - (BOOL)respondsToSelector:(SEL)selector
 {
     return [mockedClass instancesRespondToSelector:selector];
@@ -168,6 +178,11 @@ static NSMutableDictionary *mockTable;
 - (BOOL)isKindOfClass:(Class)aClass
 {
     return [mockedClass isSubclassOfClass:aClass];
+}
+
+- (BOOL)conformsToProtocol:(Protocol *)aProtocol
+{
+    return class_conformsToProtocol(mockedClass, aProtocol);
 }
 
 @end
