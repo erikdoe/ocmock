@@ -222,5 +222,16 @@
     STAssertEqualObjects(@"Bar-ClassMethod", [TestClassWithClassMethods bar], @"Should have 'unstubbed' class method 'bar'.");
 }
 
+- (void)testForwardToRealObject
+{
+    NSString *classValue = [TestClassWithClassMethods foo];
+    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    [[[[mock expect] classMethod] andForwardToRealObject] foo];
+
+    NSString *result = [TestClassWithClassMethods foo];
+    STAssertEqualObjects(result, classValue, nil);
+    STAssertNoThrow([mock verify], nil);
+}
+
 
 @end
