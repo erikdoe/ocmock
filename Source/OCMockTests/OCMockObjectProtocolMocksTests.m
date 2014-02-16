@@ -29,6 +29,7 @@ typedef InterfaceForTypedef* PointerTypedefInterface;
 @protocol ProtocolWithTypedefs
 - (TypedefInterface*)typedefReturnValue1;
 - (PointerTypedefInterface)typedefReturnValue2;
+- (TypedefInterface**)typedefReturnValue3;
 - (void)typedefParameter:(TypedefInterface*)parameter;
 @end
 
@@ -95,6 +96,12 @@ typedef InterfaceForTypedef* PointerTypedefInterface;
     id mock = [OCMockObject mockForProtocol:@protocol(ProtocolWithTypedefs)];
     STAssertNoThrow([[[mock stub] andReturn:[TypedefInterface new]] typedefReturnValue2], @"Should accept a typedefed return-type");
     STAssertNoThrow([mock typedefReturnValue2], @"bla");
+}
+
+- (void)testWithTypedefReturnTypeWithDoubleIndirection {
+    id mock = [OCMockObject mockForProtocol:@protocol(ProtocolWithTypedefs)];
+    STAssertNoThrow([[[mock stub] andReturn:[TypedefInterface new]] typedefReturnValue3], @"Should accept a typedefed return-type");
+    STAssertNoThrow([mock typedefReturnValue3], @"bla");
 }
 
 - (void)testWithTypedefParameter {

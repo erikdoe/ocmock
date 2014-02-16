@@ -27,7 +27,8 @@
 	const char *returnType = [[anInvocation methodSignature] methodReturnTypeWithoutQualifiers];
 	if(strcmp(returnType, @encode(id)) != 0) {
         // if the returnType is a typedef to an object, it has the form ^{OriginalClass=#}
-        NSString *regexString = @"^\\^\\{(.*)=#\\}";
+        // However, another level of indirection removes the internal type specification (e.g. ^{OriginalClass=#})
+        NSString *regexString = @"^(\\^)+\\{(.*)(=#)?\\}";
         NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:regexString options:0 error:NULL];
         NSString *type = [NSString stringWithCString:returnType encoding:NSASCIIStringEncoding];
         if([regex numberOfMatchesInString:type options:0 range:NSMakeRange(0, type.length)] == 0)
