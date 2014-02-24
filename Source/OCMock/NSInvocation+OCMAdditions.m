@@ -106,6 +106,12 @@
 			[self getArgument:&value atIndex:argIndex];
 			return [NSNumber numberWithDouble:value];
 		}	
+		case 'D':
+		{
+			long double value;
+			[self getArgument:&value atIndex:argIndex];
+			return [NSValue valueWithBytes:&value objCType:@encode(typeof(value))];
+		}
 		case 'B':
 		{
 			bool value;
@@ -120,8 +126,11 @@
         }
 		case '{': // structure
 		{
-			NSUInteger maxArgSize = [[self methodSignature] frameLength];
-			NSMutableData *argumentData = [[[NSMutableData alloc] initWithLength:maxArgSize] autorelease];
+			NSUInteger argSize;
+			NSGetSizeAndAlignment([[self methodSignature] getArgumentTypeAtIndex:argIndex], &argSize, NULL);
+			if(argSize == 0) // TODO: Can this happen? Is frameLength a good choice in that case?
+                argSize = [[self methodSignature] frameLength];
+			NSMutableData *argumentData = [[[NSMutableData alloc] initWithLength:argSize] autorelease];
 			[self getArgument:[argumentData mutableBytes] atIndex:argIndex];
 			return [NSValue valueWithBytes:[argumentData bytes] objCType:argType];
 		}       
@@ -160,6 +169,7 @@
 	switch(*argType)
 	{
 		case '@':	return [self objectDescriptionAtIndex:argIndex];
+		case 'B':	return [self boolDescriptionAtIndex:argIndex];
 		case 'c':	return [self charDescriptionAtIndex:argIndex];
 		case 'C':	return [self unsignedCharDescriptionAtIndex:argIndex];
 		case 'i':	return [self intDescriptionAtIndex:argIndex];
@@ -172,8 +182,8 @@
 		case 'Q':	return [self unsignedLongLongDescriptionAtIndex:argIndex];
 		case 'd':	return [self doubleDescriptionAtIndex:argIndex];
 		case 'f':	return [self floatDescriptionAtIndex:argIndex];
-		// Why does this throw EXC_BAD_ACCESS when appending the string?
-		//	case NSObjCStructType: return [self structDescriptionAtIndex:index];
+		case 'D':	return [self longDoubleDescriptionAtIndex:argIndex];
+		case '{':	return [self structDescriptionAtIndex:argIndex];
 		case '^':	return [self pointerDescriptionAtIndex:argIndex];
 		case '*':	return [self cStringDescriptionAtIndex:argIndex];
 		case ':':	return [self selectorDescriptionAtIndex:argIndex];
@@ -196,6 +206,13 @@
 		return [object description];
 }
 
+- (NSString *)boolDescriptionAtIndex:(int)anInt
+{
+	bool value;
+	[self getArgument:&value atIndex:anInt];
+	return value? @"YES" : @"NO";
+}
+
 - (NSString *)charDescriptionAtIndex:(int)anInt
 {
 	unsigned char buffer[128];
@@ -205,7 +222,7 @@
 	
 	// If there's only one character in the buffer, and it's 0 or 1, then we have a BOOL
 	if (buffer[1] == '\0' && (buffer[0] == 0 || buffer[0] == 1))
-		return [NSString stringWithFormat:@"%@", (buffer[0] == 1 ? @"YES" : @"NO")];
+		return (buffer[0] == 1 ? @"YES" : @"NO");
 	else
 		return [NSString stringWithFormat:@"'%c'", *buffer];
 }
@@ -299,12 +316,17 @@
 	return [NSString stringWithFormat:@"%f", floatValue];
 }
 
+- (NSString *)longDoubleDescriptionAtIndex:(int)anInt
+{
+	long double longDoubleValue;
+	
+	[self getArgument:&longDoubleValue atIndex:anInt];
+	return [NSString stringWithFormat:@"%Lf", longDoubleValue];
+}
+
 - (NSString *)structDescriptionAtIndex:(int)anInt
 {
-	void *buffer;
-	
-	[self getArgument:&buffer atIndex:anInt];
-	return [NSString stringWithFormat:@":(struct)%p", buffer];
+    return [NSString stringWithFormat:@"(%@)", [[self getArgumentAtIndexAsObject:anInt] description]];
 }
 
 - (NSString *)pointerDescriptionAtIndex:(int)anInt
@@ -317,11 +339,12 @@
 
 - (NSString *)cStringDescriptionAtIndex:(int)anInt
 {
-	char buffer[128];
+	char buffer[104];
+	char *cStringPtr;
 	
-	memset(buffer, 0x0, 128);
-	
-	[self getArgument:&buffer atIndex:anInt];
+	[self getArgument:&cStringPtr atIndex:anInt];
+	strncpy(buffer, cStringPtr, 100);
+    strcpy(buffer + 100, "...");
 	return [NSString stringWithFormat:@"\"%s\"", buffer];
 }
 

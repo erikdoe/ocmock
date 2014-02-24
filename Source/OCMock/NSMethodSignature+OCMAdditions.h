@@ -15,5 +15,7 @@
 
 - (const char *)methodReturnTypeWithoutQualifiers;
 - (BOOL)usesSpecialStructureReturn;
+- (NSString *)fullTypeString;
+- (const char *)fullObjCTypes;
 
 @end

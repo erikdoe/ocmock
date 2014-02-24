@@ -116,9 +116,27 @@
 		03B3168B14633A4F0052CD09 /* OCMock.h in Headers */ = {isa = PBXBuildFile; fileRef = 030EF0B814632FD000B04273 /* OCMock.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03B3168D14633B1D0052CD09 /* OCHamcrest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03B3168C14633B1D0052CD09 /* OCHamcrest.framework */; };
 		03B3168E14633D9C0052CD09 /* OCMock.h in Headers */ = {isa = PBXBuildFile; fileRef = 030EF0B814632FD000B04273 /* OCMock.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03DCED6D183406BC0059089E /* NSObject+OCMAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28991BEFD67DEF2CCF7D2 /* NSObject+OCMAdditions.m */; };
+		03DCED6F183406DA0059089E /* NSObject+OCMAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA28C5F4A475BEC0C28BDC3 /* NSObject+OCMAdditions.h */; };
 		2FA281C641E64586FE9A506D /* NSMethodSignatureOCMAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28DEDB9163597B7C49F3D /* NSMethodSignatureOCMAdditionsTests.m */; };
 		2FA2859DB0F5EF004A3FD0D3 /* OCMockObjectProtocolMocksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA286BFBD8B9D068B41E7EF /* OCMockObjectProtocolMocksTests.m */; };
+		2FA287ACE547BB41937BDEC3 /* NSObject+OCMAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA28C5F4A475BEC0C28BDC3 /* NSObject+OCMAdditions.h */; };
 		2FA28896D9AFD309D59C9CFB /* OCMArgTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28EDBF243639C57F88A1B /* OCMArgTests.m */; };
+		2FA28D38ED9D83A3E0A620B3 /* NSObject+OCMAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28991BEFD67DEF2CCF7D2 /* NSObject+OCMAdditions.m */; };
+		D31108B01828DB8700737925 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D31108AF1828DB8700737925 /* SenTestingKit.framework */; };
+		D31108B21828DB8700737925 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D31108B11828DB8700737925 /* Foundation.framework */; };
+		D31108B41828DB8700737925 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D31108B31828DB8700737925 /* UIKit.framework */; };
+		D31108BA1828DB8700737925 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D31108B81828DB8700737925 /* InfoPlist.strings */; };
+		D31108C31828DBD600737925 /* OCMockObjectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B316251463350E0052CD09 /* OCMockObjectTests.m */; };
+		D31108C41828DBD600737925 /* OCMockObjectPartialMocksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AC5C1416DF9FA500D82ECD /* OCMockObjectPartialMocksTests.m */; };
+		D31108C51828DBD600737925 /* OCMockObjectClassMethodMockingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F91C516EFB493006C3D70 /* OCMockObjectClassMethodMockingTests.m */; };
+		D31108C61828DBD600737925 /* OCMockObjectForwardingTargetTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0354D71F16F23AF5001766BB /* OCMockObjectForwardingTargetTests.m */; };
+		D31108C71828DBD600737925 /* OCMConstraintTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B316211463350E0052CD09 /* OCMConstraintTests.m */; };
+		D31108C81828DBD600737925 /* OCMockRecorderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B316271463350E0052CD09 /* OCMockRecorderTests.m */; };
+		D31108C91828DBD600737925 /* OCObserverMockObjectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B316291463350E0052CD09 /* OCObserverMockObjectTests.m */; };
+		D31108CA1828DBD600737925 /* NSInvocationOCMAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B3161F1463350E0052CD09 /* NSInvocationOCMAdditionsTests.m */; };
+		D31108CB1828DC1300737925 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 030EF0DC14632FF700B04273 /* libOCMock.a */; };
+		D31108CD1828DC1900737925 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D31108CC1828DC1900737925 /* CoreGraphics.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -128,6 +146,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 030EF0A714632FD000B04273;
 			remoteInfo = OCMock;
+		};
+		D31108BE1828DB8700737925 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 030EF09E14632FD000B04273 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 030EF0DB14632FF700B04273;
+			remoteInfo = OCMockLib;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -210,10 +235,20 @@
 		03B3169014633FAB0052CD09 /* License.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = License.txt; sourceTree = "<group>"; };
 		2FA2843EE4675FC8037F0415 /* OCMArgTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMArgTests.h; sourceTree = "<group>"; };
 		2FA286BFBD8B9D068B41E7EF /* OCMockObjectProtocolMocksTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMockObjectProtocolMocksTests.m; sourceTree = "<group>"; };
+		2FA28991BEFD67DEF2CCF7D2 /* NSObject+OCMAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+OCMAdditions.m"; sourceTree = "<group>"; };
 		2FA28B7B2155E3ECD93F92F3 /* NSMethodSignatureOCMAdditionsTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSMethodSignatureOCMAdditionsTests.h; sourceTree = "<group>"; };
+		2FA28C5F4A475BEC0C28BDC3 /* NSObject+OCMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+OCMAdditions.h"; sourceTree = "<group>"; };
 		2FA28CDB493350BF1DD26DC3 /* OCMockObjectProtocolMocksTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockObjectProtocolMocksTests.h; sourceTree = "<group>"; };
 		2FA28DEDB9163597B7C49F3D /* NSMethodSignatureOCMAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSMethodSignatureOCMAdditionsTests.m; sourceTree = "<group>"; };
 		2FA28EDBF243639C57F88A1B /* OCMArgTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMArgTests.m; sourceTree = "<group>"; };
+		D31108AD1828DB8700737925 /* OCMockLibTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OCMockLibTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D31108AF1828DB8700737925 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		D31108B11828DB8700737925 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		D31108B31828DB8700737925 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		D31108B71828DB8700737925 /* OCMockLibTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OCMockLibTests-Info.plist"; sourceTree = "<group>"; };
+		D31108B91828DB8700737925 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D31108BD1828DB8700737925 /* OCMockLibTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OCMockLibTests-Prefix.pch"; sourceTree = "<group>"; };
+		D31108CC1828DC1900737925 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -244,6 +279,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D31108AA1828DB8700737925 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D31108CD1828DC1900737925 /* CoreGraphics.framework in Frameworks */,
+				D31108CB1828DC1300737925 /* libOCMock.a in Frameworks */,
+				D31108B01828DB8700737925 /* SenTestingKit.framework in Frameworks */,
+				D31108B41828DB8700737925 /* UIKit.framework in Frameworks */,
+				D31108B21828DB8700737925 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -255,6 +302,7 @@
 				030EF0B114632FD000B04273 /* OCMock */,
 				030EF0C714632FD000B04273 /* OCMockTests */,
 				030EF0DF14632FF700B04273 /* OCMockLib */,
+				D31108B51828DB8700737925 /* OCMockLibTests */,
 				030EF0A914632FD000B04273 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -265,6 +313,7 @@
 				030EF0A814632FD000B04273 /* OCMock.framework */,
 				030EF0C014632FD000B04273 /* OCMockTests.octest */,
 				030EF0DC14632FF700B04273 /* libOCMock.a */,
+				D31108AD1828DB8700737925 /* OCMockLibTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -404,6 +453,8 @@
 				03B31588146333BF0052CD09 /* NSMethodSignature+OCMAdditions.m */,
 				03B31589146333BF0052CD09 /* NSNotificationCenter+OCMAdditions.h */,
 				03B3158A146333BF0052CD09 /* NSNotificationCenter+OCMAdditions.m */,
+				2FA28991BEFD67DEF2CCF7D2 /* NSObject+OCMAdditions.m */,
+				2FA28C5F4A475BEC0C28BDC3 /* NSObject+OCMAdditions.h */,
 			);
 			name = "Foundation Additions";
 			sourceTree = "<group>";
@@ -472,6 +523,37 @@
 			name = "Invocation Handler";
 			sourceTree = "<group>";
 		};
+		D31108AE1828DB8700737925 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D31108CC1828DC1900737925 /* CoreGraphics.framework */,
+				D31108AF1828DB8700737925 /* SenTestingKit.framework */,
+				D31108B11828DB8700737925 /* Foundation.framework */,
+				D31108B31828DB8700737925 /* UIKit.framework */,
+			);
+			name = Frameworks;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		D31108B51828DB8700737925 /* OCMockLibTests */ = {
+			isa = PBXGroup;
+			children = (
+				D31108B61828DB8700737925 /* Supporting Files */,
+				D31108AE1828DB8700737925 /* Frameworks */,
+			);
+			path = OCMockLibTests;
+			sourceTree = "<group>";
+		};
+		D31108B61828DB8700737925 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D31108B71828DB8700737925 /* OCMockLibTests-Info.plist */,
+				D31108B81828DB8700737925 /* InfoPlist.strings */,
+				D31108BD1828DB8700737925 /* OCMockLibTests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -501,6 +583,7 @@
 				03B31609146333C00052CD09 /* OCPartialMockObject.h in Headers */,
 				03B3160E146333C00052CD09 /* OCPartialMockRecorder.h in Headers */,
 				03B31613146333C00052CD09 /* OCProtocolMockObject.h in Headers */,
+				2FA287ACE547BB41937BDEC3 /* NSObject+OCMAdditions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -525,6 +608,7 @@
 				03B315E7146333BF0052CD09 /* OCMObserverRecorder.h in Headers */,
 				03B315F6146333C00052CD09 /* OCMPassByRefSetter.h in Headers */,
 				03B315FB146333C00052CD09 /* OCMRealObjectForwarder.h in Headers */,
+				03DCED6F183406DA0059089E /* NSObject+OCMAdditions.h in Headers */,
 				03B31600146333C00052CD09 /* OCMReturnValueProvider.h in Headers */,
 				03B31605146333C00052CD09 /* OCObserverMockObject.h in Headers */,
 				03B3160A146333C00052CD09 /* OCPartialMockObject.h in Headers */,
@@ -597,14 +681,37 @@
 			productReference = 030EF0DC14632FF700B04273 /* libOCMock.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		D31108AC1828DB8700737925 /* OCMockLibTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D31108C01828DB8700737925 /* Build configuration list for PBXNativeTarget "OCMockLibTests" */;
+			buildPhases = (
+				D31108A91828DB8700737925 /* Sources */,
+				D31108AA1828DB8700737925 /* Frameworks */,
+				D31108AB1828DB8700737925 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D31108BF1828DB8700737925 /* PBXTargetDependency */,
+			);
+			name = OCMockLibTests;
+			productName = OCMockLibTests;
+			productReference = D31108AD1828DB8700737925 /* OCMockLibTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		030EF09E14632FD000B04273 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Mulle Kybernetik";
+				TargetAttributes = {
+					D31108AC1828DB8700737925 = {
+						TestTargetID = 030EF0DB14632FF700B04273;
+					};
+				};
 			};
 			buildConfigurationList = 030EF0A114632FD000B04273 /* Build configuration list for PBXProject "OCMock" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -621,6 +728,7 @@
 				030EF0A714632FD000B04273 /* OCMock */,
 				030EF0BF14632FD000B04273 /* OCMockTests */,
 				030EF0DB14632FF700B04273 /* OCMockLib */,
+				D31108AC1828DB8700737925 /* OCMockLibTests */,
 			);
 		};
 /* End PBXProject section */
@@ -639,6 +747,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				030EF0CC14632FD000B04273 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D31108AB1828DB8700737925 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D31108BA1828DB8700737925 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -699,6 +815,7 @@
 				03B3160B146333C00052CD09 /* OCPartialMockObject.m in Sources */,
 				03B31610146333C00052CD09 /* OCPartialMockRecorder.m in Sources */,
 				03B31615146333C00052CD09 /* OCProtocolMockObject.m in Sources */,
+				2FA28D38ED9D83A3E0A620B3 /* NSObject+OCMAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -732,6 +849,7 @@
 				03B315C7146333BF0052CD09 /* OCMArg.m in Sources */,
 				03B315CC146333BF0052CD09 /* OCMBlockCaller.m in Sources */,
 				03B315D1146333BF0052CD09 /* OCMBoxedReturnValueProvider.m in Sources */,
+				03DCED6D183406BC0059089E /* NSObject+OCMAdditions.m in Sources */,
 				03B315D6146333BF0052CD09 /* OCMConstraint.m in Sources */,
 				03B315DB146333BF0052CD09 /* OCMExceptionReturnValueProvider.m in Sources */,
 				03B315E0146333BF0052CD09 /* OCMIndirectReturnValueProvider.m in Sources */,
@@ -749,6 +867,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D31108A91828DB8700737925 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D31108C51828DBD600737925 /* OCMockObjectClassMethodMockingTests.m in Sources */,
+				D31108C71828DBD600737925 /* OCMConstraintTests.m in Sources */,
+				D31108C91828DBD600737925 /* OCObserverMockObjectTests.m in Sources */,
+				D31108C41828DBD600737925 /* OCMockObjectPartialMocksTests.m in Sources */,
+				D31108C81828DBD600737925 /* OCMockRecorderTests.m in Sources */,
+				D31108C61828DBD600737925 /* OCMockObjectForwardingTargetTests.m in Sources */,
+				D31108CA1828DBD600737925 /* NSInvocationOCMAdditionsTests.m in Sources */,
+				D31108C31828DBD600737925 /* OCMockObjectTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -756,6 +889,11 @@
 			isa = PBXTargetDependency;
 			target = 030EF0A714632FD000B04273 /* OCMock */;
 			targetProxy = 030EF0C414632FD000B04273 /* PBXContainerItemProxy */;
+		};
+		D31108BF1828DB8700737925 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 030EF0DB14632FF700B04273 /* OCMockLib */;
+			targetProxy = D31108BE1828DB8700737925 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -776,6 +914,14 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
+		D31108B81828DB8700737925 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D31108B91828DB8700737925 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -783,9 +929,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -803,9 +950,12 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -814,9 +964,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -828,7 +979,9 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				SDKROOT = macosx;
@@ -885,6 +1038,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OCMock/OCMock-Prefix.pch";
+				GCC_WARN_UNDECLARED_SELECTOR = NO;
 				INFOPLIST_FILE = "OCMockTests/OCMockTests-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -907,6 +1061,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OCMock/OCMock-Prefix.pch";
+				GCC_WARN_UNDECLARED_SELECTOR = NO;
 				INFOPLIST_FILE = "OCMockTests/OCMockTests-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../../../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -922,11 +1077,12 @@
 		030EF0E614632FF700B04273 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				DSTROOT = /tmp/OCMockLib.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OCMockLib/OCMockLib-Prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[arch=arm64]" = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Versions/C\"",
@@ -937,17 +1093,19 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "arm64 armv7 armv7s x86_64 i386";
 			};
 			name = Debug;
 		};
 		030EF0E714632FF700B04273 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				DSTROOT = /tmp/OCMockLib.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OCMockLib/OCMockLib-Prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[arch=arm64]" = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Versions/C\"",
@@ -959,6 +1117,74 @@
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "arm64 armv7 armv7s x86_64 i386";
+			};
+			name = Release;
+		};
+		D31108C11828DB8700737925 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "OCMockLibTests/OCMockLibTests-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = "OCMockLibTests/OCMockLibTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		D31108C21828DB8700737925 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				ENABLE_NS_ASSERTIONS = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "OCMockLibTests/OCMockLibTests-Prefix.pch";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = "OCMockLibTests/OCMockLibTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
 		};
@@ -997,6 +1223,15 @@
 			buildConfigurations = (
 				030EF0E614632FF700B04273 /* Debug */,
 				030EF0E714632FF700B04273 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D31108C01828DB8700737925 /* Build configuration list for PBXNativeTarget "OCMockLibTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D31108C11828DB8700737925 /* Debug */,
+				D31108C21828DB8700737925 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -11,6 +11,7 @@
 #import <OCMock/OCMockRecorder.h>
 #import "NSInvocation+OCMAdditions.h"
 
+
 @interface OCMockObject(Private)
 + (id)_makeNice:(OCMockObject *)mock;
 - (NSString *)_recorderDescriptions:(BOOL)onlyExpectations;

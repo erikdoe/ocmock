@@ -7,6 +7,13 @@
 #import "OCMockObjectPartialMocksTests.h"
 #import <objc/runtime.h>
 
+#if TARGET_OS_IPHONE
+#define NSRect CGRect
+#define NSZeroRect CGRectZero
+#define NSMakeRect CGRectMake
+#define valueWithRect valueWithCGRect
+#endif
+
 #pragma mark   Helper classes
 
 @interface TestClassWithSimpleMethod : NSObject

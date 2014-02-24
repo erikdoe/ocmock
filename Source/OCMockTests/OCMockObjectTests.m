@@ -651,7 +651,8 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testDoesNotRespondToInvalidSelector
 {
-	STAssertFalse([mock respondsToSelector:@selector(fooBar)], nil);
+    // We use a selector that's not implemented by the mock, which is an NSString
+	STAssertFalse([mock respondsToSelector:@selector(arrayWithArray:)], nil);
 }
 
 - (void)testCanStubValueForKeyMethod
@@ -733,5 +734,34 @@ static NSString *TestNotification = @"TestNotification";
 	[mock lowercaseString];
 	[mock expect];
 }
+
+
+- (void)testMockShouldNotRaiseWhenDescribing
+{
+    mock = [OCMockObject mockForClass:[NSObject class]];
+
+    STAssertNoThrow(NSLog(@"Testing description handling dummy methods... %@ %@ %@ %@ %@",
+                          @{@"foo": mock},
+                          @[mock],
+                          [NSSet setWithObject:mock],
+                          [mock description],
+                          mock),
+                    @"asking for the description of a mock shouldn't cause a test to fail.");
+}
+
+- (void)testPartialMockShouldNotRaiseWhenDescribing
+{
+    mock = [OCMockObject partialMockForObject:@"foo"];
+    
+    STAssertNoThrow(NSLog(@"Testing description handling dummy methods... %@ %@ %@ %@ %@",
+                          @{@"bar": mock},
+                          @[mock],
+                          [NSSet setWithObject:mock],
+                          [mock description],
+                          mock),
+                    @"asking for the description of a mock shouldn't cause a test to fail.");
+    [mock stopMocking];
+}
+
 
 @end

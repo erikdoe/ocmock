@@ -5,6 +5,8 @@
 
 #import <objc/runtime.h>
 #import "OCClassMockObject.h"
+#import "NSMethodSignature+OCMAdditions.h"
+#import "NSObject+OCMAdditions.h"
 
 
 @implementation OCClassMockObject
@@ -98,7 +100,7 @@ static NSMutableDictionary *mockTable;
 
     Method myForwardMethod = class_getInstanceMethod([self class], @selector(forwardInvocationForClassObject:));
    	IMP myForwardIMP = method_getImplementation(myForwardMethod);
-    Class metaClass = objc_getMetaClass(class_getName(mockedClass));
+    Class metaClass = object_getClass(mockedClass);
 	class_replaceMethod(metaClass, @selector(forwardInvocation:), myForwardIMP, method_getTypeEncoding(myForwardMethod));
 }
 
@@ -115,10 +117,9 @@ static NSMutableDictionary *mockTable;
     IMP originalIMP = method_getImplementation(method);
     [replacedClassMethods setObject:[NSValue valueWithPointer:originalIMP] forKey:NSStringFromSelector(selector)];
 
-    Class metaClass = objc_getMetaClass(class_getName(mockedClass));
-    IMP forwarderIMP = [metaClass instanceMethodForSelector:@selector(aMethodThatMustNotExist)];
+    Class metaClass = object_getClass(mockedClass);
+    IMP forwarderIMP = [metaClass instanceMethodForwarderForSelector:selector];
     class_replaceMethod(metaClass, method_getName(method), forwarderIMP, method_getTypeEncoding(method));
-    
 }
 
 - (void)removeForwarderForClassMethodSelector:(SEL)selector
@@ -167,6 +168,80 @@ static NSMutableDictionary *mockTable;
 - (BOOL)isKindOfClass:(Class)aClass
 {
     return [mockedClass isSubclassOfClass:aClass];
+}
+
+@end
+
+
+#pragma mark  -
+
+/**
+ taken from:
+ `class-dump -f isNS /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator7.0.sdk/System/Library/Frameworks/CoreFoundation.framework`
+ 
+ @interface NSObject (__NSIsKinds)
+ - (_Bool)isNSValue__;
+ - (_Bool)isNSTimeZone__;
+ - (_Bool)isNSString__;
+ - (_Bool)isNSSet__;
+ - (_Bool)isNSOrderedSet__;
+ - (_Bool)isNSNumber__;
+ - (_Bool)isNSDictionary__;
+ - (_Bool)isNSDate__;
+ - (_Bool)isNSData__;
+ - (_Bool)isNSArray__;
+ */
+
+@implementation OCClassMockObject(NSIsKindsImplementation)
+
+- (BOOL)isNSValue__
+{
+    return [mockedClass isKindOfClass:[NSValue class]];
+}
+
+- (BOOL)isNSTimeZone__
+{
+    return [mockedClass isKindOfClass:[NSTimeZone class]];
+}
+
+- (BOOL)isNSSet__
+{
+    return [mockedClass isKindOfClass:[NSSet class]];
+}
+
+- (BOOL)isNSOrderedSet__
+{
+    return [mockedClass isKindOfClass:[NSOrderedSet class]];
+}
+
+- (BOOL)isNSNumber__
+{
+    return [mockedClass isKindOfClass:[NSNumber class]];
+}
+
+- (BOOL)isNSDate__
+{
+    return [mockedClass isKindOfClass:[NSDate class]];
+}
+
+- (BOOL)isNSString__
+{
+    return [mockedClass isKindOfClass:[NSString class]];
+}
+
+- (BOOL)isNSDictionary__
+{
+    return [mockedClass isKindOfClass:[NSDictionary class]];
+}
+
+- (BOOL)isNSData__
+{
+    return [mockedClass isKindOfClass:[NSData class]];
+}
+
+- (BOOL)isNSArray__
+{
+    return [mockedClass isKindOfClass:[NSArray class]];
 }
 
 @end
