@@ -12,7 +12,7 @@ class Builder
       downloadSource
       copySource
       buildModules
-      createPackage "ocmock-2.2.1.dmg", "OCMock 2.2.1" 
+      createPackage "ocmock-2.2.3.dmg", "OCMock 2.2.3" 
       openPackageDir
     end
     
@@ -39,17 +39,17 @@ class Builder
 
     def buildModules
         @worker.chdir("#{@env.sourcedir}/Source")
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMock OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")         
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMock")         
         osxproductdir = "#{@env.productdir}/OSX"                                        
         @worker.run("mkdir -p #{osxproductdir}")
-        @worker.run("cp -R #{@env.symroot}/Release/OCMock.framework #{osxproductdir}")    
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphoneos7.0 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphonesimulator7.0 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")                                                 
-        @worker.run("lipo -create -output #{@env.symroot}/Release/libOCMock.a #{@env.symroot}/Release-*/libOCMock.a")      
+        @worker.run("cp -R build/Release/OCMock.framework #{osxproductdir}")    
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphoneos7.0")
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphonesimulator7.0")                                                 
+        @worker.run("lipo -create -output build/Release/libOCMock.a build/Release-*/libOCMock.a")      
         iosproductdir = "#{@env.productdir}/iOS"                                           
         @worker.run("mkdir -p #{iosproductdir}")
-        @worker.run("cp -R #{@env.symroot}/Release/libOCMock.a #{iosproductdir}")      
-        @worker.run("cp -R #{@env.symroot}/Release-iphoneos/OCMock #{iosproductdir}")      
+        @worker.run("cp -R build/Release/libOCMock.a #{iosproductdir}")      
+        @worker.run("cp -R build/Release-iphoneos/OCMock #{iosproductdir}")      
     end
 
     def createPackage(packagename, volumename)    
@@ -92,11 +92,9 @@ class Environment
         @sourcedir = tmpdir + "/Source"
         @productdir = tmpdir + "/Products"
         @packagedir = tmpdir
-        @objroot = tmpdir + '/Build/Intermediates'
-        @symroot = tmpdir + '/Build'
     end
     
-    attr_accessor :tmpdir, :sourcedir, :productdir, :packagedir, :objroot, :symroot
+    attr_accessor :tmpdir, :sourcedir, :productdir, :packagedir
 end
 
 
