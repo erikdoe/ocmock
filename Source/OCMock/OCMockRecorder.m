@@ -32,6 +32,7 @@
 {
 	signatureResolver = anObject;
 	invocationHandlers = [[NSMutableArray alloc] init];
+  //NSLog(@"Signature resolver: %@", anObject);
 	return self;
 }
 
@@ -114,6 +115,7 @@
 
 - (id)classMethod
 {
+  //NSLog(@"class method: %@", self);
     recordedAsClassMethod = YES;
     [signatureResolver setupClassForClassMethodMocking];
     return self;
@@ -134,6 +136,7 @@
         return [[signatureResolver mockedClass] methodSignatureForSelector:aSelector];
     
     NSMethodSignature *signature = [signatureResolver methodSignatureForSelector:aSelector];
+  NSLog(@"Got signature(%@): %@", NSStringFromSelector(aSelector), signature);
     if(signature == nil)
     {
         // if we're a working with a class mock and there is a class method, auto-switch
@@ -191,7 +194,8 @@
 
 		id recordedArg = [recordedInvocation getArgumentAtIndexAsObject:i];
 		id passedArg = [anInvocation getArgumentAtIndexAsObject:i];
-
+    
+    NSLog(@"target: %@\nra: %@\npassed: %@\n", target, recordedArg, passedArg);
 		if([recordedArg isProxy])
 		{
 			if(![recordedArg isEqual:passedArg])
