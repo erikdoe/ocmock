@@ -52,23 +52,24 @@
 {
 	if([expectedArg isKindOfClass:[OCMConstraint class]])
 	{	
-		if([expectedArg evaluate:observedArg] == NO)
-			return NO;
+		return [expectedArg evaluate:observedArg];
 	}
 	else if([expectedArg conformsToProtocol:objc_getProtocol("HCMatcher")])
 	{
-		if([expectedArg matches:observedArg] == NO)
-			return NO;
+		return [expectedArg matches:observedArg];
+	}
+	else if (expectedArg == observedArg)
+	{
+		return YES;
+	}
+	else if (expectedArg == nil || observedArg == nil)
+	{
+		return NO;
 	}
 	else
 	{
-		if([expectedArg class] != [observedArg class])
-			return NO;
-		if(([expectedArg isEqual:observedArg] == NO) &&
-		   !((expectedArg == nil) && (observedArg == nil)))
-			return NO;
+		return [expectedArg isEqual:observedArg];
 	}
-	return YES;
 }
 
 
