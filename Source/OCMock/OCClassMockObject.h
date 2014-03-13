@@ -14,8 +14,10 @@
 - (id)initWithClass:(Class)aClass;
 
 - (Class)mockedClass;
+- (Class)mockObjectClass;  // since -class returns the mockedClass
 
 - (void)setupClassForClassMethodMocking;
 - (void)setupForwarderForClassMethodSelector:(SEL)selector;
+
 
 @end

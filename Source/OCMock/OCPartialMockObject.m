@@ -65,7 +65,7 @@ static NSMutableDictionary *mockTable;
 {
 	[super initWithClass:[anObject class]];
 	realObject = [anObject retain];
-	[[self class] rememberPartialMock:self forObject:anObject];
+	[[self mockObjectClass] rememberPartialMock:self forObject:anObject];
 	[self setupSubclassForObject:realObject];
 	return self;
 }
@@ -91,7 +91,7 @@ static NSMutableDictionary *mockTable;
 {
 	object_setClass(realObject, [self mockedClass]);
 	[realObject release];
-	[[self class] forgetPartialMockForObject:realObject];
+	[[self mockObjectClass] forgetPartialMockForObject:realObject];
 	realObject = nil;
     
     [super stopMocking];
@@ -109,13 +109,13 @@ static NSMutableDictionary *mockTable;
 	objc_registerClassPair(subclass);
 	object_setClass(anObject, subclass);
 
-	Method myForwardInvocationMethod = class_getInstanceMethod([self class], @selector(forwardInvocationForRealObject:));
+	Method myForwardInvocationMethod = class_getInstanceMethod([self mockObjectClass], @selector(forwardInvocationForRealObject:));
 	IMP myForwardInvocationImp = method_getImplementation(myForwardInvocationMethod);
 	const char *forwardInvocationTypes = method_getTypeEncoding(myForwardInvocationMethod);
 	class_addMethod(subclass, @selector(forwardInvocation:), myForwardInvocationImp, forwardInvocationTypes);
 
 
-    Method myForwardingTargetForSelectorMethod = class_getInstanceMethod([self class], @selector(forwardingTargetForSelectorForRealObject:));
+    Method myForwardingTargetForSelectorMethod = class_getInstanceMethod([self mockObjectClass], @selector(forwardingTargetForSelectorForRealObject:));
     IMP myForwardingTargetForSelectorImp = method_getImplementation(myForwardingTargetForSelectorMethod);
     const char *forwardingTargetForSelectorTypes = method_getTypeEncoding(myForwardingTargetForSelectorMethod);
 
@@ -125,7 +125,7 @@ static NSMutableDictionary *mockTable;
     class_addMethod(subclass, @selector(forwardingTargetForSelector_Original:), originalForwardingTargetForSelectorImp, forwardingTargetForSelectorTypes);
     
     /* We also override the -class method to return the original class */
-    Method myObjectClassMethod = class_getInstanceMethod([self class], @selector(classForRealObject));
+    Method myObjectClassMethod = class_getInstanceMethod([self mockObjectClass], @selector(classForRealObject));
     const char *objectClassTypes = method_getTypeEncoding(myObjectClassMethod);
     IMP myObjectClassImp = method_getImplementation(myObjectClassMethod);
     IMP originalClassImp = [realClass instanceMethodForSelector:@selector(class)];

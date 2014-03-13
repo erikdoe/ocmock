@@ -137,7 +137,7 @@
     if(signature == nil)
     {
         // if we're a working with a class mock and there is a class method, auto-switch
-        if(([[signatureResolver class] isSubclassOfClass:[OCClassMockObject class]]) &&
+        if(([object_getClass(signatureResolver) isSubclassOfClass:[OCClassMockObject class]]) &&
            ([[signatureResolver mockedClass] respondsToSelector:aSelector]))
         {
             [self classMethod];
