@@ -17,11 +17,20 @@
 	SEL aliasedSelector = NSSelectorFromString([OCMRealMethodAliasPrefix stringByAppendingString:NSStringFromSelector(invocationSelector)]);
 	
 	[anInvocation setSelector:aliasedSelector];
-	if([invocationTarget isProxy] && (class_getInstanceMethod([invocationTarget mockObjectClass], @selector(realObject))))
+	if ([invocationTarget isProxy])
 	{
-		// the method has been invoked on the mock, we need to change the target to the real object
-		[anInvocation setTarget:[(OCPartialMockObject *)invocationTarget realObject]];
-	} 
+	    if (class_getInstanceMethod([invocationTarget mockObjectClass], @selector(realObject)))
+	    {
+	        // the method has been invoked on the mock, we need to change the target to the real object
+	        [anInvocation setTarget:[(OCPartialMockObject *)invocationTarget realObject]];
+	    }
+	    else
+	    {
+	        [NSException raise:NSInternalInconsistencyException
+	                    format:@"Method andForwardToRealObject can only be used with partial mocks and class methods."];
+	    }
+	}
+
 	[anInvocation invoke];
 }
 

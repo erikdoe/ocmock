@@ -9,6 +9,9 @@
 #import "NSObject+OCMAdditions.h"
 
 
+NSString *OCMRealMethodAliasPrefix = @"ocmock_replaced_";
+
+
 @implementation OCClassMockObject
 
 #pragma mark  Mock table
@@ -120,6 +123,9 @@ static NSMutableDictionary *mockTable;
     Class metaClass = object_getClass(mockedClass);
     IMP forwarderIMP = [metaClass instanceMethodForwarderForSelector:selector];
     class_replaceMethod(metaClass, method_getName(method), forwarderIMP, method_getTypeEncoding(method));
+    
+    SEL aliasSelector = NSSelectorFromString([OCMRealMethodAliasPrefix stringByAppendingString:NSStringFromSelector(selector)]);
+    class_addMethod(metaClass, aliasSelector, originalIMP, method_getTypeEncoding(method));
 }
 
 - (void)removeForwarderForClassMethodSelector:(SEL)selector

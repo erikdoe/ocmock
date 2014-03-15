@@ -21,3 +21,5 @@
 
 
 @end
+
+extern NSString *OCMRealMethodAliasPrefix;

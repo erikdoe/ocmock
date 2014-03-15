@@ -15,6 +15,7 @@
 #import "OCMIndirectReturnValueProvider.h"
 #import "OCMNotificationPoster.h"
 #import "OCMBlockCaller.h"
+#import "OCMRealObjectForwarder.h"
 #import "NSInvocation+OCMAdditions.h"
 
 @interface NSObject(HCMatcherDummy)
@@ -98,9 +99,8 @@
 
 - (id)andForwardToRealObject
 {
-	[NSException raise:NSInternalInconsistencyException format:@"Method %@ can only be used with partial mocks.",
-	 NSStringFromSelector(_cmd)];
-	return self; // keep compiler happy
+    [invocationHandlers addObject:[[[OCMRealObjectForwarder alloc] init] autorelease]];
+    return self;
 }
 
 
