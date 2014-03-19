@@ -200,10 +200,14 @@
 	[self getArgument:&object atIndex:anInt];
 	if (object == nil)
 		return @"nil";
-	else if(![object isProxy] && [object isKindOfClass:[NSString class]])
-		return [NSString stringWithFormat:@"@\"%@\"", [object description]];
+	
+	NSString * description = [object description];
+	if(!description) description = @"";
+	
+	if(![object isProxy] && [object isKindOfClass:[NSString class]])
+		return [NSString stringWithFormat:@"@\"%@\"", description];
 	else
-		return [object description];
+		return description;
 }
 
 - (NSString *)boolDescriptionAtIndex:(int)anInt
