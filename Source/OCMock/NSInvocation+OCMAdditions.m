@@ -201,6 +201,7 @@
 	if (object == nil)
 		return @"nil";
 	
+	// The description cannot be nil, if it is then replace with empty string
 	NSString * description = [object description];
 	if(!description) description = @"";
 	
