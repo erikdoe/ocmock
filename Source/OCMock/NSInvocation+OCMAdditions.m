@@ -201,14 +201,11 @@
 	if (object == nil)
 		return @"nil";
 	
-	// The description cannot be nil, if it is then replace with empty string
-	NSString * description = [object description];
-	if(!description) description = @"";
-	
 	if(![object isProxy] && [object isKindOfClass:[NSString class]])
-		return [NSString stringWithFormat:@"@\"%@\"", description];
+		return [NSString stringWithFormat:@"@\"%@\"", [object description]];
 	else
-		return description;
+		// The description cannot be nil, if it is then replace it
+		return [object description] ?: @"<nil description>";
 }
 
 - (NSString *)boolDescriptionAtIndex:(int)anInt
