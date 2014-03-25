@@ -200,8 +200,7 @@
 	[self getArgument:&object atIndex:anInt];
 	if (object == nil)
 		return @"nil";
-	
-	if(![object isProxy] && [object isKindOfClass:[NSString class]])
+	else if(![object isProxy] && [object isKindOfClass:[NSString class]])
 		return [NSString stringWithFormat:@"@\"%@\"", [object description]];
 	else
 		// The description cannot be nil, if it is then replace it
