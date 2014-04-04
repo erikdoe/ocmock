@@ -152,18 +152,17 @@
 	}
 }
 
-- (void)verifyWithDelay:(NSTimeInterval)delay {
-    NSTimeInterval i = 0;
-    while (i < delay) {
-        @try {
-            [self verify];
-            return;
-        } @catch (NSException *e) {}
-        
-        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.5]];
-        i += 0.5;
+- (void)verifyWithDelay:(NSTimeInterval)delay
+{
+    NSTimeInterval step = 0.01;
+    while(delay > 0)
+    {
+        if([expectations count] == 0)
+            break;
+        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:step]];
+        delay -= step;
+        step *= 2;
     }
-    
     [self verify];
 }
 
