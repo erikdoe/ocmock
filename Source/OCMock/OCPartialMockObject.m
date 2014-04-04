@@ -14,9 +14,6 @@
 - (void)forwardInvocationForRealObject:(NSInvocation *)anInvocation;
 @end 
 
-
-NSString *OCMRealMethodAliasPrefix = @"ocmock_replaced_";
-
 @implementation OCPartialMockObject
 
 
