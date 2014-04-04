@@ -222,5 +222,36 @@
     STAssertEqualObjects(@"Bar-ClassMethod", [TestClassWithClassMethods bar], @"Should have 'unstubbed' class method 'bar'.");
 }
 
+- (void)testForwardToRealObject
+{
+    NSString *classFooValue = [TestClassWithClassMethods foo];
+    NSString *classBarValue = [TestClassWithClassMethods bar];
+    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+
+    [[[[mock expect] classMethod] andForwardToRealObject] foo];
+    NSString *result = [TestClassWithClassMethods foo];
+    STAssertEqualObjects(result, classFooValue, nil);
+    STAssertNoThrow([mock verify], nil);
+    
+    [[[mock expect] andForwardToRealObject] foo];
+    result = [TestClassWithClassMethods foo];
+    STAssertEqualObjects(result, classFooValue, nil);
+    STAssertNoThrow([mock verify], nil);
+
+    [[[[mock expect] classMethod] andForwardToRealObject] bar];
+    result = [TestClassWithClassMethods bar];
+    STAssertEqualObjects(result, classBarValue, nil);
+    STAssertNoThrow([mock verify], nil);
+    
+    [[[[mock expect] classMethod] andForwardToRealObject] bar];
+    STAssertThrowsSpecificNamed([mock bar], NSException, NSInternalInconsistencyException, nil);
+
+    [[[mock expect] andForwardToRealObject] bar];
+    STAssertThrowsSpecificNamed([mock bar], NSException, NSInternalInconsistencyException, @"Did not get the exception saying andForwardToRealObject not supported");
+
+    [[[mock expect] andForwardToRealObject] foo];
+    STAssertThrows([mock foo], nil);
+}
+
 
 @end

@@ -10,13 +10,6 @@
 
 @implementation OCPartialMockRecorder
 
-- (id)andForwardToRealObject
-{
-	[invocationHandlers addObject:[[[OCMRealObjectForwarder	alloc] init] autorelease]];
-	return self;
-}
-
-
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
 	[super forwardInvocation:anInvocation];
