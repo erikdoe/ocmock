@@ -32,6 +32,11 @@
 {
 	signatureResolver = anObject;
 	invocationHandlers = [[NSMutableArray alloc] init];
+
+	minCallsExpected = 1;
+	maxCallsExpected = 1;
+	actualCallsIntercepted = 0;
+
 	return self;
 }
 
@@ -84,6 +89,31 @@
 {
 	[invocationHandlers addObject:[[[OCMIndirectReturnValueProvider alloc] initWithProvider:anObject andSelector:selector] autorelease]];
 	return self;
+}
+
+- (BOOL)canRemoveExpectation
+{
+	return (actualCallsIntercepted >= minCallsExpected) && (actualCallsIntercepted <= maxCallsExpected);
+}
+
+- (BOOL)wasCallExpectationViolated
+{
+	return (actualCallsIntercepted > maxCallsExpected) || (actualCallsIntercepted < minCallsExpected);
+}
+
+- (void)setMinimumCalls:(NSInteger)min
+{
+	minCallsExpected = min;
+}
+
+- (void)setMaximumCalls:(NSInteger)max
+{
+	maxCallsExpected = max;
+}
+
+- (void)recordInvocation
+{
+	actualCallsIntercepted++;
 }
 
 #if NS_BLOCKS_AVAILABLE

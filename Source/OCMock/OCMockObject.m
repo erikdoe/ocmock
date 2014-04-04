@@ -118,11 +118,25 @@
 }
 
 
-- (id)expect
+- (id)expectMin:(NSInteger)min max:(NSInteger)max
 {
 	OCMockRecorder *recorder = [self stub];
+	[recorder setMinimumCalls:min];
+	[recorder setMaximumCalls:max];
 	[expectations addObject:recorder];
 	return recorder;
+}
+
+
+- (id)expect
+{
+	return [self expectMin:1 max:1];
+}
+
+
+- (id)expectZeroOrMoreTimes
+{
+	return [self expectMin:0 max:NSIntegerMax];
 }
 
 
@@ -134,14 +148,30 @@
 }
 
 
+- (NSInteger)outstandingExpectations
+{
+	NSInteger outstanding = 0;
+
+	for (OCMockRecorder *recorder in [expectations copy]) {
+		if ([recorder wasCallExpectationViolated]) {
+			outstanding++;
+		}
+	}
+
+	return outstanding;
+}
+
+
 - (void)verify
 {
-	if([expectations count] == 1)
+	NSInteger outstandingExpectations = [self outstandingExpectations];
+
+	if(outstandingExpectations == 1)
 	{
 		[NSException raise:NSInternalInconsistencyException format:@"%@: expected method was not invoked: %@", 
 			[self description], [[expectations objectAtIndex:0] description]];
 	}
-	if([expectations count] > 0)
+	if(outstandingExpectations > 0)
 	{
 		[NSException raise:NSInternalInconsistencyException format:@"%@ : %@ expected methods were not invoked: %@", 
 			[self description], @([expectations count]), [self _recorderDescriptions:YES]];
@@ -222,9 +252,12 @@
 			 [self description], [recorder description], [[expectations objectAtIndex:0] description]];
 			
 		}
-		[[recorder retain] autorelease];
-		[expectations removeObject:recorder];
-		[recorders removeObjectAtIndex:i];
+		[recorder recordInvocation];
+		if ([recorder canRemoveExpectation]) {
+			[[recorder retain] autorelease];
+			[expectations removeObject:recorder];
+			[recorders removeObjectAtIndex:i];
+		}
 	}
 	[[recorder invocationHandlers] makeObjectsPerformSelector:@selector(handleInvocation:) withObject:anInvocation];
 	
