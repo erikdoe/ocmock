@@ -1,0 +1,12 @@
+---
+layout: post
+title: OCMock 2.2.4 released
+tags:
+- Release
+status: publish
+type: post
+published: true
+---
+New minor release (2.2.4) introducing a verifyWithDelay: method, andForwardToRealObject for class methods, and a few bug fixes.
+
+
