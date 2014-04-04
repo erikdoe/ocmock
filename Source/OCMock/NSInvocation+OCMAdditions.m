@@ -203,7 +203,8 @@
 	else if(![object isProxy] && [object isKindOfClass:[NSString class]])
 		return [NSString stringWithFormat:@"@\"%@\"", [object description]];
 	else
-		return [object description];
+		// The description cannot be nil, if it is then replace it
+		return [object description] ?: @"<nil description>";
 }
 
 - (NSString *)boolDescriptionAtIndex:(int)anInt
