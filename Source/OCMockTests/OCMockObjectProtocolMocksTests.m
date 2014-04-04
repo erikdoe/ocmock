@@ -17,7 +17,10 @@
 - (id)objectValue;
 @end
 
-@interface InterfaceForTypedef : NSObject
+@interface InterfaceForTypedef : NSObject {
+    int prop1;
+    NSObject *prop2;
+}
 @end
 
 @implementation InterfaceForTypedef
@@ -88,19 +91,19 @@ typedef InterfaceForTypedef* PointerTypedefInterface;
 - (void)testWithTypedefReturnType {
     id mock = [OCMockObject mockForProtocol:@protocol(ProtocolWithTypedefs)];
     STAssertNoThrow([[[mock stub] andReturn:[TypedefInterface new]] typedefReturnValue1], @"Should accept a typedefed return-type");
-    STAssertNoThrow([mock typedefReturnValue1], @"bla");
+    STAssertNoThrow([mock typedefReturnValue1], nil);
 }
 
 - (void)testWithTypedefPointerReturnType {
     id mock = [OCMockObject mockForProtocol:@protocol(ProtocolWithTypedefs)];
     STAssertNoThrow([[[mock stub] andReturn:[TypedefInterface new]] typedefReturnValue2], @"Should accept a typedefed return-type");
-    STAssertNoThrow([mock typedefReturnValue2], @"bla");
+    STAssertNoThrow([mock typedefReturnValue2], nil);
 }
 
 - (void)testWithTypedefParameter {
     id mock = [OCMockObject mockForProtocol:@protocol(ProtocolWithTypedefs)];
     STAssertNoThrow([[mock stub] typedefParameter:nil], @"Should accept a typedefed parameter-type");
-    STAssertNoThrow([mock typedefParameter:nil], @"bla");
+    STAssertNoThrow([mock typedefParameter:nil], nil);
 }
 
 
