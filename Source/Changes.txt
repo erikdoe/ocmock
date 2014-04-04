@@ -1,9 +1,15 @@
 Chronological listing of changes. More detail is usually found in the Git commit messages
 and/or the pull requests.
 
+2014-03-15
+
+* Added andForwardToRealObject support for class methods (Carl Lindberg)
+
+
 2014-01-16
 
 * Extended OCMockObject with verifyWithDelay (Charles Harley, Daniel Doubrovkine)
+
 
 2013-12-04
 
