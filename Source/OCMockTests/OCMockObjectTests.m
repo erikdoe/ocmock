@@ -3,8 +3,8 @@
 //  Copyright (c) 2004-2010 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
+#import <SenTestingKit/SenTestingKit.h>
 #import <OCMock/OCMock.h>
-#import "OCMockObjectTests.h"
 
 
 // --------------------------------------------------------------------------------------
@@ -82,6 +82,14 @@
 @end
 
 static NSString *TestNotification = @"TestNotification";
+
+
+@interface OCMockObjectTests : SenTestCase
+{
+	id mock;
+}
+
+@end
 
 
 // --------------------------------------------------------------------------------------

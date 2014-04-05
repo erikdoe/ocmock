@@ -3,17 +3,11 @@
 //  Copyright (c) 2006-2008 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
-#import "NSInvocationOCMAdditionsTests.h"
+#import <SenTestingKit/SenTestingKit.h>
 #import "NSInvocation+OCMAdditions.h"
 
-#define TestString @"foo"
-#define TestInt 1
 
-@interface NSInvocationOCMAdditionsTests (UnknownSelectorDeclarationAvoidClangWarning)
-- (id)foo;
-@end
-
-@implementation NSValue (OCMTestAdditions)
+@implementation NSValue(OCMTestAdditions)
 
 - (id)ocmtest_initWithLongDouble:(long double)ldbl
 {
@@ -21,6 +15,12 @@
 }
 
 @end
+
+
+@interface NSInvocationOCMAdditionsTests : SenTestCase
+
+@end
+
 
 @implementation NSInvocationOCMAdditionsTests
 
@@ -41,10 +41,10 @@
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it one argument (starts at index 2)
-	NSNumber *argument = [NSNumber numberWithInt:TestInt];
+	NSNumber *argument = [NSNumber numberWithInt:1];
 	[invocation setArgument:&argument atIndex:2];
 	
-	NSString *expected = [NSString stringWithFormat:@"isEqualToNumber:%d", TestInt];
+	NSString *expected = [NSString stringWithFormat:@"isEqualToNumber:%d", 1];
 	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
@@ -55,10 +55,10 @@
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it one argument (starts at index 2)
-	NSString *argument = TestString;
+	NSString *argument = @"TEST_STRING";
 	[invocation setArgument:&argument atIndex:2];
 	
-	NSString *expected = [NSString stringWithFormat:@"isEqualToString:@\"%@\"", TestString];
+	NSString *expected = [NSString stringWithFormat:@"isEqualToString:@\"%@\"", @"TEST_STRING"];
 	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
@@ -69,12 +69,12 @@
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it two arguments
-	NSNumber *argumentOne = [NSNumber numberWithInt:TestInt];
-	NSString *argumentTwo = TestString;
+	NSNumber *argumentOne = [NSNumber numberWithInt:1];
+	NSString *argumentTwo = @"TEST_STRING";
 	[invocation setArgument:&argumentOne atIndex:2];
 	[invocation setArgument:&argumentTwo atIndex:3];
 	
-	NSString *expected = [NSString stringWithFormat:@"setValue:%d forKey:@\"%@\"", TestInt, TestString];
+	NSString *expected = [NSString stringWithFormat:@"setValue:%d forKey:@\"%@\"", 1, @"TEST_STRING"];
 	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
@@ -85,7 +85,7 @@
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it one argument (starts at index 2)
-	NSArray *argument = [NSArray arrayWithObject:TestString];
+	NSArray *argument = [NSArray arrayWithObject:@"TEST_STRING"];
 	[invocation setArgument:&argument atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"addObjectsFromArray:%@", [argument description]];
@@ -99,10 +99,10 @@
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it an argument
-	int argumentOne = TestInt;
+	int argumentOne = 1;
 	[invocation setArgument:&argumentOne atIndex:2];
 	
-	NSString *expected = [NSString stringWithFormat:@"initWithInt:%d", TestInt];
+	NSString *expected = [NSString stringWithFormat:@"initWithInt:%d", 1];
 	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
@@ -113,10 +113,10 @@
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it an argument
-	unsigned int argumentOne = TestInt;
+	unsigned int argumentOne = 1;
 	[invocation setArgument:&argumentOne atIndex:2];
 	
-	NSString *expected = [NSString stringWithFormat:@"initWithUnsignedInt:%d", TestInt];
+	NSString *expected = [NSString stringWithFormat:@"initWithUnsignedInt:%d", 1];
 	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
@@ -326,7 +326,7 @@
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it an argument
-	SEL selectorValue = @selector(foo);
+	SEL selectorValue = @selector(testInvocationDescriptionWithSelectorArgument);
 	[invocation setArgument:&selectorValue atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"respondsToSelector:@selector(%@)", NSStringFromSelector(selectorValue)];

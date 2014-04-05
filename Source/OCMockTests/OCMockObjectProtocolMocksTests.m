@@ -3,8 +3,8 @@
 //  Copyright (c) 2013 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
+#import <SenTestingKit/SenTestingKit.h>
 #import <OCMock/OCMock.h>
-#import "OCMockObjectProtocolMocksTests.h"
 
 
 // --------------------------------------------------------------------------------------
@@ -36,11 +36,17 @@ typedef InterfaceForTypedef* PointerTypedefInterface;
 @end
 
 
+
+@interface OCMockObjectProtocolMocksTests : SenTestCase
+
+@end
+
+
+@implementation OCMockObjectProtocolMocksTests
+
 // --------------------------------------------------------------------------------------
 //	Tests
 // --------------------------------------------------------------------------------------
-
-@implementation OCMockObjectProtocolMocksTests
 
 - (void)testCanMockFormalProtocol
 {

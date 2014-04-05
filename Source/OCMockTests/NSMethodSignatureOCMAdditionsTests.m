@@ -3,14 +3,18 @@
 //  Copyright (c) 2013 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
+#import <SenTestingKit/SenTestingKit.h>
 #import "NSMethodSignature+OCMAdditions.h"
-#import "NSMethodSignatureOCMAdditionsTests.h"
 
 #if TARGET_OS_IPHONE
 #define NSPoint CGPoint
 #define NSSize  CGSize
 #define NSRect  CGRect
 #endif
+
+@interface NSMethodSignatureOCMAdditionsTests : SenTestCase
+
+@end
 
 @implementation NSMethodSignatureOCMAdditionsTests
 

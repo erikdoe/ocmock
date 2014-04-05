@@ -3,7 +3,7 @@
 //  Copyright (c) 2004-2009 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
-#import "OCMockRecorderTests.h"
+#import <SenTestingKit/SenTestingKit.h>
 #import <OCMock/OCMockRecorder.h>
 #import "OCMReturnValueProvider.h"
 #import "OCMExceptionReturnValueProvider.h"
@@ -20,6 +20,11 @@
 - (void)methodWithInt:(int)i andObject:(id)o
 {
 }
+
+@end
+
+
+@interface OCMockRecorderTests : SenTestCase
 
 @end
 

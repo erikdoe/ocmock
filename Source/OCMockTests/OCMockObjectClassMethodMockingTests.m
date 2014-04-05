@@ -3,10 +3,10 @@
 //  Copyright (c) 2013 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
+#import <SenTestingKit/SenTestingKit.h>
 #import <OCMock/OCMock.h>
 #import "OCClassMockObject.h"
 #import "OCPartialMockObject.h"
-#import "OCMockObjectClassMethodMockingTests.h"
 
 #pragma mark   Helper classes
 
@@ -44,6 +44,10 @@
 
 @end
 
+
+@interface OCMockObjectClassMethodMockingTests : SenTestCase
+
+@end
 
 
 @implementation OCMockObjectClassMethodMockingTests

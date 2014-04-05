@@ -3,8 +3,8 @@
 //  Copyright (c) 2013 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
+#import <SenTestingKit/SenTestingKit.h>
 #import <OCMock/OCMock.h>
-#import "OCMockObjectPartialMocksTests.h"
 #import <objc/runtime.h>
 
 #if TARGET_OS_IPHONE
@@ -80,6 +80,13 @@
 
 @end
 
+
+@interface OCMockObjectPartialMocksTests : SenTestCase
+{
+    int numKVOCallbacks;
+}
+
+@end
 
 
 @implementation OCMockObjectPartialMocksTests

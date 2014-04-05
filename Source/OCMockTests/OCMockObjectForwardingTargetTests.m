@@ -3,7 +3,7 @@
 //  Copyright (c) 2013 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
-#import "OCMockObjectForwardingTargetTests.h"
+#import <SenTestingKit/SenTestingKit.h>
 #import <OCMock/OCMock.h>
 #import <objc/runtime.h>
 
@@ -117,6 +117,11 @@
 
 
 #pragma mark    Tests
+
+
+@interface OCMockForwardingTargetTests : SenTestCase
+
+@end
 
 
 @implementation OCMockForwardingTargetTests

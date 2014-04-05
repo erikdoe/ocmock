@@ -3,8 +3,8 @@
 //  Copyright (c) 2013 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
+#import <SenTestingKit/SenTestingKit.h>
 #import "OCMArg.h"
-#import "OCMArgTests.h"
 
 #if TARGET_OS_IPHONE
 #define NSRect CGRect
@@ -12,6 +12,10 @@
 #define NSMakeRect CGRectMake
 #define valueWithRect valueWithCGRect
 #endif
+
+@interface OCMArgTests : SenTestCase
+
+@end
 
 
 @implementation OCMArgTests

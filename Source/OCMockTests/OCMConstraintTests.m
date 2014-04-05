@@ -3,8 +3,17 @@
 //  Copyright (c) 2004-2010 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
-#import "OCMConstraintTests.h"
+#import <SenTestingKit/SenTestingKit.h>
 #import <OCMock/OCMConstraint.h>
+
+
+@interface OCMConstraintTests : SenTestCase
+{
+	BOOL didCallCustomConstraint;
+}
+
+@end
+
 
 @implementation OCMConstraintTests
 
