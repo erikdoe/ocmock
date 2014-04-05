@@ -1,6 +1,11 @@
 Chronological listing of changes. More detail is usually found in the Git commit messages
 and/or the pull requests.
 
+2014-04-05
+
+* Switched unit test for OCMock itself to XCTest.
+
+
 2014-03-15
 
 * Added andForwardToRealObject support for class methods (Carl Lindberg)

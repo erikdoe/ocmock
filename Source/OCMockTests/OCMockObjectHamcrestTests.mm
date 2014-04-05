@@ -3,14 +3,14 @@
 //  Copyright (c) 2004-2008 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
 
 #define HC_SHORTHAND
 #import <OCHamcrest/OCHamcrest.h>
 
 
-@interface OCMockObjectHamcrestTests : SenTestCase
+@interface OCMockObjectHamcrestTests : XCTestCase
 
 @end
 
@@ -29,7 +29,7 @@
 {
 	id mock = [OCMockObject mockForClass:[NSString class]];
 	[[mock stub] hasSuffix:(id)anyOf(equalTo(@"foo"), equalTo(@"bar"), NULL)];
-	STAssertThrows([mock hasSuffix:@"foobar"], @"Should have raised an exception.");
+	XCTAssertThrows([mock hasSuffix:@"foobar"], @"Should have raised an exception.");
 }
 
 

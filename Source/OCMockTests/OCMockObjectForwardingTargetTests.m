@@ -3,7 +3,7 @@
 //  Copyright (c) 2013 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
 #import <objc/runtime.h>
 
@@ -119,7 +119,7 @@
 #pragma mark    Tests
 
 
-@interface OCMockForwardingTargetTests : SenTestCase
+@interface OCMockForwardingTargetTests : XCTestCase
 
 @end
 
@@ -131,7 +131,7 @@
     InternalObject *internal = [[InternalObject alloc] init];
     internal.name = @"Internal Object";
     PublicObject *public = [[PublicObject alloc] initWithInternal:internal];
-    STAssertEqualObjects(@"Internal Object", public.name, nil);
+    XCTAssertEqualObjects(@"Internal Object", public.name);
 }
 
 - (void)testStubsMethodImplementation
@@ -140,7 +140,7 @@
     id mock = [OCMockObject partialMockForObject:public];
 
     [[[mock stub] andReturn:@"FOO"] name];
-    STAssertEqualObjects(@"FOO", [mock name], nil);
+    XCTAssertEqualObjects(@"FOO", [mock name]);
 }
 
 @end

@@ -3,7 +3,7 @@
 //  Copyright (c) 2013 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
 #import <objc/runtime.h>
 
@@ -81,7 +81,7 @@
 @end
 
 
-@interface OCMockObjectPartialMocksTests : SenTestCase
+@interface OCMockObjectPartialMocksTests : XCTestCase
 {
     int numKVOCallbacks;
 }
@@ -98,7 +98,7 @@
 	TestClassWithSimpleMethod *object = [[[TestClassWithSimpleMethod alloc] init] autorelease];
 	id mock = [OCMockObject partialMockForObject:object];
 	[[[mock stub] andReturn:@"hi"] foo];
-	STAssertEqualObjects(@"hi", [mock foo], @"Should have returned stubbed value");
+	XCTAssertEqualObjects(@"hi", [mock foo], @"Should have returned stubbed value");
 }
 
 //- (void)testStubsMethodsOnPartialMockForTollFreeBridgedClasses
@@ -112,7 +112,7 @@
 {
 	TestClassWithSimpleMethod *object = [[[TestClassWithSimpleMethod alloc] init] autorelease];
 	id mock = [OCMockObject partialMockForObject:object];
-	STAssertEqualObjects(@"Foo", [mock foo], @"Should have returned value from real object.");
+	XCTAssertEqualObjects(@"Foo", [mock foo], @"Should have returned value from real object.");
 }
 
 //- (void)testForwardsUnstubbedMethodsCallsToRealObjectOnPartialMockForTollFreeBridgedClasses
@@ -126,7 +126,7 @@
 	TestClassWithSimpleMethod *realObject = [[[TestClassWithSimpleMethod alloc] init] autorelease];
 	id mock = [OCMockObject partialMockForObject:realObject];
 	[[[mock stub] andReturn:@"TestFoo"] foo];
-	STAssertEqualObjects(@"TestFoo", [realObject foo], @"Should have stubbed method.");
+	XCTAssertEqualObjects(@"TestFoo", [realObject foo], @"Should have stubbed method.");
 }
 
 - (void)testCallsToSelfInRealObjectAreShadowedByPartialMock
@@ -134,7 +134,7 @@
 	TestClassThatCallsSelf *realObject = [[[TestClassThatCallsSelf alloc] init] autorelease];
 	id mock = [OCMockObject partialMockForObject:realObject];
 	[[[mock stub] andReturn:@"FooFoo"] method2];
-	STAssertEqualObjects(@"FooFoo", [mock method1], @"Should have called through to stubbed method.");
+	XCTAssertEqualObjects(@"FooFoo", [mock method1], @"Should have called through to stubbed method.");
 }
 
 - (void)testCallsToSelfInRealObjectStructReturnAreShadowedByPartialMock
@@ -142,7 +142,10 @@
 	TestClassThatCallsSelf *realObject = [[[TestClassThatCallsSelf alloc] init] autorelease];
 	id mock = [OCMockObject partialMockForObject:realObject];
     [[[mock stub] andReturnValue:OCMOCK_VALUE(NSZeroRect)] methodRect2];
-	STAssertEquals(NSZeroRect, [mock methodRect1], @"Should have called through to stubbed method.");
+#if TARGET_OS_IPHONE
+#define NSEqualRects CGRectEqualToRect
+#endif
+    XCTAssertTrue(NSEqualRects(NSZeroRect, [mock methodRect1]), @"Should have called through to stubbed method.");
 }
 
 
@@ -151,12 +154,12 @@
 	TestClassThatCallsSelf *realObject = [[[TestClassThatCallsSelf alloc] init] autorelease];
 	Class origClass = [realObject class];
 	id mock = [OCMockObject partialMockForObject:realObject];
-	STAssertEqualObjects([realObject class], origClass, @"Override of -class method did not work");
-	STAssertEqualObjects([mock class], origClass, @"Mock proxy -class method did not work");
-	STAssertFalse(origClass == object_getClass(realObject), @"Subclassing did not work");
+	XCTAssertEqualObjects([realObject class], origClass, @"Override of -class method did not work");
+	XCTAssertEqualObjects([mock class], origClass, @"Mock proxy -class method did not work");
+	XCTAssertFalse(origClass == object_getClass(realObject), @"Subclassing did not work");
 	[mock stopMocking];
-	STAssertEqualObjects([realObject class], origClass, @"Classes different after stopMocking");
-	STAssertEqualObjects(object_getClass(realObject), origClass, @"Classes different after stopMocking");
+	XCTAssertEqualObjects([realObject class], origClass, @"Classes different after stopMocking");
+	XCTAssertEqualObjects(object_getClass(realObject), origClass, @"Classes different after stopMocking");
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -181,21 +184,21 @@
 
 	/* KVO additionally overrides the -class method, but they return the superclass of their special
 	   subclass, which in this case is the special mock subclass */
-	STAssertEqualObjects([realObject class], ourSubclass, @"KVO override of class did not return our subclass");
-	STAssertFalse(ourSubclass == kvoClass, @"KVO with subclass did not work");
+	XCTAssertEqualObjects([realObject class], ourSubclass, @"KVO override of class did not return our subclass");
+	XCTAssertFalse(ourSubclass == kvoClass, @"KVO with subclass did not work");
 
 	[realObject setMethodInt:45];
-	STAssertEquals(numKVOCallbacks, 1, @"did not get subclass KVO notification");
+	XCTAssertEqual(numKVOCallbacks, 1, @"did not get subclass KVO notification");
 	[mock setMethodInt:47];
-	STAssertEquals(numKVOCallbacks, 2, @"did not get mock KVO notification");
+	XCTAssertEqual(numKVOCallbacks, 2, @"did not get mock KVO notification");
 
 	[realObject removeObserver:self forKeyPath:@"methodInt" context:MyContext];
-	STAssertEqualObjects([realObject class], origClass, @"Classes different after stopKVO");
-	STAssertEqualObjects(object_getClass(realObject), ourSubclass, @"Classes different after stopKVO");
+	XCTAssertEqualObjects([realObject class], origClass, @"Classes different after stopKVO");
+	XCTAssertEqualObjects(object_getClass(realObject), ourSubclass, @"Classes different after stopKVO");
 
 	[mock stopMocking];
-	STAssertEqualObjects([realObject class], origClass, @"Classes different after stopMocking");
-	STAssertEqualObjects(object_getClass(realObject), origClass, @"Classes different after stopMocking");
+	XCTAssertEqualObjects([realObject class], origClass, @"Classes different after stopMocking");
+	XCTAssertEqualObjects(object_getClass(realObject), origClass, @"Classes different after stopMocking");
 }
 
 /* Mocking a class which already has KVO observations does not work, but does not crash. */
@@ -211,27 +214,27 @@
 	id mock = [OCMockObject partialMockForObject:realObject];
 	Class ourSubclass = object_getClass(realObject);
     
-	STAssertEqualObjects([realObject class], origClass, @"We did not preserve the original [self class]");
-	STAssertFalse(ourSubclass == kvoClass, @"KVO with subclass did not work");
+	XCTAssertEqualObjects([realObject class], origClass, @"We did not preserve the original [self class]");
+	XCTAssertFalse(ourSubclass == kvoClass, @"KVO with subclass did not work");
     
 	/* Due to the way we replace the object's class, the KVO class gets overwritten and
 	   KVO notifications stop functioning.  If we did not do this, the presence of the mock
 	   subclass would cause KVO to crash, at least without further tinkering. */
 	[realObject setMethodInt:45];
 //	STAssertEquals(numKVOCallbacks, 1, @"did not get subclass KVO notification");
-	STAssertEquals(numKVOCallbacks, 0, @"got subclass KVO notification");
+	XCTAssertEqual(numKVOCallbacks, 0, @"got subclass KVO notification");
 	[mock setMethodInt:47];
 //	STAssertEquals(numKVOCallbacks, 2, @"did not get mock KVO notification");
-	STAssertEquals(numKVOCallbacks, 0, @"got mock KVO notification");
+	XCTAssertEqual(numKVOCallbacks, 0, @"got mock KVO notification");
 
 	[mock stopMocking];
-	STAssertEqualObjects([realObject class], origClass, @"Classes different after stopMocking");
+	XCTAssertEqualObjects([realObject class], origClass, @"Classes different after stopMocking");
 //	STAssertEqualObjects(object_getClass(realObject), kvoClass, @"KVO class different after stopMocking");
-	STAssertEqualObjects(object_getClass(realObject), origClass, @"class different after stopMocking");
+	XCTAssertEqualObjects(object_getClass(realObject), origClass, @"class different after stopMocking");
 
 	[realObject removeObserver:self forKeyPath:@"methodInt" context:MyContext];
-	STAssertEqualObjects([realObject class], origClass, @"Classes different after stopKVO");
-	STAssertEqualObjects(object_getClass(realObject), origClass, @"Classes different after stopKVO");
+	XCTAssertEqualObjects([realObject class], origClass, @"Classes different after stopKVO");
+	XCTAssertEqualObjects(object_getClass(realObject), origClass, @"Classes different after stopKVO");
 }
 
 #pragma mark   Tests for end of stubbing with partial mocks
@@ -241,8 +244,8 @@
     TestClassWithSimpleMethod *realObject = [[[TestClassWithSimpleMethod alloc] init] autorelease];
    	id mock = [OCMockObject partialMockForObject:realObject];
    	[[[mock expect] andReturn:@"TestFoo"] foo];
-   	STAssertEqualObjects(@"TestFoo", [realObject foo], @"Should have stubbed method.");
-   	STAssertEqualObjects(@"Foo", [realObject foo], @"Should have 'unstubbed' method.");
+   	XCTAssertEqualObjects(@"TestFoo", [realObject foo], @"Should have stubbed method.");
+   	XCTAssertEqualObjects(@"Foo", [realObject foo], @"Should have 'unstubbed' method.");
 }
 
 - (void)testRestoresObjectWhenStopped
@@ -250,10 +253,10 @@
 	TestClassWithSimpleMethod *realObject = [[[TestClassWithSimpleMethod alloc] init] autorelease];
 	id mock = [OCMockObject partialMockForObject:realObject];
 	[[[mock stub] andReturn:@"TestFoo"] foo];
-	STAssertEqualObjects(@"TestFoo", [realObject foo], @"Should have stubbed method.");
-	STAssertEqualObjects(@"TestFoo", [realObject foo], @"Should have stubbed method.");
+	XCTAssertEqualObjects(@"TestFoo", [realObject foo], @"Should have stubbed method.");
+	XCTAssertEqualObjects(@"TestFoo", [realObject foo], @"Should have stubbed method.");
 	[mock stopMocking];
-	STAssertEqualObjects(@"Foo", [realObject foo], @"Should have 'unstubbed' method.");
+	XCTAssertEqualObjects(@"Foo", [realObject foo], @"Should have 'unstubbed' method.");
 }
 
 
@@ -265,7 +268,7 @@
 	id mock = [OCMockObject partialMockForObject:realObject];
     
 	[[[mock expect] andForwardToRealObject] foo];
-	STAssertEquals(@"Foo", [mock foo], @"Should have called method on real object.");
+	XCTAssertEqual(@"Foo", [mock foo], @"Should have called method on real object.");
     
 	[mock verify];
 }
@@ -276,7 +279,7 @@
 	id mock = [OCMockObject partialMockForObject:realObject];
 	
 	[[[mock expect] andForwardToRealObject] foo];
-	STAssertEquals(@"Foo", [realObject foo], @"Should have called method on real object.");
+	XCTAssertEqual(@"Foo", [realObject foo], @"Should have called method on real object.");
 	
 	[mock verify];
 }
@@ -295,7 +298,7 @@
 	TestClassThatCallsSelf *foo = [[[TestClassThatCallsSelf alloc] init] autorelease];
 	id mock = [OCMockObject partialMockForObject:foo];
 	[[[mock stub] andCall:@selector(differentMethodInDifferentClass) onObject:self] method1];
-	STAssertEqualObjects(@"swizzled!", [foo method1], @"Should have returned value from different method");
+	XCTAssertEqualObjects(@"swizzled!", [foo method1], @"Should have returned value from different method");
 }
 
 
@@ -308,7 +311,7 @@
 	TestClassThatCallsSelf *foo = [[[TestClassThatCallsSelf alloc] init] autorelease];
 	id mock = [OCMockObject partialMockForObject:foo];
 	[[[mock stub] andCall:@selector(aMethodWithVoidReturn) onObject:self] method1];
-	STAssertNoThrow([foo method1], @"Should have worked.");
+	XCTAssertNoThrow([foo method1], @"Should have worked.");
 }
 
 

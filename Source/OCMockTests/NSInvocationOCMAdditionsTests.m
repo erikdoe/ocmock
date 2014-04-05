@@ -3,7 +3,7 @@
 //  Copyright (c) 2006-2008 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 #import "NSInvocation+OCMAdditions.h"
 
 
@@ -17,7 +17,7 @@
 @end
 
 
-@interface NSInvocationOCMAdditionsTests : SenTestCase
+@interface NSInvocationOCMAdditionsTests : XCTestCase
 
 @end
 
@@ -31,7 +31,7 @@
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	
-	STAssertEqualObjects(@"lowercaseString", [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(@"lowercaseString", [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithObjectArgument
@@ -45,7 +45,7 @@
 	[invocation setArgument:&argument atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"isEqualToNumber:%d", 1];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithNSStringArgument
@@ -59,7 +59,7 @@
 	[invocation setArgument:&argument atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"isEqualToString:@\"%@\"", @"TEST_STRING"];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithObjectArguments
@@ -75,7 +75,7 @@
 	[invocation setArgument:&argumentTwo atIndex:3];
 	
 	NSString *expected = [NSString stringWithFormat:@"setValue:%d forKey:@\"%@\"", 1, @"TEST_STRING"];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithArrayArgument
@@ -89,7 +89,7 @@
 	[invocation setArgument:&argument atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"addObjectsFromArray:%@", [argument description]];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithIntArgument
@@ -103,7 +103,7 @@
 	[invocation setArgument:&argumentOne atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"initWithInt:%d", 1];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithUnsignedIntArgument
@@ -117,7 +117,7 @@
 	[invocation setArgument:&argumentOne atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"initWithUnsignedInt:%d", 1];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithBoolArgument
@@ -131,7 +131,7 @@
 	[invocation setArgument:&argumentOne atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"initWithBool:YES"];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithCharArgument
@@ -145,7 +145,7 @@
 	[invocation setArgument:&argumentOne atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"initWithChar:'%c'", argumentOne];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithUnsignedCharArgument
@@ -159,7 +159,7 @@
 	[invocation setArgument:&argumentOne atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"initWithUnsignedChar:'%c'", argumentOne];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithDoubleArgument
@@ -173,7 +173,7 @@
 	[invocation setArgument:&argumentOne atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"initWithDouble:%f", argumentOne];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithFloatArgument
@@ -187,7 +187,7 @@
 	[invocation setArgument:&argumentOne atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"initWithFloat:%f", argumentOne];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithLongDoubleArgument
@@ -201,7 +201,7 @@
 	[invocation setArgument:&argumentOne atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"%@%Lf", NSStringFromSelector(selector),argumentOne];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithLongArgument
@@ -215,7 +215,7 @@
 	[invocation setArgument:&argumentOne atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"initWithLong:%ld", argumentOne];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithUnsignedLongArgument
@@ -229,7 +229,7 @@
 	[invocation setArgument:&argumentOne atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"initWithUnsignedLong:%lu", argumentOne];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithLongLongArgument
@@ -243,7 +243,7 @@
 	[invocation setArgument:&argumentOne atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"initWithLongLong:%qi", argumentOne];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithUnsignedLongLongArgument
@@ -257,7 +257,7 @@
 	[invocation setArgument:&argumentOne atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"initWithUnsignedLongLong:%qu", argumentOne];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithShortArgument
@@ -271,7 +271,7 @@
 	[invocation setArgument:&argumentOne atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"initWithShort:%hi", argumentOne];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithUnsignedShortArgument
@@ -285,7 +285,7 @@
 	[invocation setArgument:&argumentOne atIndex:2];
 
 	NSString *expected = [NSString stringWithFormat:@"initWithUnsignedShort:%hu", argumentOne];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithStructArgument
@@ -301,7 +301,7 @@
 	[invocation setArgument:&range atIndex:2];
 	
 	NSString *expected = @"substringWithRange:(NSRange: {2, 4})";
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithCStringArgument
@@ -316,7 +316,7 @@
 	[invocation setArgument:&cString atIndex:2];
 
 	NSString *expected = [NSString stringWithFormat:@"initWithUTF8String:\"%@...\"", [string substringToIndex:100]];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithSelectorArgument
@@ -330,7 +330,7 @@
 	[invocation setArgument:&selectorValue atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"respondsToSelector:@selector(%@)", NSStringFromSelector(selectorValue)];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithPointerArgument
@@ -349,8 +349,8 @@
 	NSString *expected1 = [NSString stringWithFormat:@"initWithBytes:"];
 	NSString *expected2 = [NSString stringWithFormat:@"length:%lu", (unsigned long)length];
 	NSString *invocationDescription = [invocation invocationDescription];
-	STAssertTrue([invocationDescription rangeOfString:expected1].length > 0, @"");
-	STAssertTrue([invocationDescription rangeOfString:expected2].length > 0, @"");
+	XCTAssertTrue([invocationDescription rangeOfString:expected1].length > 0, @"");
+	XCTAssertTrue([invocationDescription rangeOfString:expected2].length > 0, @"");
 }
 
 - (void)testInvocationDescriptionWithNilArgument
@@ -364,7 +364,7 @@
 	[invocation setArgument:&argString atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"initWithString:nil"];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 @end

@@ -3,7 +3,7 @@
 //  Copyright (c) 2004-2009 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 #import <OCMock/OCMockRecorder.h>
 #import "OCMReturnValueProvider.h"
 #import "OCMExceptionReturnValueProvider.h"
@@ -24,7 +24,7 @@
 @end
 
 
-@interface OCMockRecorderTests : SenTestCase
+@interface OCMockRecorderTests : XCTestCase
 
 @end
 
@@ -50,7 +50,7 @@
 
     NSInvocation *testInvocation = [self invocationForTargetClass:[NSString class] selector:@selector(initWithString:)];
     [testInvocation setArgument:&arg atIndex:2];
-	STAssertTrue([recorder matchesInvocation:testInvocation], @"Should match.");
+	XCTAssertTrue([recorder matchesInvocation:testInvocation], @"Should match.");
 }
 
 
@@ -63,7 +63,7 @@
 
     NSInvocation *testInvocation = [self invocationForTargetClass:[NSString class] selector:@selector(initWithString:)];
     [testInvocation setArgument:&arg atIndex:2];
-	STAssertFalse([recorder matchesInvocation:testInvocation], @"Should not match.");
+	XCTAssertFalse([recorder matchesInvocation:testInvocation], @"Should not match.");
 }
 
 -(void)testSelectivelyIgnoresNonObjectArguments
@@ -78,7 +78,7 @@
     NSInvocation *testInvocation = [self invocationForTargetClass:[NSString class] selector:@selector(rangeOfString:options:)];
     [testInvocation setArgument:&arg1 atIndex:2];
     [testInvocation setArgument:&arg2 atIndex:3];
-    STAssertTrue([recorder matchesInvocation:testInvocation], @"Should match.");
+    XCTAssertTrue([recorder matchesInvocation:testInvocation], @"Should match.");
 }
 
 -(void)testSelectivelyIgnoresNonObjectArgumentsAndStillFailsWhenFollowingObjectArgsDontMatch
@@ -93,7 +93,7 @@
     NSInvocation *testInvocation = [self invocationForTargetClass:[TestClassForRecorder class] selector:@selector(methodWithInt:andObject:)];
     [testInvocation setArgument:&arg1 atIndex:2];
     [testInvocation setArgument:&arg2 atIndex:3];
-    STAssertFalse([recorder matchesInvocation:testInvocation], @"Should not match.");
+    XCTAssertFalse([recorder matchesInvocation:testInvocation], @"Should not match.");
 }
 
 - (void)testAddsReturnValueProvider
@@ -102,8 +102,8 @@
 	[recorder andReturn:@"foo"];
     NSArray *handlerList = [recorder invocationHandlers];
 	
-	STAssertEquals((NSUInteger)1, [handlerList count], @"Should have added one handler.");
-	STAssertEqualObjects([OCMReturnValueProvider class], [[handlerList objectAtIndex:0] class], @"Should have added correct handler.");
+	XCTAssertEqual((NSUInteger)1, [handlerList count], @"Should have added one handler.");
+	XCTAssertEqualObjects([OCMReturnValueProvider class], [[handlerList objectAtIndex:0] class], @"Should have added correct handler.");
 }
 
 - (void)testAddsExceptionReturnValueProvider
@@ -112,8 +112,8 @@
 	[recorder andThrow:[NSException exceptionWithName:@"TestException" reason:@"A reason" userInfo:nil]];
     NSArray *handlerList = [recorder invocationHandlers];
 
-	STAssertEquals((NSUInteger)1, [handlerList count], @"Should have added one handler.");
-	STAssertEqualObjects([OCMExceptionReturnValueProvider class], [[handlerList objectAtIndex:0] class], @"Should have added correct handler.");
+	XCTAssertEqual((NSUInteger)1, [handlerList count], @"Should have added one handler.");
+	XCTAssertEqualObjects([OCMExceptionReturnValueProvider class], [[handlerList objectAtIndex:0] class], @"Should have added correct handler.");
 	
 }
 

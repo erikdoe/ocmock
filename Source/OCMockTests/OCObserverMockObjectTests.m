@@ -3,13 +3,13 @@
 //  Copyright (c) 2009 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
 
 static NSString *TestNotificationOne = @"TestNotificationOne";
 
 
-@interface OCObserverMockObjectTest : SenTestCase
+@interface OCObserverMockObjectTest : XCTestCase
 {
 	NSNotificationCenter *center;
 	id mock;
@@ -22,7 +22,7 @@ static NSString *TestNotificationOne = @"TestNotificationOne";
 
 - (void)setUp
 {
-	center = [[[NSNotificationCenter alloc] init] autorelease];
+	center = [[NSNotificationCenter alloc] init];
 	mock = [OCMockObject observerMock]; 
 }
 
@@ -77,7 +77,7 @@ static NSString *TestNotificationOne = @"TestNotificationOne";
 	[[mock expect] notificationWithName:TestNotificationOne object:self];
     [[mock expect] notificationWithName:TestNotificationOne object:[OCMArg any]];
 	
-	STAssertThrows([center postNotificationName:TestNotificationOne object:[NSString string]], @"Should have complained about sequence.");
+	XCTAssertThrows([center postNotificationName:TestNotificationOne object:[NSString string]], @"Should have complained about sequence.");
 }
 
 - (void)testRaisesEvenThoughOverlappingExpectationsCouldHaveBeenSatisfied
@@ -88,14 +88,14 @@ static NSString *TestNotificationOne = @"TestNotificationOne";
 	[[mock expect] notificationWithName:TestNotificationOne object:self];
 	
 	[center postNotificationName:TestNotificationOne object:self];
-	STAssertThrows([center postNotificationName:TestNotificationOne object:[NSString string]], nil);
+	XCTAssertThrows([center postNotificationName:TestNotificationOne object:[NSString string]]);
 }
 
 - (void)testRaisesExceptionWhenUnexpectedNotificationIsReceived
 {
 	[center addMockObserver:mock name:TestNotificationOne object:nil];
 	
-    STAssertThrows([center postNotificationName:TestNotificationOne object:self], nil);
+    XCTAssertThrows([center postNotificationName:TestNotificationOne object:self]);
 }
 
 - (void)testRaisesWhenNotificationWithWrongObjectIsReceived
@@ -103,7 +103,7 @@ static NSString *TestNotificationOne = @"TestNotificationOne";
 	[center addMockObserver:mock name:TestNotificationOne object:nil];
     [[mock expect] notificationWithName:TestNotificationOne object:self];
 	
-	STAssertThrows([center postNotificationName:TestNotificationOne object:[NSString string]], nil);
+	XCTAssertThrows([center postNotificationName:TestNotificationOne object:[NSString string]]);
 }
 
 - (void)testRaisesWhenNotificationWithWrongUserInfoIsReceived
@@ -111,8 +111,8 @@ static NSString *TestNotificationOne = @"TestNotificationOne";
 	[center addMockObserver:mock name:TestNotificationOne object:nil];
     [[mock expect] notificationWithName:TestNotificationOne object:self 
 							   userInfo:[NSDictionary dictionaryWithObject:@"foo" forKey:@"key"]];
-	STAssertThrows([center postNotificationName:TestNotificationOne object:[NSString string] 
-									   userInfo:[NSDictionary dictionaryWithObject:@"bar" forKey:@"key"]], nil);
+	XCTAssertThrows([center postNotificationName:TestNotificationOne object:[NSString string] 
+									   userInfo:[NSDictionary dictionaryWithObject:@"bar" forKey:@"key"]]);
 }
 
 - (void)testRaisesOnVerifyWhenExpectedNotificationIsNotSent
@@ -120,7 +120,7 @@ static NSString *TestNotificationOne = @"TestNotificationOne";
 	[center addMockObserver:mock name:TestNotificationOne object:nil];
     [[mock expect] notificationWithName:TestNotificationOne object:[OCMArg any]];
 
-	STAssertThrows([mock verify], nil);
+	XCTAssertThrows([mock verify]);
 }
 
 - (void)testRaisesOnVerifyWhenNotAllNotificationsWereSent
@@ -130,7 +130,7 @@ static NSString *TestNotificationOne = @"TestNotificationOne";
 	[[mock expect] notificationWithName:TestNotificationOne object:self];
 
 	[center postNotificationName:TestNotificationOne object:self];
-	STAssertThrows([mock verify], nil);
+	XCTAssertThrows([mock verify]);
 }
 
 - (void)testChecksNotificationNamesCorrectly
