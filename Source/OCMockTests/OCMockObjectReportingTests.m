@@ -46,7 +46,7 @@
     
     XCTAssertNotNil(reportedDescription, @"Should have recorded a failure with description.");
     XCTAssertEqualObjects([NSString stringWithUTF8String:expectedFile], reportedFile, @"Should have reported correct file.");
-    XCTAssertEqual(expectedLine, reportedLine, @"Should have reported correct line");
+    XCTAssertEqual(expectedLine, (int)reportedLine, @"Should have reported correct line");
 }
 
 - (void)testReportsIgnoredExceptionsAtVerifyLocation
@@ -70,7 +70,7 @@
     
     XCTAssertTrue([reportedDescription rangeOfString:@"ignored"].location != NSNotFound, @"Should have reported ignored exceptions.");
     XCTAssertEqualObjects([NSString stringWithUTF8String:expectedFile], reportedFile, @"Should have reported correct file.");
-    XCTAssertEqual(expectedLine, reportedLine, @"Should have reported correct line");
+    XCTAssertEqual(expectedLine, (int)reportedLine, @"Should have reported correct line");
 }
 
 
