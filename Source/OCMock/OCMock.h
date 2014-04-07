@@ -11,4 +11,17 @@
 #import <OCMock/NSNotificationCenter+OCMAdditions.h>
 
 
+#define OCMClassMock(cls) [OCMockObject niceMockForClass:cls]
+
+#define OCMStrictClassMock(cls) [OCMockObject mockForClass:cls]
+
+#define OCMProtocolMock(protocol) [OCMockObject niceMockForProtocol:protocol]
+
+#define OCMStrictProtocolMock(protocol) [OCMockObject mockForProtocol:protocol]
+
+#define OCMPartialMock(obj) [OCMockObject partialMockForObject:obj]
+
+#define OCMObserverMock() [OCMockObject observerMock]
+
+
 #define OCMVerify(mock) [mock verifyAtLocation:OCMMakeLocation(self, __FILE__, __LINE__)]

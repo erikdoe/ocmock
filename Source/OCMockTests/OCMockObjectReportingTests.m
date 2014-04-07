@@ -36,7 +36,7 @@
 
 - (void)testReportsVerifyFailureWithCorrectLocation
 {
-    id mock = [OCMockObject mockForClass:[NSString class]];
+    id mock = OCMClassMock([NSString class]);
     
     [[mock expect] lowercaseString];
     
