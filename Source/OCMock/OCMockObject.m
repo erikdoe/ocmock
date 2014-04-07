@@ -163,13 +163,15 @@
 	}
 	else if([expectations count] > 0)
 	{
-		NSString *description = [NSString stringWithFormat:@"%@ : %@ expected methods were not invoked: %@",
+		NSString *description = [NSString stringWithFormat:@"%@: %@ expected methods were not invoked: %@",
          [self description], @([expectations count]), [self _recorderDescriptions:YES]];
         [location reportFailure:description];
 	}
 	if([exceptions count] > 0)
 	{
-		[[exceptions objectAtIndex:0] raise];
+        NSString *description = [NSString stringWithFormat:@"%@: %@ (This is a strict mock failure that was ignored when it actually occured.)",
+         [self description], [[exceptions objectAtIndex:0] description]];
+        [location reportFailure:description];
 	}
 }
 
