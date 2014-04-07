@@ -9,6 +9,7 @@
 #import "OCPartialMockObject.h"
 #import "OCObserverMockObject.h"
 #import <OCMock/OCMockRecorder.h>
+#import <OCMock/OCMLocation.h>
 #import "NSInvocation+OCMAdditions.h"
 
 
@@ -151,6 +152,27 @@
 		[[exceptions objectAtIndex:0] raise];
 	}
 }
+
+- (void)verifyAtLocation:(OCMLocation *)location
+{
+	if([expectations count] == 1)
+	{
+        NSString *description = [NSString stringWithFormat:@"%@: expected method was not invoked: %@",
+         [self description], [[expectations objectAtIndex:0] description]];
+        [location reportFailure:description];
+	}
+	else if([expectations count] > 0)
+	{
+		NSString *description = [NSString stringWithFormat:@"%@ : %@ expected methods were not invoked: %@",
+         [self description], @([expectations count]), [self _recorderDescriptions:YES]];
+        [location reportFailure:description];
+	}
+	if([exceptions count] > 0)
+	{
+		[[exceptions objectAtIndex:0] raise];
+	}
+}
+
 
 - (void)verifyWithDelay:(NSTimeInterval)delay
 {

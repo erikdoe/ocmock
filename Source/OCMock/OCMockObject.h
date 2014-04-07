@@ -5,6 +5,9 @@
 
 #import <Foundation/Foundation.h>
 
+@class OCMLocation;
+
+
 @interface OCMockObject : NSProxy
 {
 	BOOL			isNice;
@@ -33,6 +36,8 @@
 - (id)reject;
 
 - (void)verify;
+- (void)verifyAtLocation:(OCMLocation *)location;
+
 - (void)verifyWithDelay:(NSTimeInterval)delay;
 
 - (void)stopMocking;

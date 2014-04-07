@@ -7,4 +7,8 @@
 #import <OCMock/OCMockRecorder.h>
 #import <OCMock/OCMConstraint.h>
 #import <OCMock/OCMArg.h>
+#import <OCMock/OCMLocation.h>
 #import <OCMock/NSNotificationCenter+OCMAdditions.h>
+
+
+#define OCMVerify(mock) [mock verifyAtLocation:OCMMakeLocation(self, __FILE__, __LINE__)]
