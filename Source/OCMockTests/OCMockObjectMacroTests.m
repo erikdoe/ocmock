@@ -6,7 +6,7 @@
 #import <OCMock/OCMock.h>
 
 
-@interface OCMockObjectReportingTests : XCTestCase
+@interface OCMockObjectMacroTests : XCTestCase
 {
     BOOL        shouldCaptureFailure;
     NSString    *reportedDescription;
@@ -17,7 +17,7 @@
 @end
 
 
-@implementation OCMockObjectReportingTests
+@implementation OCMockObjectMacroTests
 
 - (void)recordFailureWithDescription:(NSString *)description inFile:(NSString *)file atLine:(NSUInteger)line expected:(BOOL)expected
 {
@@ -71,6 +71,29 @@
     XCTAssertTrue([reportedDescription rangeOfString:@"ignored"].location != NSNotFound, @"Should have reported ignored exceptions.");
     XCTAssertEqualObjects([NSString stringWithUTF8String:expectedFile], reportedFile, @"Should have reported correct file.");
     XCTAssertEqual(expectedLine, (int)reportedLine, @"Should have reported correct line");
+}
+
+
+- (void)testStrictMockStubsExpectedMethodAndFailsFastOtherwise
+{
+    id mock = OCMStrictClassMock([NSString class]);
+
+    [OCMExpect(mock).andReturn(@"TEST_STRING") uppercaseString];
+
+    XCTAssertEqualObjects(@"TEST_STRING", [mock uppercaseString], @"Should have returned stubbed value");
+    XCTAssertThrows([mock lowercaseString]);
+}
+
+
+- (void)testStrictMockStubsExpectedMethodAndFailsFastOtherwiseWithGlobalState
+{
+    id mock = OCMStrictClassMock([NSString class]);
+
+    [OCMExpect(mock).andReturn(@"TEST_STRING") uppercaseString];
+
+    XCTAssertEqualObjects(@"TEST_STRING", [mock uppercaseString], @"Should have returned stubbed value");
+    XCTAssertThrows([mock lowercaseString]);
+
 }
 
 

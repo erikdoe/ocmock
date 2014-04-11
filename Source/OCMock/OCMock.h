@@ -23,5 +23,6 @@
 
 #define OCMObserverMock() [OCMockObject observerMock]
 
+#define OCMExpect(mock) ((OCMockRecorder *)[mock expect])
 
 #define OCMVerify(mock) [mock verifyAtLocation:OCMMakeLocation(self, __FILE__, __LINE__)]

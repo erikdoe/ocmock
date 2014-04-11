@@ -36,3 +36,11 @@
 - (NSArray *)invocationHandlers;
 
 @end
+
+
+@interface OCMockRecorder(Properties)
+
+#define andReturn _andReturn
+@property (nonatomic, readonly) id(^ _andReturn)(id);
+
+@end

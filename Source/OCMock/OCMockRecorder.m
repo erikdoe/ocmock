@@ -236,3 +236,18 @@
 
 
 @end
+
+
+@implementation OCMockRecorder(Properties)
+
+@dynamic _andReturn;
+
+- (id(^)(id))_andReturn
+{
+    id (^theBlock)(id) = ^ (id aValue) {
+        return [self andReturn:aValue];
+    };
+    return [[theBlock copy] autorelease];
+}
+
+@end
