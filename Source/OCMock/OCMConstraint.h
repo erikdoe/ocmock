@@ -46,8 +46,6 @@
 
 @end
 
-#if NS_BLOCKS_AVAILABLE
-
 @interface OCMBlockConstraint : OCMConstraint
 {
 	BOOL (^block)(id);
@@ -56,8 +54,6 @@
 - (id)initWithConstraintBlock:(BOOL (^)(id))block;
 
 @end
-
-#endif
 
 
 #define CONSTRAINT(aSelector) [OCMConstraint constraintWithSelector:aSelector onObject:self]

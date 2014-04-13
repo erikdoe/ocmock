@@ -5,7 +5,6 @@
 
 #import "OCMBlockCaller.h"
 
-#if NS_BLOCKS_AVAILABLE
 
 @implementation OCMBlockCaller
 
@@ -28,5 +27,3 @@
 }
 
 @end
-
-#endif

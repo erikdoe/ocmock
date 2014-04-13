@@ -24,9 +24,7 @@
 - (id)andThrow:(NSException *)anException;
 - (id)andPost:(NSNotification *)aNotification;
 - (id)andCall:(SEL)selector onObject:(id)anObject;
-#if NS_BLOCKS_AVAILABLE
-- (id)andDo:(void (^)(NSInvocation *))block; 
-#endif
+- (id)andDo:(void (^)(NSInvocation *))block;
 - (id)andForwardToRealObject;
 
 - (id)classMethod;

@@ -136,8 +136,6 @@ static NSString *TestNotification = @"TestNotification";
 	[mock hasSuffix:@"bar"];
 }
 
-#if NS_BLOCKS_AVAILABLE
-
 - (void)testAcceptsStubbedMethodWithBlockArgument
 {
 	mock = [OCMockObject mockForClass:[NSArray class]];
@@ -154,7 +152,6 @@ static NSString *TestNotification = @"TestNotification";
 	XCTAssertThrows([mock hasSuffix:@"bar"], @"Should have thrown a exception");
 }
 
-#endif
 
 - (void)testAcceptsStubbedMethodWithNilArgument
 {
@@ -425,7 +422,6 @@ static NSString *TestNotification = @"TestNotification";
 	XCTAssertEqualObjects(@"[FOO, 1]", returnValue, @"Should have passed and returned invocation.");
 }
 
-#if NS_BLOCKS_AVAILABLE
 
 - (void)testCallsBlockWhichCanSetUpReturnValue
 {
@@ -443,7 +439,6 @@ static NSString *TestNotification = @"TestNotification";
 	XCTAssertEqualObjects(@"MOCK bar", [mock stringByAppendingString:@"bar"], @"Should have called block.");
 }
 
-#endif
 
 - (void)testThrowsWhenTryingToUseForwardToRealObjectOnNonPartialMock
 {

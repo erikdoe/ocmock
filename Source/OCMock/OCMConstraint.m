@@ -119,8 +119,6 @@
 
 #pragma mark  -
 
-#if NS_BLOCKS_AVAILABLE
-
 @implementation OCMBlockConstraint
 
 - (id)initWithConstraintBlock:(BOOL (^)(id))aBlock
@@ -142,5 +140,3 @@
 
 
 @end
-
-#endif

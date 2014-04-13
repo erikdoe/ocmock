@@ -105,15 +105,11 @@
 	return self;
 }
 
-#if NS_BLOCKS_AVAILABLE
-
 - (id)andDo:(void (^)(NSInvocation *))aBlock 
 {
 	[self addInvocationHandler:[[[OCMBlockCaller alloc] initWithCallBlock:aBlock] autorelease]];
 	return self;
 }
-
-#endif
 
 - (id)andForwardToRealObject
 {

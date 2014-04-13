@@ -5,7 +5,6 @@
 
 #import <Foundation/Foundation.h>
 
-#if NS_BLOCKS_AVAILABLE
 
 @interface OCMBlockCaller : NSObject 
 {
@@ -18,4 +17,3 @@
 
 @end
 
-#endif

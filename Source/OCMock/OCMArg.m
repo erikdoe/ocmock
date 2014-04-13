@@ -52,14 +52,10 @@
 	return [OCMConstraint constraintWithSelector:selector onObject:anObject];
 }
 
-#if NS_BLOCKS_AVAILABLE
-
-+ (id)checkWithBlock:(BOOL (^)(id))block 
++ (id)checkWithBlock:(BOOL (^)(id))block
 {
 	return [[[OCMBlockConstraint alloc] initWithConstraintBlock:block] autorelease];
 }
-
-#endif
 
 + (id *)setTo:(id)value
 {

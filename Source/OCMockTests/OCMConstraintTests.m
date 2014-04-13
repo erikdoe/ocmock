@@ -103,8 +103,6 @@
 }
 
 
-#if NS_BLOCKS_AVAILABLE
-
 -(void)testUsesBlock
 {
 	BOOL (^checkForFooBlock)(id) = ^(id value)
@@ -135,6 +133,5 @@
 	XCTAssertEqualObjects(@"bar", captured, @"Should have captured value from last invocation.");
 }
 
-#endif
 
 @end

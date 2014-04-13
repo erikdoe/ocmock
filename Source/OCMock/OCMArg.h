@@ -17,9 +17,7 @@
 + (id)isNotNil;
 + (id)isNotEqual:(id)value;
 + (id)checkWithSelector:(SEL)selector onObject:(id)anObject;
-#if NS_BLOCKS_AVAILABLE
 + (id)checkWithBlock:(BOOL (^)(id obj))block;
-#endif
 
 // manipulating arguments
 
