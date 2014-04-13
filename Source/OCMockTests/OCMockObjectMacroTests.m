@@ -74,11 +74,11 @@
 }
 
 
-- (void)testStrictMockStubsExpectedMethodAndFailsFastOtherwise
+- (void)testSetsUpStubsForCorrectMethods
 {
     id mock = OCMStrictClassMock([NSString class]);
 
-    [OCMExpect(mock).andReturn2(@"TEST_STRING") uppercaseString];
+    OCMStub([mock uppercaseString]).toReturn(@"TEST_STRING");
 
     XCTAssertEqualObjects(@"TEST_STRING", [mock uppercaseString], @"Should have returned stubbed value");
     XCTAssertThrows([mock lowercaseString]);
@@ -87,23 +87,20 @@
 
 - (void)testCanChainPropertyBasedActions
 {
-    __block BOOL didCallBlock = NO;
+    id mock = OCMStrictClassMock([NSString class]);
 
+    __block BOOL didCallBlock = NO;
     void (^theBlock)(NSInvocation *) = ^(NSInvocation *invocation)
     {
         didCallBlock = YES;
     };
 
-
-    id mock = OCMStrictClassMock([NSString class]);
-
-    [OCMStub(mock).andDo2(theBlock) uppercaseString];
-//    [OCMStub(mock).andDo2(theBlock).andReturn2(@"TEST_STRING") uppercaseString];
+    OCMStub([mock uppercaseString]).toDo(theBlock).toReturn(@"TEST_STRING");
 
     NSString *actual = [mock uppercaseString];
 
     XCTAssertTrue(didCallBlock, @"Should have called block");
-//    XCTAssertEqualObjects(@"TEST_STRING", actual, @"Should have returned stubbed value");
+    XCTAssertEqualObjects(@"TEST_STRING", actual, @"Should have returned stubbed value");
 }
 
 

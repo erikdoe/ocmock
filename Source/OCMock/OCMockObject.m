@@ -11,6 +11,8 @@
 #import <OCMock/OCMockRecorder.h>
 #import <OCMock/OCMLocation.h>
 #import "NSInvocation+OCMAdditions.h"
+#import "OCMInvocationMatcher.h"
+#import "OCMockRecorder.h"
 
 
 @interface OCMockObject(Private)
@@ -73,6 +75,22 @@
 	return [[[OCObserverMockObject alloc] init] autorelease];
 }
 
+
+#pragma mark  Global state for stub macro
+
+static BOOL isInStubMacro;
+static OCMockRecorder *actionRecorder;
+
++ (void)beginStubMacro
+{
+    isInStubMacro = YES;
+}
+
++ (OCMockRecorder *)endStubMacro
+{
+    isInStubMacro = NO;
+    return actionRecorder;
+}
 
 
 #pragma mark  Initialisers, description, accessors, etc.
@@ -201,7 +219,7 @@
 - (BOOL)handleSelector:(SEL)sel
 {
     for (OCMockRecorder *recorder in recorders)
-        if ([recorder matchesSelector:sel])
+        if ([[recorder invocationMatcher] matchesSelector:sel])
             return YES;
 
     return NO;
@@ -209,8 +227,17 @@
 
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
-	if([self handleInvocation:anInvocation] == NO)
-		[self handleUnRecordedInvocation:anInvocation];
+    if(isInStubMacro)
+    {
+        id recorder = [self stub];
+        [recorder forwardInvocation:anInvocation];
+        actionRecorder = recorder;
+    }
+    else
+    {
+        if([self handleInvocation:anInvocation] == NO)
+            [self handleUnRecordedInvocation:anInvocation];
+    }
 }
 
 - (BOOL)handleInvocation:(NSInvocation *)anInvocation
@@ -221,7 +248,7 @@
 	for(i = 0; i < [recorders count]; i++)
 	{
 		recorder = [recorders objectAtIndex:i];
-		if([recorder matchesInvocation:anInvocation])
+		if([[recorder invocationMatcher] matchesInvocation:anInvocation])
 			break;
 	}
 	

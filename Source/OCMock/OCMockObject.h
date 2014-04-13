@@ -6,6 +6,7 @@
 #import <Foundation/Foundation.h>
 
 @class OCMLocation;
+@class OCMockRecorder;
 
 
 @interface OCMockObject : NSProxy
@@ -44,9 +45,13 @@
 
 // internal use only
 
++ (void)beginStubMacro;
++ (OCMockRecorder *)endStubMacro;
+
 - (id)getNewRecorder;
 - (BOOL)handleInvocation:(NSInvocation *)anInvocation;
 - (void)handleUnRecordedInvocation:(NSInvocation *)anInvocation;
 - (BOOL)handleSelector:(SEL)sel;
 
 @end
+

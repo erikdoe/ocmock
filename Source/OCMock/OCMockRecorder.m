@@ -8,6 +8,7 @@
 #import <OCMock/OCMArg.h>
 #import <OCMock/OCMConstraint.h>
 #import "OCClassMockObject.h"
+#import "OCMInvocationMatcher.h"
 #import "OCMPassByRefSetter.h"
 #import "OCMReturnValueProvider.h"
 #import "OCMBoxedReturnValueProvider.h"
@@ -32,58 +33,75 @@
 - (id)initWithSignatureResolver:(id)anObject
 {
 	signatureResolver = anObject;
+    invocationMatcher = [[OCMInvocationMatcher alloc] init];
 	invocationHandlers = [[NSMutableArray alloc] init];
 	return self;
 }
 
 - (void)dealloc
 {
-	[recordedInvocation release];
+    [invocationMatcher release];
 	[invocationHandlers release];
 	[super dealloc];
 }
 
 - (NSString *)description
 {
-	return [recordedInvocation invocationDescription];
+    return [invocationMatcher description];
 }
 
 - (void)releaseInvocation
 {
-	[recordedInvocation release];
-	recordedInvocation = nil;
+//	[recordedInvocation release];
+//	recordedInvocation = nil;
+}
+
+
+- (OCMInvocationMatcher *)invocationMatcher
+{
+    return invocationMatcher;
+}
+
+- (NSArray *)invocationHandlers
+{
+    return invocationHandlers;
 }
 
 
 #pragma mark  Recording invocation handlers
 
+- (void)addInvocationHandler:(id)aHandler
+{
+    [invocationHandlers addObject:aHandler];
+}
+
 - (id)andReturn:(id)anObject
 {
-	[invocationHandlers addObject:[[[OCMReturnValueProvider alloc] initWithValue:anObject] autorelease]];
+	[self addInvocationHandler:[[[OCMReturnValueProvider alloc] initWithValue:anObject] autorelease]];
 	return self;
 }
 
 - (id)andReturnValue:(NSValue *)aValue
 {
-	[invocationHandlers addObject:[[[OCMBoxedReturnValueProvider alloc] initWithValue:aValue] autorelease]];
+	[self addInvocationHandler:[[[OCMBoxedReturnValueProvider alloc] initWithValue:aValue] autorelease]];
 	return self;
 }
 
 - (id)andThrow:(NSException *)anException
 {
-	[invocationHandlers addObject:[[[OCMExceptionReturnValueProvider alloc] initWithValue:anException] autorelease]];
+	[self addInvocationHandler:[[[OCMExceptionReturnValueProvider alloc] initWithValue:anException] autorelease]];
 	return self;
 }
 
 - (id)andPost:(NSNotification *)aNotification
 {
-	[invocationHandlers addObject:[[[OCMNotificationPoster alloc] initWithNotification:aNotification] autorelease]];
+	[self addInvocationHandler:[[[OCMNotificationPoster alloc] initWithNotification:aNotification] autorelease]];
 	return self;
 }
 
 - (id)andCall:(SEL)selector onObject:(id)anObject
 {
-	[invocationHandlers addObject:[[[OCMIndirectReturnValueProvider alloc] initWithProvider:anObject andSelector:selector] autorelease]];
+	[self addInvocationHandler:[[[OCMIndirectReturnValueProvider alloc] initWithProvider:anObject andSelector:selector] autorelease]];
 	return self;
 }
 
@@ -91,7 +109,7 @@
 
 - (id)andDo:(void (^)(NSInvocation *))aBlock 
 {
-	[invocationHandlers addObject:[[[OCMBlockCaller alloc] initWithCallBlock:aBlock] autorelease]];
+	[self addInvocationHandler:[[[OCMBlockCaller alloc] initWithCallBlock:aBlock] autorelease]];
 	return self;
 }
 
@@ -99,29 +117,23 @@
 
 - (id)andForwardToRealObject
 {
-    [invocationHandlers addObject:[[[OCMRealObjectForwarder alloc] init] autorelease]];
+    [self addInvocationHandler:[[[OCMRealObjectForwarder alloc] init] autorelease]];
     return self;
 }
 
 
-- (NSArray *)invocationHandlers
-{
-	return invocationHandlers;
-}
-
-
-#pragma mark  Modifying the recorder
+#pragma mark  Modifying the matcher
 
 - (id)classMethod
 {
-    recordedAsClassMethod = YES;
+    [invocationMatcher setRecordedAsClassMethod:YES];
     [signatureResolver setupClassForClassMethodMocking];
     return self;
 }
 
 - (id)ignoringNonObjectArgs
 {
-    ignoreNonObjectArgs = YES;
+    [invocationMatcher setIngoreNonObjectArgs:YES];
     return self;
 }
 
@@ -130,7 +142,7 @@
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
-    if(recordedAsClassMethod)
+    if([invocationMatcher recordedAsClassMethod])
         return [[signatureResolver mockedClass] methodSignatureForSelector:aSelector];
     
     NSMethodSignature *signature = [signatureResolver methodSignatureForSelector:aSelector];
@@ -149,89 +161,17 @@
 
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
-    if(recordedAsClassMethod)
+    if([invocationMatcher recordedAsClassMethod])
         [signatureResolver setupForwarderForClassMethodSelector:[anInvocation selector]];
-	if(recordedInvocation != nil)
-		[NSException raise:NSInternalInconsistencyException format:@"Recorder received two methods to record."];
+//	if(recordedInvocation != nil)
+//		[NSException raise:NSInternalInconsistencyException format:@"Recorder received two methods to record."];
 	[anInvocation setTarget:nil];
-	[anInvocation retainArguments];
-	recordedInvocation = [anInvocation retain];
+    [invocationMatcher setInvocation:anInvocation];
 }
 
 - (void)doesNotRecognizeSelector:(SEL)aSelector
 {
     [NSException raise:NSInvalidArgumentException format:@"%@: cannot stub or expect method '%@' because no such method exists in the mocked class.", signatureResolver, NSStringFromSelector(aSelector)];
-}
-
-#pragma mark  Checking the invocation
-
-- (BOOL)matchesSelector:(SEL)sel
-{
-    return (sel == [recordedInvocation selector]);
-}
-
-- (BOOL)matchesInvocation:(NSInvocation *)anInvocation
-{
-    id target = [anInvocation target];
-    BOOL isClassMethodInvocation = (target != nil) && (target == [target class]);
-    if(isClassMethodInvocation != recordedAsClassMethod)
-        return NO;
-    
-	if([anInvocation selector] != [recordedInvocation selector])
-		return NO;
-
-    NSMethodSignature *signature = [recordedInvocation methodSignature];
-    int n = (int)[signature numberOfArguments];
-	for(int i = 2; i < n; i++)
-	{
-        if(ignoreNonObjectArgs && strcmp([signature getArgumentTypeAtIndex:i], @encode(id)))
-        {
-            continue;
-        }
-
-		id recordedArg = [recordedInvocation getArgumentAtIndexAsObject:i];
-		id passedArg = [anInvocation getArgumentAtIndexAsObject:i];
-
-		if([recordedArg isProxy])
-		{
-			if(![recordedArg isEqual:passedArg])
-				return NO;
-			continue;
-		}
-		
-		if([recordedArg isKindOfClass:[NSValue class]])
-			recordedArg = [OCMArg resolveSpecialValues:recordedArg];
-		
-		if([recordedArg isKindOfClass:[OCMConstraint class]])
-		{	
-			if([recordedArg evaluate:passedArg] == NO)
-				return NO;
-		}
-		else if([recordedArg isKindOfClass:[OCMPassByRefSetter class]])
-		{
-            id valueToSet = [(OCMPassByRefSetter *)recordedArg value];
-			// side effect but easier to do here than in handleInvocation
-            if(![valueToSet isKindOfClass:[NSValue class]])
-                *(id *)[passedArg pointerValue] = valueToSet;
-            else
-                [(NSValue *)valueToSet getValue:[passedArg pointerValue]];
-		}
-		else if([recordedArg conformsToProtocol:objc_getProtocol("HCMatcher")])
-		{
-			if([recordedArg matches:passedArg] == NO)
-				return NO;
-		}
-		else
-		{
-			if(([recordedArg class] == [NSNumber class]) && 
-				([(NSNumber*)recordedArg compare:(NSNumber*)passedArg] != NSOrderedSame))
-				return NO;
-			if(([recordedArg isEqual:passedArg] == NO) &&
-				!((recordedArg == nil) && (passedArg == nil)))
-				return NO;
-		}
-	}
-	return YES;
 }
 
 
@@ -240,9 +180,9 @@
 
 @implementation OCMockRecorder(Properties)
 
-@dynamic _andReturn;
+@dynamic _toReturn;
 
-- (id(^)(id))_andReturn
+- (id(^)(id))_toReturn
 {
     id (^theBlock)(id) = ^ (id aValue)
     {
@@ -252,9 +192,9 @@
 }
 
 
-@dynamic _andDo;
+@dynamic _toDo;
 
-- (id(^)(void (^)(NSInvocation *)))_andDo
+- (id(^)(void (^)(NSInvocation *)))_toDo
 {
     id (^theBlock)(void (^)(NSInvocation *)) = ^ (void (^ blockToCall)(NSInvocation *))
     {

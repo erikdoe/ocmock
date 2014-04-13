@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------------------
 //  $Id$
-//  Copyright (c) 2004-2008 by Mulle Kybernetik. See License file for details.
+//  Copyright (c) 2004-2014 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import <OCMock/OCMockObject.h>
@@ -23,8 +23,12 @@
 
 #define OCMObserverMock() [OCMockObject observerMock]
 
-#define OCMExpect(mock) ((OCMockRecorder *)[mock expect])
-
-#define OCMStub(mock) ((OCMockRecorder *)[mock stub])
-
 #define OCMVerify(mock) [mock verifyAtLocation:OCMMakeLocation(self, __FILE__, __LINE__)]
+
+
+#define OCMStub(invocation) (^ () \
+{ \
+    [OCMockObject beginStubMacro]; \
+    invocation; \
+    return [OCMockObject endStubMacro]; \
+})()

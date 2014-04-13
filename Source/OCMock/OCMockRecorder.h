@@ -5,21 +5,19 @@
 
 #import <Foundation/Foundation.h>
 
+@class OCMInvocationMatcher;
+
 
 @interface OCMockRecorder : NSProxy
 {
-	id				signatureResolver;
-    BOOL            recordedAsClassMethod;
-    BOOL            ignoreNonObjectArgs;
-	NSInvocation	*recordedInvocation;
-	NSMutableArray	*invocationHandlers;
+    id                   signatureResolver;
+    OCMInvocationMatcher *invocationMatcher;
+    NSMutableArray       *invocationHandlers;
 }
 
 - (id)initWithSignatureResolver:(id)anObject;
 
-- (BOOL)matchesSelector:(SEL)sel;
-- (BOOL)matchesInvocation:(NSInvocation *)anInvocation;
-- (void)releaseInvocation;
+//- (void)releaseInvocation;
 
 - (id)andReturn:(id)anObject;
 - (id)andReturnValue:(NSValue *)aValue;
@@ -34,6 +32,9 @@
 - (id)classMethod;
 - (id)ignoringNonObjectArgs;
 
+- (OCMInvocationMatcher *)invocationMatcher;
+
+- (void)addInvocationHandler:(id)aHandler;
 - (NSArray *)invocationHandlers;
 
 @end
@@ -41,11 +42,13 @@
 
 @interface OCMockRecorder(Properties)
 
-#define andReturn2 _andReturn
-@property (nonatomic, readonly) id (^ _andReturn)(id);
+#define toReturn(anObject) _toReturn(anObject)
+@property (nonatomic, readonly) OCMockRecorder *(^ _toReturn)(id);
 
-#define andDo2 _andDo
-@property (nonatomic, readonly) id (^ _andDo)(void (^)(NSInvocation *));
+#define toDo(aBlock) _toDo(aBlock)
+@property (nonatomic, readonly) OCMockRecorder *(^ _toDo)(void (^)(NSInvocation *));
 
 @end
+
+
 
