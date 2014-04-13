@@ -5,7 +5,8 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OCMockRecorder : NSProxy 
+
+@interface OCMockRecorder : NSProxy
 {
 	id				signatureResolver;
     BOOL            recordedAsClassMethod;
@@ -40,7 +41,11 @@
 
 @interface OCMockRecorder(Properties)
 
-#define andReturn _andReturn
-@property (nonatomic, readonly) id(^ _andReturn)(id);
+#define andReturn2 _andReturn
+@property (nonatomic, readonly) id (^ _andReturn)(id);
+
+#define andDo2 _andDo
+@property (nonatomic, readonly) id (^ _andDo)(void (^)(NSInvocation *));
 
 @end
+

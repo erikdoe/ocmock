@@ -244,10 +244,24 @@
 
 - (id(^)(id))_andReturn
 {
-    id (^theBlock)(id) = ^ (id aValue) {
-        return [self andReturn:aValue];
+    id (^theBlock)(id) = ^ (id aValue)
+    {
+        return [(OCMockRecorder *)self andReturn:aValue];
     };
     return [[theBlock copy] autorelease];
 }
+
+
+@dynamic _andDo;
+
+- (id(^)(void (^)(NSInvocation *)))_andDo
+{
+    id (^theBlock)(void (^)(NSInvocation *)) = ^ (void (^ blockToCall)(NSInvocation *))
+    {
+        return [(OCMockRecorder *)self andDo:blockToCall];
+    };
+    return [[theBlock copy] autorelease];
+}
+
 
 @end
