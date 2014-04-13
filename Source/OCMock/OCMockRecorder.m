@@ -180,9 +180,9 @@
 
 @implementation OCMockRecorder(Properties)
 
-@dynamic _toReturn;
+@dynamic _andReturn;
 
-- (id(^)(id))_toReturn
+- (OCMockRecorder *(^)(id))_andReturn
 {
     id (^theBlock)(id) = ^ (id aValue)
     {
@@ -192,9 +192,9 @@
 }
 
 
-@dynamic _toDo;
+@dynamic _andDo;
 
-- (id(^)(void (^)(NSInvocation *)))_toDo
+- (OCMockRecorder *(^)(void (^)(NSInvocation *)))_andDo
 {
     id (^theBlock)(void (^)(NSInvocation *)) = ^ (void (^ blockToCall)(NSInvocation *))
     {

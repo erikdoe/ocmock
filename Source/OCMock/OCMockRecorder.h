@@ -42,11 +42,11 @@
 
 @interface OCMockRecorder(Properties)
 
-#define toReturn(anObject) _toReturn(anObject)
-@property (nonatomic, readonly) OCMockRecorder *(^ _toReturn)(id);
+#define andReturn(anObject) _andReturn(anObject)
+@property (nonatomic, readonly) OCMockRecorder *(^ _andReturn)(id);
 
-#define toDo(aBlock) _toDo(aBlock)
-@property (nonatomic, readonly) OCMockRecorder *(^ _toDo)(void (^)(NSInvocation *));
+#define andDo(aBlock) _andDo(aBlock)
+@property (nonatomic, readonly) OCMockRecorder *(^ _andDo)(void (^)(NSInvocation *));
 
 @end
 

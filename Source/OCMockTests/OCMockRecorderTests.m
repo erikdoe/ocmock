@@ -8,6 +8,7 @@
 #import "OCMReturnValueProvider.h"
 #import "OCMExceptionReturnValueProvider.h"
 #import "OCMArg.h"
+#import "OCMInvocationMatcher.h"
 
 
 @interface OCMockRecorderTests : XCTestCase

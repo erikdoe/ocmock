@@ -32,3 +32,4 @@
     invocation; \
     return [OCMockObject endStubMacro]; \
 })()
+

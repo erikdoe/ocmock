@@ -78,7 +78,7 @@
 {
     id mock = OCMStrictClassMock([NSString class]);
 
-    OCMStub([mock uppercaseString]).toReturn(@"TEST_STRING");
+    OCMStub([mock uppercaseString]).andReturn(@"TEST_STRING");
 
     XCTAssertEqualObjects(@"TEST_STRING", [mock uppercaseString], @"Should have returned stubbed value");
     XCTAssertThrows([mock lowercaseString]);
@@ -95,7 +95,7 @@
         didCallBlock = YES;
     };
 
-    OCMStub([mock uppercaseString]).toDo(theBlock).toReturn(@"TEST_STRING");
+    OCMStub([mock uppercaseString]).andDo(theBlock).andReturn(@"TEST_STRING");
 
     NSString *actual = [mock uppercaseString];
 
