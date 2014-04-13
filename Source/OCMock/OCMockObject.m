@@ -12,7 +12,6 @@
 #import <OCMock/OCMLocation.h>
 #import "NSInvocation+OCMAdditions.h"
 #import "OCMInvocationMatcher.h"
-#import "OCMockRecorder.h"
 #import "OCMMacroState.h"
 
 

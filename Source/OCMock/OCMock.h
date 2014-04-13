@@ -24,9 +24,6 @@
 
 #define OCMObserverMock() [OCMockObject observerMock]
 
-#define OCMVerify(mock) [mock verifyAtLocation:OCMMakeLocation(self, __FILE__, __LINE__)]
-
-
 #define OCMStub(invocation) (^ () \
 { \
     [OCMMacroState beginStubMacro]; \
@@ -40,3 +37,5 @@
     invocation; \
     return [OCMMacroState endExpectMacro]; \
 })()
+
+#define OCMVerify(mock) [mock verifyAtLocation:OCMMakeLocation(self, __FILE__, __LINE__)]
