@@ -33,3 +33,9 @@
     return [OCMockObject endStubMacro]; \
 })()
 
+#define OCMExpect(invocation) (^ () \
+{ \
+    [OCMockObject beginExpectMacro]; \
+    invocation; \
+    return [OCMockObject endExpectMacro]; \
+})()

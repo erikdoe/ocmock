@@ -103,5 +103,16 @@
     XCTAssertEqualObjects(@"TEST_STRING", actual, @"Should have returned stubbed value");
 }
 
+- (void)testSetsUpExpectations
+{
+    id mock = OCMClassMock([NSString class]);
+
+    OCMExpect([mock uppercaseString]).andReturn(@"TEST_STRING");
+
+    XCTAssertThrows([mock verify], @"Should have complained about expected method not being invoked");
+
+    XCTAssertEqual([mock uppercaseString], @"TEST_STRING", @"Should have stubbed method, too");
+    XCTAssertNoThrow([mock verify], @"Should have accepted invocation as matching expectation");
+}
 
 @end

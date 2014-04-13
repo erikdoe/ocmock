@@ -47,6 +47,8 @@
 
 + (void)beginStubMacro;
 + (OCMockRecorder *)endStubMacro;
++ (void)beginExpectMacro;
++ (OCMockRecorder *)endExpectMacro;
 
 - (id)getNewRecorder;
 - (BOOL)handleInvocation:(NSInvocation *)anInvocation;

@@ -79,6 +79,7 @@
 #pragma mark  Global state for stub macro
 
 static BOOL isInStubMacro;
+static BOOL isInExpectMacro;
 static OCMockRecorder *actionRecorder;
 
 + (void)beginStubMacro
@@ -89,6 +90,17 @@ static OCMockRecorder *actionRecorder;
 + (OCMockRecorder *)endStubMacro
 {
     isInStubMacro = NO;
+    return actionRecorder;
+}
+
++ (void)beginExpectMacro
+{
+    isInExpectMacro = YES;
+}
+
++ (OCMockRecorder *)endExpectMacro
+{
+    isInExpectMacro = NO;
     return actionRecorder;
 }
 
@@ -230,6 +242,12 @@ static OCMockRecorder *actionRecorder;
     if(isInStubMacro)
     {
         id recorder = [self stub];
+        [recorder forwardInvocation:anInvocation];
+        actionRecorder = recorder;
+    }
+    else if(isInExpectMacro)
+    {
+        id recorder = [self expect];
         [recorder forwardInvocation:anInvocation];
         actionRecorder = recorder;
     }
