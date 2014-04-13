@@ -6,6 +6,25 @@
 #import <OCMock/OCMock.h>
 
 
+@protocol TestProtocolForMacroTesting
+- (NSString *)stringValue;
+@end
+
+@interface TestClassForMacroTesting : NSObject <TestProtocolForMacroTesting>
+
+@end
+
+@implementation TestClassForMacroTesting
+
+- (NSString *)stringValue
+{
+    return nil;
+}
+
+@end
+
+
+
 @interface OCMockObjectMacroTests : XCTestCase
 {
     BOOL        shouldCaptureFailure;
@@ -87,7 +106,7 @@
 
 - (void)testCanChainPropertyBasedActions
 {
-    id mock = OCMStrictClassMock([NSString class]);
+    id mock = OCMPartialMock([[[TestClassForMacroTesting alloc] init] autorelease]);
 
     __block BOOL didCallBlock = NO;
     void (^theBlock)(NSInvocation *) = ^(NSInvocation *invocation)
@@ -95,9 +114,9 @@
         didCallBlock = YES;
     };
 
-    OCMStub([mock uppercaseString]).andDo(theBlock).andReturn(@"TEST_STRING");
+    OCMStub([mock stringValue]).andDo(theBlock).andReturn(@"TEST_STRING");
 
-    NSString *actual = [mock uppercaseString];
+    NSString *actual = [mock stringValue];
 
     XCTAssertTrue(didCallBlock, @"Should have called block");
     XCTAssertEqualObjects(@"TEST_STRING", actual, @"Should have returned stubbed value");
@@ -105,13 +124,13 @@
 
 - (void)testSetsUpExpectations
 {
-    id mock = OCMClassMock([NSString class]);
+    id mock = OCMProtocolMock(@protocol(TestProtocolForMacroTesting));
 
-    OCMExpect([mock uppercaseString]).andReturn(@"TEST_STRING");
+    OCMExpect([mock stringValue]).andReturn(@"TEST_STRING");
 
     XCTAssertThrows([mock verify], @"Should have complained about expected method not being invoked");
 
-    XCTAssertEqual([mock uppercaseString], @"TEST_STRING", @"Should have stubbed method, too");
+    XCTAssertEqual([mock stringValue], @"TEST_STRING", @"Should have stubbed method, too");
     XCTAssertNoThrow([mock verify], @"Should have accepted invocation as matching expectation");
 }
 
