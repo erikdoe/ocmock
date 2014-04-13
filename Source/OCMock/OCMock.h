@@ -8,6 +8,7 @@
 #import <OCMock/OCMConstraint.h>
 #import <OCMock/OCMArg.h>
 #import <OCMock/OCMLocation.h>
+#import <OCMock/OCMMacroState.h>
 #import <OCMock/NSNotificationCenter+OCMAdditions.h>
 
 
@@ -28,14 +29,14 @@
 
 #define OCMStub(invocation) (^ () \
 { \
-    [OCMockObject beginStubMacro]; \
+    [OCMMacroState beginStubMacro]; \
     invocation; \
-    return [OCMockObject endStubMacro]; \
+    return [OCMMacroState endStubMacro]; \
 })()
 
 #define OCMExpect(invocation) (^ () \
 { \
-    [OCMockObject beginExpectMacro]; \
+    [OCMMacroState beginExpectMacro]; \
     invocation; \
-    return [OCMockObject endExpectMacro]; \
+    return [OCMMacroState endExpectMacro]; \
 })()

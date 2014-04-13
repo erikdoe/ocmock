@@ -13,6 +13,7 @@
 #import "NSInvocation+OCMAdditions.h"
 #import "OCMInvocationMatcher.h"
 #import "OCMockRecorder.h"
+#import "OCMMacroState.h"
 
 
 @interface OCMockObject(Private)
@@ -73,35 +74,6 @@
 + (id)observerMock
 {
 	return [[[OCObserverMockObject alloc] init] autorelease];
-}
-
-
-#pragma mark  Global state for stub macro
-
-static BOOL isInStubMacro;
-static BOOL isInExpectMacro;
-static OCMockRecorder *actionRecorder;
-
-+ (void)beginStubMacro
-{
-    isInStubMacro = YES;
-}
-
-+ (OCMockRecorder *)endStubMacro
-{
-    isInStubMacro = NO;
-    return actionRecorder;
-}
-
-+ (void)beginExpectMacro
-{
-    isInExpectMacro = YES;
-}
-
-+ (OCMockRecorder *)endExpectMacro
-{
-    isInExpectMacro = NO;
-    return actionRecorder;
 }
 
 
@@ -239,17 +211,16 @@ static OCMockRecorder *actionRecorder;
 
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
-    if(isInStubMacro)
+    OCMMacroState *macroState = [OCMMacroState globalState];
+    if(macroState != nil)
     {
-        id recorder = [self stub];
+        OCMockRecorder *recorder = nil;
+        if([macroState shouldRecordExpectation])
+            recorder = [self expect];
+        else
+            recorder = [self stub];
         [recorder forwardInvocation:anInvocation];
-        actionRecorder = recorder;
-    }
-    else if(isInExpectMacro)
-    {
-        id recorder = [self expect];
-        [recorder forwardInvocation:anInvocation];
-        actionRecorder = recorder;
+        [macroState setRecorder:recorder];
     }
     else
     {
