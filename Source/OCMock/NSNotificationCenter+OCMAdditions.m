@@ -9,8 +9,9 @@
 
 @implementation NSNotificationCenter(OCMAdditions)
 
-- (void)addMockObserver:(OCMockObserver *)notificationObserver name:(NSString *)notificationName object:(id)notificationSender
+- (void)addMockObserver:(OCObserverMockObject *)notificationObserver name:(NSString *)notificationName object:(id)notificationSender
 {
+    [notificationObserver autoRemoveFromCenter:self];
 	[self addObserver:notificationObserver selector:@selector(handleNotification:) name:notificationName object:notificationSender];
 }
 

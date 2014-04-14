@@ -5,11 +5,11 @@
 
 #import <Foundation/Foundation.h>
 
-@class OCMockObserver;
+@class OCObserverMockObject;
 
 
 @interface NSNotificationCenter(OCMAdditions)
 
-- (void)addMockObserver:(OCMockObserver *)notificationObserver name:(NSString *)notificationName object:(id)notificationSender;
+- (void)addMockObserver:(OCObserverMockObject *)notificationObserver name:(NSString *)notificationName object:(id)notificationSender;
 
 @end

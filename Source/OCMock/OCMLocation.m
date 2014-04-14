@@ -54,8 +54,6 @@
 
 - (void)reportFailure:(NSString *)description
 {
-    NSLog(@"%@:%lu %@", file, (unsigned long)line, description);
-    
     if((testCase != nil) && [testCase respondsToSelector:@selector(recordFailureWithDescription:inFile:atLine:expected:)])
     {
         [testCase recordFailureWithDescription:description inFile:file atLine:line expected:NO];
@@ -76,6 +74,7 @@
     }
     else
     {
+        NSLog(@"%@:%lu %@", file, (unsigned long)line, description);
         NSString *reason = [NSString stringWithFormat:@"%@:%lu %@", file, (unsigned long)line, description];
         NSException *exception = [NSException exceptionWithName:@"OCMockTestFailure" reason:reason userInfo:nil];
         [exception raise];

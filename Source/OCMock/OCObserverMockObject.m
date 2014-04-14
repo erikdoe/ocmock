@@ -1,10 +1,11 @@
 //---------------------------------------------------------------------------------------
 //  $Id$
-//  Copyright (c) 2009 by Mulle Kybernetik. See License file for details.
+//  Copyright (c) 2009-2014 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import "OCObserverMockObject.h"
 #import "OCMObserverRecorder.h"
+#import "OCMLocation.h"
 
 
 @implementation OCObserverMockObject
@@ -15,11 +16,20 @@
 {
 	self = [super init];
 	recorders = [[NSMutableArray alloc] init];
+	centers = [[NSMutableArray alloc] init];
 	return self;
+}
+
+- (id)retain
+{
+    return [super retain];
 }
 
 - (void)dealloc
 {
+    for(NSNotificationCenter *c in centers)
+        [c removeObserver:self];
+    [centers release];
 	[recorders release];
 	[super dealloc];
 }
@@ -32,6 +42,11 @@
 - (void)setExpectationOrderMatters:(BOOL)flag
 {
     expectationOrderMatters = flag;
+}
+
+- (void)autoRemoveFromCenter:(NSNotificationCenter *)aCenter
+{
+    [centers addObject:aCenter];
 }
 
 
@@ -48,7 +63,7 @@
 {
 	if([recorders count] == 1)
 	{
-		[NSException raise:NSInternalInconsistencyException format:@"%@: expected notification was not observed: %@", 
+		[NSException raise:NSInternalInconsistencyException format:@"%@: expected notification was not observed: %@",
 		 [self description], [[recorders lastObject] description]];
 	}
 	if([recorders count] > 0)
@@ -58,6 +73,29 @@
 	}
 }
 
+- (void)verifyAtLocation:(OCMLocation *)location
+{
+    if([recorders count] == 1)
+    {
+        NSString *description = [NSString stringWithFormat:@"%@: expected notification was not observed: %@",
+         [self description], [[recorders lastObject] description]];
+        [location reportFailure:description];
+    }
+    else if([recorders count] > 0)
+    {
+        NSString *description = [NSString stringWithFormat:@"%@ : %@ expected notifications were not observed.",
+         [self description], @([recorders count])];
+        [location reportFailure:description];
+    }
+}
+
+
+#pragma mark  Receiving recording requests via macro
+
+- (void)notificationWithName:(NSString *)name object:(id)sender
+{
+    [[self expect] notificationWithName:name object:sender];
+}
 
 
 #pragma mark  Receiving notifications
