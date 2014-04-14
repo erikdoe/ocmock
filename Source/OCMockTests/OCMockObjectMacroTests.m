@@ -18,7 +18,7 @@
 
 - (NSString *)stringValue
 {
-    return nil;
+    return @"FOO";
 }
 
 @end
@@ -68,6 +68,7 @@
     XCTAssertEqual(expectedLine, (int)reportedLine, @"Should have reported correct line");
 }
 
+
 - (void)testReportsIgnoredExceptionsAtVerifyLocation
 {
     id mock = OCMClassMock([NSString class]);
@@ -104,6 +105,39 @@
 }
 
 
+- (void)testSetsUpNotificationPostingAndNotificationObserving
+{
+    id mock = OCMProtocolMock(@protocol(TestProtocolForMacroTesting));
+
+    NSNotification *n = [NSNotification notificationWithName:@"TestNotification" object:nil];
+
+    id observer = OCMObserverMock();
+    [[NSNotificationCenter defaultCenter] addMockObserver:observer name:[n name] object:nil];
+    OCMExpect([observer notificationWithName:[n name] object:[OCMArg any]]);
+
+    OCMStub([mock stringValue]).andPost(n);
+
+    [mock stringValue];
+
+    OCMVerify(observer);
+}
+
+
+- (void)testSetsUpSubstituteCall
+{
+    id mock = OCMStrictProtocolMock(@protocol(TestProtocolForMacroTesting));
+
+    OCMStub([mock stringValue]).andCall(self, @selector(stringValueForTesting));
+
+    XCTAssertEqualObjects([mock stringValue], @"TEST_STRING_FROM_TESTCASE", @"Should have called method from test case");
+}
+
+- (NSString *)stringValueForTesting
+{
+    return @"TEST_STRING_FROM_TESTCASE";
+}
+
+
 - (void)testCanChainPropertyBasedActions
 {
     id mock = OCMPartialMock([[[TestClassForMacroTesting alloc] init] autorelease]);
@@ -114,17 +148,17 @@
         didCallBlock = YES;
     };
 
-    OCMStub([mock stringValue]).andDo(theBlock).andReturn(@"TEST_STRING");
+    OCMStub([mock stringValue]).andDo(theBlock).andForwardToRealObject();
 
     NSString *actual = [mock stringValue];
 
     XCTAssertTrue(didCallBlock, @"Should have called block");
-    XCTAssertEqualObjects(@"TEST_STRING", actual, @"Should have returned stubbed value");
+    XCTAssertEqualObjects(@"FOO", actual, @"Should have forwarded invocation");
 }
 
 - (void)testSetsUpExpectations
 {
-    id mock = OCMProtocolMock(@protocol(TestProtocolForMacroTesting));
+    id mock = OCMClassMock([TestClassForMacroTesting class]);
 
     OCMExpect([mock stringValue]).andReturn(@"TEST_STRING");
 

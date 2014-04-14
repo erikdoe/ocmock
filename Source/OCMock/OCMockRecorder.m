@@ -182,7 +182,31 @@
 {
     id (^theBlock)(id) = ^ (id aValue)
     {
-        return [(OCMockRecorder *)self andReturn:aValue];
+        return [self andReturn:aValue];
+    };
+    return [[theBlock copy] autorelease];
+}
+
+
+@dynamic _andPost;
+
+- (OCMockRecorder *(^)(NSNotification *))_andPost
+{
+    id (^theBlock)(id) = ^ (NSNotification * aNotification)
+    {
+        return [self andPost:aNotification];
+    };
+    return [[theBlock copy] autorelease];
+}
+
+
+@dynamic _andCall;
+
+- (OCMockRecorder *(^)(id, SEL))_andCall
+{
+    id (^theBlock)(id, SEL) = ^ (id anObject, SEL aSelector)
+    {
+        return [self andCall:aSelector onObject:anObject];
     };
     return [[theBlock copy] autorelease];
 }
@@ -194,7 +218,19 @@
 {
     id (^theBlock)(void (^)(NSInvocation *)) = ^ (void (^ blockToCall)(NSInvocation *))
     {
-        return [(OCMockRecorder *)self andDo:blockToCall];
+        return [self andDo:blockToCall];
+    };
+    return [[theBlock copy] autorelease];
+}
+
+
+@dynamic _andForwardToRealObject;
+
+- (OCMockRecorder *(^)(void))_andForwardToRealObject
+{
+    id (^theBlock)(void) = ^ (void)
+    {
+        return [self andForwardToRealObject];
     };
     return [[theBlock copy] autorelease];
 }

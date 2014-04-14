@@ -43,8 +43,17 @@
 #define andReturn(anObject) _andReturn(anObject)
 @property (nonatomic, readonly) OCMockRecorder *(^ _andReturn)(id);
 
+#define andPost(aNotification) _andPost(aNotification)
+@property (nonatomic, readonly) OCMockRecorder *(^ _andPost)(NSNotification *);
+
+#define andCall(anObject, aSelector) _andCall(anObject, aSelector)
+@property (nonatomic, readonly) OCMockRecorder *(^ _andCall)(id, SEL);
+
 #define andDo(aBlock) _andDo(aBlock)
 @property (nonatomic, readonly) OCMockRecorder *(^ _andDo)(void (^)(NSInvocation *));
+
+#define andForwardToRealObject() _andForwardToRealObject()
+@property (nonatomic, readonly) OCMockRecorder *(^ _andForwardToRealObject)(void);
 
 @end
 
