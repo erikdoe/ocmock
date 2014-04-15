@@ -17,10 +17,12 @@ comments: true
 	<li>Apache 2 license
 </ul>
 	
+<p>This page a description of planned changes. The final implemenation in OCMock&nbsp;3 may be different. Please do not rely on any of the changes before the first stable release of OCMock&nbsp;3 is available.
+	
 
 <h2>Download</h2>
 
-<p>When milestone 1 (see below) is reached a binary download will be made available here. In the meantime you can track changes in the <a href="https://github.com/erikdoe/ocmock">Github repository</a>.
+<p>When milestone 1 is reached a binary download will be made available here. In the meantime you can track changes in the <a href="https://github.com/erikdoe/ocmock">Github repository</a>.
 
 <p>The milestone releases are not stable production releases. Use them with caution. They may contain known bugs, and breaking API changes may occur between the milestone releases and the first stable release of OCMock&nbsp;3.
 
@@ -30,11 +32,7 @@ comments: true
 <p>We'd love to know what you think about the planned changes. Please leave a comment at the bottom of this page if you have feedback. For support with using OCMock please use the normal <a href="{{ site.baseurl }}/support">support channels</a>.
 
 
-<h2>Changes in detail</h2>
-
-<p>This is a description of planned changes. The final implemenation in OCMock&nbsp;3 may be different. Please do not rely on any of the changes before the first stable release of OCMock&nbsp;3.
-
-<h3>Modern syntax (Milestone 1)</h3>
+<h2>Modern syntax (Milestone 1)</h2>
 
 <p>In addition to the existing syntax OCMock 3 introduces a new "modern" syntax that uses macros and round brackets. We believe that there are several benefits:
 
@@ -64,7 +62,7 @@ id partial = [OCMockObject partialMockForObject:anObject];
 [[[[partial expect] andForwardToRealObject] andReturn:@"TEST_STRING"] exampleMethod];
 {% endhighlight objc %}	
 
-<p>The following "functions" will be available. (These are not implemented as C functions.)
+<p>The following "functions" will be available. (They are not implemented as C functions.)
 
 <p>Creating mock objects:
 <ul>
@@ -100,7 +98,7 @@ id partial = [OCMockObject partialMockForObject:anObject];
 <p>It is possible to mix and match these new "functions" with the traditional method-based syntax.
 
 
-<h3>Verify after running (Milestone 2 and 3)</h3>
+<h2>Verify after running (Milestone 2 and 3)</h2>
 
 <p>Most of the original mock frameworks follow the <i>expect-run-verify</i> approach. OCMock is one of these frameworks. Over the years, as we all gathered more experience, it became clear that this approach has its problems, and the <a href="https://github.com/mockito/mockito">Mockito</a> framework pioneered a new approach: <i>verify-after-running</i>. There are no expectations, all mocks are <i>nice</i>, i.e. they do not complain when an unexpected method is called, and verification of specific calls is done after the code under test is run.
 	
@@ -121,12 +119,7 @@ id mock = [OCMockObject niceMockForClass:[NSString class]];
 <p>At present it is not clear how hard it will be to get verify-after-running work with partial mocks and class methods. Milestone 2 will provide the functionality for "regular" mocks, and in Milestone 3 we will tackle partial mocks and class methods.
 
 
-<h3>Apache 2 license</h3>
+<h2>Apache 2 license</h2>
 
-<p>It has become clear that a non-standard BSD-style license with attribution clause is not ideal. I am not a lawyer but the Apache 2 license seems quite close in spirit to the existing license, and it has the benefit of being a widely used standard open source license. For that reason, OCMock 3 will be released under the Apache 2 license. If you are a previous commiter and you have concerns please do get in touch.
-	
-
-<h2>Comments</h2>
-
-<!-- <p>We'd love to know what you think about the planned changes. Please leave a comment. For support with using OCMock please use the normal <a href="{{ site.baseurl }}/support">support channels</a>. -->
+<p>It has become clear that a non-standard BSD-style license with attribution clause is not ideal. I am not a lawyer but the Apache 2 license seems quite close in spirit to the existing license, and it has the benefit of being a widely used standard open source license. For that reason OCMock 3 will be released under the Apache 2 license. If you are a previous commiter and you have concerns please do get in touch.
 	
