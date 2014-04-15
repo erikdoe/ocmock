@@ -1,5 +1,7 @@
 
+.juvia-no-comments, 
 h3.juvia-comment-count-header {
+	font-family: "Helvetica Neue", Helvetica, arial, sans-serif;
 	font-size: 0.875em; 
 	font-weight: normal;
 	line-height: 1.5em;
@@ -107,7 +109,7 @@ h3.juvia-comment-count-header {
 	font-size: 100%;
 }
 
-.juvia-no-comments, .juvia-preview-empty, .juvia-moderating {
+.juvia-preview-empty, .juvia-moderating {
 	font-family: sans-serif;
 	font-style: italic;
 	color: #555;
