@@ -55,6 +55,11 @@ h2:first-child {
 	margin-top: 0em;
 }
 
+h3 {
+	font-size: 1em;
+	margin-top: 1em;
+}
+
 p, th, td, ul, li { 
 	font-family: sans-serif;
 	font-size: 0.875em; 
