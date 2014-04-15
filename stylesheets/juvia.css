@@ -1,0 +1,213 @@
+
+h3.juvia-comment-count-header {
+	font-size: 0.875em; 
+	font-weight: normal;
+	line-height: 1.5em;
+	color: #444;
+	
+	margin-top: 0.715em;
+	margin-bottom: 1em;
+}
+
+
+.juvia-comment {
+	font-family: sans-serif;
+	color: #555;
+
+	min-height: 64px;
+	border-top: 1px solid #DDD;
+	margin-top: 6px;
+	margin-bottom: 6px;
+}
+
+.juvia-comment .juvia-metadata {
+	font-weight: bold;
+
+	position: relative;
+	margin: 15px 0 15px 52px;
+	padding: 0;
+}
+
+.juvia-comment .juvia-avatar {
+	float: left;
+	margin-top: -6px;
+	margin-left: -52px;
+}
+
+.juvia-comment .juvia-author {
+	font-family: "Helvetica Neue", Helvetica, arial, sans-serif;
+	font-weight: bold;
+  font-size: 1em;
+	
+	margin-bottom: 0.2em;
+}
+
+.juvia-comment .juvia-creation-date {
+	font-family: "Helvetica Neue", Helvetica, arial, sans-serif;
+  font-size: 0.6875em;
+}
+
+.juvia-comment .juvia-data {
+}
+
+.juvia-comment-content p,
+.juvia-preview-content p {
+	font-size: 0.8125em;
+	color: #555;
+	
+  margin-top: 0.75em;
+	margin-bottom: 0.75em;
+}
+
+.juvia-comment-content blockquote,
+.juvia-preview-content blockquote {
+	font-style: italic;
+	border-left: #AAA 4px solid;
+	padding: 0 0 0 0.5em;
+}
+
+.juvia-preview-content {
+	blockquote {
+		font-style: italic;
+		border-left: lighten($body-color, 50%) 4px solid;
+		margin: 0.5em 0.2em;
+		padding: 0 0 0 0.5em;
+
+		p {
+			margin-top: 0.5em;
+			margin-bottom: 0.5em;
+		}
+	}	
+    pre {
+	    background: darken($comments-bg, 5%);
+		margin-left: 0.5em;
+		margin-right: 0.5em;
+    }
+}
+
+.juvia-comment h1,
+.juvia-preview-content h1 {
+	font-size: 125%;
+}
+
+.juvia-comment h2,
+.juvia-preview-content h2 {
+	font-size: 110%;
+	border-bottom: 0;
+}
+
+.juvia-comment h3,
+.juvia-preview-content h3,
+.juvia-comment h4,
+.juvia-preview-content h4,
+.juvia-comment h5,
+.juvia-preview-content h5,
+.juvia-comment h6,
+.juvia-preview-content h6 {
+	font-size: 100%;
+}
+
+.juvia-no-comments, .juvia-preview-empty, .juvia-moderating {
+	font-family: sans-serif;
+	font-style: italic;
+	color: #555;
+}
+
+p.juvia-reply-to-comment {
+	display: none;
+	font-size: 0.6875em;
+	margin-top: 0.2em;
+}
+
+.juvia-comments {
+	border-bottom: 1px solid #DDD;
+	margin-bottom: 2em;
+}
+
+.juvia-field input {
+	width: 20em;
+}
+
+.juvia-example-text {
+	color: #555;
+}
+
+.juvia-add-comment-form {
+	margin-top: 1em;
+}
+
+.juvia-field .juvia-input,
+.juvia-textarea-field {
+	margin-bottom: 0.5em;
+}
+
+.juvia-help,
+.juvia-help-content {
+	font-family: sans-serif;
+	font-color: #444;
+}
+
+a.juvia-help {
+}
+
+.juvia-help-content {
+	position: absolute;
+	font-size: 90%;
+	line-height: 1.2em;
+	width: 14em;
+	border: solid 1px black;
+	background: #ffffe0;
+	border: solid 1px #ffddaa;
+	padding: 8px;
+	box-shadow: 3px 3px 5px #888;
+	-moz-box-shadow: 3px 3px 5px #888;
+	-webkit-box-shadow: 3px 3px 5px #888;
+}
+
+.juvia-textarea-field textarea {
+	width: 99%;
+	height: 15em;
+	padding: 4px;
+}
+
+.juvia-form-actions .juvia-action {
+	display: inline;
+}
+
+.juvia-form-actions .juvia-error {
+	font: sans-serif;
+	display: inline;
+	color: red;
+	margin-left: 1em;
+}
+
+.juvia-preview {
+	margin-top: 1em;
+}
+
+.juvia-preview h4 {
+	display: none;
+}
+
+.juvia-preview-content {
+	background: #EEE;
+	border-top: solid 2px #ffddaa;
+	border-bottom: solid 2px #ffddaa;
+	margin-bottom: 1em;
+	padding: 4px;
+}
+
+.juvia-preview-content > *:first-child {
+	margin-top: 0;
+}
+
+.juvia-preview-content > *:last-child {
+	margin-bottom: 0;
+}
+
+.juvia-self-ad {
+	display: none;
+}
+
+
+

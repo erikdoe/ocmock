@@ -10,8 +10,61 @@
 		<link type="text/css" rel="stylesheet" href="{{ site.baseurl }}/stylesheets/reset.css">
 		<link type="text/css" rel="stylesheet" href="{{ site.baseurl }}/stylesheets/screen.css">
 		<link type="text/css" rel="stylesheet" href="{{ site.baseurl }}/stylesheets/pygmentize.css">
+		<link type="text/css" rel="stylesheet" href="{{ site.baseurl }}/stylesheets/juvia.css">
 
 		<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
+
+		{% if page.comments %}
+	    
+	  <script type="text/javascript" class="juvia">
+		(function() {
+		    var options = {
+		        container   : '#comments',
+		        site_key    : 'cu3qkn7uajrdbxnx9unjwumu7vfksen',
+		        topic_key   : location.pathname,
+		        topic_url   : location.href,
+		        topic_title : document.title || location.href,
+		        include_base: !window.Juvia,
+		        include_css : false
+		    };
+
+		    function makeQueryString(options) {
+		        var key, params = [];
+		        for (key in options) {
+		            params.push(
+		                encodeURIComponent(key) +
+		                '=' +
+		                encodeURIComponent(options[key]));
+		        }
+		        return params.join('&');
+		    }
+
+		    function makeApiUrl(options) {
+		        // Makes sure that each call generates a unique URL, otherwise
+		        // the browser may not actually perform the request.
+		        if (!('_juviaRequestCounter' in window)) {
+		            window._juviaRequestCounter = 0;
+		        }
+
+		        var result =
+		            'http://comments.ocmock.org/api/show_topic.js' +
+		            '?_c=' + window._juviaRequestCounter +
+		            '&' + makeQueryString(options);
+		        window._juviaRequestCounter++;
+		        return result;
+		    }
+
+		    var s       = document.createElement('script');
+		    s.async     = true;
+		    s.type      = 'text/javascript';
+		    s.className = 'juvia';
+		    s.src       = makeApiUrl(options);
+		    (document.getElementsByTagName('head')[0] ||
+		     document.getElementsByTagName('body')[0]).appendChild(s);
+		})();
+		</script>
+
+		{% endif %}
 
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 		<script>
@@ -48,6 +101,13 @@
 
 			<section id="content">
 				{{ content }}
+
+				{% if page.comments %}
+				<div id="comments">
+						<p class="loading">Starting commenting system. This can take a moment.
+				</div>
+				{% endif %}
+
 		  </section>
 
 			{% unless page.nosidebar %}
@@ -104,7 +164,7 @@
 		</div>
 
 		<!-- Start of StatCounter Code -->
-		<script type="text/javascript">
+		<!-- <script type="text/javascript">
 		var sc_project=5243075; 
 		var sc_invisible=1; 
 		var sc_partition=59; 
@@ -117,7 +177,7 @@
 	  <a title="hit counter" href="http://www.statcounter.com/blogger/" target="_blank">
 		<img class="statcounter" src="http://c.statcounter.com/5243075/0/accd6a4e/1/" alt="hit counter">
 		</a>
-		</div></noscript>
+		</div></noscript> -->
 		<!-- End of StatCounter Code -->
 
   </body>
