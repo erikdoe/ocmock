@@ -25,7 +25,7 @@
     XCTAssertEqualObjects(@"OCMockObject[NSString]", [mockStr description], @"Should have received a mock of type OCClassMockObject and class NSString");
     BOOL isNice;
     object_getInstanceVariable(mockStr, "isNice", (void*)&isNice);
-    XCTAssertTrue(isNice, @"Expected mock to be nice");
+    XCTAssertTrue(isNice, @"Should have received a nice mock");
 }
 
 - (void)testPartialMock
