@@ -1,11 +1,3 @@
-//
-//  NSObjectOCMMockAdditionsTests.m
-//  OCMock
-//
-//  Created by Mark Larsen on 4/23/14.
-//  Copyright (c) 2014 Mulle Kybernetik. All rights reserved.
-//
-
 #import <XCTest/XCTest.h>
 #import "NSObject+OCMMockAdditions.h"
 
