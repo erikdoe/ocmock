@@ -105,6 +105,16 @@
 }
 
 
+- (void)testSetsUpExceptionThrowing
+{
+    id mock = OCMClassMock([NSString class]);
+
+    OCMStub([mock uppercaseString]).andThrow([NSException exceptionWithName:@"TestException" reason:@"Testing" userInfo:nil]);
+
+    XCTAssertThrowsSpecificNamed([mock uppercaseString], NSException, @"TestException", @"Should have thrown correct exception");
+}
+
+
 - (void)testSetsUpNotificationPostingAndNotificationObserving
 {
     id mock = OCMProtocolMock(@protocol(TestProtocolForMacroTesting));

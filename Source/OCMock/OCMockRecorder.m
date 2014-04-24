@@ -188,6 +188,18 @@
 }
 
 
+@dynamic _andThrow;
+
+- (OCMockRecorder *(^)(NSException *))_andThrow
+{
+    id (^theBlock)(id) = ^ (NSException * anException)
+    {
+        return [self andThrow:anException];
+    };
+    return [[theBlock copy] autorelease];
+}
+
+
 @dynamic _andPost;
 
 - (OCMockRecorder *(^)(NSNotification *))_andPost

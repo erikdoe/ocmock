@@ -43,6 +43,9 @@
 #define andReturn(anObject) _andReturn(anObject)
 @property (nonatomic, readonly) OCMockRecorder *(^ _andReturn)(id);
 
+#define andThrow(anException) _andThrow(anException)
+@property (nonatomic, readonly) OCMockRecorder *(^ _andThrow)(NSException *);
+
 #define andPost(aNotification) _andPost(aNotification)
 @property (nonatomic, readonly) OCMockRecorder *(^ _andPost)(NSNotification *);
 
