@@ -10,7 +10,7 @@
 #import <OCMock/OCMLocation.h>
 #import <OCMock/OCMMacroState.h>
 #import <OCMock/NSNotificationCenter+OCMAdditions.h>
-
+#import "NSObject+OCMMockAdditions.h"
 
 #define OCMClassMock(cls) [OCMockObject niceMockForClass:cls]
 
