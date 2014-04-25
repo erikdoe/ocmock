@@ -4,18 +4,15 @@
 //---------------------------------------------------------------------------------------
 
 #import "NSInvocation+OCMAdditions.h"
+#import "OCMFunctions.h"
 
 
 @implementation NSInvocation(OCMAdditions)
 
 - (id)getArgumentAtIndexAsObject:(int)argIndex
 {
-	const char* argType;
-	
-	argType = [[self methodSignature] getArgumentTypeAtIndex:argIndex];
-	while(strchr("rnNoORV", argType[0]) != NULL)
-		argType += 1;
-	
+	const char *argType = OCMTypeWithoutQualifiers([[self methodSignature] getArgumentTypeAtIndex:argIndex]);
+
 	if((strlen(argType) > 1) && (strchr("{^", argType[0]) == NULL) && (strcmp("@?", argType) != 0))
 		[NSException raise:NSInvalidArgumentException format:@"Cannot handle argument type '%s'.", argType];
 	
@@ -162,9 +159,7 @@
 
 - (NSString *)argumentDescriptionAtIndex:(int)argIndex
 {
-	const char *argType = [[self methodSignature] getArgumentTypeAtIndex:argIndex];
-	if(strchr("rnNoORV", argType[0]) != NULL)
-		argType += 1;
+	const char *argType = OCMTypeWithoutQualifiers([[self methodSignature] getArgumentTypeAtIndex:argIndex]);
 
 	switch(*argType)
 	{

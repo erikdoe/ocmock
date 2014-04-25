@@ -10,11 +10,6 @@
 
 @implementation NSMethodSignature(OCMAdditions)
 
-- (const char *)methodReturnTypeWithoutQualifiers
-{
-	return OCMTypeWithoutQualifiers([self methodReturnType]);
-}
-
 - (BOOL)usesSpecialStructureReturn
 {
     const char *types = OCMTypeWithoutQualifiers([self methodReturnType]);

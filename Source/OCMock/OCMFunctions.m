@@ -6,9 +6,19 @@
 
 BOOL OCMIsObjectType(const char *objCType)
 {
-    // TODO: see OCMReturnValueProvider for a real impl
     objCType = OCMTypeWithoutQualifiers(objCType);
-    return strcmp(objCType, @encode(id)) == 0;
+
+    if(strcmp(objCType, @encode(id)) == 0)
+        return YES;
+
+    // if the returnType is a typedef to an object, it has the form ^{OriginClass=#}
+    NSString *regexString = @"^\\^\\{(.*)=#.*\\}";
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:regexString options:0 error:NULL];
+    NSString *type = [NSString stringWithCString:objCType encoding:NSASCIIStringEncoding];
+    if([regex numberOfMatchesInString:type options:0 range:NSMakeRange(0, type.length)] > 0)
+        return YES;
+
+    return NO;
 }
 
 
