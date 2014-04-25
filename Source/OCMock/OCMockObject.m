@@ -13,6 +13,7 @@
 #import "NSInvocation+OCMAdditions.h"
 #import "OCMInvocationMatcher.h"
 #import "OCMMacroState.h"
+#import "OCMFunctions.h"
 
 
 @interface OCMockObject(Private)
@@ -160,19 +161,19 @@
 	{
         NSString *description = [NSString stringWithFormat:@"%@: expected method was not invoked: %@",
          [self description], [[expectations objectAtIndex:0] description]];
-        [location reportFailure:description];
+        OCMReportFailure(location, description);
 	}
 	else if([expectations count] > 0)
 	{
 		NSString *description = [NSString stringWithFormat:@"%@: %@ expected methods were not invoked: %@",
          [self description], @([expectations count]), [self _recorderDescriptions:YES]];
-        [location reportFailure:description];
+        OCMReportFailure(location, description);
 	}
 	if([exceptions count] > 0)
 	{
         NSString *description = [NSString stringWithFormat:@"%@: %@ (This is a strict mock failure that was ignored when it actually occured.)",
          [self description], [[exceptions objectAtIndex:0] description]];
-        [location reportFailure:description];
+        OCMReportFailure(location, description);
 	}
 }
 

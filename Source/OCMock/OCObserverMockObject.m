@@ -6,6 +6,7 @@
 #import "OCObserverMockObject.h"
 #import "OCMObserverRecorder.h"
 #import "OCMLocation.h"
+#import "OCMFunctions.h"
 
 
 @implementation OCObserverMockObject
@@ -79,13 +80,13 @@
     {
         NSString *description = [NSString stringWithFormat:@"%@: expected notification was not observed: %@",
          [self description], [[recorders lastObject] description]];
-        [location reportFailure:description];
+        OCMReportFailure(location, description);
     }
     else if([recorders count] > 0)
     {
         NSString *description = [NSString stringWithFormat:@"%@ : %@ expected notifications were not observed.",
          [self description], @([recorders count])];
-        [location reportFailure:description];
+        OCMReportFailure(location, description);
     }
 }
 

@@ -19,8 +19,6 @@
 - (NSString *)file;
 - (NSUInteger)line;
 
-- (void)reportFailure:(NSString *)description;
-
 @end
 
 extern OCMLocation *OCMMakeLocation(id testCase, const char *file, int line);

@@ -4,5 +4,10 @@
 
 #import <Foundation/Foundation.h>
 
+@class OCMLocation;
+
+
 BOOL OCMIsObjectType(const char *objCType);
 const char *OCMTypeWithoutQualifiers(const char *objCType);
+
+void OCMReportFailure(OCMLocation *loc, NSString *description);
