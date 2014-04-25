@@ -24,18 +24,18 @@
 
 #define OCMObserverMock() [OCMockObject observerMock]
 
-#define OCMStub(invocation) (^ () \
-{ \
+#define OCMStub(invocation) \
+({ \
     [OCMMacroState beginStubMacro]; \
     invocation; \
-    return [OCMMacroState endStubMacro]; \
-})()
+    [OCMMacroState endStubMacro]; \
+})
 
-#define OCMExpect(invocation) (^ () \
-{ \
+#define OCMExpect(invocation) \
+({ \
     [OCMMacroState beginExpectMacro]; \
     invocation; \
-    return [OCMMacroState endExpectMacro]; \
-})()
+    [OCMMacroState endExpectMacro]; \
+})
 
 #define OCMVerifyAll(mock) [mock verifyAtLocation:OCMMakeLocation(self, __FILE__, __LINE__)]
