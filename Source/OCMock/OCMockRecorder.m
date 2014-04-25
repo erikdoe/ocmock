@@ -18,6 +18,7 @@
 #import "OCMBlockCaller.h"
 #import "OCMRealObjectForwarder.h"
 #import "NSInvocation+OCMAdditions.h"
+#import "OCMFunctions.h"
 
 @interface NSObject(HCMatcherDummy)
 - (BOOL)matches:(id)item;
@@ -178,11 +179,20 @@
 
 @dynamic _andReturn;
 
-- (OCMockRecorder *(^)(id))_andReturn
+- (OCMockRecorder *(^)(NSValue *))_andReturn
 {
-    id (^theBlock)(id) = ^ (id aValue)
+    id (^theBlock)(id) = ^ (NSValue *aValue)
     {
-        return [self andReturn:aValue];
+        if(OCMIsObjectType([aValue objCType]))
+        {
+            NSValue *objValue = nil;
+            [aValue getValue:&objValue];
+            return [self andReturn:objValue];
+        }
+        else
+        {
+            return [self andReturnValue:aValue];
+        }
     };
     return [[theBlock copy] autorelease];
 }

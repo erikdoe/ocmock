@@ -104,6 +104,37 @@
     XCTAssertThrows([mock lowercaseString]);
 }
 
+- (void)testSetsUpStubsWithNonObjectReturnValues
+{
+    id mock = OCMStrictClassMock([NSString class]);
+
+    OCMStub([mock boolValue]).andReturn(YES);
+
+    XCTAssertEqual(1, [mock boolValue], @"Should have returned stubbed value");
+}
+
+- (void)testSetsUpStubsWithStructureReturnValues
+{
+    id mock = OCMStrictClassMock([NSString class]);
+
+    NSRange expected = NSMakeRange(123, 456);
+    OCMStub([mock rangeOfString:[OCMArg any]]).andReturn(expected);
+
+    NSRange actual = [mock rangeOfString:@"substring"];
+    XCTAssertEqual(123, actual.location, @"Should have returned stubbed value");
+    XCTAssertEqual(456, actual.length, @"Should have returned stubbed value");
+}
+
+
+//- (void)testCanUseVariablesInInvocationSpec
+//{
+//    id mock = OCMClassMock([NSString class]);
+//
+//    NSRange rg = NSMakeRange(0, 1);
+//    OCMStub([mock rangeOfString:rg]).andReturn(rg);
+//
+//    XCTAssertEqual(1, [mock boolValue], @"Should have returned stubbed value");
+//}
 
 - (void)testSetsUpExceptionThrowing
 {
@@ -165,6 +196,7 @@
     XCTAssertTrue(didCallBlock, @"Should have called block");
     XCTAssertEqualObjects(@"FOO", actual, @"Should have forwarded invocation");
 }
+
 
 - (void)testSetsUpExpectations
 {

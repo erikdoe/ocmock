@@ -40,8 +40,8 @@
 
 @interface OCMockRecorder(Properties)
 
-#define andReturn(anObject) _andReturn(anObject)
-@property (nonatomic, readonly) OCMockRecorder *(^ _andReturn)(id);
+#define andReturn(aValue) _andReturn(({ typeof(aValue) _v = (aValue); [NSValue value:&_v withObjCType:@encode(typeof(_v))]; }))
+@property (nonatomic, readonly) OCMockRecorder *(^ _andReturn)(NSValue *);
 
 #define andThrow(anException) _andThrow(anException)
 @property (nonatomic, readonly) OCMockRecorder *(^ _andThrow)(NSException *);

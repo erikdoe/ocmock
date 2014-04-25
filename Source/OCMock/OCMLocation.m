@@ -23,7 +23,7 @@
 
 - (id)initWithTestCase:(id)aTestCase file:(NSString *)aFile line:(NSUInteger)aLine
 {
-    [super init];
+    self = [super init];
     testCase = aTestCase;
     file = [aFile retain];
     line = aLine;

@@ -4,6 +4,7 @@
 //---------------------------------------------------------------------------------------
 
 #import "NSMethodSignature+OCMAdditions.h"
+#import "OCMFunctions.h"
 #import <objc/runtime.h>
 
 
@@ -11,15 +12,12 @@
 
 - (const char *)methodReturnTypeWithoutQualifiers
 {
-	const char *returnType = [self methodReturnType];
-	while(strchr("rnNoORV", returnType[0]) != NULL)
-		returnType += 1;
-	return returnType;
+	return OCMTypeWithoutQualifiers([self methodReturnType]);
 }
 
 - (BOOL)usesSpecialStructureReturn
 {
-    const char *types = [self methodReturnTypeWithoutQualifiers];
+    const char *types = OCMTypeWithoutQualifiers([self methodReturnType]);
 
     if((types == NULL) || (types[0] != '{'))
         return NO;
