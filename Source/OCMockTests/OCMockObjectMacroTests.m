@@ -125,16 +125,15 @@
     XCTAssertEqual(456, actual.length, @"Should have returned stubbed value");
 }
 
+- (void)testCanUseVariablesInInvocationSpec
+{
+    id mock = OCMStrictClassMock([NSString class]);
 
-//- (void)testCanUseVariablesInInvocationSpec
-//{
-//    id mock = OCMClassMock([NSString class]);
-//
-//    NSRange rg = NSMakeRange(0, 1);
-//    OCMStub([mock rangeOfString:rg]).andReturn(rg);
-//
-//    XCTAssertEqual(1, [mock boolValue], @"Should have returned stubbed value");
-//}
+    NSString *expected = @"foo";
+    OCMStub([mock rangeOfString:expected]).andReturn(NSMakeRange(0, 3));
+
+    XCTAssertThrows([mock rangeOfString:@"bar"], @"Should not have accepted invocation with non-matching arg.");
+}
 
 - (void)testSetsUpExceptionThrowing
 {
