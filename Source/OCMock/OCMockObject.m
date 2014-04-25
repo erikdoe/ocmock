@@ -219,6 +219,8 @@
             recorder = [self expect];
         else
             recorder = [self stub];
+        if([macroState shouldRecordAsClassMethod])
+            [recorder classMethod];
         [recorder forwardInvocation:anInvocation];
         [macroState setRecorder:recorder];
     }

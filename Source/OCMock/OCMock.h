@@ -38,4 +38,8 @@
     [OCMMacroState endExpectMacro]; \
 })
 
+#define classMethod(invocation) \
+    [[OCMMacroState globalState] setShouldRecordAsClassMethod:YES]; \
+    invocation;
+
 #define OCMVerifyAll(mock) [mock verifyAtLocation:OCMMakeLocation(self, __FILE__, __LINE__)]

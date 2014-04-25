@@ -24,6 +24,15 @@
 @end
 
 
+// implemented in OCMockObjectClassMethodMockingTests
+
+@interface TestClassWithClassMethods : NSObject
++ (NSString *)foo;
++ (NSString *)bar;
+- (NSString *)bar;
+@end
+
+
 
 @interface OCMockObjectMacroTests : XCTestCase
 {
@@ -194,6 +203,18 @@
 
     XCTAssertTrue(didCallBlock, @"Should have called block");
     XCTAssertEqualObjects(@"FOO", actual, @"Should have forwarded invocation");
+}
+
+
+- (void)testCanExplicitlySelectClassMethod
+{
+    id mock = OCMClassMock([TestClassWithClassMethods class]);
+
+    OCMStub(classMethod([mock bar])).andReturn(@"mocked-class");
+    OCMStub([mock bar]).andReturn(@"mocked-instance");
+
+    XCTAssertEqualObjects(@"mocked-class", [TestClassWithClassMethods bar], @"Should have stubbed class method.");
+    XCTAssertEqualObjects(@"mocked-instance", [mock bar], @"Should have stubbed instance method.");
 }
 
 

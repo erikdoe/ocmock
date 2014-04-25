@@ -10,6 +10,7 @@
 @interface OCMMacroState : NSObject
 {
     BOOL           shouldRecordExpectation;
+    BOOL           shouldRecordAsClassMethod;
     OCMockRecorder *recorder;
 }
 
@@ -23,6 +24,9 @@
 
 - (void)setShouldRecordExpectation:(BOOL)flag;
 - (BOOL)shouldRecordExpectation;
+
+- (void)setShouldRecordAsClassMethod:(BOOL)flag;
+- (BOOL)shouldRecordAsClassMethod;
 
 - (void)setRecorder:(OCMockRecorder *)aRecorder;
 - (OCMockRecorder *)recorder;

@@ -52,6 +52,17 @@ OCMMacroState *globalState;
 }
 
 
+- (void)setShouldRecordAsClassMethod:(BOOL)flag
+{
+    shouldRecordAsClassMethod = YES;
+}
+
+- (BOOL)shouldRecordAsClassMethod
+{
+    return shouldRecordAsClassMethod;
+}
+
+
 - (void)setRecorder:(OCMockRecorder *)aRecorder
 {
     if(recorder != nil)
