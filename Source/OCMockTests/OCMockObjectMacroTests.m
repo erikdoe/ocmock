@@ -60,7 +60,7 @@
     [[mock expect] lowercaseString];
     
     shouldCaptureFailure = YES;
-    OCMVerify(mock); const char *expectedFile = __FILE__; int expectedLine = __LINE__;
+    OCMVerifyAll(mock); const char *expectedFile = __FILE__; int expectedLine = __LINE__;
     shouldCaptureFailure = NO;
     
     XCTAssertNotNil(reportedDescription, @"Should have recorded a failure with description.");
@@ -85,7 +85,7 @@
     }
 
     shouldCaptureFailure = YES;
-    OCMVerify(mock); const char *expectedFile = __FILE__; int expectedLine = __LINE__;
+    OCMVerifyAll(mock); const char *expectedFile = __FILE__; int expectedLine = __LINE__;
     shouldCaptureFailure = NO;
     
     XCTAssertTrue([reportedDescription rangeOfString:@"ignored"].location != NSNotFound, @"Should have reported ignored exceptions.");
@@ -160,7 +160,7 @@
 
     [mock stringValue];
 
-    OCMVerify(observer);
+    OCMVerifyAll(observer);
 }
 
 
