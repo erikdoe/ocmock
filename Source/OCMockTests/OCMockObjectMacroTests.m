@@ -210,7 +210,7 @@
 {
     id mock = OCMClassMock([TestClassWithClassMethods class]);
 
-    OCMStub(classMethod([mock bar])).andReturn(@"mocked-class");
+    OCMStub(ClassMethod([mock bar])).andReturn(@"mocked-class");
     OCMStub([mock bar]).andReturn(@"mocked-instance");
 
     XCTAssertEqualObjects(@"mocked-class", [TestClassWithClassMethods bar], @"Should have stubbed class method.");
