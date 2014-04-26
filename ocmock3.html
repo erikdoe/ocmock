@@ -21,9 +21,24 @@ comments: true
 
 <h2>Download</h2>
 
-<p>When milestone 1 is reached a binary download will be made available here. In the meantime you can track changes in the <a href="https://github.com/erikdoe/ocmock">Github repository</a>.
-
 <p>The milestone releases are not stable production releases. Use them with caution. They may contain known bugs, and breaking API changes may occur between the milestone releases and the first stable release of OCMock&nbsp;3.
+
+<table>
+	<tr>
+		<th>Release</th>
+		<th>Platforms</th>
+		<th>Date</th>
+		<th>File</th>
+	</tr>
+	<tr>
+		<td>OCMock 3.0.M1</td>
+		<td>Xcode 5.1.1, OS X 10.6&ndash;10.9, iOS 5&ndash;7.1</td>
+		<td>26-Apr-2014</td>
+		<td><a href="{{ site.baseurl }}/downloads/ocmock-3.0.M1.dmg">ocmock-3.0.M1.dmg</a></td>
+	</tr>
+</table>
+
+<p>Source code is available in the <a href="https://github.com/erikdoe/ocmock">Github repository</a>.
 
 
 <h2>Feedback</h2>
@@ -75,13 +90,17 @@ id partial = [OCMockObject partialMockForObject:anObject];
 
 <p>Creating stubs and expectations:
 <ul>
-	<li><b>OCMStub(invocation)</b>: creates a stub for the invocation
-  <li><b>OCMExpect(invocation)</b>: creates an expectation for the invocation
+	<li><b>OCMStub(invocation)</b>: creates a stub for a class or instance method invocation
+  <li><b>OCMExpect(invocation)</b>: creates an expectation for a class or instance method invocation
+	<li><b>OCMStub(ClassMethod(invocation))</b>: creates a stub for the class method invocation
+  <li><b>OCMExpect(ClassMethod(invocation))</b>: creates an expectation for the class method invocation
 </ul>		
+
+<p>The use of <b>ClassMethod</b> is only necessary if a class contains a class and instance method with the same name and the class method is to be mocked. In all other cases OCMock can determine automatically whether a class or instance method is targeted.
 	
 <p>Setting up stubs and expectations:
 <ul>
-	<li><b>andReturn(anObject)</b>: tells a stub/expecation to return an object
+	<li><b>andReturn(something)</b>: tells a stub/expecation to return an object or a value
   <li><b>andPost(aNotification)</b>: posts a notification
   <li><b>andThrow(anException)</b>: throws an exception
   <li><b>andCall(anObject, aSelector)</b>: calls a selector on an object
