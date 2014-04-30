@@ -31,9 +31,9 @@
 
 #pragma mark  Initialisers, description, accessors, etc.
 
-- (id)initWithSignatureResolver:(id)anObject
+- (id)initWithMockObject:(OCMockObject *)aMockObject
 {
-	signatureResolver = anObject;
+	mockObject = aMockObject;
     invocationMatcher = [[OCMInvocationMatcher alloc] init];
 	invocationHandlers = [[NSMutableArray alloc] init];
 	return self;
@@ -50,13 +50,6 @@
 {
     return [invocationMatcher description];
 }
-
-- (void)releaseInvocation
-{
-//	[recordedInvocation release];
-//	recordedInvocation = nil;
-}
-
 
 - (OCMInvocationMatcher *)invocationMatcher
 {
@@ -123,8 +116,8 @@
 
 - (id)classMethod
 {
+    // should we handle the case where this is called with a mock that isn't a class mock?
     [invocationMatcher setRecordedAsClassMethod:YES];
-    [signatureResolver setupClassForClassMethodMocking];
     return self;
 }
 
@@ -140,14 +133,14 @@
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
     if([invocationMatcher recordedAsClassMethod])
-        return [[signatureResolver mockedClass] methodSignatureForSelector:aSelector];
+        return [[(OCClassMockObject *)mockObject mockedClass] methodSignatureForSelector:aSelector];
     
-    NSMethodSignature *signature = [signatureResolver methodSignatureForSelector:aSelector];
+    NSMethodSignature *signature = [mockObject methodSignatureForSelector:aSelector];
     if(signature == nil)
     {
         // if we're a working with a class mock and there is a class method, auto-switch
-        if(([object_getClass(signatureResolver) isSubclassOfClass:[OCClassMockObject class]]) &&
-           ([[signatureResolver mockedClass] respondsToSelector:aSelector]))
+        if(([object_getClass(mockObject) isSubclassOfClass:[OCClassMockObject class]]) &&
+           ([[(OCClassMockObject *)mockObject mockedClass] respondsToSelector:aSelector]))
         {
             [self classMethod];
             signature = [self methodSignatureForSelector:aSelector];
@@ -159,7 +152,9 @@
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
     if([invocationMatcher recordedAsClassMethod])
-        [signatureResolver setupForwarderForClassMethodSelector:[anInvocation selector]];
+        [mockObject prepareForMockingClassMethod:[anInvocation selector]];
+    else
+        [mockObject prepareForMockingMethod:[anInvocation selector]];
 //	if(recordedInvocation != nil)
 //		[NSException raise:NSInternalInconsistencyException format:@"Recorder received two methods to record."];
 	[anInvocation setTarget:nil];
@@ -168,7 +163,7 @@
 
 - (void)doesNotRecognizeSelector:(SEL)aSelector
 {
-    [NSException raise:NSInvalidArgumentException format:@"%@: cannot stub or expect method '%@' because no such method exists in the mocked class.", signatureResolver, NSStringFromSelector(aSelector)];
+    [NSException raise:NSInvalidArgumentException format:@"%@: cannot stub or expect method '%@' because no such method exists in the mocked class.", mockObject, NSStringFromSelector(aSelector)];
 }
 
 

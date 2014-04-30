@@ -5,17 +5,18 @@
 
 #import <Foundation/Foundation.h>
 
+@class OCMockObject;
 @class OCMInvocationMatcher;
 
 
 @interface OCMockRecorder : NSProxy
 {
-    id                   signatureResolver;
+    OCMockObject         *mockObject;
     OCMInvocationMatcher *invocationMatcher;
     NSMutableArray       *invocationHandlers;
 }
 
-- (id)initWithSignatureResolver:(id)anObject;
+- (id)initWithMockObject:(OCMockObject *)aMockObject;
 
 //- (void)releaseInvocation;
 

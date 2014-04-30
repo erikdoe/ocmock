@@ -86,6 +86,21 @@ static NSMutableDictionary *mockTable;
 	return mockedClass;
 }
 
+#pragma mark  Extending/overriding superclass behaviour
+
+- (void)stopMocking
+{
+	for(NSString *replacedMethod in replacedClassMethods)
+        [self removeForwarderForClassMethodSelector:NSSelectorFromString(replacedMethod)];
+}
+
+- (void)prepareForMockingClassMethod:(SEL)aSelector
+{
+    [super prepareForMockingClassMethod:aSelector];
+    [self setupClassForClassMethodMocking];
+    [self setupForwarderForClassMethodSelector:aSelector];
+}
+
 
 #pragma mark  Class method mocking
 
@@ -106,6 +121,7 @@ static NSMutableDictionary *mockTable;
     Class metaClass = object_getClass(mockedClass);
 	class_replaceMethod(metaClass, @selector(forwardInvocation:), myForwardIMP, method_getTypeEncoding(myForwardMethod));
 }
+
 
 - (void)setupForwarderForClassMethodSelector:(SEL)selector
 {
@@ -150,12 +166,6 @@ static NSMutableDictionary *mockTable;
         [mock removeForwarderForClassMethodSelector:[anInvocation selector]];
         [anInvocation invoke];
     }
-}
-
-- (void)stopMocking
-{
-	for(NSString *replacedMethod in replacedClassMethods)
-        [self removeForwarderForClassMethodSelector:NSSelectorFromString(replacedMethod)];
 }
 
 

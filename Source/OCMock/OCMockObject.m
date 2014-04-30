@@ -115,7 +115,7 @@
 
 - (id)stub
 {
-	OCMockRecorder *recorder = [self getNewRecorder];
+    OCMockRecorder *recorder = [[[OCMockRecorder alloc] initWithMockObject:self] autorelease];
 	[recorders addObject:recorder];
 	return recorder;
 }
@@ -195,6 +195,19 @@
 - (void)stopMocking
 {
     // no-op for mock objects that are not class object or partial mocks
+}
+
+
+#pragma mark  Additional setup (called from recorder)
+
+- (void)prepareForMockingClassMethod:(SEL)aSelector
+{
+    // to be overridden by subclasses
+}
+
+- (void)prepareForMockingMethod:(SEL)aSelector
+{
+    // to be overridden by subclasses
 }
 
 
@@ -286,11 +299,6 @@
 
 
 #pragma mark  Helper methods
-
-- (id)getNewRecorder
-{
-	return [[[OCMockRecorder alloc] initWithSignatureResolver:self] autorelease];
-}
 
 
 - (NSString *)_recorderDescriptions:(BOOL)onlyExpectations

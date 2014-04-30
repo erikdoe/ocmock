@@ -103,10 +103,6 @@
 		03B3160A146333C00052CD09 /* OCPartialMockObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 03B315A9146333BF0052CD09 /* OCPartialMockObject.h */; };
 		03B3160B146333C00052CD09 /* OCPartialMockObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B315AA146333BF0052CD09 /* OCPartialMockObject.m */; };
 		03B3160D146333C00052CD09 /* OCPartialMockObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B315AA146333BF0052CD09 /* OCPartialMockObject.m */; };
-		03B3160E146333C00052CD09 /* OCPartialMockRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 03B315AB146333BF0052CD09 /* OCPartialMockRecorder.h */; };
-		03B3160F146333C00052CD09 /* OCPartialMockRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 03B315AB146333BF0052CD09 /* OCPartialMockRecorder.h */; };
-		03B31610146333C00052CD09 /* OCPartialMockRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B315AC146333BF0052CD09 /* OCPartialMockRecorder.m */; };
-		03B31612146333C00052CD09 /* OCPartialMockRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B315AC146333BF0052CD09 /* OCPartialMockRecorder.m */; };
 		03B31613146333C00052CD09 /* OCProtocolMockObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 03B315AD146333BF0052CD09 /* OCProtocolMockObject.h */; };
 		03B31614146333C00052CD09 /* OCProtocolMockObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 03B315AD146333BF0052CD09 /* OCProtocolMockObject.h */; };
 		03B31615146333C00052CD09 /* OCProtocolMockObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B315AE146333BF0052CD09 /* OCProtocolMockObject.m */; };
@@ -224,8 +220,6 @@
 		03B315A8146333BF0052CD09 /* OCObserverMockObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCObserverMockObject.m; sourceTree = "<group>"; };
 		03B315A9146333BF0052CD09 /* OCPartialMockObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCPartialMockObject.h; sourceTree = "<group>"; };
 		03B315AA146333BF0052CD09 /* OCPartialMockObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCPartialMockObject.m; sourceTree = "<group>"; };
-		03B315AB146333BF0052CD09 /* OCPartialMockRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCPartialMockRecorder.h; sourceTree = "<group>"; };
-		03B315AC146333BF0052CD09 /* OCPartialMockRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCPartialMockRecorder.m; sourceTree = "<group>"; };
 		03B315AD146333BF0052CD09 /* OCProtocolMockObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCProtocolMockObject.h; sourceTree = "<group>"; };
 		03B315AE146333BF0052CD09 /* OCProtocolMockObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCProtocolMockObject.m; sourceTree = "<group>"; };
 		03B3161F1463350E0052CD09 /* NSInvocationOCMAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSInvocationOCMAdditionsTests.m; sourceTree = "<group>"; };
@@ -323,7 +317,6 @@
 			children = (
 				030EF0B814632FD000B04273 /* OCMock.h */,
 				03B315841463334E0052CD09 /* Core Mocks */,
-				03B3161C1463348F0052CD09 /* Partial Mocks */,
 				03B3161B146334530052CD09 /* Observer Mocks */,
 				03B3161A146334320052CD09 /* Argument Handling */,
 				03B31618146333CA0052CD09 /* Foundation Additions */,
@@ -428,12 +421,14 @@
 				03B3159E146333BF0052CD09 /* OCMockObject.m */,
 				03B3158B146333BF0052CD09 /* OCClassMockObject.h */,
 				03B3158C146333BF0052CD09 /* OCClassMockObject.m */,
+				03B315A9146333BF0052CD09 /* OCPartialMockObject.h */,
+				03B315AA146333BF0052CD09 /* OCPartialMockObject.m */,
 				03B315AD146333BF0052CD09 /* OCProtocolMockObject.h */,
 				03B315AE146333BF0052CD09 /* OCProtocolMockObject.m */,
 				03B3159F146333BF0052CD09 /* OCMockRecorder.h */,
 				03B315A0146333BF0052CD09 /* OCMockRecorder.m */,
 				037ECD5618FB0D2E00AF0E4C /* Helper */,
-				03B31619146334040052CD09 /* Invocation Handler */,
+				03B31619146334040052CD09 /* Invocation Actions */,
 			);
 			name = "Core Mocks";
 			sourceTree = "<group>";
@@ -455,9 +450,11 @@
 			name = "Foundation Additions";
 			sourceTree = "<group>";
 		};
-		03B31619146334040052CD09 /* Invocation Handler */ = {
+		03B31619146334040052CD09 /* Invocation Actions */ = {
 			isa = PBXGroup;
 			children = (
+				03B315A3146333BF0052CD09 /* OCMRealObjectForwarder.h */,
+				03B315A4146333BF0052CD09 /* OCMRealObjectForwarder.m */,
 				03B3158F146333BF0052CD09 /* OCMBlockCaller.h */,
 				03B31590146333BF0052CD09 /* OCMBlockCaller.m */,
 				03B31591146333BF0052CD09 /* OCMBoxedReturnValueProvider.h */,
@@ -471,7 +468,7 @@
 				03B315A5146333BF0052CD09 /* OCMReturnValueProvider.h */,
 				03B315A6146333BF0052CD09 /* OCMReturnValueProvider.m */,
 			);
-			name = "Invocation Handler";
+			name = "Invocation Actions";
 			sourceTree = "<group>";
 		};
 		03B3161A146334320052CD09 /* Argument Handling */ = {
@@ -496,27 +493,6 @@
 				03B3159C146333BF0052CD09 /* OCMObserverRecorder.m */,
 			);
 			name = "Observer Mocks";
-			sourceTree = "<group>";
-		};
-		03B3161C1463348F0052CD09 /* Partial Mocks */ = {
-			isa = PBXGroup;
-			children = (
-				03B315A9146333BF0052CD09 /* OCPartialMockObject.h */,
-				03B315AA146333BF0052CD09 /* OCPartialMockObject.m */,
-				03B315AB146333BF0052CD09 /* OCPartialMockRecorder.h */,
-				03B315AC146333BF0052CD09 /* OCPartialMockRecorder.m */,
-				03B3161D146334AD0052CD09 /* Invocation Handler */,
-			);
-			name = "Partial Mocks";
-			sourceTree = "<group>";
-		};
-		03B3161D146334AD0052CD09 /* Invocation Handler */ = {
-			isa = PBXGroup;
-			children = (
-				03B315A3146333BF0052CD09 /* OCMRealObjectForwarder.h */,
-				03B315A4146333BF0052CD09 /* OCMRealObjectForwarder.m */,
-			);
-			name = "Invocation Handler";
 			sourceTree = "<group>";
 		};
 		D31108B51828DB8700737925 /* OCMockLibTests */ = {
@@ -565,7 +541,6 @@
 				03B315FF146333C00052CD09 /* OCMReturnValueProvider.h in Headers */,
 				03B31604146333C00052CD09 /* OCObserverMockObject.h in Headers */,
 				03B31609146333C00052CD09 /* OCPartialMockObject.h in Headers */,
-				03B3160E146333C00052CD09 /* OCPartialMockRecorder.h in Headers */,
 				03B31613146333C00052CD09 /* OCProtocolMockObject.h in Headers */,
 				2FA287ACE547BB41937BDEC3 /* NSObject+OCMAdditions.h in Headers */,
 				2FA28641AAD0AC2F876C9E48 /* OCMInvocationMatcher.h in Headers */,
@@ -600,7 +575,6 @@
 				03B31600146333C00052CD09 /* OCMReturnValueProvider.h in Headers */,
 				03B31605146333C00052CD09 /* OCObserverMockObject.h in Headers */,
 				03B3160A146333C00052CD09 /* OCPartialMockObject.h in Headers */,
-				03B3160F146333C00052CD09 /* OCPartialMockRecorder.h in Headers */,
 				03B31614146333C00052CD09 /* OCProtocolMockObject.h in Headers */,
 				2FA28E1EB6B8536785258DF5 /* OCMInvocationMatcher.h in Headers */,
 				2FA28E90A41960260D74EE8E /* OCMMacroState.h in Headers */,
@@ -789,7 +763,6 @@
 				03B31601146333C00052CD09 /* OCMReturnValueProvider.m in Sources */,
 				03B31606146333C00052CD09 /* OCObserverMockObject.m in Sources */,
 				03B3160B146333C00052CD09 /* OCPartialMockObject.m in Sources */,
-				03B31610146333C00052CD09 /* OCPartialMockRecorder.m in Sources */,
 				03B31615146333C00052CD09 /* OCProtocolMockObject.m in Sources */,
 				2FA28D38ED9D83A3E0A620B3 /* NSObject+OCMAdditions.m in Sources */,
 				2FA282F0C0A4CABE4E2C7646 /* OCMInvocationMatcher.m in Sources */,
@@ -823,7 +796,6 @@
 				03B31603146333C00052CD09 /* OCMReturnValueProvider.m in Sources */,
 				03B31608146333C00052CD09 /* OCObserverMockObject.m in Sources */,
 				03B3160D146333C00052CD09 /* OCPartialMockObject.m in Sources */,
-				03B31612146333C00052CD09 /* OCPartialMockRecorder.m in Sources */,
 				03B31617146333C00052CD09 /* OCProtocolMockObject.m in Sources */,
 				2FA288B20FB3A42BA0B7BAB8 /* OCMInvocationMatcher.m in Sources */,
 				2FA28112A4A7F8133862C871 /* OCMMacroState.m in Sources */,

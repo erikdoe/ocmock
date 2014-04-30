@@ -4,7 +4,6 @@
 //---------------------------------------------------------------------------------------
 
 #import <objc/runtime.h>
-#import "OCPartialMockRecorder.h"
 #import "OCPartialMockObject.h"
 #import "NSMethodSignature+OCMAdditions.h"
 #import "NSObject+OCMAdditions.h"
@@ -84,6 +83,9 @@ static NSMutableDictionary *mockTable;
 	return realObject;
 }
 
+
+#pragma mark  Extending/overriding superclass behaviour
+
 - (void)stopMocking
 {
 	object_setClass(realObject, [self mockedClass]);
@@ -92,6 +94,16 @@ static NSMutableDictionary *mockTable;
 	realObject = nil;
     
     [super stopMocking];
+}
+
+- (void)prepareForMockingMethod:(SEL)aSelector
+{
+    [self setupForwarderForSelector:aSelector];
+}
+
+- (void)handleUnRecordedInvocation:(NSInvocation *)anInvocation
+{
+	[anInvocation invokeWithTarget:realObject];
 }
 
 
@@ -202,18 +214,6 @@ static NSMutableDictionary *mockTable;
         return [mock mockedClass];
 
     return [self class_Original];
-}
-
-#pragma mark  Overrides
-
-- (id)getNewRecorder
-{
-	return [[[OCPartialMockRecorder alloc] initWithSignatureResolver:self] autorelease];
-}
-
-- (void)handleUnRecordedInvocation:(NSInvocation *)anInvocation
-{
-	[anInvocation invokeWithTarget:realObject];
 }
 
 
