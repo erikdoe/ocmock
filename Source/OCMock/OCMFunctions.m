@@ -69,13 +69,17 @@ void OCMReportFailure(OCMLocation *loc, NSString *description)
         }
         [testCase failWithException:exception];
     }
-    else
+    else if(loc != nil)
     {
         NSLog(@"%@:%lu %@", [loc file], (unsigned long)[loc line], description);
         NSString *reason = [NSString stringWithFormat:@"%@:%lu %@", [loc file], (unsigned long)[loc line], description];
-        NSException *exception = [NSException exceptionWithName:@"OCMockTestFailure" reason:reason userInfo:nil];
-        [exception raise];
+        [[NSException exceptionWithName:@"OCMockTestFailure" reason:reason userInfo:nil] raise];
 
+    }
+    else
+    {
+        NSLog(@"%@", description);
+        [[NSException exceptionWithName:@"OCMockTestFailure" reason:description userInfo:nil] raise];
     }
 
 }

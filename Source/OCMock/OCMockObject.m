@@ -139,20 +139,7 @@
 
 - (void)verify
 {
-	if([expectations count] == 1)
-	{
-		[NSException raise:NSInternalInconsistencyException format:@"%@: expected method was not invoked: %@", 
-			[self description], [[expectations objectAtIndex:0] description]];
-	}
-	if([expectations count] > 0)
-	{
-		[NSException raise:NSInternalInconsistencyException format:@"%@ : %@ expected methods were not invoked: %@", 
-			[self description], @([expectations count]), [self _recorderDescriptions:YES]];
-	}
-	if([exceptions count] > 0)
-	{
-		[[exceptions objectAtIndex:0] raise];
-	}
+    [self verifyAtLocation:nil];
 }
 
 - (void)verifyAtLocation:(OCMLocation *)location

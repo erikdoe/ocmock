@@ -1,6 +1,11 @@
 Listing of notable changes by release. More detail is usually found in the Git 
 commit messages and/or the pull requests.
 
+OCMock 3.0.M2 (not yet released)
+
+* Failures without location are now thrown as OCMockTestFailure exception, 
+  not as NSInternalInconsistencyException
+
 
 OCMock 3.0.M1 (2014-04-26)
 

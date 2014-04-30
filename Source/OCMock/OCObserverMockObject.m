@@ -62,16 +62,7 @@
 
 - (void)verify
 {
-	if([recorders count] == 1)
-	{
-		[NSException raise:NSInternalInconsistencyException format:@"%@: expected notification was not observed: %@",
-		 [self description], [[recorders lastObject] description]];
-	}
-	if([recorders count] > 0)
-	{
-		[NSException raise:NSInternalInconsistencyException format:@"%@ : %@ expected notifications were not observed.", 
-		 [self description], @([recorders count])];
-	}
+    [self verifyAtLocation:nil];
 }
 
 - (void)verifyAtLocation:(OCMLocation *)location
