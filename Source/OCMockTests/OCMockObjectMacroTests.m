@@ -230,4 +230,33 @@
     XCTAssertNoThrow([mock verify], @"Should have accepted invocation as matching expectation");
 }
 
+
+- (void)testShouldNotReportErrorWhenMethodWasInvoked
+{
+    id mock = OCMClassMock([NSString class]);
+
+    [mock lowercaseString];
+
+    shouldCaptureFailure = YES;
+    OCMVerify([mock lowercaseString]);
+    shouldCaptureFailure = NO;
+
+    XCTAssertNil(reportedDescription, @"Should not have recorded a failure.");
+}
+
+- (void)testShouldReportErrorWhenMethodWasNotInvoked
+{
+    id mock = OCMClassMock([NSString class]);
+
+    [mock lowercaseString];
+
+    shouldCaptureFailure = YES;
+    OCMVerify([mock uppercaseString]); const char *expectedFile = __FILE__; int expectedLine = __LINE__;
+    shouldCaptureFailure = NO;
+
+    XCTAssertNotNil(reportedDescription, @"Should have recorded a failure with description.");
+    XCTAssertEqualObjects([NSString stringWithUTF8String:expectedFile], reportedFile, @"Should have reported correct file.");
+    XCTAssertEqual(expectedLine, (int)reportedLine, @"Should have reported correct line");
+}
+
 @end

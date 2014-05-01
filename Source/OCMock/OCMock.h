@@ -49,3 +49,11 @@
 })
 
 #define OCMVerifyAll(mock) [mock verifyAtLocation:OCMMakeLocation(self, __FILE__, __LINE__)]
+
+#define OCMVerify(invocation) \
+({ \
+    [OCMMacroState beginVerifyMacro]; \
+    [[OCMMacroState globalState] setLocation:OCMMakeLocation(self, __FILE__, __LINE__)]; \
+    invocation; \
+    [OCMMacroState endVerifyMacro]; \
+})

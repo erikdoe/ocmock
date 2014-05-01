@@ -219,15 +219,25 @@
     OCMMacroState *macroState = [OCMMacroState globalState];
     if(macroState != nil)
     {
-        OCMockRecorder *recorder = nil;
-        if([macroState shouldRecordExpectation])
-            recorder = [self expect];
+        if([macroState shouldVerifyInvocation])
+        {
+            [anInvocation setTarget:nil];
+            OCMInvocationMatcher *matcher = [[[OCMInvocationMatcher alloc] init] autorelease];
+            [matcher setInvocation:anInvocation];
+            [self verifyInvocation:matcher atLocation:[macroState location]];
+        }
         else
-            recorder = [self stub];
-        if([macroState shouldRecordAsClassMethod])
-            [recorder classMethod];
-        [recorder forwardInvocation:anInvocation];
-        [macroState setRecorder:recorder];
+        {
+            OCMockRecorder *recorder = nil;
+            if([macroState shouldRecordExpectation])
+                recorder = [self expect];
+            else
+                recorder = [self stub];
+            if([macroState shouldRecordAsClassMethod])
+                [recorder classMethod];
+            [recorder forwardInvocation:anInvocation];
+            [macroState setRecorder:recorder];
+        }
     }
     else
     {
@@ -295,13 +305,20 @@
 
 - (void)verifyInvocation:(OCMInvocationMatcher *)matcher
 {
+    [self verifyInvocation:matcher atLocation:nil];
+}
+
+- (void)verifyInvocation:(OCMInvocationMatcher *)matcher atLocation:(OCMLocation *)location
+{
     for(NSInvocation *invocation in invocations)
     {
         if([matcher matchesInvocation:invocation])
             return;
     }
-    OCMReportFailure(nil, @"Expected method was not invoked.");
+    NSString *description = [NSString stringWithFormat:@"%@: Method %@ was not invoked.",
+     [self description], [matcher description]];
 
+    OCMReportFailure(location, description);
 }
 
 #pragma mark  Helper methods

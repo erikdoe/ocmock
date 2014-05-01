@@ -77,4 +77,36 @@ OCMMacroState *globalState;
     return recorder;
 }
 
++ (void)beginVerifyMacro
+{
+    globalState = [[OCMMacroState alloc] init];
+    [globalState setShouldVerifyInvocation:YES];
+}
+
++ (void)endVerifyMacro
+{
+    [globalState autorelease];
+    globalState = nil;
+}
+
+- (void)setShouldVerifyInvocation:(BOOL)flag
+{
+    shouldVerifyInvocation = flag;
+}
+
+- (BOOL)shouldVerifyInvocation
+{
+    return shouldVerifyInvocation;
+}
+
+- (void)setLocation:(OCMLocation *)aLocation
+{
+    location = aLocation;
+}
+
+- (OCMLocation *)location
+{
+    return location;
+}
+
 @end

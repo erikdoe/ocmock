@@ -12,7 +12,7 @@
 
 @implementation OCMockObjectVerifyAfterRunTests
 
-- (void)testDoesNotThrowWhenMethodWasCalled
+- (void)testDoesNotThrowWhenMethodWasInvoked
 {
     id mock = [OCMockObject niceMockForClass:[NSString class]];
 
@@ -21,7 +21,7 @@
     XCTAssertNoThrow([[mock verify] lowercaseString], @"Should not have thrown an exception for method that was called.");
 }
 
-- (void)testThrowsWhenMethodWasCalled
+- (void)testThrowsWhenMethodWasNotInvoked
 {
     id mock = [OCMockObject niceMockForClass:[NSString class]];
 

@@ -55,6 +55,7 @@
 - (BOOL)handleSelector:(SEL)sel;
 
 - (void)verifyInvocation:(OCMInvocationMatcher *)matcher;
+- (void)verifyInvocation:(OCMInvocationMatcher *)matcher atLocation:(OCMLocation *)location;
 
 @end
 
