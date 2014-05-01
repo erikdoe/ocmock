@@ -7,6 +7,7 @@
 
 @class OCMLocation;
 @class OCMockRecorder;
+@class OCMInvocationMatcher;
 
 
 @interface OCMockObject : NSProxy
@@ -17,6 +18,7 @@
 	NSMutableArray	*expectations;
 	NSMutableArray	*rejections;
 	NSMutableArray	*exceptions;
+    NSMutableArray  *invocations;
 }
 
 + (id)mockForClass:(Class)aClass;
@@ -36,8 +38,8 @@
 - (id)expect;
 - (id)reject;
 
-- (void)verify;
-- (void)verifyAtLocation:(OCMLocation *)location;
+- (id)verify;
+- (id)verifyAtLocation:(OCMLocation *)location;
 
 - (void)verifyWithDelay:(NSTimeInterval)delay;
 
@@ -45,12 +47,14 @@
 
 // internal use only
 
+- (void)prepareForMockingMethod:(SEL)aSelector;
+- (void)prepareForMockingClassMethod:(SEL)aSelector;
+
 - (BOOL)handleInvocation:(NSInvocation *)anInvocation;
 - (void)handleUnRecordedInvocation:(NSInvocation *)anInvocation;
 - (BOOL)handleSelector:(SEL)sel;
 
-- (void)prepareForMockingMethod:(SEL)aSelector;
-- (void)prepareForMockingClassMethod:(SEL)aSelector;
+- (void)verifyInvocation:(OCMInvocationMatcher *)matcher;
 
 @end
 

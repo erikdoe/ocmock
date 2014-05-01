@@ -4,6 +4,7 @@
 //---------------------------------------------------------------------------------------
 
 #import <objc/runtime.h>
+#import "OCMockObject.h"
 #import "OCPartialMockObject.h"
 #import "NSMethodSignature+OCMAdditions.h"
 #import "NSObject+OCMAdditions.h"

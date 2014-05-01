@@ -14,6 +14,7 @@
 #import "OCMInvocationMatcher.h"
 #import "OCMMacroState.h"
 #import "OCMFunctions.h"
+#import "OCMVerifier.h"
 
 
 @interface OCMockObject(Private)
@@ -87,7 +88,8 @@
 	expectations = [[NSMutableArray alloc] init];
 	rejections = [[NSMutableArray alloc] init];
 	exceptions = [[NSMutableArray alloc] init];
-	return self;
+    invocations = [[NSMutableArray alloc] init];
+    return self;
 }
 
 - (void)dealloc
@@ -96,6 +98,7 @@
 	[expectations release];
 	[rejections	release];
 	[exceptions release];
+	[invocations release];
 	[super dealloc];
 }
 
@@ -137,12 +140,12 @@
 }
 
 
-- (void)verify
+- (id)verify
 {
-    [self verifyAtLocation:nil];
+    return [self verifyAtLocation:nil];
 }
 
-- (void)verifyAtLocation:(OCMLocation *)location
+- (id)verifyAtLocation:(OCMLocation *)location
 {
 	if([expectations count] == 1)
 	{
@@ -162,6 +165,8 @@
          [self description], [[exceptions objectAtIndex:0] description]];
         OCMReportFailure(location, description);
 	}
+
+    return [[[OCMVerifier alloc] initWithMockObject:self] autorelease];
 }
 
 
@@ -235,6 +240,8 @@
 {
 	OCMockRecorder *recorder = nil;
 	unsigned int			   i;
+
+    [invocations addObject:anInvocation];
 	
 	for(i = 0; i < [recorders count]; i++)
 	{
@@ -284,6 +291,18 @@
 	}
 }
 
+#define mark  Verify After Run
+
+- (void)verifyInvocation:(OCMInvocationMatcher *)matcher
+{
+    for(NSInvocation *invocation in invocations)
+    {
+        if([matcher matchesInvocation:invocation])
+            return;
+    }
+    OCMReportFailure(nil, @"Expected method was not invoked.");
+
+}
 
 #pragma mark  Helper methods
 
