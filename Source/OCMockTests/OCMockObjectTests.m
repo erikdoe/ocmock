@@ -618,9 +618,11 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testFailsVerifyExpectedMethodsWithoutDelay
 {
+    [mock retain];
     dispatch_async(dispatch_queue_create("mockqueue", nil), ^{
         [NSThread sleepForTimeInterval:0.1];
         [mock lowercaseString];
+        [mock release];
     });
     
 	[[mock expect] lowercaseString];
