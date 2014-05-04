@@ -4,6 +4,8 @@
 
 #import "OCMMacroState.h"
 #import "OCMockRecorder.h"
+#import "OCMVerifyMacroState.h"
+#import "OCMStubMacroState.h"
 
 
 @implementation OCMMacroState
@@ -11,28 +13,24 @@
 OCMMacroState *globalState;
 
 
-+ (OCMMacroState *)globalState
-{
-    return globalState;
-}
-
 + (void)beginStubMacro
 {
-    globalState = [[OCMMacroState alloc] init];
+    globalState = [[OCMStubMacroState alloc] init];
 }
 
 + (OCMockRecorder *)endStubMacro
 {
-    OCMockRecorder *recorder = [globalState recorder];
+    OCMockRecorder *recorder = [((OCMStubMacroState *)globalState) recorder];
     [globalState autorelease];
     globalState = nil;
     return recorder;
 }
 
+
 + (void)beginExpectMacro
 {
     [self beginStubMacro];
-    [globalState setShouldRecordExpectation:YES];
+    [(OCMStubMacroState *)globalState setShouldRecordExpectation:YES];
 }
 
 + (OCMockRecorder *)endExpectMacro
@@ -41,46 +39,9 @@ OCMMacroState *globalState;
 }
 
 
-- (void)setShouldRecordExpectation:(BOOL)flag
++ (void)beginVerifyMacroAtLocation:(OCMLocation *)aLocation
 {
-    shouldRecordExpectation = flag;
-}
-
-- (BOOL)shouldRecordExpectation
-{
-    return shouldRecordExpectation;
-}
-
-
-- (void)setShouldRecordAsClassMethod:(BOOL)flag
-{
-    shouldRecordAsClassMethod = YES;
-}
-
-- (BOOL)shouldRecordAsClassMethod
-{
-    return shouldRecordAsClassMethod;
-}
-
-
-- (void)setRecorder:(OCMockRecorder *)aRecorder
-{
-    if(recorder != nil)
-    {
-        [NSException raise:NSInternalInconsistencyException format:@"Trying to set recorder in global state, but a recorder has already been set."];
-    }
-    recorder = aRecorder;
-}
-
-- (OCMockRecorder *)recorder
-{
-    return recorder;
-}
-
-+ (void)beginVerifyMacro
-{
-    globalState = [[OCMMacroState alloc] init];
-    [globalState setShouldVerifyInvocation:YES];
+    globalState = [[OCMVerifyMacroState alloc] initWithLocation:aLocation];
 }
 
 + (void)endVerifyMacro
@@ -89,24 +50,17 @@ OCMMacroState *globalState;
     globalState = nil;
 }
 
-- (void)setShouldVerifyInvocation:(BOOL)flag
+
++ (OCMMacroState *)globalState
 {
-    shouldVerifyInvocation = flag;
+    return globalState;
 }
 
-- (BOOL)shouldVerifyInvocation
+
+- (void)handleInvocation:(NSInvocation *)anInvocation
 {
-    return shouldVerifyInvocation;
+    // to be implemented by subclasses
 }
 
-- (void)setLocation:(OCMLocation *)aLocation
-{
-    location = aLocation;
-}
-
-- (OCMLocation *)location
-{
-    return location;
-}
 
 @end

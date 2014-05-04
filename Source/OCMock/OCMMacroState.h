@@ -4,20 +4,13 @@
 
 #import <Foundation/Foundation.h>
 
-@class OCMockRecorder;
 @class OCMLocation;
+@class OCMockRecorder;
 
 
 @interface OCMMacroState : NSObject
 {
-    BOOL           shouldRecordExpectation;
-    BOOL           shouldRecordAsClassMethod;
-    BOOL           shouldVerifyInvocation;
-    OCMockRecorder *recorder;
-    OCMLocation    *location;
 }
-
-+ (OCMMacroState *)globalState;
 
 + (void)beginStubMacro;
 + (OCMockRecorder *)endStubMacro;
@@ -25,23 +18,11 @@
 + (void)beginExpectMacro;
 + (OCMockRecorder *)endExpectMacro;
 
-- (void)setShouldRecordExpectation:(BOOL)flag;
-- (BOOL)shouldRecordExpectation;
-
-- (void)setShouldRecordAsClassMethod:(BOOL)flag;
-- (BOOL)shouldRecordAsClassMethod;
-
-- (void)setRecorder:(OCMockRecorder *)aRecorder;
-- (OCMockRecorder *)recorder;
-
-+ (void)beginVerifyMacro;
++ (void)beginVerifyMacroAtLocation:(OCMLocation *)aLocation;
 + (void)endVerifyMacro;
 
-- (void)setShouldVerifyInvocation:(BOOL)flag;
-- (BOOL)shouldVerifyInvocation;
++ (OCMMacroState *)globalState;
 
-- (void)setLocation:(OCMLocation *)aLocation;
-- (OCMLocation *)location;
-
+- (void)handleInvocation:(NSInvocation *)anInvocation;
 
 @end

@@ -9,6 +9,8 @@
 #import <OCMock/OCMArg.h>
 #import <OCMock/OCMLocation.h>
 #import <OCMock/OCMMacroState.h>
+#import <OCMock/OCMStubMacroState.h>
+#import <OCMock/OCMVerifyMacroState.h>
 #import <OCMock/NSNotificationCenter+OCMAdditions.h>
 
 
@@ -23,6 +25,7 @@
 #define OCMPartialMock(obj) [OCMockObject partialMockForObject:obj]
 
 #define OCMObserverMock() [OCMockObject observerMock]
+
 
 #define OCMStub(invocation) \
 ({ \
@@ -39,21 +42,15 @@
 })
 
 #define ClassMethod(invocation) \
-    [[OCMMacroState globalState] setShouldRecordAsClassMethod:YES]; \
+    [(OCMStubMacroState *)[OCMMacroState globalState] setShouldRecordAsClassMethod:YES]; \
     invocation;
 
-#define classObject(mock) \
-({ \
-    [[OCMMacroState globalState] setShouldRecordAsClassMethod:YES]; \
-    mock; \
-})
 
 #define OCMVerifyAll(mock) [mock verifyAtLocation:OCMMakeLocation(self, __FILE__, __LINE__)]
 
 #define OCMVerify(invocation) \
 ({ \
-    [OCMMacroState beginVerifyMacro]; \
-    [[OCMMacroState globalState] setLocation:OCMMakeLocation(self, __FILE__, __LINE__)]; \
+    [OCMMacroState beginVerifyMacroAtLocation:OCMMakeLocation(self, __FILE__, __LINE__)]; \
     invocation; \
     [OCMMacroState endVerifyMacro]; \
 })

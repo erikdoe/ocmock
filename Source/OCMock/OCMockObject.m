@@ -17,14 +17,6 @@
 #import "OCMVerifier.h"
 
 
-@interface OCMockObject(Private)
-+ (id)_makeNice:(OCMockObject *)mock;
-- (NSString *)_recorderDescriptions:(BOOL)onlyExpectations;
-@end
-
-#pragma mark  -
-
-
 @implementation OCMockObject
 
 #pragma mark  Class initialisation
@@ -219,25 +211,7 @@
     OCMMacroState *macroState = [OCMMacroState globalState];
     if(macroState != nil)
     {
-        if([macroState shouldVerifyInvocation])
-        {
-            [anInvocation setTarget:nil];
-            OCMInvocationMatcher *matcher = [[[OCMInvocationMatcher alloc] init] autorelease];
-            [matcher setInvocation:anInvocation];
-            [self verifyInvocation:matcher atLocation:[macroState location]];
-        }
-        else
-        {
-            OCMockRecorder *recorder = nil;
-            if([macroState shouldRecordExpectation])
-                recorder = [self expect];
-            else
-                recorder = [self stub];
-            if([macroState shouldRecordAsClassMethod])
-                [recorder classMethod];
-            [recorder forwardInvocation:anInvocation];
-            [macroState setRecorder:recorder];
-        }
+        [macroState handleInvocation:anInvocation];
     }
     else
     {
@@ -301,6 +275,7 @@
 	}
 }
 
+
 #define mark  Verify After Run
 
 - (void)verifyInvocation:(OCMInvocationMatcher *)matcher
@@ -321,8 +296,8 @@
     OCMReportFailure(location, description);
 }
 
-#pragma mark  Helper methods
 
+#pragma mark  Helper methods
 
 - (NSString *)_recorderDescriptions:(BOOL)onlyExpectations
 {

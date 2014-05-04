@@ -8,6 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		030EF0B614632FD000B04273 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 030EF0B414632FD000B04273 /* InfoPlist.strings */; };
+		0316D6861916475A00FC48D1 /* OCMStubMacroState.h in Headers */ = {isa = PBXBuildFile; fileRef = 0316D6841916475A00FC48D1 /* OCMStubMacroState.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0316D6871916475A00FC48D1 /* OCMStubMacroState.h in Headers */ = {isa = PBXBuildFile; fileRef = 0316D6841916475A00FC48D1 /* OCMStubMacroState.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0316D6881916475A00FC48D1 /* OCMStubMacroState.m in Sources */ = {isa = PBXBuildFile; fileRef = 0316D6851916475A00FC48D1 /* OCMStubMacroState.m */; };
+		0316D6891916475A00FC48D1 /* OCMStubMacroState.m in Sources */ = {isa = PBXBuildFile; fileRef = 0316D6851916475A00FC48D1 /* OCMStubMacroState.m */; };
+		0316D68C1916477000FC48D1 /* OCMVerifyMacroState.h in Headers */ = {isa = PBXBuildFile; fileRef = 0316D68A1916477000FC48D1 /* OCMVerifyMacroState.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0316D68D1916477000FC48D1 /* OCMVerifyMacroState.h in Headers */ = {isa = PBXBuildFile; fileRef = 0316D68A1916477000FC48D1 /* OCMVerifyMacroState.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0316D68E1916477000FC48D1 /* OCMVerifyMacroState.m in Sources */ = {isa = PBXBuildFile; fileRef = 0316D68B1916477000FC48D1 /* OCMVerifyMacroState.m */; };
+		0316D68F1916477000FC48D1 /* OCMVerifyMacroState.m in Sources */ = {isa = PBXBuildFile; fileRef = 0316D68B1916477000FC48D1 /* OCMVerifyMacroState.m */; };
 		0322DA65191188D100CACAF1 /* OCMockObjectVerifyAfterRunTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0322DA64191188D100CACAF1 /* OCMockObjectVerifyAfterRunTests.m */; };
 		0322DA66191188D100CACAF1 /* OCMockObjectVerifyAfterRunTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0322DA64191188D100CACAF1 /* OCMockObjectVerifyAfterRunTests.m */; };
 		0322DA6919118B4600CACAF1 /* OCMVerifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 0322DA6719118B4600CACAF1 /* OCMVerifier.h */; };
@@ -177,6 +185,10 @@
 		030EF0B814632FD000B04273 /* OCMock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OCMock.h; sourceTree = "<group>"; };
 		030EF0DC14632FF700B04273 /* libOCMock.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libOCMock.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		030EF0E114632FF700B04273 /* OCMockLib-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OCMockLib-Prefix.pch"; sourceTree = "<group>"; };
+		0316D6841916475A00FC48D1 /* OCMStubMacroState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMStubMacroState.h; sourceTree = "<group>"; };
+		0316D6851916475A00FC48D1 /* OCMStubMacroState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMStubMacroState.m; sourceTree = "<group>"; };
+		0316D68A1916477000FC48D1 /* OCMVerifyMacroState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMVerifyMacroState.h; sourceTree = "<group>"; };
+		0316D68B1916477000FC48D1 /* OCMVerifyMacroState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMVerifyMacroState.m; sourceTree = "<group>"; };
 		0322DA64191188D100CACAF1 /* OCMockObjectVerifyAfterRunTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMockObjectVerifyAfterRunTests.m; sourceTree = "<group>"; };
 		0322DA6719118B4600CACAF1 /* OCMVerifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMVerifier.h; sourceTree = "<group>"; };
 		0322DA6819118B4600CACAF1 /* OCMVerifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMVerifier.m; sourceTree = "<group>"; };
@@ -420,6 +432,10 @@
 				2FA28CB1EB14C6B2BE9A20C6 /* OCMInvocationMatcher.m */,
 				2FA28ED9AC631B1E88BF0AF2 /* OCMMacroState.h */,
 				2FA280F57DFBB36CE40FAEB6 /* OCMMacroState.m */,
+				0316D6841916475A00FC48D1 /* OCMStubMacroState.h */,
+				0316D6851916475A00FC48D1 /* OCMStubMacroState.m */,
+				0316D68A1916477000FC48D1 /* OCMVerifyMacroState.h */,
+				0316D68B1916477000FC48D1 /* OCMVerifyMacroState.m */,
 			);
 			name = Helper;
 			sourceTree = "<group>";
@@ -545,6 +561,7 @@
 				03B315CD146333BF0052CD09 /* OCMBoxedReturnValueProvider.h in Headers */,
 				03B315D7146333BF0052CD09 /* OCMExceptionReturnValueProvider.h in Headers */,
 				03B315DC146333BF0052CD09 /* OCMIndirectReturnValueProvider.h in Headers */,
+				0316D6861916475A00FC48D1 /* OCMStubMacroState.h in Headers */,
 				03E98D4B18F308B400522D42 /* OCMLocation.h in Headers */,
 				03B315E1146333BF0052CD09 /* OCMNotificationPoster.h in Headers */,
 				03B315E6146333BF0052CD09 /* OCMObserverRecorder.h in Headers */,
@@ -552,6 +569,7 @@
 				03B315FA146333C00052CD09 /* OCMRealObjectForwarder.h in Headers */,
 				03B315FF146333C00052CD09 /* OCMReturnValueProvider.h in Headers */,
 				03B31604146333C00052CD09 /* OCObserverMockObject.h in Headers */,
+				0316D68C1916477000FC48D1 /* OCMVerifyMacroState.h in Headers */,
 				03B31609146333C00052CD09 /* OCPartialMockObject.h in Headers */,
 				03B31613146333C00052CD09 /* OCProtocolMockObject.h in Headers */,
 				2FA287ACE547BB41937BDEC3 /* NSObject+OCMAdditions.h in Headers */,
@@ -579,6 +597,7 @@
 				03B315CE146333BF0052CD09 /* OCMBoxedReturnValueProvider.h in Headers */,
 				03B315D8146333BF0052CD09 /* OCMExceptionReturnValueProvider.h in Headers */,
 				03B315DD146333BF0052CD09 /* OCMIndirectReturnValueProvider.h in Headers */,
+				0316D6871916475A00FC48D1 /* OCMStubMacroState.h in Headers */,
 				03E98D4C18F308B400522D42 /* OCMLocation.h in Headers */,
 				03B315E2146333BF0052CD09 /* OCMNotificationPoster.h in Headers */,
 				03B315E7146333BF0052CD09 /* OCMObserverRecorder.h in Headers */,
@@ -586,6 +605,7 @@
 				03B315FB146333C00052CD09 /* OCMRealObjectForwarder.h in Headers */,
 				03DCED6F183406DA0059089E /* NSObject+OCMAdditions.h in Headers */,
 				03B31600146333C00052CD09 /* OCMReturnValueProvider.h in Headers */,
+				0316D68D1916477000FC48D1 /* OCMVerifyMacroState.h in Headers */,
 				03B31605146333C00052CD09 /* OCObserverMockObject.h in Headers */,
 				03B3160A146333C00052CD09 /* OCPartialMockObject.h in Headers */,
 				03B31614146333C00052CD09 /* OCProtocolMockObject.h in Headers */,
@@ -772,6 +792,7 @@
 				03B315E8146333BF0052CD09 /* OCMObserverRecorder.m in Sources */,
 				03B315ED146333C00052CD09 /* OCMockObject.m in Sources */,
 				03B315F2146333C00052CD09 /* OCMockRecorder.m in Sources */,
+				0316D6881916475A00FC48D1 /* OCMStubMacroState.m in Sources */,
 				03B315F7146333C00052CD09 /* OCMPassByRefSetter.m in Sources */,
 				03B315FC146333C00052CD09 /* OCMRealObjectForwarder.m in Sources */,
 				03E98D4D18F308B400522D42 /* OCMLocation.m in Sources */,
@@ -783,6 +804,7 @@
 				2FA282F0C0A4CABE4E2C7646 /* OCMInvocationMatcher.m in Sources */,
 				2FA28CDD69DD3C08BF2C634C /* OCMMacroState.m in Sources */,
 				2FA28BA90F0D55E4CF6787F0 /* OCMFunctions.m in Sources */,
+				0316D68E1916477000FC48D1 /* OCMVerifyMacroState.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -805,6 +827,7 @@
 				03B315E5146333BF0052CD09 /* OCMNotificationPoster.m in Sources */,
 				03B315EA146333BF0052CD09 /* OCMObserverRecorder.m in Sources */,
 				03B315EF146333C00052CD09 /* OCMockObject.m in Sources */,
+				0316D6891916475A00FC48D1 /* OCMStubMacroState.m in Sources */,
 				03B315F4146333C00052CD09 /* OCMockRecorder.m in Sources */,
 				03B315F9146333C00052CD09 /* OCMPassByRefSetter.m in Sources */,
 				03E98D4E18F308B400522D42 /* OCMLocation.m in Sources */,
@@ -816,6 +839,7 @@
 				2FA288B20FB3A42BA0B7BAB8 /* OCMInvocationMatcher.m in Sources */,
 				2FA28112A4A7F8133862C871 /* OCMMacroState.m in Sources */,
 				2FA286F90395E317F983A20A /* OCMFunctions.m in Sources */,
+				0316D68F1916477000FC48D1 /* OCMVerifyMacroState.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
