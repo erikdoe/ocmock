@@ -10,51 +10,36 @@
 
 
 NSString *OCMRealMethodAliasPrefix = @"ocmock_replaced_";
-
+NSString *OCMClassMethodMockObjectKey = @"OCMClassMethodMockObjectKey";
 
 @implementation OCClassMockObject
 
 #pragma mark  Mock table
 
-static NSMutableDictionary *mockTable;
-
-+ (void)initialize
-{
-	if(self == [OCClassMockObject class])
-		mockTable = [[NSMutableDictionary alloc] init];
-}
-
 + (void)rememberMock:(OCClassMockObject *)mock forClass:(Class)aClass
 {
-    @synchronized(mockTable)
-    {
-        [mockTable setObject:[NSValue valueWithNonretainedObject:mock] forKey:[NSValue valueWithNonretainedObject:aClass]];
-    }
+    // TODO: shouldn't we throw an exception if another object is already mocking class methods?
+    objc_setAssociatedObject(aClass, OCMClassMethodMockObjectKey, mock, OBJC_ASSOCIATION_ASSIGN);
 }
 
 + (void)forgetMockForClass:(Class)aClass
 {
-    @synchronized(mockTable)
-    {
-        [mockTable removeObjectForKey:[NSValue valueWithNonretainedObject:aClass]];
-    }
+    objc_setAssociatedObject(aClass, OCMClassMethodMockObjectKey, nil, OBJC_ASSOCIATION_ASSIGN);
 }
 
 + (OCClassMockObject *)existingMockForClass:(Class)aClass
 {
-    @synchronized(mockTable)
+    OCClassMockObject *mock = nil;
+    while((mock == nil) && (aClass != nil))
     {
-        OCClassMockObject *mock = nil;
-        while((mock == nil) && (aClass != nil))
-        {
-            mock = [[mockTable objectForKey:[NSValue valueWithNonretainedObject:aClass]] nonretainedObjectValue];
-            aClass = class_getSuperclass(aClass);
-        }
-        if(mock == nil)
-            [NSException raise:NSInternalInconsistencyException format:@"No mock for class %@", NSStringFromClass(aClass)];
-        return mock;
+        mock = objc_getAssociatedObject(aClass, OCMClassMethodMockObjectKey);
+        aClass = class_getSuperclass(aClass);
     }
+    if(mock == nil)
+        [NSException raise:NSInternalInconsistencyException format:@"No mock for class %@", NSStringFromClass(aClass)];
+    return mock;
 }
+
 
 #pragma mark  Initialisers, description, accessors, etc.
 
@@ -70,7 +55,8 @@ static NSMutableDictionary *mockTable;
 	if(replacedClassMethods != nil)
     {
 		[self stopMocking];
-        [[self mockObjectClass] forgetMockForClass:mockedClass];
+        objc_setAssociatedObject([self mockedClass], OCMClassMethodMockObjectKey, nil, OBJC_ASSOCIATION_ASSIGN);
+        [OCClassMockObject forgetMockForClass:mockedClass];
         [replacedClassMethods release];
     }
 	[super dealloc];
@@ -110,7 +96,7 @@ static NSMutableDictionary *mockTable;
         return;
 
     replacedClassMethods = [[NSMutableDictionary alloc] init];
-    [[self mockObjectClass] rememberMock:self forClass:mockedClass];
+    [OCClassMockObject rememberMock:self forClass:mockedClass];
 
     Method method = class_getClassMethod(mockedClass, @selector(forwardInvocation:));
     IMP originalIMP = method_getImplementation(method);

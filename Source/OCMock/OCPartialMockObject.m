@@ -10,50 +10,29 @@
 #import "NSObject+OCMAdditions.h"
 
 
-@interface OCPartialMockObject (Private)
-- (void)forwardInvocationForRealObject:(NSInvocation *)anInvocation;
-@end 
+NSString *OCMPartialMockObjectKey = @"OCMPartialMockObjectKey";
 
 @implementation OCPartialMockObject
 
-
 #pragma mark  Mock table
-
-static NSMutableDictionary *mockTable;
-
-+ (void)initialize
-{
-	if(self == [OCPartialMockObject class])
-		mockTable = [[NSMutableDictionary alloc] init];
-}
 
 + (void)rememberPartialMock:(OCPartialMockObject *)mock forObject:(id)anObject
 {
-    @synchronized(mockTable)
-    {
-        [mockTable setObject:[NSValue valueWithNonretainedObject:mock] forKey:[NSValue valueWithNonretainedObject:anObject]];
-    }
+    objc_setAssociatedObject(anObject, OCMPartialMockObjectKey, mock, OBJC_ASSOCIATION_ASSIGN);
 }
 
 + (void)forgetPartialMockForObject:(id)anObject
 {
-    @synchronized(mockTable)
-    {
-        [mockTable removeObjectForKey:[NSValue valueWithNonretainedObject:anObject]];
-    }
+    objc_setAssociatedObject(anObject, OCMPartialMockObjectKey, nil, OBJC_ASSOCIATION_ASSIGN);
 }
 
 + (OCPartialMockObject *)existingPartialMockForObject:(id)anObject
 {
-    @synchronized(mockTable)
-    {
-        OCPartialMockObject *mock = [[mockTable objectForKey:[NSValue valueWithNonretainedObject:anObject]] nonretainedObjectValue];
-        if(mock == nil)
-            [NSException raise:NSInternalInconsistencyException format:@"No partial mock for object %p", anObject];
-        return mock;
-    }
+    OCPartialMockObject *mock = objc_getAssociatedObject(anObject, OCMPartialMockObjectKey);
+    if(mock == nil)
+        [NSException raise:NSInternalInconsistencyException format:@"No partial mock for object %p", anObject];
+    return mock;
 }
-
 
 
 #pragma mark  Initialisers, description, accessors, etc.
@@ -62,7 +41,7 @@ static NSMutableDictionary *mockTable;
 {
 	[super initWithClass:[anObject class]];
 	realObject = [anObject retain];
-	[[self mockObjectClass] rememberPartialMock:self forObject:anObject];
+	[OCPartialMockObject rememberPartialMock:self forObject:anObject];
 	[self setupSubclassForObject:realObject];
 	return self;
 }
@@ -91,7 +70,7 @@ static NSMutableDictionary *mockTable;
 {
 	object_setClass(realObject, [self mockedClass]);
 	[realObject release];
-	[[self mockObjectClass] forgetPartialMockForObject:realObject];
+	[OCPartialMockObject forgetPartialMockForObject:realObject];
 	realObject = nil;
     
     [super stopMocking];
