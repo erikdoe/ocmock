@@ -1,45 +1,17 @@
 //---------------------------------------------------------------------------------------
 //  $Id$
-//  Copyright (c) 2005-2013 by Mulle Kybernetik. See License file for details.
+//  Copyright (c) 2005-2014 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import <objc/runtime.h>
 #import "OCClassMockObject.h"
-#import "NSMethodSignature+OCMAdditions.h"
 #import "NSObject+OCMAdditions.h"
+#import "OCMFunctions.h"
 
 
 NSString *OCMRealMethodAliasPrefix = @"ocmock_replaced_";
-NSString *OCMClassMethodMockObjectKey = @"OCMClassMethodMockObjectKey";
 
 @implementation OCClassMockObject
-
-#pragma mark  Mock table
-
-+ (void)rememberMock:(OCClassMockObject *)mock forClass:(Class)aClass
-{
-    // TODO: shouldn't we throw an exception if another object is already mocking class methods?
-    objc_setAssociatedObject(aClass, OCMClassMethodMockObjectKey, mock, OBJC_ASSOCIATION_ASSIGN);
-}
-
-+ (void)forgetMockForClass:(Class)aClass
-{
-    objc_setAssociatedObject(aClass, OCMClassMethodMockObjectKey, nil, OBJC_ASSOCIATION_ASSIGN);
-}
-
-+ (OCClassMockObject *)existingMockForClass:(Class)aClass
-{
-    OCClassMockObject *mock = nil;
-    while((mock == nil) && (aClass != nil))
-    {
-        mock = objc_getAssociatedObject(aClass, OCMClassMethodMockObjectKey);
-        aClass = class_getSuperclass(aClass);
-    }
-    if(mock == nil)
-        [NSException raise:NSInternalInconsistencyException format:@"No mock for class %@", NSStringFromClass(aClass)];
-    return mock;
-}
-
 
 #pragma mark  Initialisers, description, accessors, etc.
 
@@ -55,8 +27,7 @@ NSString *OCMClassMethodMockObjectKey = @"OCMClassMethodMockObjectKey";
 	if(replacedClassMethods != nil)
     {
 		[self stopMocking];
-        objc_setAssociatedObject([self mockedClass], OCMClassMethodMockObjectKey, nil, OBJC_ASSOCIATION_ASSIGN);
-        [OCClassMockObject forgetMockForClass:mockedClass];
+        OCMSetAssociatedMockForClass(nil, mockedClass);
         [replacedClassMethods release];
     }
 	[super dealloc];
@@ -96,7 +67,7 @@ NSString *OCMClassMethodMockObjectKey = @"OCMClassMethodMockObjectKey";
         return;
 
     replacedClassMethods = [[NSMutableDictionary alloc] init];
-    [OCClassMockObject rememberMock:self forClass:mockedClass];
+    OCMSetAssociatedMockForClass(self, mockedClass);
 
     Method method = class_getClassMethod(mockedClass, @selector(forwardInvocation:));
     IMP originalIMP = method_getImplementation(method);
@@ -145,7 +116,7 @@ NSString *OCMClassMethodMockObjectKey = @"OCMClassMethodMockObjectKey";
 - (void)forwardInvocationForClassObject:(NSInvocation *)anInvocation
 {
 	// in here "self" is a reference to the real class, not the mock
-	OCClassMockObject *mock = [OCClassMockObject existingMockForClass:(Class)self];
+	OCClassMockObject *mock = OCMGetAssociatedMockForClass((Class)self);
 	if([mock handleInvocation:anInvocation] == NO)
     {
         // if mock doesn't want to handle the invocation, maybe all expects have occurred, we remove the forwarder and try again

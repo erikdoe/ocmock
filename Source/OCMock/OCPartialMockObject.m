@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------------------
 //  $Id$
-//  Copyright (c) 2009 by Mulle Kybernetik. See License file for details.
+//  Copyright (c) 2009-2014 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
 #import <objc/runtime.h>
@@ -8,32 +8,10 @@
 #import "OCPartialMockObject.h"
 #import "NSMethodSignature+OCMAdditions.h"
 #import "NSObject+OCMAdditions.h"
+#import "OCMFunctions.h"
 
-
-NSString *OCMPartialMockObjectKey = @"OCMPartialMockObjectKey";
 
 @implementation OCPartialMockObject
-
-#pragma mark  Mock table
-
-+ (void)rememberPartialMock:(OCPartialMockObject *)mock forObject:(id)anObject
-{
-    objc_setAssociatedObject(anObject, OCMPartialMockObjectKey, mock, OBJC_ASSOCIATION_ASSIGN);
-}
-
-+ (void)forgetPartialMockForObject:(id)anObject
-{
-    objc_setAssociatedObject(anObject, OCMPartialMockObjectKey, nil, OBJC_ASSOCIATION_ASSIGN);
-}
-
-+ (OCPartialMockObject *)existingPartialMockForObject:(id)anObject
-{
-    OCPartialMockObject *mock = objc_getAssociatedObject(anObject, OCMPartialMockObjectKey);
-    if(mock == nil)
-        [NSException raise:NSInternalInconsistencyException format:@"No partial mock for object %p", anObject];
-    return mock;
-}
-
 
 #pragma mark  Initialisers, description, accessors, etc.
 
@@ -41,7 +19,7 @@ NSString *OCMPartialMockObjectKey = @"OCMPartialMockObjectKey";
 {
 	[super initWithClass:[anObject class]];
 	realObject = [anObject retain];
-	[OCPartialMockObject rememberPartialMock:self forObject:anObject];
+    OCMSetAssociatedMockForObject(self, anObject);
 	[self setupSubclassForObject:realObject];
 	return self;
 }
@@ -70,7 +48,7 @@ NSString *OCMPartialMockObjectKey = @"OCMPartialMockObjectKey";
 {
 	object_setClass(realObject, [self mockedClass]);
 	[realObject release];
-	[OCPartialMockObject forgetPartialMockForObject:realObject];
+    OCMSetAssociatedMockForObject(nil, realObject);
 	realObject = nil;
     
     [super stopMocking];
@@ -159,7 +137,7 @@ NSString *OCMPartialMockObjectKey = @"OCMPartialMockObjectKey";
 - (id)forwardingTargetForSelectorForRealObject:(SEL)sel
 {
 	// in here "self" is a reference to the real object, not the mock
-    OCPartialMockObject *mock = [OCPartialMockObject existingPartialMockForObject:self];
+    OCPartialMockObject *mock = OCMGetAssociatedMockForObject(self);
     if ([mock handleSelector:sel])
         return self;
 
@@ -169,7 +147,7 @@ NSString *OCMPartialMockObjectKey = @"OCMPartialMockObjectKey";
 - (void)forwardInvocationForRealObject:(NSInvocation *)anInvocation
 {
 	// in here "self" is a reference to the real object, not the mock
-	OCPartialMockObject *mock = [OCPartialMockObject existingPartialMockForObject:self];
+    OCPartialMockObject *mock = OCMGetAssociatedMockForObject(self);
 	if([mock handleInvocation:anInvocation] == NO)
     {
         // if mock doesn't want to handle the invocation, maybe all expects have occurred, we forward to real object
@@ -189,7 +167,7 @@ NSString *OCMPartialMockObjectKey = @"OCMPartialMockObjectKey";
 - (Class)classForRealObject
 {
     // "self" is the real object, not the mock
-    OCPartialMockObject *mock = [OCPartialMockObject existingPartialMockForObject:self];
+    OCPartialMockObject *mock = OCMGetAssociatedMockForObject(self);
     if (mock != nil)
         return [mock mockedClass];
 

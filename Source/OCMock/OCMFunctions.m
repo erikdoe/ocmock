@@ -2,8 +2,11 @@
 //  Copyright (c) 2014 by Mulle Kybernetik. See License file for details.
 //---------------------------------------------------------------------------------------
 
+#import <objc/runtime.h>
 #import "OCMFunctions.h"
 #import "OCMLocation.h"
+#import "OCClassMockObject.h"
+#import "OCPartialMockObject.h"
 
 
 #pragma mark  Known private API
@@ -43,6 +46,47 @@ const char *OCMTypeWithoutQualifiers(const char *objCType)
     while(strchr("rnNoORV", objCType[0]) != NULL)
         objCType += 1;
     return objCType;
+}
+
+
+#pragma mark  Wrappers around associative references
+
+NSString *OCMClassMethodMockObjectKey = @"OCMClassMethodMockObjectKey";
+
+void OCMSetAssociatedMockForClass(OCClassMockObject *mock, Class aClass)
+{
+    // TODO: shouldn't we throw an exception if another object is already mocking class methods?
+    objc_setAssociatedObject(aClass, OCMClassMethodMockObjectKey, mock, OBJC_ASSOCIATION_ASSIGN);
+}
+
+OCClassMockObject *OCMGetAssociatedMockForClass(Class aClass)
+{
+    OCClassMockObject *mock = nil;
+    while((mock == nil) && (aClass != nil))
+    {
+        mock = objc_getAssociatedObject(aClass, OCMClassMethodMockObjectKey);
+        aClass = class_getSuperclass(aClass);
+    }
+    if(mock == nil)
+        [NSException raise:NSInternalInconsistencyException format:@"No mock for class %@", NSStringFromClass(aClass)];
+    return mock;
+}
+
+
+NSString *OCMPartialMockObjectKey = @"OCMPartialMockObjectKey";
+
+void OCMSetAssociatedMockForObject(OCClassMockObject *mock, id anObject)
+{
+     // TODO: shouldn't we throw an exception if another object is already mocking methods?
+    objc_setAssociatedObject(anObject, OCMPartialMockObjectKey, mock, OBJC_ASSOCIATION_ASSIGN);
+}
+
+OCPartialMockObject *OCMGetAssociatedMockForObject(id anObject)
+{
+    OCPartialMockObject *mock = objc_getAssociatedObject(anObject, OCMPartialMockObjectKey);
+    if(mock == nil)
+        [NSException raise:NSInternalInconsistencyException format:@"No partial mock for object %p", anObject];
+    return mock;
 }
 
 
