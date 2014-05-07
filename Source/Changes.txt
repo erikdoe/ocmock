@@ -1,8 +1,11 @@
 Listing of notable changes by release. More detail is usually found in the Git 
 commit messages and/or the pull requests.
 
-OCMock 3.0.M2 (not yet released)
+OCMock 3.0.M2 (2014-05-07)
 
+* Added support from verify-after-run. Only works for methods that are sent
+  to a mock object. Does not work for classes and methods sent directly to 
+  the real object covered by a partial mock.
 * Failures without location are now thrown as OCMockTestFailure exception, 
   not as NSInternalInconsistencyException
 
