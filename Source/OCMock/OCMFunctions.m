@@ -49,6 +49,31 @@ const char *OCMTypeWithoutQualifiers(const char *objCType)
 }
 
 
+#pragma mark  Alias for renaming real methods
+
+NSString *OCMRealMethodAliasPrefix = @"ocmock_replaced_";
+
+
+BOOL OCMIsAliasSelector(SEL selector)
+{
+    return [NSStringFromSelector(selector) hasPrefix:OCMRealMethodAliasPrefix];
+}
+
+SEL OCMAliasForOriginalSelector(SEL selector)
+{
+    NSString *string = NSStringFromSelector(selector);
+    return NSSelectorFromString([OCMRealMethodAliasPrefix stringByAppendingString:string]);
+
+}
+
+SEL OCMOriginalSelectorForAlias(SEL selector)
+{
+    if(!OCMIsAliasSelector(selector))
+        [NSException raise:NSInvalidArgumentException format:@"Not an alias selector; found %@", NSStringFromSelector(selector)];
+    NSString *string = NSStringFromSelector(selector);
+    return NSSelectorFromString([string substringFromIndex:[OCMRealMethodAliasPrefix length]]);
+}
+
 #pragma mark  Wrappers around associative references
 
 NSString *OCMClassMethodMockObjectKey = @"OCMClassMethodMockObjectKey";

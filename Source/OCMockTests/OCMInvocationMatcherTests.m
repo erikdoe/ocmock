@@ -6,6 +6,8 @@
 #import <OCMock/OCMArg.h>
 #import "OCMInvocationMatcher.h"
 #import "OCClassMockObject.h"
+#import "OCMFunctions.h"
+
 
 @interface TestClassForRecorder : NSObject
 
@@ -41,8 +43,7 @@
     NSInvocation *recordedInvocation = [self invocationForTargetClass:[NSString class] selector:@selector(uppercaseString)];
     [matcher setInvocation:recordedInvocation];
 
-    NSString *aliasedName = [OCMRealMethodAliasPrefix stringByAppendingString:@"uppercaseString"];
-    SEL actual = NSSelectorFromString(aliasedName);
+    SEL actual = OCMAliasForOriginalSelector(@selector(uppercaseString));
 
     XCTAssertTrue([matcher matchesSelector:actual], @"Should have matched.");
 }

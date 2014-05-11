@@ -133,14 +133,14 @@
         types = ([[[self mockedClass] instanceMethodSignatureForSelector:selector] fullObjCTypes]);
 	class_addMethod(subclass, selector, forwarderImp, types);
 
-	SEL aliasSelector = NSSelectorFromString([OCMRealMethodAliasPrefix stringByAppendingString:NSStringFromSelector(selector)]);
+	SEL aliasSelector = OCMAliasForOriginalSelector(selector);
 	class_addMethod(subclass, aliasSelector, originalImp, types);
 }
 
 - (void)removeForwarderForSelector:(SEL)selector
 {
     Class subclass = object_getClass([self realObject]);
-    SEL aliasSelector = NSSelectorFromString([OCMRealMethodAliasPrefix stringByAppendingString:NSStringFromSelector(selector)]);
+    SEL aliasSelector = OCMAliasForOriginalSelector(selector);
     Method originalMethod = class_getInstanceMethod([self mockedClass], aliasSelector);
   	IMP originalImp = method_getImplementation(originalMethod);
     class_replaceMethod(subclass, selector, originalImp, method_getTypeEncoding(originalMethod));
@@ -169,8 +169,7 @@
 	if([mock handleInvocation:anInvocation] == NO)
     {
         // if mock doesn't want to handle the invocation, maybe all expects have occurred, we forward to real object
-        SEL aliasSelector = NSSelectorFromString([OCMRealMethodAliasPrefix stringByAppendingString:NSStringFromSelector([anInvocation selector])]);
-        [anInvocation setSelector:aliasSelector];
+        [anInvocation setSelector:OCMAliasForOriginalSelector([anInvocation selector])];
         [anInvocation invoke];
     }
 }

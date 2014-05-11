@@ -9,6 +9,7 @@
 #import "NSInvocation+OCMAdditions.h"
 #import "OCMInvocationMatcher.h"
 #import "OCClassMockObject.h"
+#import "OCMFunctions.h"
 
 
 @interface NSObject(HCMatcherDummy)
@@ -47,16 +48,12 @@
 
 - (BOOL)matchesSelector:(SEL)sel
 {
-    if(sel != [recordedInvocation selector])
-    {
-        NSString *selString = NSStringFromSelector(sel);
-        if(![selString hasPrefix:OCMRealMethodAliasPrefix])
-            return NO;
-        SEL originalSel = NSSelectorFromString([selString substringFromIndex:[OCMRealMethodAliasPrefix length]]);
-        if(originalSel != [recordedInvocation selector])
-            return NO;
-    }
-    return YES;
+    if(sel == [recordedInvocation selector])
+        return YES;
+    if(OCMIsAliasSelector(sel) &&
+       OCMOriginalSelectorForAlias(sel) == [recordedInvocation selector])
+        return YES;
+    return NO;
 }
 
 - (BOOL)matchesInvocation:(NSInvocation *)anInvocation

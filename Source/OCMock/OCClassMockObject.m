@@ -9,8 +9,6 @@
 #import "OCMFunctions.h"
 
 
-NSString *OCMRealMethodAliasPrefix = @"ocmock_replaced_";
-
 @implementation OCClassMockObject
 
 #pragma mark  Initialisers, description, accessors, etc.
@@ -97,7 +95,7 @@ NSString *OCMRealMethodAliasPrefix = @"ocmock_replaced_";
     IMP forwarderIMP = [metaClass instanceMethodForwarderForSelector:selector];
     class_replaceMethod(metaClass, method_getName(method), forwarderIMP, method_getTypeEncoding(method));
     
-    SEL aliasSelector = NSSelectorFromString([OCMRealMethodAliasPrefix stringByAppendingString:NSStringFromSelector(selector)]);
+    SEL aliasSelector = OCMAliasForOriginalSelector(selector);
     class_addMethod(metaClass, aliasSelector, originalIMP, method_getTypeEncoding(method));
 }
 

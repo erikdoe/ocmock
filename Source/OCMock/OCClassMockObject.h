@@ -17,5 +17,3 @@
 - (Class)mockObjectClass;  // since -class returns the mockedClass
 
 @end
-
-extern NSString *OCMRealMethodAliasPrefix;

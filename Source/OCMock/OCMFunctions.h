@@ -12,6 +12,10 @@
 BOOL OCMIsObjectType(const char *objCType);
 const char *OCMTypeWithoutQualifiers(const char *objCType);
 
+BOOL OCMIsAliasSelector(SEL selector);
+SEL OCMAliasForOriginalSelector(SEL selector);
+SEL OCMOriginalSelectorForAlias(SEL selector);
+
 void OCMSetAssociatedMockForClass(OCClassMockObject *mock, Class aClass);
 OCClassMockObject *OCMGetAssociatedMockForClass(Class aClass);
 

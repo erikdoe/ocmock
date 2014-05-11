@@ -6,6 +6,7 @@
 #import <objc/runtime.h>
 #import "OCPartialMockObject.h"
 #import "OCMRealObjectForwarder.h"
+#import "OCMFunctions.h"
 
 
 @implementation OCMRealObjectForwarder
@@ -13,10 +14,8 @@
 - (void)handleInvocation:(NSInvocation *)anInvocation 
 {
 	id invocationTarget = [anInvocation target];
-	SEL invocationSelector = [anInvocation selector];
-	SEL aliasedSelector = NSSelectorFromString([OCMRealMethodAliasPrefix stringByAppendingString:NSStringFromSelector(invocationSelector)]);
-	
-	[anInvocation setSelector:aliasedSelector];
+
+    [anInvocation setSelector:OCMAliasForOriginalSelector([anInvocation selector])];
 	if ([invocationTarget isProxy])
 	{
 	    if (class_getInstanceMethod([invocationTarget mockObjectClass], @selector(realObject)))
