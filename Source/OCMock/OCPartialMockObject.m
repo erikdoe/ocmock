@@ -54,11 +54,6 @@
     [super stopMocking];
 }
 
-- (void)prepareForMockingMethod:(SEL)aSelector
-{
-    [self setupForwarderForSelector:aSelector];
-}
-
 - (void)handleUnRecordedInvocation:(NSInvocation *)anInvocation
 {
 	[anInvocation invokeWithTarget:realObject];
