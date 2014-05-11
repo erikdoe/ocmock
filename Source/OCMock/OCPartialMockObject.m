@@ -81,13 +81,10 @@
 	const char *forwardInvocationTypes = method_getTypeEncoding(myForwardInvocationMethod);
 	class_addMethod(subclass, @selector(forwardInvocation:), myForwardInvocationImp, forwardInvocationTypes);
 
-
     Method myForwardingTargetForSelectorMethod = class_getInstanceMethod([self mockObjectClass], @selector(forwardingTargetForSelectorForRealObject:));
     IMP myForwardingTargetForSelectorImp = method_getImplementation(myForwardingTargetForSelectorMethod);
     const char *forwardingTargetForSelectorTypes = method_getTypeEncoding(myForwardingTargetForSelectorMethod);
-
     IMP originalForwardingTargetForSelectorImp = [realClass instanceMethodForSelector:@selector(forwardingTargetForSelector:)];
-
     class_addMethod(subclass, @selector(forwardingTargetForSelector:), myForwardingTargetForSelectorImp, forwardingTargetForSelectorTypes);
     class_addMethod(subclass, @selector(forwardingTargetForSelector_Original:), originalForwardingTargetForSelectorImp, forwardingTargetForSelectorTypes);
     
@@ -99,6 +96,27 @@
     
     class_addMethod(subclass, @selector(class), myObjectClassImp, objectClassTypes);
     class_addMethod(subclass, @selector(class_Original), originalClassImp, objectClassTypes);
+
+    /* Adding forwarder for all instance methods to allow for verify after run */
+    NSSet *whitelist = [NSSet setWithObjects:
+            @"class",
+            @"forwardingTargetForSelector:",
+            @"methodSignatureForSelector:",
+            @"forwardInvocation:", nil
+    ];
+    for(Class cls = realClass; cls != nil; cls = class_getSuperclass(cls))
+    {
+        Method *methodList = class_copyMethodList(cls, NULL);
+        if(methodList == NULL)
+            continue;
+        for(Method *mPtr = methodList; *mPtr != NULL; mPtr++)
+        {
+            SEL selector = method_getName(*mPtr);
+            if(![whitelist containsObject:NSStringFromSelector(selector)])
+                [self setupForwarderForSelector:selector];
+        }
+        free(methodList);
+    }
 }
 
 - (void)setupForwarderForSelector:(SEL)selector
@@ -138,7 +156,7 @@
 {
 	// in here "self" is a reference to the real object, not the mock
     OCPartialMockObject *mock = OCMGetAssociatedMockForObject(self);
-    if ([mock handleSelector:sel])
+    if([mock handleSelector:sel])
         return self;
 
     return [self forwardingTargetForSelector_Original:sel];

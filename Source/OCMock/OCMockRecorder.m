@@ -123,7 +123,7 @@
 
 - (id)ignoringNonObjectArgs
 {
-    [invocationMatcher setIngoreNonObjectArgs:YES];
+    [invocationMatcher setIgnoreNonObjectArgs:YES];
     return self;
 }
 

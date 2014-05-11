@@ -16,7 +16,7 @@
 - (void)setRecordedAsClassMethod:(BOOL)flag;
 - (BOOL)recordedAsClassMethod;
 
-- (void)setIngoreNonObjectArgs:(BOOL)flag;
+- (void)setIgnoreNonObjectArgs:(BOOL)flag;
 
 
 - (BOOL)matchesSelector:(SEL)aSelector;

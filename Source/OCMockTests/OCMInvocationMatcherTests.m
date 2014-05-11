@@ -5,6 +5,7 @@
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMArg.h>
 #import "OCMInvocationMatcher.h"
+#import "OCClassMockObject.h"
 
 @interface TestClassForRecorder : NSObject
 
@@ -26,13 +27,24 @@
 
 @implementation OCMInvocationMatcherTests
 
-
 - (NSInvocation *)invocationForTargetClass:(Class)aClass selector:(SEL)aSelector
 {
     NSMethodSignature *signature = [aClass instanceMethodSignatureForSelector:aSelector];
     NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
     [invocation setSelector:aSelector];
     return invocation;
+}
+
+- (void)testMatchesAliasedSelector
+{
+    OCMInvocationMatcher *matcher = [[[OCMInvocationMatcher alloc] init] autorelease];
+    NSInvocation *recordedInvocation = [self invocationForTargetClass:[NSString class] selector:@selector(uppercaseString)];
+    [matcher setInvocation:recordedInvocation];
+
+    NSString *aliasedName = [OCMRealMethodAliasPrefix stringByAppendingString:@"uppercaseString"];
+    SEL actual = NSSelectorFromString(aliasedName);
+
+    XCTAssertTrue([matcher matchesSelector:actual], @"Should have matched.");
 }
 
 - (void)testOnlyMatchesInvocationWithRightArguments
@@ -62,7 +74,7 @@
     [recordedInvocation setArgument:&any atIndex:2];
     [recordedInvocation setArgument:&zero atIndex:3];
     [matcher setInvocation:recordedInvocation];
-    [matcher setIngoreNonObjectArgs:YES];
+    [matcher setIgnoreNonObjectArgs:YES];
 
     NSInvocation *testInvocation = [self invocationForTargetClass:[NSString class] selector:@selector(rangeOfString:options:)];
     [testInvocation setArgument:&arg1 atIndex:2];
@@ -81,7 +93,7 @@
     [recordedInvocation setArgument:&arg1 atIndex:2];
     [recordedInvocation setArgument:&recorded atIndex:3];
     [matcher setInvocation:recordedInvocation];
-    [matcher setIngoreNonObjectArgs:YES];
+    [matcher setIgnoreNonObjectArgs:YES];
 
     NSInvocation *testInvocation = [self invocationForTargetClass:[TestClassForRecorder class] selector:@selector(methodWithInt:andObject:)];
     [testInvocation setArgument:&arg1 atIndex:2];

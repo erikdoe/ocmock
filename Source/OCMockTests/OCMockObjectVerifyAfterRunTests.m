@@ -4,11 +4,26 @@
 
 #import <XCTest/XCTest.h>
 #import "OCMockObject.h"
+#import "OCMockRecorder.h"
 
-@interface TestClassForVerifyAfterRun : NSObject
+@interface TestBaseClassForVerifyAfterRun : NSObject
+
+- (NSString *)method2;
+
+@end
+
+@implementation TestBaseClassForVerifyAfterRun
+
+- (NSString *)method2
+{
+	return @"Foo";
+}
+
+@end
+
+@interface TestClassForVerifyAfterRun : TestBaseClassForVerifyAfterRun
 
 - (NSString *)method1;
-- (NSString *)method2;
 
 @end
 
@@ -20,13 +35,7 @@
 	return retVal;
 }
 
-- (NSString *)method2
-{
-	return @"Foo";
-}
-
 @end
-
 
 @interface OCMockObjectVerifyAfterRunTests : XCTestCase
 
@@ -63,14 +72,15 @@
     XCTAssertNoThrow([[mock verify] method2], @"Should not have thrown an exception for method that was called.");
 }
 
-//- (void)testDoesNotThrowWhenMethodWasInvokedDirectlyOnRealObject
-//{
-//    TestClassForVerifyAfterRun *testObject = [[[TestClassForVerifyAfterRun alloc] init] autorelease];
-//    id mock = [OCMockObject partialMockForObject:testObject];
-//
-//    [mock method1];
-//
-//    XCTAssertNoThrow([[mock verify] method2], @"Should not have thrown an exception for method that was called.");
-//}
+- (void)testDoesNotThrowWhenMethodWasInvokedOnRealObjectEvenInSuperclass
+{
+    TestClassForVerifyAfterRun *testObject = [[[TestClassForVerifyAfterRun alloc] init] autorelease];
+    id mock = [OCMockObject partialMockForObject:testObject];
+
+    NSString *string =  [testObject method1];
+
+    XCTAssertEqualObjects(@"Foo", string, @"Should have returned value from actual implementation.");
+    XCTAssertNoThrow([[mock verify] method2], @"Should not have thrown an exception for method that was called.");
+}
 
 @end

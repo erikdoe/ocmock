@@ -8,6 +8,7 @@
 #import "OCMPassByRefSetter.h"
 #import "NSInvocation+OCMAdditions.h"
 #import "OCMInvocationMatcher.h"
+#import "OCClassMockObject.h"
 
 
 @interface NSObject(HCMatcherDummy)
@@ -34,7 +35,7 @@
     return recordedAsClassMethod;
 }
 
-- (void)setIngoreNonObjectArgs:(BOOL)flag
+- (void)setIgnoreNonObjectArgs:(BOOL)flag
 {
     ignoreNonObjectArgs = flag;
 }
@@ -46,7 +47,16 @@
 
 - (BOOL)matchesSelector:(SEL)sel
 {
-    return (sel == [recordedInvocation selector]);
+    if(sel != [recordedInvocation selector])
+    {
+        NSString *selString = NSStringFromSelector(sel);
+        if(![selString hasPrefix:OCMRealMethodAliasPrefix])
+            return NO;
+        SEL originalSel = NSSelectorFromString([selString substringFromIndex:[OCMRealMethodAliasPrefix length]]);
+        if(originalSel != [recordedInvocation selector])
+            return NO;
+    }
+    return YES;
 }
 
 - (BOOL)matchesInvocation:(NSInvocation *)anInvocation
@@ -56,7 +66,7 @@
     if(isClassMethodInvocation != recordedAsClassMethod)
         return NO;
 
-    if([anInvocation selector] != [recordedInvocation selector])
+    if(![self matchesSelector:[anInvocation selector]])
         return NO;
 
     NSMethodSignature *signature = [recordedInvocation methodSignature];
