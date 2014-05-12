@@ -17,7 +17,7 @@
 
 - (id)initWithObject:(NSObject *)anObject
 {
-    [self throwExceptionIfUnsupportedClass:[anObject class]];
+	[self throwExceptionIfUnsupportedClass:[anObject class]];
 	[super initWithClass:[anObject class]];
 	realObject = [anObject retain];
     OCMSetAssociatedMockForObject(self, anObject);
