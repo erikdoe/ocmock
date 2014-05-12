@@ -104,7 +104,7 @@
 - (void)testStubsMethodsOnPartialMockForTollFreeBridgedClassesThrowsException
 {
     
-    Class tollFreeClass = objc_allocateClassPair([NSObject class], [@"NSCF" UTF8String], 0);
+    Class tollFreeClass = objc_allocateClassPair([NSObject class], [@"NSCFOCMockTestClass" UTF8String], 0);
     objc_registerClassPair(tollFreeClass);
     id tollFreeObject = [[tollFreeClass alloc] init];
     
@@ -129,7 +129,7 @@
 
 - (void)testPartialMockForTaggedPointerThrowsException
 {
-    Class taggedClass = objc_allocateClassPair([NSObject class], [@"__NSTaggedOCMockTextClass" UTF8String], 0);
+    Class taggedClass = objc_allocateClassPair([NSObject class], [@"__NSTaggedOCMockTestClass" UTF8String], 0);
     objc_registerClassPair(taggedClass);
     id taggedObject = [[taggedClass alloc] init];
 
