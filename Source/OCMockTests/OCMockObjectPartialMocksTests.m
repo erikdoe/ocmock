@@ -104,11 +104,11 @@
 - (void)testStubsMethodsOnPartialMockForTollFreeBridgedClassesThrowsException
 {
     
-    Class taggedClass = objc_allocateClassPair([NSObject class], [@"NSCF" UTF8String], 0);
-    objc_registerClassPair(taggedClass);
-    id taggedObject = [[taggedClass alloc] init];
+    Class tollFreeClass = objc_allocateClassPair([NSObject class], [@"NSCF" UTF8String], 0);
+    objc_registerClassPair(tollFreeClass);
+    id tollFreeObject = [[tollFreeClass alloc] init];
     
-    XCTAssertThrowsSpecificNamed([OCMockObject partialMockForObject:taggedObject],
+    XCTAssertThrowsSpecificNamed([OCMockObject partialMockForObject:tollFreeObject],
                                  NSException,
                                  @"Illegal Partial Mock",
                                  @"should throw Illegal Partial Mock exception");
