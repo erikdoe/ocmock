@@ -101,12 +101,18 @@
 	XCTAssertEqualObjects(@"hi", [mock foo], @"Should have returned stubbed value");
 }
 
-//- (void)testStubsMethodsOnPartialMockForTollFreeBridgedClasses
-//{
-//	mock = [OCMockObject partialMockForObject:[NSString stringWithString:@"hello"]];
-//	[[[mock stub] andReturn:@"hi"] uppercaseString];
-//	STAssertEqualObjects(@"hi", [mock uppercaseString], @"Should have returned stubbed value");
-//}
+- (void)testStubsMethodsOnPartialMockForTollFreeBridgedClassesThrowsException
+{
+    
+    Class taggedClass = objc_allocateClassPair([NSObject class], [@"NSCF" UTF8String], 0);
+    objc_registerClassPair(taggedClass);
+    id taggedObject = [[taggedClass alloc] init];
+    
+    XCTAssertThrowsSpecificNamed([OCMockObject partialMockForObject:taggedObject],
+                                 NSException,
+                                 @"Illegal Partial Mock",
+                                 @"should throw Illegal Partial Mock exception");
+}
 
 - (void)testForwardsUnstubbedMethodsCallsToRealObjectOnPartialMock
 {
@@ -125,7 +131,6 @@
 {
     Class taggedClass = objc_allocateClassPair([NSObject class], [@"__NSTaggedOCMockTextClass" UTF8String], 0);
     objc_registerClassPair(taggedClass);
-    
     id taggedObject = [[taggedClass alloc] init];
 
     XCTAssertThrowsSpecificNamed([OCMockObject partialMockForObject:taggedObject],

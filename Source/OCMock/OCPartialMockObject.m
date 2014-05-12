@@ -25,12 +25,18 @@
 	return self;
 }
 
-- (void)throwExceptionIfUnsupportedClass:(Class)c
+- (void)throwExceptionIfUnsupportedClass:(Class)class
 {
-    if ([NSStringFromClass(c) rangeOfString:@"__NSTagged"].location != NSNotFound) {
-        [[NSException exceptionWithName:@"Illegal Partial Mock"
-                                reason:@"Cannot partially mock tagged classes"
+    static NSString *IllegalPartialMock = @"Illegal Partial Mock";
+    
+    if ([NSStringFromClass(class) hasPrefix:@"__NSTagged"]) {
+        [[NSException exceptionWithName:IllegalPartialMock
+                                reason:@"OCMock does not support partially mocking tagged classes"
                               userInfo:nil] raise];
+    } else if ([NSStringFromClass(class) hasPrefix:@"NSCF"]) {
+        [[NSException exceptionWithName:IllegalPartialMock
+                                 reason:@"OCMock does not support partially mocking toll-free bridged classes"
+                               userInfo:nil] raise];
     }
 }
 
