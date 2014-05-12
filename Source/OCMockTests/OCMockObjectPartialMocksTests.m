@@ -121,6 +121,19 @@
 //	STAssertEqualObjects(@"HELLO2", [mock uppercaseString], @"Should have returned value from real object.");
 //}
 
+- (void)testPartialMockForTaggedPointerThrowsException
+{
+    Class taggedClass = objc_allocateClassPair([NSObject class], [@"__NSTaggedOCMockTextClass" UTF8String], 0);
+    objc_registerClassPair(taggedClass);
+    
+    id taggedObject = [[taggedClass alloc] init];
+
+    XCTAssertThrowsSpecificNamed([OCMockObject partialMockForObject:taggedObject],
+                                 NSException,
+                                 @"Illegal Partial Mock",
+                                 @"should throw Illegal Partial Mock exception");
+}
+
 - (void)testStubsMethodOnRealObjectReference
 {
 	TestClassWithSimpleMethod *realObject = [[[TestClassWithSimpleMethod alloc] init] autorelease];

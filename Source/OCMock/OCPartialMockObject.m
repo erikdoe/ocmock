@@ -17,11 +17,21 @@
 
 - (id)initWithObject:(NSObject *)anObject
 {
+    [self throwExceptionIfUnsupportedClass:[anObject class]];
 	[super initWithClass:[anObject class]];
 	realObject = [anObject retain];
     OCMSetAssociatedMockForObject(self, anObject);
 	[self setupSubclassForObject:realObject];
 	return self;
+}
+
+- (void)throwExceptionIfUnsupportedClass:(Class)c
+{
+    if ([NSStringFromClass(c) rangeOfString:@"__NSTagged"].location != NSNotFound) {
+        [[NSException exceptionWithName:@"Illegal Partial Mock"
+                                reason:@"Cannot partially mock tagged classes"
+                              userInfo:nil] raise];
+    }
 }
 
 - (void)dealloc
