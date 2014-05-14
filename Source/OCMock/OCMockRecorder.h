@@ -25,7 +25,7 @@
 - (id)andThrow:(NSException *)anException;
 - (id)andPost:(NSNotification *)aNotification;
 - (id)andCall:(SEL)selector onObject:(id)anObject;
-- (id)andDo:(void (^)(NSInvocation *))block;
+- (id)andDo:(void (^)(NSInvocation *invocation))block;
 - (id)andForwardToRealObject;
 
 - (id)classMethod;
