@@ -17,11 +17,27 @@
 
 - (id)initWithObject:(NSObject *)anObject
 {
+	[self throwExceptionIfUnsupportedClass:[anObject class]];
 	[super initWithClass:[anObject class]];
 	realObject = [anObject retain];
     OCMSetAssociatedMockForObject(self, anObject);
 	[self setupSubclassForObject:realObject];
 	return self;
+}
+
+- (void)throwExceptionIfUnsupportedClass:(Class)class
+{
+    static NSString *IllegalPartialMock = @"Illegal Partial Mock";
+    
+    if ([NSStringFromClass(class) hasPrefix:@"__NSTagged"]) {
+        [[NSException exceptionWithName:IllegalPartialMock
+                                reason:@"OCMock does not support partially mocking tagged classes"
+                              userInfo:nil] raise];
+    } else if ([NSStringFromClass(class) hasPrefix:@"NSCF"]) {
+        [[NSException exceptionWithName:IllegalPartialMock
+                                 reason:@"OCMock does not support partially mocking toll-free bridged classes"
+                               userInfo:nil] raise];
+    }
 }
 
 - (void)dealloc
