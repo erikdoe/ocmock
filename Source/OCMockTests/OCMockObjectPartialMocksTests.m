@@ -101,19 +101,6 @@
 	XCTAssertEqualObjects(@"hi", [mock foo], @"Should have returned stubbed value");
 }
 
-- (void)testStubsMethodsOnPartialMockForTollFreeBridgedClassesThrowsException
-{
-    
-    Class tollFreeClass = objc_allocateClassPair([NSObject class], [@"NSCFOCMockTestClass" UTF8String], 0);
-    objc_registerClassPair(tollFreeClass);
-    id tollFreeObject = [[tollFreeClass alloc] init];
-    
-    XCTAssertThrowsSpecificNamed([OCMockObject partialMockForObject:tollFreeObject],
-                                 NSException,
-                                 @"Illegal Partial Mock",
-                                 @"should throw Illegal Partial Mock exception");
-}
-
 - (void)testForwardsUnstubbedMethodsCallsToRealObjectOnPartialMock
 {
 	TestClassWithSimpleMethod *object = [[[TestClassWithSimpleMethod alloc] init] autorelease];
@@ -126,18 +113,6 @@
 //	mock = [OCMockObject partialMockForObject:[NSString stringWithString:@"hello2"]];
 //	STAssertEqualObjects(@"HELLO2", [mock uppercaseString], @"Should have returned value from real object.");
 //}
-
-- (void)testPartialMockForTaggedPointerThrowsException
-{
-    Class taggedClass = objc_allocateClassPair([NSObject class], [@"__NSTaggedOCMockTestClass" UTF8String], 0);
-    objc_registerClassPair(taggedClass);
-    id taggedObject = [[taggedClass alloc] init];
-
-    XCTAssertThrowsSpecificNamed([OCMockObject partialMockForObject:taggedObject],
-                                 NSException,
-                                 @"Illegal Partial Mock",
-                                 @"should throw Illegal Partial Mock exception");
-}
 
 - (void)testStubsMethodOnRealObjectReference
 {
@@ -184,6 +159,29 @@
 {
 	numKVOCallbacks++;
 }
+
+- (void)testRefusesToCreatePartialMockForTollFreeBridgedClasses
+{
+    id object = (id)CFStringCreateWithCString(kCFAllocatorDefault, "foo", kCFStringEncodingASCII);
+    XCTAssertThrowsSpecificNamed([OCMockObject partialMockForObject:object],
+                                 NSException,
+                                 NSInvalidArgumentException,
+                                 @"should throw NSInvalidArgumentException exception");
+}
+
+#if TARGET_RT_64_BIT
+
+- (void)testRefusesToCreatePartialMockForTaggedPointers
+{
+    NSDate *object = [NSDate dateWithTimeIntervalSince1970:0];
+    XCTAssertThrowsSpecificNamed([OCMockObject partialMockForObject:object],
+                                 NSException,
+                                 NSInvalidArgumentException,
+                                 @"should throw NSInvalidArgumentException exception");
+}
+
+#endif
+
 
 #pragma mark   Tests for KVO interaction with mocks
 

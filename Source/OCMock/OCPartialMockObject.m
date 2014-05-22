@@ -17,27 +17,12 @@
 
 - (id)initWithObject:(NSObject *)anObject
 {
-	[self throwExceptionIfUnsupportedClass:[anObject class]];
+    [self assertClassIsSupported:[anObject class]];
 	[super initWithClass:[anObject class]];
 	realObject = [anObject retain];
     OCMSetAssociatedMockForObject(self, anObject);
 	[self setupSubclassForObject:realObject];
 	return self;
-}
-
-- (void)throwExceptionIfUnsupportedClass:(Class)class
-{
-    static NSString *IllegalPartialMock = @"Illegal Partial Mock";
-    
-    if ([NSStringFromClass(class) hasPrefix:@"__NSTagged"]) {
-        [[NSException exceptionWithName:IllegalPartialMock
-                                reason:@"OCMock does not support partially mocking tagged classes"
-                              userInfo:nil] raise];
-    } else if ([NSStringFromClass(class) hasPrefix:@"NSCF"]) {
-        [[NSException exceptionWithName:IllegalPartialMock
-                                 reason:@"OCMock does not support partially mocking toll-free bridged classes"
-                               userInfo:nil] raise];
-    }
 }
 
 - (void)dealloc
@@ -55,6 +40,21 @@
 - (NSObject *)realObject
 {
 	return realObject;
+}
+
+#pragma mark  Helper methods
+
+- (void)assertClassIsSupported:(Class)class
+{
+    NSString *classname = NSStringFromClass(class);
+    NSString *reason = nil;
+    if([classname hasPrefix:@"__NSTagged"])
+        reason = [NSString stringWithFormat:@"OCMock does not support partially mocking tagged classes; got %@", classname];
+    else if([classname hasPrefix:@"__NSCF"])
+        reason = [NSString stringWithFormat:@"OCMock does not support partially mocking toll-free bridged classes; got %@", classname];
+
+    if(reason != nil)
+        [[NSException exceptionWithName:NSInvalidArgumentException reason:reason userInfo:nil] raise];
 }
 
 

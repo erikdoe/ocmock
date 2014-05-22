@@ -813,7 +813,7 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testPartialMockShouldNotRaiseWhenDescribing
 {
-    mock = [OCMockObject partialMockForObject:@"foo"];
+    mock = [OCMockObject partialMockForObject:[[NSObject alloc] init]];
     
     XCTAssertNoThrow(NSLog(@"Testing description handling dummy methods... %@ %@ %@ %@ %@",
                           @{@"bar": mock},
