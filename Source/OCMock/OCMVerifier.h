@@ -10,6 +10,7 @@
 @interface OCMVerifier : NSProxy
 {
     OCMockObject    *mockObject;
+    BOOL            verifyAsClassMethod;
 }
 
 - (id)initWithMockObject:(OCMockObject *)aMockObject;

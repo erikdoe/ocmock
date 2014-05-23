@@ -8,11 +8,17 @@
 
 @interface TestBaseClassForVerifyAfterRun : NSObject
 
++ (NSString *)classMethod1;
 - (NSString *)method2;
 
 @end
 
 @implementation TestBaseClassForVerifyAfterRun
+
++ (NSString *)classMethod1
+{
+    return @"Foo-ClassMethod";
+}
 
 - (NSString *)method2
 {
@@ -82,5 +88,22 @@
     XCTAssertEqualObjects(@"Foo", string, @"Should have returned value from actual implementation.");
     XCTAssertNoThrow([[mock verify] method2], @"Should not have thrown an exception for method that was called.");
 }
+
+- (void)ignore_testDoesNotThrowWhenClassMethodWasInvoked
+{
+    id mock = [OCMockObject niceMockForClass:[TestBaseClassForVerifyAfterRun class]];
+
+    [TestBaseClassForVerifyAfterRun classMethod1];
+
+    XCTAssertNoThrow([[mock verify] classMethod1], @"Should not have thrown an exception for class method that was called.");
+}
+
+- (void)testThrowsWhenClassMethodWasNotInvoked
+{
+    id mock = [OCMockObject niceMockForClass:[TestBaseClassForVerifyAfterRun class]];
+
+    XCTAssertThrows([[mock verify] classMethod1], @"Should not have thrown an exception for class method that was called.");
+}
+
 
 @end

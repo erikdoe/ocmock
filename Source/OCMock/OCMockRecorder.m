@@ -5,11 +5,8 @@
 
 #import <objc/runtime.h>
 #import <OCMock/OCMockRecorder.h>
-#import <OCMock/OCMArg.h>
-#import <OCMock/OCMConstraint.h>
 #import "OCClassMockObject.h"
 #import "OCMInvocationMatcher.h"
-#import "OCMPassByRefSetter.h"
 #import "OCMReturnValueProvider.h"
 #import "OCMBoxedReturnValueProvider.h"
 #import "OCMExceptionReturnValueProvider.h"
@@ -17,7 +14,6 @@
 #import "OCMNotificationPoster.h"
 #import "OCMBlockCaller.h"
 #import "OCMRealObjectForwarder.h"
-#import "NSInvocation+OCMAdditions.h"
 #import "OCMFunctions.h"
 
 @interface NSObject(HCMatcherDummy)
