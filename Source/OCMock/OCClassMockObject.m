@@ -17,17 +17,13 @@
 {
 	[super init];
 	mockedClass = aClass;
+    [self setupClassForClassMethodMocking];
 	return self;
 }
 
 - (void)dealloc
 {
-	if(replacedClassMethods != nil)
-    {
-		[self stopMocking];
-        OCMSetAssociatedMockForClass(nil, mockedClass);
-        [replacedClassMethods release];
-    }
+	[self stopMocking];
 	[super dealloc];
 }
 
@@ -45,14 +41,18 @@
 
 - (void)stopMocking
 {
-	for(NSString *replacedMethod in replacedClassMethods)
-        [self removeForwarderForClassMethodSelector:NSSelectorFromString(replacedMethod)];
+    if(originalMetaClass != nil)
+    {
+        OCMSetAssociatedMockForClass(nil, mockedClass);
+        OCMSetIsa(mockedClass, originalMetaClass);
+        originalMetaClass = nil;
+    }
+    [super stopMocking];
 }
 
 - (void)prepareForMockingClassMethod:(SEL)aSelector
 {
     [super prepareForMockingClassMethod:aSelector];
-    [self setupClassForClassMethodMocking];
     [self setupForwarderForClassMethodSelector:aSelector];
 }
 
@@ -61,55 +61,38 @@
 
 - (void)setupClassForClassMethodMocking
 {
-    if(replacedClassMethods != nil)
-        return;
-
-    replacedClassMethods = [[NSMutableDictionary alloc] init];
     OCMSetAssociatedMockForClass(self, mockedClass);
 
-    Method method = class_getClassMethod(mockedClass, @selector(forwardInvocation:));
-    IMP originalIMP = method_getImplementation(method);
-    [replacedClassMethods setObject:[NSValue valueWithPointer:originalIMP] forKey:NSStringFromSelector(@selector(forwardInvocation:))];
+    /* dynamically create a subclass and use its meta class as the meta class for the mocked class */
+    /* TODO: this will go badly wrong with tagged pointers */
+    double timestamp = [NSDate timeIntervalSinceReferenceDate];
+    const char *className = [[NSString stringWithFormat:@"%@-%p-%f", NSStringFromClass(mockedClass), mockedClass, timestamp] UTF8String];
+    Class subclass = objc_allocateClassPair(mockedClass, className, 0);
+    objc_registerClassPair(subclass);
+    originalMetaClass = object_getClass(mockedClass);
+    id newMetaClass = object_getClass(subclass);
+    OCMSetIsa(mockedClass, OCMGetIsa(subclass));
 
+    /* point forwardInvocation: of the object to the implementation in the mock */
     Method myForwardMethod = class_getInstanceMethod([self mockObjectClass], @selector(forwardInvocationForClassObject:));
-   	IMP myForwardIMP = method_getImplementation(myForwardMethod);
-    Class metaClass = object_getClass(mockedClass);
-	class_replaceMethod(metaClass, @selector(forwardInvocation:), myForwardIMP, method_getTypeEncoding(myForwardMethod));
+    IMP myForwardIMP = method_getImplementation(myForwardMethod);
+    class_addMethod(newMetaClass, @selector(forwardInvocation:), myForwardIMP, method_getTypeEncoding(myForwardMethod));
 }
 
 
 - (void)setupForwarderForClassMethodSelector:(SEL)selector
 {
-    if([replacedClassMethods objectForKey:NSStringFromSelector(selector)] != nil)
-        return;
-
-    // We're using class_replaceMethod and not method_setImplementation to make sure
-    // the stub is definitely added to the mocked class, and not a superclass. However,
-    // we still get the originalIMP from the method in case it was actually implemented
-    // in a superclass.
     Method method = class_getClassMethod(mockedClass, selector);
     IMP originalIMP = method_getImplementation(method);
-    [replacedClassMethods setObject:[NSValue valueWithPointer:originalIMP] forKey:NSStringFromSelector(selector)];
 
     Class metaClass = object_getClass(mockedClass);
     IMP forwarderIMP = [metaClass instanceMethodForwarderForSelector:selector];
-    class_replaceMethod(metaClass, method_getName(method), forwarderIMP, method_getTypeEncoding(method));
+    class_replaceMethod(metaClass, selector, forwarderIMP, method_getTypeEncoding(method));
     
     SEL aliasSelector = OCMAliasForOriginalSelector(selector);
     class_addMethod(metaClass, aliasSelector, originalIMP, method_getTypeEncoding(method));
 }
 
-- (void)removeForwarderForClassMethodSelector:(SEL)selector
-{
-    IMP originalIMP = [[replacedClassMethods objectForKey:NSStringFromSelector(selector)] pointerValue];
-	if(originalIMP == NULL)
-    {
-        [NSException raise:NSInternalInconsistencyException format:@"%@: Trying to remove stub for class method %@, but no previous implementation available.",
-            [self description], NSStringFromSelector(selector)];
-	}
-    Method method = class_getClassMethod(mockedClass, selector);
-    method_setImplementation(method, originalIMP);
-}
 
 - (void)forwardInvocationForClassObject:(NSInvocation *)anInvocation
 {
@@ -117,8 +100,8 @@
 	OCClassMockObject *mock = OCMGetAssociatedMockForClass((Class)self);
 	if([mock handleInvocation:anInvocation] == NO)
     {
-        // if mock doesn't want to handle the invocation, maybe all expects have occurred, we remove the forwarder and try again
-        [mock removeForwarderForClassMethodSelector:[anInvocation selector]];
+        // if mock doesn't want to handle the invocation, maybe all expects have occurred, we forward to class
+        [anInvocation setSelector:OCMAliasForOriginalSelector([anInvocation selector])];
         [anInvocation invoke];
     }
 }

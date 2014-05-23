@@ -20,15 +20,13 @@
     [self assertClassIsSupported:[anObject class]];
 	[super initWithClass:[anObject class]];
 	realObject = [anObject retain];
-    OCMSetAssociatedMockForObject(self, anObject);
 	[self setupSubclassForObject:realObject];
 	return self;
 }
 
 - (void)dealloc
 {
-	if(realObject != nil)
-		[self stopMocking];
+	[self stopMocking];
 	[super dealloc];
 }
 
@@ -62,11 +60,13 @@
 
 - (void)stopMocking
 {
-	object_setClass(realObject, [self mockedClass]);
-	[realObject release];
-    OCMSetAssociatedMockForObject(nil, realObject);
-	realObject = nil;
-    
+    if(realObject != nil)
+    {
+        OCMSetAssociatedMockForObject(nil, realObject);
+        object_setClass(realObject, [self mockedClass]);
+        [realObject release];
+        realObject = nil;
+    }
     [super stopMocking];
 }
 
@@ -80,6 +80,9 @@
 
 - (void)setupSubclassForObject:(id)anObject
 {
+    OCMSetAssociatedMockForObject(self, anObject);
+
+    /* dynamically create a subclass and set it as the class of the object */
 	Class realClass = [anObject class];
 	double timestamp = [NSDate timeIntervalSinceReferenceDate];
 	const char *className = [[NSString stringWithFormat:@"%@-%p-%f", NSStringFromClass(realClass), anObject, timestamp] UTF8String];
@@ -87,11 +90,13 @@
 	objc_registerClassPair(subclass);
 	object_setClass(anObject, subclass);
 
+    /* point forwardInvocation: of the object to the implementation in the mock */
 	Method myForwardInvocationMethod = class_getInstanceMethod([self mockObjectClass], @selector(forwardInvocationForRealObject:));
 	IMP myForwardInvocationImp = method_getImplementation(myForwardInvocationMethod);
 	const char *forwardInvocationTypes = method_getTypeEncoding(myForwardInvocationMethod);
 	class_addMethod(subclass, @selector(forwardInvocation:), myForwardInvocationImp, forwardInvocationTypes);
 
+    /* do the same for forwardingTargetForSelector */
     Method myForwardingTargetForSelectorMethod = class_getInstanceMethod([self mockObjectClass], @selector(forwardingTargetForSelectorForRealObject:));
     IMP myForwardingTargetForSelectorImp = method_getImplementation(myForwardingTargetForSelectorMethod);
     const char *forwardingTargetForSelectorTypes = method_getTypeEncoding(myForwardingTargetForSelectorMethod);
@@ -104,7 +109,6 @@
     const char *objectClassTypes = method_getTypeEncoding(myObjectClassMethod);
     IMP myObjectClassImp = method_getImplementation(myObjectClassMethod);
     IMP originalClassImp = [realClass instanceMethodForSelector:@selector(class)];
-    
     class_addMethod(subclass, @selector(class), myObjectClassImp, objectClassTypes);
     class_addMethod(subclass, @selector(class_Original), originalClassImp, objectClassTypes);
 
@@ -146,15 +150,6 @@
 
 	SEL aliasSelector = OCMAliasForOriginalSelector(selector);
 	class_addMethod(subclass, aliasSelector, originalImp, types);
-}
-
-- (void)removeForwarderForSelector:(SEL)selector
-{
-    Class subclass = object_getClass([self realObject]);
-    SEL aliasSelector = OCMAliasForOriginalSelector(selector);
-    Method originalMethod = class_getInstanceMethod([self mockedClass], aliasSelector);
-  	IMP originalImp = method_getImplementation(originalMethod);
-    class_replaceMethod(subclass, selector, originalImp, method_getTypeEncoding(originalMethod));
 }
 
 //  Make the compiler happy in -forwardingTargetForSelectorForRealObject: because it can't find the message…

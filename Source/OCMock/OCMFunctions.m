@@ -49,6 +49,19 @@ const char *OCMTypeWithoutQualifiers(const char *objCType)
 }
 
 
+#pragma mark  Directly manipulating the isa pointer (look away)
+
+void OCMSetIsa(id object, Class class)
+{
+    *((Class *)object) = class;
+}
+
+Class OCMGetIsa(id object)
+{
+    return *((Class *)object);
+}
+
+
 #pragma mark  Alias for renaming real methods
 
 NSString *OCMRealMethodAliasPrefix = @"ocmock_replaced_";

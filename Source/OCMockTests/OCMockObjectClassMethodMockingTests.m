@@ -59,7 +59,7 @@
     id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
 
     [[[[mock stub] classMethod] andReturn:@"mocked"] foo];
-    
+
     XCTAssertEqualObjects(@"mocked", [TestClassWithClassMethods foo], @"Should have stubbed class method.");
 }
 
@@ -136,16 +136,13 @@
     XCTAssertEqualObjects(@"mocked-superclass", [TestClassWithClassMethods foo], @"Should have stubbed method");
 }
 
-// The following test does not verify behaviour; it shows a problem. It only passes when run in
-// isolation because otherwise the other tests cause the problem that this test demonstrates.
-
-- (void)_ignore_testShowThatStubbingSuperclassMethodInSubclassLeavesImplementationInSubclass
+- (void)testStubbingIsOnlyActiveAtTheClassItWasAdded
 {
-    // stage 1: stub in superclass affects both superclass and subclass
+    // stage 1: stub in superclass affects only superclass
     id superclassMock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
     [[[[superclassMock stub] classMethod] andReturn:@"mocked-superclass"] foo];
     XCTAssertEqualObjects(@"mocked-superclass", [TestClassWithClassMethods foo], @"Should have stubbed method");
-    XCTAssertEqualObjects(@"mocked-superclass", [TestSubclassWithClassMethods foo], @"Should have stubbed method");
+    XCTAssertEqualObjects(@"Foo-ClassMethod", [TestSubclassWithClassMethods foo], @"Should NOT have stubbed method");
     [superclassMock stopMocking];
 
     // stage 2: stub in subclass affects only subclass
@@ -155,9 +152,7 @@
     XCTAssertEqualObjects(@"mocked-subclass", [TestSubclassWithClassMethods foo], @"Should have stubbed method");
     [subclassMock stopMocking];
 
-    // stage 3: should be like stage 1, but it isn't (see last assert)
-    // This is because the subclass mock can't remove the method added to the subclass in stage 2
-    // and instead has to point the method in the subclass to the real implementation.
+    // stage 3: like stage 1; also demonstrates that subclass cleared all stubs
     id superclassMock2 = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
     [[[[superclassMock2 stub] classMethod] andReturn:@"mocked-superclass"] foo];
     XCTAssertEqualObjects(@"mocked-superclass", [TestClassWithClassMethods foo], @"Should have stubbed method");
