@@ -20,7 +20,7 @@
     [self assertClassIsSupported:[anObject class]];
 	[super initWithClass:[anObject class]];
 	realObject = [anObject retain];
-	[self setupSubclassForObject:realObject];
+    [self prepareObjectForInstanceMethodMocking];
 	return self;
 }
 
@@ -78,85 +78,66 @@
 
 #pragma mark  Subclass management
 
-- (void)setupSubclassForObject:(id)anObject
+- (void)prepareObjectForInstanceMethodMocking
 {
-    OCMSetAssociatedMockForObject(self, anObject);
+    OCMSetAssociatedMockForObject(self, realObject);
 
     /* dynamically create a subclass and set it as the class of the object */
-	Class realClass = [anObject class];
-	double timestamp = [NSDate timeIntervalSinceReferenceDate];
-	const char *className = [[NSString stringWithFormat:@"%@-%p-%f", NSStringFromClass(realClass), anObject, timestamp] UTF8String];
-	Class subclass = objc_allocateClassPair(realClass, className, 0);
-	objc_registerClassPair(subclass);
-	object_setClass(anObject, subclass);
+    Class subclass = OCMCreateSubclass(mockedClass, realObject);
+	object_setClass(realObject, subclass);
 
     /* point forwardInvocation: of the object to the implementation in the mock */
-	Method myForwardInvocationMethod = class_getInstanceMethod([self mockObjectClass], @selector(forwardInvocationForRealObject:));
-	IMP myForwardInvocationImp = method_getImplementation(myForwardInvocationMethod);
-	const char *forwardInvocationTypes = method_getTypeEncoding(myForwardInvocationMethod);
-	class_addMethod(subclass, @selector(forwardInvocation:), myForwardInvocationImp, forwardInvocationTypes);
+	Method myForwardMethod = class_getInstanceMethod([self mockObjectClass], @selector(forwardInvocationForRealObject:));
+	IMP myForwardIMP = method_getImplementation(myForwardMethod);
+    class_addMethod(subclass, @selector(forwardInvocation:), myForwardIMP, method_getTypeEncoding(myForwardMethod));
 
-    /* do the same for forwardingTargetForSelector */
-    Method myForwardingTargetForSelectorMethod = class_getInstanceMethod([self mockObjectClass], @selector(forwardingTargetForSelectorForRealObject:));
-    IMP myForwardingTargetForSelectorImp = method_getImplementation(myForwardingTargetForSelectorMethod);
-    const char *forwardingTargetForSelectorTypes = method_getTypeEncoding(myForwardingTargetForSelectorMethod);
-    IMP originalForwardingTargetForSelectorImp = [realClass instanceMethodForSelector:@selector(forwardingTargetForSelector:)];
-    class_addMethod(subclass, @selector(forwardingTargetForSelector:), myForwardingTargetForSelectorImp, forwardingTargetForSelectorTypes);
-    class_addMethod(subclass, @selector(forwardingTargetForSelector_Original:), originalForwardingTargetForSelectorImp, forwardingTargetForSelectorTypes);
-    
+    /* do the same for forwardingTargetForSelector, remember existing imp with alias selector */
+    Method myForwardingTargetMethod = class_getInstanceMethod([self mockObjectClass], @selector(forwardingTargetForSelectorForRealObject:));
+    IMP myForwardingTargetIMP = method_getImplementation(myForwardingTargetMethod);
+    IMP originalForwardingTargetIMP = [mockedClass instanceMethodForSelector:@selector(forwardingTargetForSelector:)];
+    class_addMethod(subclass, @selector(forwardingTargetForSelector:), myForwardingTargetIMP, method_getTypeEncoding(myForwardingTargetMethod));
+    class_addMethod(subclass, @selector(ocmock_replaced_forwardingTargetForSelector:), originalForwardingTargetIMP, method_getTypeEncoding(myForwardingTargetMethod));
+
     /* We also override the -class method to return the original class */
     Method myObjectClassMethod = class_getInstanceMethod([self mockObjectClass], @selector(classForRealObject));
     const char *objectClassTypes = method_getTypeEncoding(myObjectClassMethod);
     IMP myObjectClassImp = method_getImplementation(myObjectClassMethod);
-    IMP originalClassImp = [realClass instanceMethodForSelector:@selector(class)];
     class_addMethod(subclass, @selector(class), myObjectClassImp, objectClassTypes);
-    class_addMethod(subclass, @selector(class_Original), originalClassImp, objectClassTypes);
 
     /* Adding forwarder for all instance methods to allow for verify after run */
-    NSSet *whitelist = [NSSet setWithObjects:
-            @"class",
-            @"forwardingTargetForSelector:",
-            @"methodSignatureForSelector:",
-            @"forwardInvocation:", nil
-    ];
-    for(Class cls = realClass; cls != nil; cls = class_getSuperclass(cls))
-    {
-        Method *methodList = class_copyMethodList(cls, NULL);
-        if(methodList == NULL)
-            continue;
-        for(Method *mPtr = methodList; *mPtr != NULL; mPtr++)
-        {
-            SEL selector = method_getName(*mPtr);
-            if(![whitelist containsObject:NSStringFromSelector(selector)])
-                [self setupForwarderForSelector:selector];
-        }
-        free(methodList);
-    }
+    NSArray *whiteList = @[@"class", @"forwardingTargetForSelector:", @"methodSignatureForSelector:", @"forwardInvocation:"];
+    [NSObject enumerateMethodsInClass:mockedClass usingBlock:^(SEL selector) {
+        if(![whiteList containsObject:NSStringFromSelector(selector)])
+            [self setupForwarderForSelector:selector];
+    }];
 }
 
 - (void)setupForwarderForSelector:(SEL)selector
 {
-	Class subclass = object_getClass([self realObject]);
-	Method originalMethod = class_getInstanceMethod([self mockedClass], selector);
-	IMP originalImp = method_getImplementation(originalMethod);
-    IMP forwarderImp = [[self mockedClass] instanceMethodForwarderForSelector:selector];
-
-	const char *types = method_getTypeEncoding(originalMethod);
-	/* Might be NULL if the selector is forwarded to another class */
+    Method originalMethod = class_getInstanceMethod(mockedClass, selector);
+	IMP originalIMP = method_getImplementation(originalMethod);
+    const char *types = method_getTypeEncoding(originalMethod);
+    /* Might be NULL if the selector is forwarded to another class */
     // TODO: check the fallback implementation is actually sufficient
     if(types == NULL)
-        types = ([[[self mockedClass] instanceMethodSignatureForSelector:selector] fullObjCTypes]);
-	class_addMethod(subclass, selector, forwarderImp, types);
+        types = ([[mockedClass instanceMethodSignatureForSelector:selector] fullObjCTypes]);
 
+    Class subclass = object_getClass([self realObject]);
+    IMP forwarderIMP = [subclass instanceMethodForwarderForSelector:selector];
+    class_replaceMethod(subclass, selector, forwarderIMP, types);
 	SEL aliasSelector = OCMAliasForOriginalSelector(selector);
-	class_addMethod(subclass, aliasSelector, originalImp, types);
+	class_addMethod(subclass, aliasSelector, originalIMP, types);
 }
 
-//  Make the compiler happy in -forwardingTargetForSelectorForRealObject: because it can't find the message…
-- (id)forwardingTargetForSelector_Original:(SEL)sel
+
+// Implementation of the -class method; return the Class that was reported with [realObject class] prior to mocking
+- (Class)classForRealObject
 {
-    return nil;
+    // in here "self" is a reference to the real object, not the mock
+    OCPartialMockObject *mock = OCMGetAssociatedMockForObject(self);
+    return [mock mockedClass];
 }
+
 
 - (id)forwardingTargetForSelectorForRealObject:(SEL)sel
 {
@@ -165,8 +146,15 @@
     if([mock handleSelector:sel])
         return self;
 
-    return [self forwardingTargetForSelector_Original:sel];
+    return [self ocmock_replaced_forwardingTargetForSelector:sel];
 }
+
+//  Make the compiler happy in -forwardingTargetForSelectorForRealObject: because it can't find the message…
+- (id)ocmock_replaced_forwardingTargetForSelector:(SEL)sel
+{
+    return nil;
+}
+
 
 - (void)forwardInvocationForRealObject:(NSInvocation *)anInvocation
 {
@@ -177,23 +165,6 @@
         [anInvocation setSelector:OCMAliasForOriginalSelector([anInvocation selector])];
         [anInvocation invoke];
     }
-}
-
-// Make the compiler happy; we add a method with this name to the real class
-- (Class)class_Original
-{
-    return nil;
-}
-
-// Implementation of the -class method; return the Class that was reported with [realObject class] prior to mocking
-- (Class)classForRealObject
-{
-    // "self" is the real object, not the mock
-    OCPartialMockObject *mock = OCMGetAssociatedMockForObject(self);
-    if (mock != nil)
-        return [mock mockedClass];
-
-    return [self class_Original];
 }
 
 

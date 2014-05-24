@@ -49,6 +49,17 @@ const char *OCMTypeWithoutQualifiers(const char *objCType)
 }
 
 
+#pragma mark  Creating classes
+
+Class OCMCreateSubclass(Class class, void *ref)
+{
+    double timestamp = [NSDate timeIntervalSinceReferenceDate];
+    const char *className = [[NSString stringWithFormat:@"%@-%p-%f", NSStringFromClass(class), ref, timestamp] UTF8String];
+    Class subclass = objc_allocateClassPair(class, className, 0);
+    objc_registerClassPair(subclass);
+    return subclass;
+}
+
 #pragma mark  Directly manipulating the isa pointer (look away)
 
 void OCMSetIsa(id object, Class class)

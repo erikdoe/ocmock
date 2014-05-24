@@ -23,4 +23,21 @@
     return class_getMethodImplementation(self, selectorWithNoImplementation);
 }
 
+
++ (void)enumerateMethodsInClass:(Class)aClass usingBlock:(void (^)(SEL selector))aBlock
+{
+    for(Class cls = aClass; cls != nil; cls = class_getSuperclass(cls))
+    {
+        Method *methodList = class_copyMethodList(cls, NULL);
+        if(methodList == NULL)
+            continue;
+        for(Method *mPtr = methodList; *mPtr != NULL; mPtr++)
+        {
+            SEL selector = method_getName(*mPtr);
+            aBlock(selector);
+        }
+        free(methodList);
+    }
+}
+
 @end

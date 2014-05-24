@@ -17,7 +17,7 @@
 {
 	[super init];
 	mockedClass = aClass;
-    [self setupClassForClassMethodMocking];
+    [self prepareClassForClassMethodMocking];
 	return self;
 }
 
@@ -50,16 +50,10 @@
     [super stopMocking];
 }
 
-- (void)prepareForMockingClassMethod:(SEL)aSelector
-{
-    [super prepareForMockingClassMethod:aSelector];
-//    [self setupForwarderForClassMethodSelector:aSelector];
-}
-
 
 #pragma mark  Class method mocking
 
-- (void)setupClassForClassMethodMocking
+- (void)prepareClassForClassMethodMocking
 {
     /* haven't figured out how to work around runtime dependencies on NSString, so exclude it for now */
     /* also weird: [[NSString class] isKindOfClass:[NSString class]] is false, hence the additional clause */
@@ -69,10 +63,7 @@
     OCMSetAssociatedMockForClass(self, mockedClass);
 
     /* dynamically create a subclass and use its meta class as the meta class for the mocked class */
-    double timestamp = [NSDate timeIntervalSinceReferenceDate];
-    const char *className = [[NSString stringWithFormat:@"%@-%p-%f", NSStringFromClass(mockedClass), mockedClass, timestamp] UTF8String];
-    Class subclass = objc_allocateClassPair(mockedClass, className, 0);
-    objc_registerClassPair(subclass);
+    Class subclass = OCMCreateSubclass(mockedClass, mockedClass);
     originalMetaClass = object_getClass(mockedClass);
     id newMetaClass = object_getClass(subclass);
     OCMSetIsa(mockedClass, OCMGetIsa(subclass));
@@ -83,40 +74,24 @@
     class_addMethod(newMetaClass, @selector(forwardInvocation:), myForwardIMP, method_getTypeEncoding(myForwardMethod));
 
     /* adding forwarder for all class methods (instance methods on meta class) to allow for verify after run */
-    NSSet *methodWhiteList = [NSSet setWithObjects:
-            @"class",
-            @"forwardingTargetForSelector:",
-            @"methodSignatureForSelector:",
-            @"forwardInvocation:",
-            nil
-    ];
-    for(Class cls = originalMetaClass; cls != nil; cls = class_getSuperclass(cls))
-    {
-        Method *methodList = class_copyMethodList(cls, NULL);
-        if(methodList == NULL)
-            continue;
-        for(Method *mPtr = methodList; *mPtr != NULL; mPtr++)
-        {
-            SEL selector = method_getName(*mPtr);
-            if(![methodWhiteList containsObject:NSStringFromSelector(selector)])
+    NSArray *whiteList = @[@"class", @"forwardingTargetForSelector:", @"methodSignatureForSelector:", @"forwardInvocation:"];
+    [NSObject enumerateMethodsInClass:originalMetaClass usingBlock:^(SEL selector) {
+            if(![whiteList containsObject:NSStringFromSelector(selector)])
                 [self setupForwarderForClassMethodSelector:selector];
-        }
-        free(methodList);
-    }
+    }];
 }
-
 
 - (void)setupForwarderForClassMethodSelector:(SEL)selector
 {
-    Method method = class_getClassMethod(mockedClass, selector);
-    IMP originalIMP = method_getImplementation(method);
+    Method originalMethod = class_getClassMethod(mockedClass, selector);
+    IMP originalIMP = method_getImplementation(originalMethod);
+    const char *types = method_getTypeEncoding(originalMethod);
 
     Class metaClass = object_getClass(mockedClass);
     IMP forwarderIMP = [metaClass instanceMethodForwarderForSelector:selector];
-    class_replaceMethod(metaClass, selector, forwarderIMP, method_getTypeEncoding(method));
-    
+    class_replaceMethod(metaClass, selector, forwarderIMP, types);
     SEL aliasSelector = OCMAliasForOriginalSelector(selector);
-    class_addMethod(metaClass, aliasSelector, originalIMP, method_getTypeEncoding(method));
+    class_addMethod(metaClass, aliasSelector, originalIMP, types);
 }
 
 

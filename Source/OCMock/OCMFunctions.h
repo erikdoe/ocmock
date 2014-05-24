@@ -12,6 +12,8 @@
 BOOL OCMIsObjectType(const char *objCType);
 const char *OCMTypeWithoutQualifiers(const char *objCType);
 
+Class OCMCreateSubclass(Class class, void *ref);
+
 void OCMSetIsa(id object, Class class);
 Class OCMGetIsa(id object);
 
