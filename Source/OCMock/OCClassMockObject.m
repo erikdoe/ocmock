@@ -53,7 +53,7 @@
 - (void)prepareForMockingClassMethod:(SEL)aSelector
 {
     [super prepareForMockingClassMethod:aSelector];
-    [self setupForwarderForClassMethodSelector:aSelector];
+//    [self setupForwarderForClassMethodSelector:aSelector];
 }
 
 
@@ -61,10 +61,14 @@
 
 - (void)setupClassForClassMethodMocking
 {
+    /* haven't figured out how to work around runtime dependencies on NSString, so exclude it for now */
+    /* also weird: [[NSString class] isKindOfClass:[NSString class]] is false, hence the additional clause */
+    if([[mockedClass class] isKindOfClass:[NSString class]] || (mockedClass == [NSString class]))
+        return;
+
     OCMSetAssociatedMockForClass(self, mockedClass);
 
     /* dynamically create a subclass and use its meta class as the meta class for the mocked class */
-    /* TODO: this will go badly wrong with tagged pointers */
     double timestamp = [NSDate timeIntervalSinceReferenceDate];
     const char *className = [[NSString stringWithFormat:@"%@-%p-%f", NSStringFromClass(mockedClass), mockedClass, timestamp] UTF8String];
     Class subclass = objc_allocateClassPair(mockedClass, className, 0);
@@ -77,6 +81,28 @@
     Method myForwardMethod = class_getInstanceMethod([self mockObjectClass], @selector(forwardInvocationForClassObject:));
     IMP myForwardIMP = method_getImplementation(myForwardMethod);
     class_addMethod(newMetaClass, @selector(forwardInvocation:), myForwardIMP, method_getTypeEncoding(myForwardMethod));
+
+    /* adding forwarder for all class methods (instance methods on meta class) to allow for verify after run */
+    NSSet *methodWhiteList = [NSSet setWithObjects:
+            @"class",
+            @"forwardingTargetForSelector:",
+            @"methodSignatureForSelector:",
+            @"forwardInvocation:",
+            nil
+    ];
+    for(Class cls = originalMetaClass; cls != nil; cls = class_getSuperclass(cls))
+    {
+        Method *methodList = class_copyMethodList(cls, NULL);
+        if(methodList == NULL)
+            continue;
+        for(Method *mPtr = methodList; *mPtr != NULL; mPtr++)
+        {
+            SEL selector = method_getName(*mPtr);
+            if(![methodWhiteList containsObject:NSStringFromSelector(selector)])
+                [self setupForwarderForClassMethodSelector:selector];
+        }
+        free(methodList);
+    }
 }
 
 
@@ -100,7 +126,6 @@
 	OCClassMockObject *mock = OCMGetAssociatedMockForClass((Class)self);
 	if([mock handleInvocation:anInvocation] == NO)
     {
-        // if mock doesn't want to handle the invocation, maybe all expects have occurred, we forward to class
         [anInvocation setSelector:OCMAliasForOriginalSelector([anInvocation selector])];
         [anInvocation invoke];
     }

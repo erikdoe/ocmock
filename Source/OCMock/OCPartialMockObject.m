@@ -174,7 +174,6 @@
     OCPartialMockObject *mock = OCMGetAssociatedMockForObject(self);
 	if([mock handleInvocation:anInvocation] == NO)
     {
-        // if mock doesn't want to handle the invocation, maybe all expects have occurred, we forward to real object
         [anInvocation setSelector:OCMAliasForOriginalSelector([anInvocation selector])];
         [anInvocation invoke];
     }

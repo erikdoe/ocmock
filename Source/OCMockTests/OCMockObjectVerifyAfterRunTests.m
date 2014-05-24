@@ -89,7 +89,7 @@
     XCTAssertNoThrow([[mock verify] method2], @"Should not have thrown an exception for method that was called.");
 }
 
-- (void)ignore_testDoesNotThrowWhenClassMethodWasInvoked
+- (void)testDoesNotThrowWhenClassMethodWasInvoked
 {
     id mock = [OCMockObject niceMockForClass:[TestBaseClassForVerifyAfterRun class]];
 
@@ -104,6 +104,5 @@
 
     XCTAssertThrows([[mock verify] classMethod1], @"Should not have thrown an exception for class method that was called.");
 }
-
 
 @end
