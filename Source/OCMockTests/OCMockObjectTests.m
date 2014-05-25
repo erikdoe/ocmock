@@ -351,9 +351,59 @@ static NSString *TestNotification = @"TestNotification";
 	XCTAssertEqual(42, returnValue, @"Should have returned stubbed value.");
 }
 
+- (void)testReturnsStubbedUnsignedLongReturnValue
+{
+    mock = [OCMockObject mockForClass:[NSNumber class]];
+    [[[mock expect] andReturnValue:@42LU] unsignedLongValue];
+    unsigned long returnValue = [mock unsignedLongValue];
+    XCTAssertEqual(returnValue, 42LU, @"Should have returned stubbed value.");
+
+    [[[mock expect] andReturnValue:@42] unsignedLongValue];
+    returnValue = [mock unsignedLongValue];
+    XCTAssertEqual(returnValue, 42LU, @"Should have returned stubbed value.");
+
+    [[[mock expect] andReturnValue:@42.0] unsignedLongValue];
+    returnValue = [mock unsignedLongValue];
+    XCTAssertEqual(returnValue, 42LU, @"Should have returned stubbed value.");
+
+    [[[mock expect] andReturnValue:OCMOCK_VALUE((char)42)] unsignedLongValue];
+    returnValue = [mock unsignedLongValue];
+    XCTAssertEqual(returnValue, 42LU, @"Should have returned stubbed value.");
+
+    [[[mock expect] andReturnValue:OCMOCK_VALUE((float)42)] unsignedLongValue];
+    returnValue = [mock unsignedLongValue];
+    XCTAssertEqual(returnValue, 42LU, @"Should have returned stubbed value.");
+
+    [[[mock expect] andReturnValue:OCMOCK_VALUE((float)42.5)] unsignedLongValue];
+    XCTAssertThrows([mock unsignedLongValue], @"Should not be able to convert non-integer float to long");
+
+#if !__LP64__
+    [[[mock expect] andReturnValue:OCMOCK_VALUE((long long)LLONG_MAX)] unsignedLongValue];
+    XCTAssertThrows([mock unsignedLongValue], @"Should not be able to convert large long long to long");
+#endif
+}
+
+- (void)testReturnsStubbedBoolReturnValue
+{
+    [[[mock expect] andReturnValue:@YES] boolValue];
+    BOOL returnValue = [mock boolValue];
+    XCTAssertEqual(returnValue, YES, @"Should have returned stubbed value.");
+
+    [[[mock expect] andReturnValue:OCMOCK_VALUE(YES)] boolValue];
+    returnValue = [mock boolValue];
+    XCTAssertEqual(returnValue, YES, @"Should have returned stubbed value.");
+
+    [[[mock expect] andReturnValue:OCMOCK_VALUE(1)] boolValue];
+    returnValue = [mock boolValue];
+    XCTAssertEqual(returnValue, YES, @"Should have returned stubbed value.");
+
+    [[[mock expect] andReturnValue:OCMOCK_VALUE(300)] boolValue];
+    XCTAssertThrows([mock boolValue], @"Should not be able to convert large integer into BOOL");
+}
+
 - (void)testRaisesWhenBoxedValueTypesDoNotMatch
 {
-	[[[mock stub] andReturnValue:@42.0] intValue];
+	[[[mock stub] andReturnValue:[NSValue valueWithRange:NSMakeRange(0, 0)]] intValue];
 
 	XCTAssertThrows([mock intValue], @"Should have raised an exception.");
 }
