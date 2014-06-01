@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Introduction
+title: Introduction to mock objects
 tags: []
 status: publish
 type: page
@@ -17,52 +17,45 @@ nosidebar: true
 
 <h3>The example</h3>
 
-<p>To make this more concrete let's assume we are writing a little application that receives tweets from Twitter. We have a controller class, which for the purpose of this example we just call <code>Controller</code>, and another class that wraps the calls to Twitter's API, which we call <code>TwitterConnection</code>. 
+<p>To make this more concrete let's assume we are writing a little application that receives tweets from Twitter. We have a controller class, which for the purpose of this example we just call <code>Controller</code>, a class that handles the calls to the Twitter API, called <code>TwitterConnection</code>, and a class called <code>TweetView</code> that can display tweets. 
 	
-<p>The controller has references to the connection and to a view that displays the tweets. It also has a property with which the search term can be set and a method to display the tweets.
+<p>The controller has references to the connection and the tweet view. 
 			
 {% highlight objc %}
 @interface Controller
 
 @property(retain) TwitterConnection *connection;
 @property(retain) TweetView *tweetView;
-@property(retain) NSString *searchTerm;
 
-- (void)displayTweets;
+- (void)updateTweetView;
 
 @end
 {% endhighlight objc %}	
 
-<p>The interface for <code>TwitterConnection</code> looks like this:
+<p>The interface for <code>TwitterConnection</code> has a method to retrieve new tweets. It returns an array of <code>Tweet</code> objects, or <code>nil</code> if the request could not be handled.
 
 {% highlight objc %}
 @interface TwitterConnection 
 
-- (NSArray *)retrieveTweetsForSearchTerm:(NSString *)searchTerm;
+- (NSArray *)fetchTweets;
 
 @end
 {% endhighlight objc %}	
 
-<p>The method takes a search term and returns an array of <code>Tweet</code> objects, or <code>nil</code> if the request could not be handled.
-
-<p>Back in the <code>Controller</code> the <code>displayTweets</code> method looks like this:
+<p>The interface for <code>TweetView</code> has a method to add individual tweets to the view.
 
 {% highlight objc %}
-- (void)displayTweets
-{
-  NSArray *tweets = [connection retrieveTweetsForSearchTerm:searchTerm];
-  if (tweets != nil) {
-    for (Tweet t in tweets)
-      [tweetView addTweet:t];
-  } else {
-    /* handle error cases */
-  }
-}
+@interface TweetView 
+
+- (void)addTweet:(Tweet *)aTweet;
+
+@end
 {% endhighlight objc %}	
+
 	
 <h3>Why use mocks for the test</h3>  
 
-<p>If we want to test the code in <code>displayTweets</code> we could instantiate a real <code>TwitterConnection</code> and use that. This would lead to a few problems, though:
+<p>When writing a unit test for <code>updateTweetView</code> we have to decide what to do about the controller's dependencies, the connection and the view. In the case of the connection we could instantiate a real <code>TwitterConnection</code> and use that. This would lead to a few problems, though:
 <ul>
   <li>Using a real connection would make the test slow.
   <li>We never really know what Twitter returns at any given moment.
@@ -79,34 +72,46 @@ nosidebar: true
 {% highlight objc %}
 - (void)testDisplaysTweetsRetrievedFromConnection
 {
-  Controller *controller = [[Controller alloc] init];
+  Controller *controller = [[[Controller alloc] init] autorelease];
 
   id mockConnection = OCMClassMock([TwitterConnection class]);
   controller.connection = mockConnection;
 
   Tweet *testTweet = /* create a tweet somehow */;   
   NSArray *tweetArray = [NSArray arrayWithObject:testTweet];
-  OCMStub([mockConnection retrieveTweetsForSearchTerm:[OCMArg any]]).andReturn(tweetArray);
+  OCMStub([mockConnection fetchTweets]).andReturn(tweetArray);
 
-  [controller displayTweets];
+  [controller updateTweetView];
 }
 
 {% endhighlight objc %}	
 
-<p>The test creates a controller and a mock connection. The controller doesn't know that the connection is not a real connection.
+<p>The test creates a controller and a mock connection. The controller doesn't know that the connection is not a real connection. The mock connection has a stub for the <code>fetchTweets</code> method, which is set up to return an array with a test tweet.
+
+<p>We can now begin to implement the <code>updateTweetView</code> method like this:
+ 
+{% highlight objc %}
+- (void)updateTweetView
+{
+  NSArray *tweets = [connection fetchTweets];
+  if (tweets != nil) {
+    /* display tweets */
+  } else {
+    /* handle error cases */
+  }
+}
+{% endhighlight objc %}	
   
-<p>The mock connection has a stub for the <code>retrieveTweetsForSearchTerm:</code> method, which is set up to return an array with the test tweet. The <code>[OCMArg any]</code> parameter simply tells OCMock to match all invocations of the method, no matter what argument is passed. We'll return to this later.	
-  
-<p>When <code>displayTweets</code> is called at the end of the test, the controller calls  <code>retrieveTweetsForSearchTerm:</code> on the connection, which is, of course, our mock that returns the array with the test tweet. So far, so good.
+<p>When running the test it calls <code>updateTweetView</code> on the controller, which in turn calls <code>fetchTweets</code> on the connection. The connection is our mock, which returns the array with the test tweet. So far, so good.
 
 
 <h2 id="simplemock">Next step: Verifying interactions with a mock object</h2>	
 	
-<p>In contrast to stubs, which simply provide canned answers, mocks are set up with expectations that form a specification of the calls they are expected to receive. In our case they come in handy when we want to ensure that the controller makes the calls to the view.
+<p>In contrast to stubs, which simply provide canned answers, mocks are used to verify interactions. In our case mocks come in handy when we want to ensure that the controller makes the calls to the view.
   
 <h3>Expanding the unit test with a mock</h3>
 
-<p>We're adding a few lines to set up a mock view and to verify the controller's interaction with it:
+<p>Returning to the test we add a few lines to set up a mock view and to verify the controller's interaction with it:
 	
 {% highlight objc %}
 - (void)testDisplaysTweetsRetrievedFromConnection
@@ -123,7 +128,7 @@ nosidebar: true
   id mockView = OCMClassMock([TweetView class]);
   controller.tweetView = mockView;
 
-  [controller displayTweets];
+  [controller updateTweetView];
   
   OCMVerify([mockView addTweet:[OCMArg any]]);
 }
@@ -132,12 +137,31 @@ nosidebar: true
 
 <p>The creation of the mock view is no different from the creation of the mock conntection above and, again, the controller doesn't know that it is connected to a mock and not a real <code>TweetView</code> instance.
 	
-<p>After calling <code>displayTweets</code> the test verifies that the <code>addTweet:</code> method was invoked. With the implementation of <code>displayTweets</code> shown above the test passes. If we remove the <code>addTweet:</code> call from the <code>displayTweets</code> method then the test will fail, reporting that an expected method was not invoked. In Xcode and AppCode the error is reported on the line of the verify.
+<p>The call to <code>updateTweetView</code> remains unchanged, too. After it, though, the test verifies that the <code>addTweet:</code> method was actually invoked, presumably as a result of the test invoking the <code>updateTweetView</code> method. 
+  
+<p>In the verify the test uses <code>[OCMArg any]</code> to tell the mock object that <code>addTweet:</code> can be called with any argument. It doesn't matter what tweet object is passed.
+  
+<p>We can now extend the implementation of <code>updateTweetView</code> like this:
+  
+{% highlight objc %}
+- (void)updateTweetView
+{
+  NSArray *tweets = [connection fetchTweets];
+  if (tweets != nil) {
+    for (Tweet t in tweets)
+      [tweetView addTweet:t];
+  } else {
+    /* handle error cases */
+  }
+}
+{% endhighlight objc %}	
+  
+<p>With this implementation the test passes. If we remove the <code>addTweet:</code> call from the <code>updateTweetView</code> method then the test will fail, reporting that an expected method was not invoked. In Xcode and AppCode the error is reported on the line of the verify.
   
 
 <h3>Improving the test with argument matching</h3>  
   
-<p>This test can be improved. At written above it passes as long as the controller invokes the <code>addTweet:</code> method. The controller could pass a wrong tweet, or even nil, and the test would still pass. To improve this we use a simple argument constraint by modifying the verification:
+<p>This test can be improved. As written above it passes as long as the controller invokes the <code>addTweet:</code> method. The controller could pass a wrong tweet, or even nil, and the test would still pass. To improve this we use a simple argument constraint by modifying the verification:
 	
 {% highlight objc %}
   OCMVerify([mockView addTweet:testTweet]);
@@ -152,5 +176,5 @@ nosidebar: true
 <ul>
 	<li>Check out <a href="{{ site.baseurl }}/features">all the features</a> that OCMock offers.
 	<li>Browse through the <a href="{{ site.baseurl }}/tutorials">tutorials</a> written by OCMock users.
-	<li>Read why <a href="http://martinfowler.com/articles/mocksArentStubs.html">Mocks aren't stubs</a>. OCMock supports both, stubs and mocks.
+	<li>Read Martin Fowler's article on why <a href="http://martinfowler.com/articles/mocksArentStubs.html">Mocks aren't stubs</a>. OCMock supports both, stubs and mocks.
 </ul>
