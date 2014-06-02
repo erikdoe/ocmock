@@ -8,11 +8,10 @@ published: true
 ---
 <h1>{{ page.title }}</h1>
 
-<h2>
-	Stable Releases
-</h2>
-<p>The disk images countain source code and binaries. The binaries are built with the SDKs corresponding to the highest version numbers listed in the platforms field. They are built for deployment on systems that run at least the lowest version listed. It is usually possible to build a given version of OCMock from source for older versions of OS X or iOS, at the expense of losing some features.
+<h2>Stable Releases</h2>
 
+<p>The disk images countain source code and binaries. The binaries are built with the SDKs corresponding to the highest version numbers listed in the platforms field. They are built for deployment on systems that run at least the lowest version listed.
+  
 <table>
 	<tr>
 		<th>Release</th>
@@ -21,16 +20,16 @@ published: true
 		<th>File</th>
 	</tr>
 	<tr>
+		<td>OCMock 3.0</td>
+		<td>Xcode 5.1.1, OS X 10.6&ndash;10.9, iOS 5&ndash;7.1 (incl. ARM 64-bit)</td>
+		<td>&nbsp;</td>
+		<td><a href="{{ site.baseurl }}/downloads/ocmock-3.0.dmg">ocmock-3.0.dmg</a></td>
+	</tr>
+	<tr>
 		<td>OCMock 2.2.4</td>
 		<td>Xcode 5.1, OS X 10.6&ndash;10.9, iOS 5&ndash;7.1 (incl. ARM 64-bit)</td>
 		<td>4-Apr-2014</td>
 		<td><a href="{{ site.baseurl }}/downloads/ocmock-2.2.4.dmg">ocmock-2.2.4.dmg</a></td>
-	</tr>
-	<tr>
-		<td>OCMock 2.2.3</td>
-		<td>Xcode 5.0.2, OS X 10.6&ndash;10.9, iOS 5&ndash;7 (incl. ARM 64-bit)</td>
-		<td>6-Jan-2014</td>
-		<td><a href="{{ site.baseurl }}/downloads/ocmock-2.2.3.dmg">ocmock-2.2.3.dmg</a></td>
 	</tr>
 	<tr>
 		<td>OCMock 2.0.1</td>
@@ -40,75 +39,50 @@ published: true
 	</tr>
 </table>
 
-<h2>
-	Development Releases
-</h2>
-<p>The milestone releases are not stable production releases. Use them with caution. They may contain known bugs, and breaking API changes may occur between the milestone releases and the first stable release of OCMock&nbsp;3. For details please refer to the <a href="/ocmock3">roadmap</a>.
-	
-<table>
-	<tr>
-		<th>Release</th>
-		<th>Platforms</th>
-		<th>Date</th>
-		<th>File</th>
-	</tr>
-	<tr>
-		<td>OCMock 3.0.M3</td>
-		<td>Xcode 5.1.1, OS X 10.6&ndash;10.9, iOS 5&ndash;7.1</td>
-		<td>31-May-2014</td>
-		<td><a href="{{ site.baseurl }}/downloads/ocmock-3.0.M3.dmg">ocmock-3.0.M3.dmg</a></td>
-	</tr>
-	<tr>
-		<td>OCMock 3.0.M2</td>
-		<td>Xcode 5.1.1, OS X 10.6&ndash;10.9, iOS 5&ndash;7.1</td>
-		<td>07-May-2014</td>
-		<td><a href="{{ site.baseurl }}/downloads/ocmock-3.0.M2.dmg">ocmock-3.0.M2.dmg</a></td>
-	</tr>
-	<tr>
-		<td>OCMock 3.0.M1</td>
-		<td>Xcode 5.1.1, OS X 10.6&ndash;10.9, iOS 5&ndash;7.1</td>
-		<td>26-Apr-2014</td>
-		<td><a href="{{ site.baseurl }}/downloads/ocmock-3.0.M1.dmg">ocmock-3.0.M1.dmg</a></td>
-	</tr>
-</table>
 
-<h2>
-	Source code
-</h2>
-<p>
-	The source code for OCMock is available on GitHub 
+<h2>Source code</h2>
+
+<p>The source code for OCMock is available on GitHub 
 	<span id="cistatus"><a href="https://travis-ci.org/erikdoe/ocmock"><img src="https://travis-ci.org/erikdoe/ocmock.png?branch=master"></a></span>
-</p>                                                                              
-<code> 
-	&nbsp;&nbsp;<a href="https://github.com/erikdoe/ocmock">https://github.com/erikdoe/ocmock</a>
-</code>
-<p>  
-	It is built and tests are run by Travis CI. The current status is shown above on the right. If this isn't showing <i>passing</i>, chances are the code is currently not building correctly and we're busy trying to fix it. In all other cases, a local build from source should work.
-</p>
-<p>
-	The easiest way to build OCMock from source is to use the supplied build script.
-</p>
+  
+<p><code>&nbsp;&nbsp;<a href="https://github.com/erikdoe/ocmock">https://github.com/erikdoe/ocmock</a></code>
+
+<p>It is built and tests are run by Travis CI. The current status is shown above on the right. If this isn't showing <i>passing</i>, chances are the code is currently not building correctly and we're busy trying to fix it. In all other cases, a local build from source should work.
+  
+<p>The easiest way to build OCMock from source is to use the supplied build script.
+  
 <pre><code>cd Tools
 ruby build.rb
 </code></pre>	
-<p>
-	Running this script should create binary versions of the OCMock framework and library in a directory under <code>/tmp</code>. When the build is complete a finder window for the directory should open up automatically.
-</p>
-<p>
-	If you pass the <code>-r</code> flag to the script it creates a disk image with all the artefacts in it. This is what we use to create the binary distribution. 
-</p>
-<p>
-	If you have switched compilers using the <code>CC</code> enviromnent variable the build might fail. In such cases, please reset the variable before running the script.
-</p>
-<h2>
-	License
-</h2>
-<p>
-	Copyright (c) 2004 - 2014 by Mulle Kybernetik. All rights reserved.
-</p>
-<p>
-	Permission to use, copy, modify and distribute this software and its documentation is hereby granted, provided that both the copyright notice and this permission notice appear in all copies of the software, derivative works or modified versions, and any portions thereof, and that both notices appear in supporting documentation, and that credit is given to Mulle Kybernetik in all documents and publicity pertaining to direct or indirect use of this code or its derivatives.
-</p>
-<p>
-	THIS IS EXPERIMENTAL SOFTWARE AND IT IS KNOWN TO HAVE BUGS, SOME OF WHICH MAY HAVE SERIOUS CONSEQUENCES. THE COPYRIGHT HOLDER ALLOWS FREE USE OF THIS SOFTWARE IN ITS "AS IS" CONDITION. THE COPYRIGHT HOLDER DISCLAIMS ANY LIABILITY OF ANY KIND FOR ANY DAMAGES WHATSOEVER RESULTING DIRECTLY OR INDIRECTLY FROM THE USE OF THIS SOFTWARE OR OF ANY DERIVATIVE WORK.
-</p>
+
+<p>Running this script should create binary versions of the OCMock framework and library in a directory under <code>/tmp</code>. When the build is complete a Finder window for the directory should open up automatically.
+  
+<p>If you pass the <code>-r</code> flag to the script it creates a disk image with all the artefacts in it. This is what we use to create the binary releases. 
+  
+<p>If you have switched compilers using the <code>CC</code> enviromnent variable the build might fail. In such cases, please reset the variable before running the script.
+  
+
+<h2>License for OCMock 3.x</h2>
+
+<p>Copyright (c) 2004-2014 Erik Doernenburg and contributors
+
+<p>Licensed under the Apache License, Version 2.0 (the "License"); you may
+  not use these files except in compliance with the License. You may obtain
+  a copy of the License at
+
+<p><a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a>
+
+<p>Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+  License for the specific language governing permissions and limitations
+  under the License.
+
+
+<h2>License for OCMock 1.x and 2.x</h2>
+
+<p>Copyright (c) 2004 - 2014 by Mulle Kybernetik. All rights reserved.
+  
+<p>Permission to use, copy, modify and distribute this software and its documentation is hereby granted, provided that both the copyright notice and this permission notice appear in all copies of the software, derivative works or modified versions, and any portions thereof, and that both notices appear in supporting documentation, and that credit is given to Mulle Kybernetik in all documents and publicity pertaining to direct or indirect use of this code or its derivatives.
+  
+<p>THIS IS EXPERIMENTAL SOFTWARE AND IT IS KNOWN TO HAVE BUGS, SOME OF WHICH MAY HAVE SERIOUS CONSEQUENCES. THE COPYRIGHT HOLDER ALLOWS FREE USE OF THIS SOFTWARE IN ITS "AS IS" CONDITION. THE COPYRIGHT HOLDER DISCLAIMS ANY LIABILITY OF ANY KIND FOR ANY DAMAGES WHATSOEVER RESULTING DIRECTLY OR INDIRECTLY FROM THE USE OF THIS SOFTWARE OR OF ANY DERIVATIVE WORK.
