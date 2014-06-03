@@ -74,7 +74,7 @@ p {
 code {
 	font-family: "Menlo", monospace;
 	font-size: 0.857em; 
-	line-height: 1.3em;
+	line-height: 1.5em;
 	color: #444;
 }
 
@@ -250,12 +250,13 @@ div#masthead header a:hover {
 
 div#masthead {
     background: #AAA;
-    border-top: 4px solid #888;
+    border-bottom: 3px solid #777;
+    margin-bottom: 1.5em;
 }
 
 div#masthead nav ul {
 	max-width: 980px;
-	margin: 0 auto 1.5em auto;
+	margin: 0 auto 0.3em auto;
 	padding: 2em 2em 0.5em 2em;
 /*    border-bottom: 1px solid #CCC;*/
 }
