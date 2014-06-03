@@ -248,11 +248,16 @@ div#masthead header a:hover {
 
 /* masthead navigation */
 
+div#masthead {
+    background: #AAA;
+    border-top: 4px solid #888;
+}
+
 div#masthead nav ul {
 	max-width: 980px;
-	margin: 2.5em auto 1em auto;
-	padding: 0 2em 0.3em 2em;
-	border-bottom: 1px solid #CCC;
+	margin: 0 auto 1.5em auto;
+	padding: 2em 2em 0.5em 2em;
+/*    border-bottom: 1px solid #CCC;*/
 }
 
 div#masthead nav li {
@@ -283,8 +288,8 @@ div#footernav, div#footercopy {
 	background: #CCC;
 }
 
-div#footernav, div#footercopy footer {
-	border-top: 1px solid #AAA
+div#footercopy footer {
+    border-top: 1px solid #AAA;
 }
 
 div#footernav nav div.navblock {
