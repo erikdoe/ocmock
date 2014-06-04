@@ -249,15 +249,19 @@ div#masthead header a:hover {
 /* masthead navigation */
 
 div#masthead {
-    background: #AAA;
-    border-bottom: 3px solid #777;
+    background: #F3BB36;
+    border-top: 3px solid #D28C25;
     margin-bottom: 1.5em;
+}
+
+#logo {
+    margin-bottom: -3px;
 }
 
 div#masthead nav ul {
 	max-width: 980px;
-	margin: 0 auto 0.3em auto;
-	padding: 2em 2em 0.5em 2em;
+	margin: 0 auto 0.5em auto;
+	padding: 2em 2em 0.7em 2em;
 /*    border-bottom: 1px solid #CCC;*/
 }
 
