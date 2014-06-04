@@ -20,7 +20,7 @@ nosidebar: true
 <p>Tells the mock object that <b>someMethod:</b> should be called with an argument that is equal to <i>someArgument</i>. After this setup the functionality under test should be invoked followed by</p>
 <pre><code>[mock verify]</code></pre>
 <p>The <b>verify</b> method will raise an exception if the expected method has not been invoked.</p>
-<div class="newfeature">
+<div>
 <p>In some cases the expected method will only be called when the run loop is active. For these cases it is possible to delay the verification for a while.
 <pre><code>[mock verifyWithDelay:aDelay]</code></pre>
 <p>Note that <i>aDelay</i> is the maximum the mock will wait. It normally returns as soon as the expectation has been met.</p>
@@ -34,7 +34,7 @@ nosidebar: true
 
 <p>Values can also be returned in pass-by-reference arguments:</p>
 <pre><code>[[mock stub] someMethodWithReferenceArgument:[OCMArg setTo:anObject]]</code></pre>
-<div class="newishfeature">
+<div>
 <pre><code>[[mock stub] someMethodWithReferenceArgument:[OCMArg setToValue:OCMOCK_VALUE((int){aValue})]]</code></pre>
 </div>
 <p>In this case the mock object will set the reference that is passed to the method to <i>anObject</i> and <i>aValue</i>.</p>
@@ -65,10 +65,10 @@ If Objective-C blocks are available a block can be used to handle the invocation
 
 
 <h2>Class methods</h2>
-<div class="newishfeature">
+<div>
 <pre><code>[[[mock stub] andReturn:aValue] someClassMethod]</code></pre>
 <p>Tells the mock object that when <b>someClassMethod</b> is called on the class for which the mock object was created it should return <i>aValue</i>. This is the same syntax that is used to stub instance methods.</p>
-<div class="newfeature">
+<div>
 <p>As with partial mocks it is possible to use <b>andForwardToRealObject</b> to invoke the actual class method implementation.</p>
 <pre><code>[[[mock expect] andForwardToRealObject] someClassMethod]</code></pre>
 </div>
@@ -86,10 +86,10 @@ If Objective-C blocks are available a block can be used to handle the invocation
 <p>Tells the mock object that <b>someMethod:</b> should be called and it does not matter what the argument is. This only works for object arguments.</p> 
 <p>Pointers and selectors require special treatment:</p>
 <pre><code>[[mock expect] someMethodWithPointerArgument:[OCMArg anyPointer]]</code></pre>
-<div class="newishfeature">
+<div>
 <pre><code>[[mock expect] someMethodWithSelectorArgument:[OCMArg anySelector]]</code></pre>
 </div>
-<div class="newishfeature">
+<div>
 <p>Arguments that are neither objects nor pointers or selectors cannot be ignored using an <i>any</i> placeholder (for details see this <a href="http://www.mulle-kybernetik.com/forum/viewtopic.php?f=4&t=72">forum thread</a>). It is possible, though, to tell the mock to ignore all non-object arguments in an invocation:
 <pre><code>[[[mock expect] ignoringNonObjectArgs] someMethodWithIntArgument:0]</code></pre>
 <p>In this case the mock will accept any invocation of <b>someMethodWithIntArgument:</b> no matter what argument is actually passed. If the method has object arguments as well as non-object arguments, the object arguments can still be constrained as usual using the methods on <b>OCMArg</b>.</p>

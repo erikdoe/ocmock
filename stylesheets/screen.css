@@ -60,7 +60,11 @@ h3 {
 	margin-top: 1em;
 }
 
-p, th, td, ul, li { 
+h3 + div.highlight {
+    margin-top: 0.5em;
+}
+
+p, th, td, ul, ol, li { 
 	font-family: sans-serif;
 	font-size: 0.875em; 
 	line-height: 1.5em;
@@ -135,13 +139,28 @@ section#content p {
 
 div#main li {
 	font-size: 100%;
-	list-style-type: disc;
 	margin-left: 1.8em;
 	line-height: 1.8em;
 }
 
+div#main ul li {
+	list-style-type: disc;
+}
+
+div#main ol li {
+	list-style-type: decimal;
+}
+
 div#main li:first-child {
 	margin-top: .8em;
+}
+
+h2.toc {
+	counter-reset: h-counter;
+}
+h2.numbered:before {
+	content: counter(h-counter) ". ";
+	counter-increment: h-counter;
 }
 
 div#main table {
