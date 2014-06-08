@@ -450,6 +450,14 @@ static NSString *TestNotification = @"TestNotification";
 	XCTAssertEqualObjects(@"MOCK bar", [mock stringByAppendingString:@"bar"], @"Should have called block.");
 }
 
+- (void)testHandlesNilPassedAsBlock
+{
+    [[[mock stub] andDo:nil] stringByAppendingString:[OCMArg any]];
+
+    XCTAssertNoThrow([mock stringByAppendingString:@"foo"], @"Should have done nothing.");
+    XCTAssertNil([mock stringByAppendingString:@"foo"], @"Should have returned default value.");
+}
+
 
 - (void)testThrowsWhenTryingToUseForwardToRealObjectOnNonPartialMock
 {
