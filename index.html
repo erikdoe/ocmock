@@ -91,16 +91,6 @@ OCMVerify([[myObjectMock writeToDatabase]);
 <p>It is not even necessary to stub a method in order to verify it. If we omit the stub from the code above the actual implementation of <code>writeToDatabase</code> in the object is used. We can still verify that it has been called.
 
 
-<h2>Mocking protocols</h2>
-
-<p>Creating mocks for protocols is very similar to creating class mocks:
-
-{% highlight objc %}
-// create a mock for a protocol
-id lockMock = OCMProtocolMock(@protocol(NSLocking));
-{% endhighlight objc %}
-
-
 <h2>Further reading</h2>
 <p>With the examples on this page we've barely scratched the surface. OCMock has a rich feature set for many different use cases. The following pages provide good next steps to continue learning about OCMock.
 <ul>

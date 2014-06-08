@@ -7,5 +7,5 @@ status: publish
 type: post
 published: true
 ---
-New release (2.2) that improves weak matching for non-object arguments. A mock can now be told to ignore non-object arguments when matching invocations. More on the [features page](/features-ocmock2).
+New release (2.2) that improves weak matching for non-object arguments. A mock can now be told to ignore non-object arguments when matching invocations. More on the [features page](/features).
 
