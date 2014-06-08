@@ -177,35 +177,49 @@ OCMStub([mock someMethod]).andDo(nil);
 
 <h2 id="argument-constraints" class="numbered">Argument constraints</h2>
 
-<pre><code>[[mock expect] someMethod:[OCMArg any]]</code></pre>
-<p>Tells the mock object that <code>someMethod:</code> should be called and it does not matter what the argument is. This only works for object arguments.</p> 
-<p>Pointers and selectors require special treatment:</p>
-<pre><code>[[mock expect] someMethodWithPointerArgument:[OCMArg anyPointer]]</code></pre>
-<div class="newishfeature">
-<pre><code>[[mock expect] someMethodWithSelectorArgument:[OCMArg anySelector]]</code></pre>
-</div>
-<div class="newishfeature">
-<p>Arguments that are neither objects nor pointers or selectors cannot be ignored using an <i>any</i> placeholder (for details see this <a href="http://www.mulle-kybernetik.com/forum/viewtopic.php?f=4&t=72">forum thread</a>). It is possible, though, to tell the mock to ignore all non-object arguments in an invocation:
-<pre><code>[[[mock expect] ignoringNonObjectArgs] someMethodWithIntArgument:0]</code></pre>
-<p>In this case the mock will accept any invocation of <code>someMethodWithIntArgument:</code> no matter what argument is actually passed. If the method has object arguments as well as non-object arguments, the object arguments can still be constrained as usual using the methods on <code>OCMArg</code>.</p>
-</div>
-   
-	                  
-<p>Other constraints available for object arguments are:</p>
-<pre><code>[[mock expect] someMethod:[OCMArg isNil]]</code></pre>
-<pre><code>[[mock expect] someMethod:[OCMArg isNotNil]]</code></pre>
-<pre><code>[[mock expect] someMethod:[OCMArg isNotEqual:aValue]]</code></pre>
-<pre><code>[[mock expect] someMethod:[OCMArg checkWithSelector:aSelector onObject:anObject]]</code></pre>
-          
-<p>The last constraint will, when the mock object receives <code>someMethod:</code>, send <code>aSelector</code> to <code>anObject</code> and if <code>aSelector</code> takes an argument will pass the argument that was passed to <code>someMethod:</code>. The method should return a boolean indicating whether the argument matched the expectation or not.</p>
+<h3>The <i>any</i> constraint</h3>
 
-<p>If Objective-C blocks are available it is possible to check the argument with a block as follows:
+{% highlight objc %}
+OCMStub([mock someMethodWithAnArgument:[OCMArg any]])
+OCMStub([mock someMethodWithPointerArgument:[OCMArg anyPointer]])
+OCMStub([mock someMethodWithSelectorArgument:[OCMArg anySelector]])
+{% endhighlight objc %}
+
+<p>Adds a stub for the methods which is active for all invocations, no matter what argument is passed. Pointers and selectors require special treatment as shown above. Arguments that are neither objects nor pointers or selectors cannot be ignored using an <i>any</i> placeholder (for details see this <a href="http://www.mulle-kybernetik.com/forum/viewtopic.php?f=4&t=72">forum thread</a>). See just below for a workaround.
+
+
+<h3>Ignoring non-object arguments</h3>
+
+{% highlight objc %}
+[[[mock stub] ignoringNonObjectArgs] someMethodWithIntArgument:0]
+{% endhighlight objc %}
+
+<p>This tells the mock to ignore all non-object arguments in the invocation. It will accept any invocation of <code>someMethodWithIntArgument:</code> no matter what argument is actually passed. If the method has object arguments as well as non-object arguments, the object arguments can still be constrained as usual using the methods on <code>OCMArg</code>.
 	
-<pre><code>[[mock expect] someMethod:[OCMArg checkWithBlock:^BOOL(id value) { /* return YES if value is ok */ }]];</code></pre>
+<p><b>NOTE:</b> this should have a modern syntax.
 
-<p>Last but not least it is also possible to use <a href="http://code.google.com/p/hamcrest/wiki/TutorialObjectiveC">Hamcrest matchers</a> like this:</p>
-<pre><code>[[mock expect] someMethod:startsWith(@"foo")]</code></pre>
-	<p>Note that this will only work when the Hamcrest framework is explicitly linked by the unit test bundle.</p>
+
+<h3>Matching arguments</h3>
+
+{% highlight objc %}
+OCMStub([mock someMethod:[OCMArg isNil])
+OCMStub([mock someMethod:[OCMArg isNotNil])
+OCMStub([mock someMethod:[OCMArg isNotEqual:aValue])
+OCMStub([mock someMethod:[OCMArg checkWithSelector:aSelector onObject:anObject])
+OCMStub([mock someMethod:[OCMArg checkWithBlock:^BOOL(id value) { /* return YES if value is ok */ }])
+{% endhighlight objc %}
+
+<p>Several methods on <code>OCMArg</code> allow matching specific values. They should be self-explanatory.
+	
+<p>For <code>checkWithSelector:onObject:</code>, when the mock object receives <code>someMethod:</code>, it invokes <code>aSelector</code> on <code>anObject</code>. If the method takes an argument the mock will pass the argument that was passed to <code>someMethod:</code>. The method should return a boolean indicating whether the argument matched the expectation or not.</p>
+
+
+<h3>Using Hamcrest matchers</h3>
+
+{% highlight objc %}
+OCMStub([mock someMethod:startsWith(@"foo")])
+{% endhighlight objc %}
+<p>It is also possible to use <a href="http://hamcrest.org/OCHamcrest/">Hamcrest matchers</a>. This will only work when the Hamcrest framework is explicitly linked by the unit test bundle. OCMock does not declare a dependency on Hamcrest and discovers it using runtime functions.</p>
 
 
 <h2 id="mocking-class-methods" class="numbered">Mocking class methods</h2>
@@ -356,14 +370,14 @@ OCMStub([partialMock class]).andReturn(someOtherClass); // will not work
 
 {% highlight objc %}
 id classMock = OCMClassMock([SomeClass class]);
-OCMExpect([classMock someMethod]);
+OCMExpect([classMock someMethodWithArgument:[OCMArg isNotNil]]);
 
 /* run code under test, which is assumed to call someMethod */
 
 OCMVerifyAll(classMock)
 {% endhighlight objc %}
 
-<p>This is the original approach for mocking. First the mock object is set up with expectations, then the code under test is run, and afterwards the expectations are verified. If an expected method has not been invoked at that point an error is reported. Strict mocks can be created for classes and protocols. Observer mocks are always strict.
+<p>This is the original approach for mocking. First the mock object is set up with expectations, then the code under test is run, and afterwards the expectations are verified. If an expected method has not been invoked, or has not been invoked with the right arguments, then an error is reported. As shown it is possible to use <a href="#argument-constraints">argument constraints</a> in the expect statement. Strict mocks can be created for classes and protocols. 
 
 <p>If in doubt use the newer <i>verify-after-run</i> approach described in <a href="#verifying-invocations">Verifying invocations</a>.
 
@@ -395,8 +409,8 @@ OCMVerifyAll(classMock)
 <h3>Verify with delay</h3>
 
 {% highlight objc %}
-id classMock = OCMStrictClassMock([SomeClass class]);
-OCMExpect([classMock someMethod]);
+id mock = OCMStrictClassMock([SomeClass class]);
+OCMExpect([mock someMethod]);
 
 /* run code under test, which is assumed to call someMethod eventually */
 
@@ -404,6 +418,8 @@ OCMExpect([classMock someMethod]);
 {% endhighlight objc %}
 
 <p>In certain cases the expected method will only be called when the run loop is active. For these cases it is possible to delay the verification for a while. Note that <code>aDelay</code> is the maximum the mock will wait. It normally returns as soon as the expectations have been met.
+
+<p><b>NOTE:</b> this should have a modern syntax.
 
 
 <h2 id="observer-mocks" class="numbered">Observer mocks</h2>
@@ -440,7 +456,7 @@ id mock = OCMClassMock([SomeClass class]);
 
 <p>In this case the mock will accept all methods except <code>someMethod</code>; if that is invoked the mock will throw an exception.
 
-<p>Note: this should have a modern syntax. It will be introduced when further quantifiers, such as &ldquo;<i>n</i> times&rdquo;, are added.
+<p><b>NOTE:</b> this should have a modern syntax. It will be introduced when further quantifiers, such as &ldquo;<i>n</i> times&rdquo;, are added.
 
 
 <h3>Re-throwing fail fast exceptions in verify all</h3>                                        
@@ -480,7 +496,7 @@ OCMStub([partialMock someMethod]).andCall(differentObject, @selector(differentMe
 
 <h2>More detail</h2>
 
-<p>The test cases in <a href="https://github.com/erikdoe/ocmock/blob/master/Source/OCMockTests">OCMockOTests</a> show all uses of OCMock.
+<p>The test cases in <a href="https://github.com/erikdoe/ocmock/blob/master/Source/OCMockTests">OCMockTests</a> show all uses and most edge cases.
 	
 <p><a href="https://github.com/erikdoe/ocmock/blob/master/Source/Changes.txt">Changes.txt</a> contains a chronological list of all changes.
 
