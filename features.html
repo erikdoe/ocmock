@@ -8,9 +8,11 @@ published: true
 nosidebar: true
 ---
 <h1>{{ page.title }}</h1>
+
 <p>This page describes the features present in OCMock 3.x, using the modern syntax. Previous versions of OCMock used a selector-based syntax. This is still available in OCMock 3, however, the default is the modern syntax. 
   
 <p>For a description of OCMock 2 and the traditional syntax please see the <a href="{{ site.baseurl }}/features-ocmock2">OCMock 2 features page</a>.								
+
 
 <h2 class="toc">Contents</h2>
 <ol>
@@ -29,105 +31,154 @@ nosidebar: true
 <h2 id="creating-mock-objects" class="numbered">Creating mock objects</h2>
 
 <h3>Class mocks</h3>
+
 {% highlight objc %}
 id classMock = OCMClassMock([SomeClass class]);
 {% endhighlight objc %}
-<p>Creates a mock object that can be used as if it were an instance of <i>SomeClass</i>. It is possible to mock instance and class methods defined in the class and its superclasses. 
+
+<p>Creates a mock object that can be used as if it were an instance of <code>SomeClass</code>. It is possible to mock instance and class methods defined in the class and its superclasses. 
 <p>There are some subtleties when mocking class methods. See <a href="#mocking-class-methods">mocking class methods</a> below.
 
+
 <h3>Protocol mocks</h3>
+
 {% highlight objc %}
 id protocolMock = OCMProtocolMock(@protocol(SomeProtocol));
 {% endhighlight objc %}
-<p>Creates a mock object that can be used as if it were an instance of an object that implements <i>SomeProtocol</i>. Otherwise they work like class mocks.
+
+<p>Creates a mock object that can be used as if it were an instance of an object that implements <code>SomeProtocol</code>. Otherwise they work like class mocks.
+
 
 <h3>Strict class and protocol mocks</h3>
+
 {% highlight objc %}
 id classMock = OCMStrictClassMock([SomeClass class]);
 id protocolMock = OCMStrictProtocolMock(@protocol(SomeProtocol));
 {% endhighlight objc %}
+
 <p>Creates a mock object in <i>strict</i> mode. By default mocks are <i>nice</i>, they return nil (or the correct default value for the return type) for whatever method is called. In contrast, strict mocks raise an exception when they receive a method that was not explicitly expected. See <a href="#strict-mocks-and-expectations">strict mocks and expectations</a> below.
 
+
 <h3>Partial mocks</h3>
+
 {% highlight objc %}
 id partialMock = OCMPartialMock(anObject);
 {% endhighlight objc %}
-<p>Creates a mock object that can be used in the same way as <i>anObject</i>. Any method that is not stubbed is forwarded to <i>anObject</i>. When a method is stubbed and that method is invoked using a reference to the real object, the mock will still be able to handle the invocation. Similarly, when a method is invoked using a reference to <i>anObject</i>, rather than the mock, it can still be verified later.
+
+<p>Creates a mock object that can be used in the same way as <code>anObject</code>. Any method that is not stubbed is forwarded to <code>anObject</code>. When a method is stubbed and that method is invoked using a reference to the real object, the mock will still be able to handle the invocation. Similarly, when a method is invoked using a reference to <code>anObject</code>, rather than the mock, it can still be verified later.
 <p>There are some subtleties when using partial mocks. See <a href="#partial-mocks">partial mocks</a> below.  
 
+
 <h3>Observer mocks</h3>
+
 {% highlight objc %}
 id observerMock = OCMObserverMock();
 {% endhighlight objc %}
+
 <p>Creates a mock object that can be used to observe notifications. The mock must be registered in order to receive notifications. See <a href="#observer-mocks">observer mocks</a> below for details.
 
 
 <h2 id="stubing-methods" class="numbered">Stubbing methods</h2>
 
 <h3>Stubbing methods that return objects</h3>
+
 {% highlight objc %}
 OCMStub([mock someMethod]).andReturn(anObject);
 {% endhighlight objc %}
-<p>Tells the mock object that when <b>someMethod</b> is called it should return <i>anObject</i>.</p>
+
+<p>Tells the mock object that when <code>someMethod</code> is called it should return <code>anObject</code>.</p>
+
 
 <h3>Stubbing methods that return values</h3>
+
 {% highlight objc %}
 OCMStub([mock aMethodReturningABoolean]).andReturn(YES);
 {% endhighlight objc %}
+
 <p>For methods that return primitive values it is important to use the right type of value. If, for example, a method returns a <code>long</code> but the stub uses an <code>int</code> an error will occur. The message will include the expected and the actual type (using Objective-C type codes such as &ldquo;q&rdquo; for <code>long</code> and &ldquo;i&rdquo; for <code>int</code>). 
 
+
 <h3>Delegating to another method</h3>
+
 {% highlight objc %}
 OCMStub([mock someMethod]).andCall(anotherObject, @selector(aDifferentMethod));
 {% endhighlight objc %}
-<p>In this case the mock object will call <b>aDifferentMethod</b> on <i>anotherObject</i> when <b>someMethod</b> is called. The signature of the replacement method must be the same as that of the method that is replaced. Arguments will be passed, and the return value of the replacement method is returned from the stubbed method. It is common to implement the replacement method in the test case itself.
+
+<p>In this case the mock object will call <code>aDifferentMethod</code> on <code>anotherObject</code> when <code>someMethod</code> is called. The signature of the replacement method must be the same as that of the method that is replaced. Arguments will be passed, and the return value of the replacement method is returned from the stubbed method. It is common to implement the replacement method in the test case itself.
+
 
 <h3>Delegating to a block</h3>
+
 {% highlight objc %}
 OCMStub([mock someMethod]).andDo(^(NSInvocation *invocation)
     { /* block that handles the method invocation */ });
 {% endhighlight objc %}
-<p>The mock object will call the passed block when <b>someMethod</b> is called. The block can read the arguments from the invocation object, and it can use the invocation object to set up a possible return value.
+
+<p>The mock object will call the passed block when <code>someMethod</code> is called. The block can read the arguments from the invocation object, and it can use the invocation object to set up a possible return value.
+
 
 <h3>Returning values in pass-by-reference arguments</h3>
+
 {% highlight objc %}
 OCMStub([mock someMethodWithReferenceArgument:[OCMArg setTo:anObject]]);
 OCMStub([mock someMethodWithReferenceArgument:[OCMArg setToValue:OCMOCK_VALUE((int){aValue})]]);
 {% endhighlight objc %}
-<p>The mock object will set the reference that is passed to the method to <i>anObject</i> and <i>aValue</i>. Use <b>setTo:</b> for pass-by-reference arguments that return objects and <b>setToValue:</b> and <b>OCMOCK_VALUE()</b> for arguments that return primitives.
+
+<p>The mock object will set the reference that is passed to the method to <code>anObject</code> and <code>aValue</code>. Use <code>setTo:</code> for pass-by-reference arguments that return objects and <code>setToValue:</code> and <code>OCMOCK_VALUE()</code> for arguments that return primitives.
+
 
 <h3>Throwing exceptions</h3>
+
 {% highlight objc %}
 OCMStub([mock someMethod]).andThrow(anException);
 {% endhighlight objc %}
-<p>When <b>someMethod</b> is invoked the stub will throw <i>anException</i>.
+
+<p>When <code>someMethod</code> is invoked the stub will throw <code>anException</code>.
+
 
 <h3>Posting notifications</h3>
+
 {% highlight objc %}
 OCMStub([mock someMethod]).andPost(aNotification);
 {% endhighlight objc %}
-<p>When <b>someMethod</b> is invoked the stub will post <i>aNotification</i>.
+
+<p>When <code>someMethod</code> is invoked the stub will post <code>aNotification</code>.
+
 
 <h3>Chaining stub actions</h3>
+
 {% highlight objc %}
 OCMStub([mock someMethod]).andPost(aNotification).andReturn(aValue);
 {% endhighlight objc %}
-<p>All actions such as <b>andReturn</b> and <b>andPost</b> can be chained. In this example the mock object will post a notification and return the value.
+
+<p>All actions such as <code>andReturn</code> and <code>andPost</code> can be chained. In this example the mock object will post a notification and return the value.
+
 
 <h3>Forwarding to the real object / class</h3>
+
 {% highlight objc %}
 OCMStub([mock someMethod]).andForwardToRealObject();
 {% endhighlight objc %}
+
 <p>When using a partial mock and when mocking class methods it is possible to stub a method and forward it to the real object (in case of partial mocks) or to the class (when mocking class methods). This is only useful when chaining actions or when using <a href="#strict-mocks-and-expectations">expectations</a>.
   
 
+<h3>Doing nothing</h3>
+
+{% highlight objc %}
+OCMStub([mock someMethod]).andDo(nil);
+{% endhighlight objc %}
+
+<p>It is possible to pass <code>nil</code> instead of a block to <code>andDo</code>. This is only useful with partial mocks or when mocking class methods. In these cases using <code>andDo(nil)</code> effectively suppresses the behaviour in the existing class.
+	
+	
 <h2 id="verifying-invocations" class="numbered">Verifying invocations</h2> 
 
 
 <h2 id="argument-constraints" class="numbered">Argument constraints</h2>
 
 <pre><code>[[mock expect] someMethod:[OCMArg any]]</code></pre>
-<p>Tells the mock object that <b>someMethod:</b> should be called and it does not matter what the argument is. This only works for object arguments.</p> 
+<p>Tells the mock object that <code>someMethod:</code> should be called and it does not matter what the argument is. This only works for object arguments.</p> 
 <p>Pointers and selectors require special treatment:</p>
 <pre><code>[[mock expect] someMethodWithPointerArgument:[OCMArg anyPointer]]</code></pre>
 <div class="newishfeature">
@@ -136,7 +187,7 @@ OCMStub([mock someMethod]).andForwardToRealObject();
 <div class="newishfeature">
 <p>Arguments that are neither objects nor pointers or selectors cannot be ignored using an <i>any</i> placeholder (for details see this <a href="http://www.mulle-kybernetik.com/forum/viewtopic.php?f=4&t=72">forum thread</a>). It is possible, though, to tell the mock to ignore all non-object arguments in an invocation:
 <pre><code>[[[mock expect] ignoringNonObjectArgs] someMethodWithIntArgument:0]</code></pre>
-<p>In this case the mock will accept any invocation of <b>someMethodWithIntArgument:</b> no matter what argument is actually passed. If the method has object arguments as well as non-object arguments, the object arguments can still be constrained as usual using the methods on <b>OCMArg</b>.</p>
+<p>In this case the mock will accept any invocation of <code>someMethodWithIntArgument:</code> no matter what argument is actually passed. If the method has object arguments as well as non-object arguments, the object arguments can still be constrained as usual using the methods on <code>OCMArg</code>.</p>
 </div>
    
 	                  
@@ -146,7 +197,7 @@ OCMStub([mock someMethod]).andForwardToRealObject();
 <pre><code>[[mock expect] someMethod:[OCMArg isNotEqual:aValue]]</code></pre>
 <pre><code>[[mock expect] someMethod:[OCMArg checkWithSelector:aSelector onObject:anObject]]</code></pre>
           
-<p>The last constraint will, when the mock object receives <b>someMethod:</b>, send <i>aSelector</i> to <i>anObject</i> and if <i>aSelector</i> takes an argument will pass the argument that was passed to <b>someMethod:</b>. The method should return a boolean indicating whether the argument matched the expectation or not.</p>
+<p>The last constraint will, when the mock object receives <code>someMethod:</code>, send <code>aSelector</code> to <code>anObject</code> and if <code>aSelector</code> takes an argument will pass the argument that was passed to <code>someMethod:</code>. The method should return a boolean indicating whether the argument matched the expectation or not.</p>
 
 <p>If Objective-C blocks are available it is possible to check the argument with a block as follows:
 	
@@ -159,93 +210,278 @@ OCMStub([mock someMethod]).andForwardToRealObject();
 
 <h2 id="mocking-class-methods" class="numbered">Mocking class methods</h2>
 
-<div>
-<pre><code>[[[mock stub] andReturn:aValue] someClassMethod]</code></pre>
-<p>Tells the mock object that when <b>someClassMethod</b> is called on the class for which the mock object was created it should return <i>aValue</i>. This is the same syntax that is used to stub instance methods.</p>
-<div class="newfeature">
-<p>As with partial mocks it is possible to use <b>andForwardToRealObject</b> to invoke the actual class method implementation.</p>
-<pre><code>[[[mock expect] andForwardToRealObject] someClassMethod]</code></pre>
-</div>
-<p>In cases where a class method should be stubbed but the class also has an instance method with the same name as the class method, the intent to mock the class method must be made explicit:
-<pre><code>[[[[mock stub] classMethod] andReturn:aValue] aMethod]</code></pre>
-<p>The class can be returned to its original state, i.e. all stubs will be removed:
-<pre><code>[mock stopMocking]</code></pre>
-<p>This is only necessary if the original state must be restored before the end of the test. The  mock automatically calls <b>stopMocking</b> during its own deallocation.
-<p>Note: If the mock object that added a stubbed class method is not deallocated the stubbed method will persist across tests. If multiple mock objects manipulate the same class at the same time the behaviour is undefined.</p> 
-</div>
+<h3>Stubbing class methods</h3>
 
+{% highlight objc %}
+id classMock = OCMClassMock([SomeClass class]);
+OCMStub([classMock aClassMethod]).andReturn(@"Test string");
+
+// result is @"Test string"
+NSString *result = [SomeClass aClassMethod];
+{% endhighlight objc %}
+
+<p>Stubs for class methods are set up exactly like stubs for instance methods. However, behind the scenes the mock object makes some changes to the class. (It dynamically creates a new meta class and makes the class use that instead of its own meta class.) This allows OCMock to stub calls which are made directly to the class. 
+	
+<p><b>IMPORTANT:</b> If the mock object that added a stubbed class method is not deallocated then the stubbed method will persist across tests. If multiple mock objects manipulate the same class at the same time the behaviour is undefined.</p> 
+	
+
+<h3>Verifying invocations of class methods</h3>
+
+{% highlight objc %}
+id classMock = OCMClassMock([SomeClass class]);
+
+/* run code under test */
+
+OCMVerify([classMock aClassMethod]);
+{% endhighlight objc %}
+
+<p>Verification is done in the same way as with instance methods. As described above, calls can be made directly to the class.
+	
+
+<h3>Disambiguating class and instance methods</h3>	
+
+{% highlight objc %}
+id classMock = OCMClassMock([SomeClass class]);
+OCMStub(ClassMethod([classMock ambiguousMethod])).andReturn(@"Test string");
+
+// result is @"Test string"
+NSString *result = [SomeClass ambiguousMethod];
+{% endhighlight objc %}
+
+<p>In cases where a class method should be stubbed but the class also has an instance method with the same name as the class method, as assumed with <code>ambiguousMethod</code> above, the intent to mock the class method must be made explicit using <code>ClassMethod()</code>.
+
+
+<h3>Restoring the class</h3>
+{% highlight objc %}
+id classMock = OCMClassMock([SomeClass class]);
+
+/* do stuff */
+
+[classMock stopMocking];
+{% endhighlight objc %}
+
+<p>The class can be returned to its original state by calling <code>stopMocking</code>. This is only necessary if the original state must be restored before the end of the test. The  mock automatically calls <code>stopMocking</code> during its own deallocation.
+
+<p>When the class is returned to its original state, its meta class will be switched back to the original meta class. This effectively removes all the stubs. However, this also makes it impossible for the mock to add new stubs or to verify interactions. You should really not use a mock after having called <code>stopMocking</code>.
+
+	
+<h3>Limitations</h3>
+{% highlight objc %}
+id stringMock = OCMClassMock([NSString class]);
+// the following will not work
+OCMStub([stringMock stringWithContentsOfFile:[OCMArg any] encoding:NSUTF8StringEncoding error:[OCMArg setTo:nil]]);
+{% endhighlight objc %}
+
+<p>It is not possible to stub or verify class methods on <code>NSString</code>. Trying to do so has no effect.
+
+{% highlight objc %}
+// don't do this
+id mock1 = OCMClassMock([SomeClass class]);
+OCMStub([mock1 aClassMethod]);
+id mock2 = OCMClassMock([SomeClass class]);
+OCMStub([mock2 anotherClassMethod]);
+{% endhighlight objc %}
+
+<p>As mentioned above, if the mock object that added a stubbed class method is not deallocated then the stubbed method will persist, even across tests. If multiple mock objects manipulate the same class at the same time the behaviour is undefined.
 
 <h2 id="partial-mocks" class="numbered">Partial mocks</h2>
 
-<pre><code>id aMock = [OCMockObject partialMockForObject:anObject]</code></pre>
-<p>Creates a mock object that can be used in the same way as <i>anObject</i>. When a method that is not stubbed is invoked it will be forwarded to <i>anObject</i>. When a stubbed method is invoked using a reference to <i>anObject</i>, rather than the mock, it will still be handled by the mock.</p>
+<h3>Stubbing methods</h3>
 
-<p>The real object can be returned to its original state, i.e. all stubs will be removed:
-<pre><code>[aMock stopMocking]</code></pre>
-<p>This is only necessary if the original state must be restored before the end of the test. The partial mock automatically calls <b>stopMocking</b> during its own deallocation.
+{% highlight objc %}
+id partialMock = OCMPartialMock(anObject);
+OCMStub([partialMock someMethod]).andReturn(@"Test string");
 
-<p>Note that currently partial mocks cannot be created for instances of toll-free bridged classes, e.g. NSString.</p>
+// result1 is @"Test string"
+NSString *result1 = [partialMock someMethod];
+
+// result2 is @"Test string", too!
+NSString *result2 = [anObject someMethod];
+{% endhighlight objc %}
+
+<p>From an API perspective stubs on partial mocks are set up in the same way as on class and protocol mocks. Partial mocks alter the class of the mocked object, though. (In fact, they create a subclass and switch the class of the mocked object to that subclass.) This means that calls using a reference to the real object, even including <code>self</code> in methods where the object calls itself, are also affected by stubs and expectations.	
+	
+
+<h3>Verifying invocations</h3>
+
+{% highlight objc %}
+id partialMock = OCMPartialMock(anObject);
+
+/* run code under test */
+
+OCMVerify([partialMock someMethod]);
+{% endhighlight objc %}
+
+<p>Verification is done in the same way as with class and protocol mocks. As described just above, calls using a reference to the real object are intercepted, too. There is no need to insure that a reference to the mock is used, calls can be made using references to the real object.
+
+
+<h3>Restoring the object</h3>
+
+{% highlight objc %}
+id partialMock = OCMPartialMock(anObject);
+
+/* do stuff */
+
+[partialMock stopMocking];
+{% endhighlight objc %}
+
+<p>The real object can be returned to its original state by calling <code>stopMocking</code>. This is only necessary if the original state must be restored before the end of the test. The partial mock automatically calls <code>stopMocking</code> during its own deallocation.
+
+<p>When the object is returned to its original state, its class will be switched back to the original class. This effectively removes all the stubs. However, this also makes it impossible for the partial mock to add new stubs or to verify interactions. You should really not use a partial mock after having called <code>stopMocking</code>.
+	
+
+<h3>Limitations</h3>
+
+{% highlight objc %}
+id partialMockForString = OCMPartialMock(@"Foo"); // will throw an exception
+
+NSDate *date = [NSDate dateWithTimeIntervalSince1970:0];
+id partialMockForDate = OCMPartialMock(date); // will throw on some architectures
+{% endhighlight objc %}
+
+<p>It is not possible to create partial mocks for instances of toll-free bridged class, e.g. <code>NSString</code>, or for objects represented with tagged pointers, e.g. <code>NSDate</code> on some architectures. The mock object will throw a descriptive exception should you try to do this.
+	
+{% highlight objc %}
+id partialMockForString = OCMPartialMock(anObject);
+OCMStub([partialMock class]).andReturn(someOtherClass); // will not work
+{% endhighlight objc %}
+
+<p>It is not possible to mock certain core runtime methods including <code>class</code>, <code>methodSignatureForSelector:</code>, and <code>forwardInvocation:</code>. Note that <code>class</code> is automatically stubbed to return the original class of the object, and not the dynamic subclass used by the partial mock.
+
 
 
 <h2 id="strict-mocks-and-expectations" class="numbered">Strict mocks and expectations</h2>
 
-<pre><code>[[mock expect] someMethod:someArgument]</code></pre>
-<p>Tells the mock object that <b>someMethod:</b> should be called with an argument that is equal to <i>someArgument</i>. After this setup the functionality under test should be invoked followed by</p>
-<pre><code>[mock verify]</code></pre>
-<p>The <b>verify</b> method will raise an exception if the expected method has not been invoked.</p>
-<div class="newfeature">
-<p>In some cases the expected method will only be called when the run loop is active. For these cases it is possible to delay the verification for a while.
-<pre><code>[mock verifyWithDelay:aDelay]</code></pre>
-<p>Note that <i>aDelay</i> is the maximum the mock will wait. It normally returns as soon as the expectation has been met.</p>
-</div>
+<h3>Expect-run-verify</h3>
 
-<p>Note that it is possible to use <b>andReturn:</b>, <b>andThrow:</b>, etc with <b>expect</b>, too. This will then return the given return value and, on verify, ensure that the method has been called.</p>
+{% highlight objc %}
+id classMock = OCMClassMock([SomeClass class]);
+OCMExpect([classMock someMethod]);
+
+/* run code under test, which is assumed to call someMethod */
+
+OCMVerifyAll(classMock)
+{% endhighlight objc %}
+
+<p>This is the original approach for mocking. First the mock object is set up with expectations, then the code under test is run, and afterwards the expectations are verified. If an expected method has not been invoked at that point an error is reported. Strict mocks can be created for classes and protocols. Observer mocks are always strict.
+
+<p>If in doubt use the newer <i>verify-after-run</i> approach described in <a href="#verifying-invocations">Verifying invocations</a>.
+
+
+<h3>Strict mocks and failing fast</h3>
+
+{% highlight objc %}
+id classMock = OCMStrictClassMock([SomeClass class]);
+[classMock someMethod]; // this will throw an exception
+{% endhighlight objc %}
+
+<p>The mock has been set up as a strict mock without any expectations. Calling <code>someMethod</code> will cause the mock to throw an exception. This is also known as <i>failing fast</i> because the test fails immediatly when the unexpected call is made. Only strict mocks fail fast.
+
+
+<h3>Stub actions and expect</h3>
+
+{% highlight objc %}
+id classMock = OCMStrictClassMock([SomeClass class]);
+OCMExpect([classMock someMethod]).andReturn(@"a string for testing");
+
+/* run code under test, which is assumed to call someMethod */
+
+OCMVerifyAll(classMock)
+{% endhighlight objc %}
+
+<p>It is possible to use <code>andReturn</code>, <code>andThrow</code>, etc with expectations, too. This will then run the stub action if and when the method is invoked and, on verify, ensure that the method was actually invoked.
+
+
+<h3>Verify with delay</h3>
+
+{% highlight objc %}
+id classMock = OCMStrictClassMock([SomeClass class]);
+OCMExpect([classMock someMethod]);
+
+/* run code under test, which is assumed to call someMethod eventually */
+
+[mock verifyWithDelay:aDelay];
+{% endhighlight objc %}
+
+<p>In certain cases the expected method will only be called when the run loop is active. For these cases it is possible to delay the verification for a while. Note that <code>aDelay</code> is the maximum the mock will wait. It normally returns as soon as the expectations have been met.
 
 
 <h2 id="observer-mocks" class="numbered">Observer mocks</h2>
+
 <h3>Setup</h3>
+
 {% highlight objc %}
 id observerMock = OCMObserverMock();
 [notificatonCenter addMockObserver:aMock name:SomeNotification object:nil];
 [[mock expect] notificationWithName:SomeNotification object:[OCMArg any]];
 {% endhighlight objc %}
-<p>Creates a mock object that can be used to observe notifications, registers it with a notification center, and tells the mock to expect <i>SomeNotification</i> with any object. 
+
+<p>Creates a mock object that can be used to observe notifications, registers it with a notification center, and tells the mock to expect <code>SomeNotification</code> with any object. 
 
 <h3>Verification</h3>
+
 {% highlight objc %}
 OCMVerifyAll(observerMock);
 {% endhighlight objc %}
-<p>Currently there is no <i>nice</i> mode for observer mocks, they will always raise an exception when an unexpected notification is received. This implies that individual notifications cannot be verified after the fact. All notifications must be set up with <b>expect</b>, and they are verified together after the code under test has run using <b>OCMVerifyAll</b>.
+
+<p>Currently observer mocks are always strict, they will raise an exception when an unexpected notification is received. This implies that individual notifications cannot be verified after the fact. All notifications must be set up with expect, and they are verified together after the code under test has run using <code>OCMVerifyAll</code>.
 
 
 <h2 id="advanced-topics" class="numbered">Advanced topics</h2>
 
 <h3>Failing fast for regular (nice) mocks</h3>
+
 <p>On a strict mock object, when a method is called that has not been mocked (using some variant of stub or expect) the mock object will raise an exception. It will <i>fail fast</i>. Regular mock objects simply return the default value for the return type. Regular mocks can be configured on a per-method basis to fail fast:
+
 {% highlight objc %}
 id mock = OCMClassMock([SomeClass class]);
 [[mock reject] someMethod];
 {% endhighlight objc %}
-<p>In this case the mock will accept all methods except <b>someMethod</b>; if that is invoked the mock will throw an exception.
+
+<p>In this case the mock will accept all methods except <code>someMethod</code>; if that is invoked the mock will throw an exception.
+
 <p>Note: this should have a modern syntax. It will be introduced when further quantifiers, such as &ldquo;<i>n</i> times&rdquo;, are added.
 
+
 <h3>Re-throwing fail fast exceptions in verify all</h3>                                        
-<p>In fail-fast mode an exception might not cause the test to fail. This can happen when the call stack for the method does not end in the test. Fail fast exceptions will be re-thrown when <b>OCMVerifyAll</b> is called. This makes it possible to ensure that unwanted invocations from notifications etc. can be detected.</p>
+<p>In fail-fast mode an exception might not cause the test to fail. This can happen when the call stack for the method does not end in the test. Fail fast exceptions will be re-thrown when <code>OCMVerifyAll</code> is called. This makes it possible to ensure that unwanted invocations from notifications etc. can be detected.</p>
+
+
+<h3>Stubbing methods that create objects</h3>	
+
+{% highlight objc %}
+id classMock = OCMClassMock([SomeClass class]);
+OCMStub([classMock copy])).andReturn(myObject);
+{% endhighlight objc %}
+
+<p>It is possible to stub class and instance methods that conceptually create objects. OCMock automatically adjusts the reference count of the returned object when stubbing methods that have a name that begins with <code>alloc</code>, <code>new</code>, <code>copy</code>, or <code>mutableCopy</code>.
+	
+{% highlight objc %}
+id classMock = OCMClassMock([SomeClass class]);
+OCMStub([classMock alloc])).andReturn(classMock);
+OCMStub([classMock init])).andReturn(myObject);
+{% endhighlight objc %}
+
+<p>It possible, although not advisable, to stub out alloc/init for a class. If you find yourself doing this a lot, please consider the <a href="http://en.wikipedia.org/wiki/Dependency_injection">dependency injection</a> pattern.	
+	
 
 <h3>Instance-based method swizzling</h3>
-<p>In a nutshell, <a href="http://www.cocoadev.com/index.pl?MethodSwizzling">Method Swizzling</a> describes the replacement of a method implementation with a different implementation at runtime. Using partial mocks and the <b>andCall</b> action OCMock allows such replacements on a per-instance basis.</a>
+
+<p>In a nutshell, <a href="http://www.cocoadev.com/index.pl?MethodSwizzling">Method Swizzling</a> describes the replacement of a method implementation with a different implementation at runtime. Using partial mocks and the <code>andCall</code> action OCMock allows such replacements on a per-instance basis.</a>
+
 {% highlight objc %}
 id partialMock = OCMPartialMock(anObject);
 OCMStub([partialMock someMethod]).andCall(differentObject, @selector(differentMethod));
 {% endhighlight objc %}
-<p>After these two lines, when <b>someMethod</b> is sent to <i>anObject</i> the implementation of that method is not invoked. Instead, <b>differentMethod</b> is called on <i>differentObject</i>. Other instances of the same class are not affected; for these the original implementation of <b>someMethod</b> is still invoked. The methods can have different names but their signatures should be the same.
+
+<p>After these two lines, when <code>someMethod</code> is sent to <code>anObject</code> the implementation of that method is not invoked. Instead, <code>differentMethod</code> is called on <code>differentObject</code>. Other instances of the same class are not affected; for these the original implementation of <code>someMethod</code> is still invoked. The methods can have different names but their signatures should be the same.
 
 
 
 <h2>More detail</h2>
-<p>	
-	The test cases in <a href="https://github.com/erikdoe/ocmock/blob/master/Source/OCMockTests">OCMockOTests</a> show all uses of OCMock.
-</p>
+
+<p>The test cases in <a href="https://github.com/erikdoe/ocmock/blob/master/Source/OCMockTests">OCMockOTests</a> show all uses of OCMock.
+	
 <p><a href="https://github.com/erikdoe/ocmock/blob/master/Source/Changes.txt">Changes.txt</a> contains a chronological list of all changes.
-</p>
+
 
