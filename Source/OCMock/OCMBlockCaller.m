@@ -34,7 +34,10 @@
 
 - (void)handleInvocation:(NSInvocation *)anInvocation
 {
-	block(anInvocation);
+    if (block != nil)
+    {
+        block(anInvocation);
+    }
 }
 
 @end
