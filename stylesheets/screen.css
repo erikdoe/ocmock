@@ -156,11 +156,19 @@ div#main li:first-child {
 }
 
 h2.toc {
-	counter-reset: h-counter;
+	counter-reset: h2-counter;
 }
 h2.numbered:before {
-	content: counter(h-counter) ". ";
-	counter-increment: h-counter;
+	content: counter(h2-counter) ". ";
+	counter-increment: h2-counter;
+}
+
+h2 {
+	counter-reset: h3-counter;
+}
+h3.numbered:before {
+	content: counter(h2-counter) "." counter(h3-counter) " ";
+	counter-increment: h3-counter;
 }
 
 div#main table {
