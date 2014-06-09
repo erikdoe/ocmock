@@ -18,6 +18,7 @@
 #import <OCMock/OCMock.h>
 #import "OCClassMockObject.h"
 #import "OCPartialMockObject.h"
+#import "OCMFunctions.h"
 
 #pragma mark   Helper classes
 
@@ -230,6 +231,25 @@
     
     XCTAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo], @"Should have 'unstubbed' class method 'foo'.");
     XCTAssertEqualObjects(@"Bar-ClassMethod", [TestClassWithClassMethods bar], @"Should have 'unstubbed' class method 'bar'.");
+}
+
+- (void)ignore_testCanHandleMultipleClassMocksOnSameClassWithReverseDeallocation
+{
+    NSLog(@"class = %p; meta = %p", [TestClassWithClassMethods class], OCMGetIsa([TestClassWithClassMethods class]));
+
+    id mock1 = [[OCClassMockObject alloc] initWithClass:[TestClassWithClassMethods class]];
+    [[[mock1 stub] andReturn:@"mocked-foo-1"] foo];
+    NSLog(@"class = %p; meta = %p", [TestClassWithClassMethods class], OCMGetIsa([TestClassWithClassMethods class]));
+
+    id mock2 = [[OCClassMockObject alloc] initWithClass:[TestClassWithClassMethods class]];
+    [[[mock2 stub] andReturn:@"mocked-foo-2"] foo];
+    NSLog(@"class = %p; meta = %p", [TestClassWithClassMethods class], OCMGetIsa([TestClassWithClassMethods class]));
+
+    [mock2 stopMocking];
+    NSLog(@"class = %p; meta = %p", [TestClassWithClassMethods class], OCMGetIsa([TestClassWithClassMethods class]));
+
+    XCTAssertNoThrow([TestClassWithClassMethods foo]);
+    XCTAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo]);
 }
 
 - (void)testForwardToRealObject
