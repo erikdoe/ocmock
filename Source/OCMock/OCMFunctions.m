@@ -116,23 +116,22 @@ NSString *OCMClassMethodMockObjectKey = @"OCMClassMethodMockObjectKey";
 
 void OCMSetAssociatedMockForClass(OCClassMockObject *mock, Class aClass)
 {
-    // TODO: shouldn't we throw an exception if another object is already mocking class methods?
+    if((mock != nil) && (objc_getAssociatedObject(aClass, OCMClassMethodMockObjectKey) != nil))
+        [NSException raise:NSInternalInconsistencyException format:@"Another mock is already associated with class %@", NSStringFromClass(aClass)];
     objc_setAssociatedObject(aClass, OCMClassMethodMockObjectKey, mock, OBJC_ASSOCIATION_ASSIGN);
 }
 
-OCClassMockObject *OCMGetAssociatedMockForClass(Class aClass)
+OCClassMockObject *OCMGetAssociatedMockForClass(Class aClass, BOOL includeSuperclasses)
 {
     OCClassMockObject *mock = nil;
-    while((mock == nil) && (aClass != nil))
+    do
     {
         mock = objc_getAssociatedObject(aClass, OCMClassMethodMockObjectKey);
         aClass = class_getSuperclass(aClass);
     }
-    if(mock == nil)
-        [NSException raise:NSInternalInconsistencyException format:@"No mock for class %@", NSStringFromClass(aClass)];
+    while((mock == nil) && (aClass != nil) && includeSuperclasses);
     return mock;
 }
-
 
 NSString *OCMPartialMockObjectKey = @"OCMPartialMockObjectKey";
 

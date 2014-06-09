@@ -34,7 +34,7 @@ SEL OCMAliasForOriginalSelector(SEL selector);
 SEL OCMOriginalSelectorForAlias(SEL selector);
 
 void OCMSetAssociatedMockForClass(OCClassMockObject *mock, Class aClass);
-OCClassMockObject *OCMGetAssociatedMockForClass(Class aClass);
+OCClassMockObject *OCMGetAssociatedMockForClass(Class aClass, BOOL includeSuperclasses);
 
 void OCMSetAssociatedMockForObject(OCClassMockObject *mock, id anObject);
 OCPartialMockObject *OCMGetAssociatedMockForObject(id anObject);

@@ -53,12 +53,15 @@
 - (void)stopMocking
 {
     if(originalMetaClass != nil)
-    {
-        OCMSetAssociatedMockForClass(nil, mockedClass);
-        OCMSetIsa(mockedClass, originalMetaClass);
-        originalMetaClass = nil;
-    }
+        [self restoreMetaClass];
     [super stopMocking];
+}
+
+- (void)restoreMetaClass
+{
+    OCMSetAssociatedMockForClass(nil, mockedClass);
+    OCMSetIsa(mockedClass, originalMetaClass);
+    originalMetaClass = nil;
 }
 
 
@@ -70,6 +73,11 @@
     /* also weird: [[NSString class] isKindOfClass:[NSString class]] is false, hence the additional clause */
     if([[mockedClass class] isKindOfClass:[NSString class]] || (mockedClass == [NSString class]))
         return;
+
+    /* if there is another mock for this exact class, stop it */
+    id otherMock = OCMGetAssociatedMockForClass(mockedClass, NO);
+    if(otherMock != nil)
+        [otherMock restoreMetaClass];
 
     OCMSetAssociatedMockForClass(self, mockedClass);
 
@@ -109,7 +117,11 @@
 - (void)forwardInvocationForClassObject:(NSInvocation *)anInvocation
 {
 	// in here "self" is a reference to the real class, not the mock
-	OCClassMockObject *mock = OCMGetAssociatedMockForClass((Class)self);
+	OCClassMockObject *mock = OCMGetAssociatedMockForClass((Class) self, YES);
+    if(mock == nil)
+    {
+        [NSException raise:NSInternalInconsistencyException format:@"No mock for class %@", NSStringFromClass((Class)self)];
+    }
 	if([mock handleInvocation:anInvocation] == NO)
     {
         [anInvocation setSelector:OCMAliasForOriginalSelector([anInvocation selector])];

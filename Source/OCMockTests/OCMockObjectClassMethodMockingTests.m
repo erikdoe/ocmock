@@ -233,23 +233,16 @@
     XCTAssertEqualObjects(@"Bar-ClassMethod", [TestClassWithClassMethods bar], @"Should have 'unstubbed' class method 'bar'.");
 }
 
-- (void)ignore_testCanHandleMultipleClassMocksOnSameClassWithReverseDeallocation
+- (void)testSecondClassMockDeactivatesFirst
 {
-    NSLog(@"class = %p; meta = %p", [TestClassWithClassMethods class], OCMGetIsa([TestClassWithClassMethods class]));
-
-    id mock1 = [[OCClassMockObject alloc] initWithClass:[TestClassWithClassMethods class]];
+    id mock1 = [[[OCClassMockObject alloc] initWithClass:[TestClassWithClassMethods class]] autorelease];
     [[[mock1 stub] andReturn:@"mocked-foo-1"] foo];
-    NSLog(@"class = %p; meta = %p", [TestClassWithClassMethods class], OCMGetIsa([TestClassWithClassMethods class]));
 
-    id mock2 = [[OCClassMockObject alloc] initWithClass:[TestClassWithClassMethods class]];
-    [[[mock2 stub] andReturn:@"mocked-foo-2"] foo];
-    NSLog(@"class = %p; meta = %p", [TestClassWithClassMethods class], OCMGetIsa([TestClassWithClassMethods class]));
+    id mock2 = [[[OCClassMockObject alloc] initWithClass:[TestClassWithClassMethods class]] autorelease];
+    XCTAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo]);
 
     [mock2 stopMocking];
-    NSLog(@"class = %p; meta = %p", [TestClassWithClassMethods class], OCMGetIsa([TestClassWithClassMethods class]));
-
     XCTAssertNoThrow([TestClassWithClassMethods foo]);
-    XCTAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo]);
 }
 
 - (void)testForwardToRealObject
