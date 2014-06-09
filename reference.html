@@ -455,6 +455,36 @@ OCMExpect([mock someMethod]);
 <p><b>NOTE:</b> this should have a modern syntax.
 
 
+<h3 class="numbered">Verifying in order</h3>
+
+{% highlight objc %}
+id mock = OCMStrictClassMock([SomeClass class]);
+[mock setExpectationOrderMatters:YES];
+OCMExpect([mock someMethod]);
+OCMExpect([mock anotherMethod]);
+
+// calling anotherMethod before someMethod will cause an exception to be thrown
+[mock anotherMethod];
+{% endhighlight objc %}
+
+<p>The mock can be told to verify that expected methods are called in the same order as the expectations are set up. As soon as a method is called that is not next on the &ldquo;expected list&rdquo; the mock will fail fast and throw an exception.
+
+
+<h3 class="numbered">Limitations</h3>
+
+{% highlight objc %}
+id mock = OCMStrictClassMock([SomeClass class]);
+OCMStub([mock someMethod]).andReturn(@"a string");
+OCMExpect([mock someMethod]);
+
+/* run code under test */
+
+OCMVerifyAll(); // will complain that someMethod has not been called
+{% endhighlight objc %}
+
+<p>The code above first sets up a stub for <code>someMethod</code> and afterwards an expectation for the same method. Due to the way mock objects are currently implemented any calls to <code>someMethod</code> are handled by the stub. This means that even if the method is called the verify fails. It is possible to avoid this problem by adding <code>andReturn</code> to the expect statement. You can also set up a stub after the expect.
+
+
 <h2 id="observer-mocks" class="numbered">Observer mocks</h2>
 
 <h3 class="numbered">Setup</h3>
