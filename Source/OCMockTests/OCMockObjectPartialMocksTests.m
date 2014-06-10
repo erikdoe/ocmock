@@ -171,6 +171,18 @@
 	numKVOCallbacks++;
 }
 
+
+- (void)testRefusesToCreateTwoPartialMocksForTheSameObject
+{
+    id object = [[[TestClassThatCallsSelf alloc] init] autorelease];
+
+    id partialMock1 = [[OCMockObject partialMockForObject:object] retain];
+
+    XCTAssertThrows([OCMockObject partialMockForObject:object], @"Should not have allowed creation of second partial mock");
+
+    [partialMock1 release];
+}
+
 - (void)testRefusesToCreatePartialMockForTollFreeBridgedClasses
 {
     id object = (id)CFStringCreateWithCString(kCFAllocatorDefault, "foo", kCFStringEncodingASCII);

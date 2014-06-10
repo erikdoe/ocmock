@@ -146,6 +146,8 @@
 {
     // in here "self" is a reference to the real object, not the mock
     OCPartialMockObject *mock = OCMGetAssociatedMockForObject(self);
+    if(mock == nil)
+        [NSException raise:NSInternalInconsistencyException format:@"No partial mock for object %p", self];
     return [mock mockedClass];
 }
 
@@ -154,6 +156,8 @@
 {
 	// in here "self" is a reference to the real object, not the mock
     OCPartialMockObject *mock = OCMGetAssociatedMockForObject(self);
+    if(mock == nil)
+        [NSException raise:NSInternalInconsistencyException format:@"No partial mock for object %p", self];
     if([mock handleSelector:sel])
         return self;
 
@@ -171,6 +175,9 @@
 {
 	// in here "self" is a reference to the real object, not the mock
     OCPartialMockObject *mock = OCMGetAssociatedMockForObject(self);
+    if(mock == nil)
+        [NSException raise:NSInternalInconsistencyException format:@"No partial mock for object %p", self];
+
 	if([mock handleInvocation:anInvocation] == NO)
     {
         [anInvocation setSelector:OCMAliasForOriginalSelector([anInvocation selector])];

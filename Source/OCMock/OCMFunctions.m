@@ -137,16 +137,14 @@ NSString *OCMPartialMockObjectKey = @"OCMPartialMockObjectKey";
 
 void OCMSetAssociatedMockForObject(OCClassMockObject *mock, id anObject)
 {
-     // TODO: shouldn't we throw an exception if another object is already mocking methods?
+    if((mock != nil) && (objc_getAssociatedObject(anObject, OCMPartialMockObjectKey) != nil))
+        [NSException raise:NSInternalInconsistencyException format:@"Another mock is already associated with object %@", anObject];
     objc_setAssociatedObject(anObject, OCMPartialMockObjectKey, mock, OBJC_ASSOCIATION_ASSIGN);
 }
 
 OCPartialMockObject *OCMGetAssociatedMockForObject(id anObject)
 {
-    OCPartialMockObject *mock = objc_getAssociatedObject(anObject, OCMPartialMockObjectKey);
-    if(mock == nil)
-        [NSException raise:NSInternalInconsistencyException format:@"No partial mock for object %p", anObject];
-    return mock;
+    return objc_getAssociatedObject(anObject, OCMPartialMockObjectKey);
 }
 
 
