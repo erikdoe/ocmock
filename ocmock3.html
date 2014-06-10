@@ -1,6 +1,6 @@
 ---
 layout: default
-title: OCMock 3
+title: What's new in OCMock 3
 tags: []
 status: publish
 type: page
@@ -8,59 +8,20 @@ published: true
 comments: true
 ---
 <h1>{{ page.title }}</h1>
-<p>OCMock 3 is currently under development. It will be backwards compatible with previous versions of OCMock while introducing the following changes:
+<p>OCMock 3 is almost completely backwards compatible with previous versions of OCMock while introducing the following changes:
 	
-<ul>
+<ol>
 	<li>Modern syntax 
 	<li>Verify after running
 	<li>Apache 2 license
-</ul>
+</ol>
 	
-<p>This page a description of planned changes. The final implemenation in OCMock&nbsp;3 may be different. Please do not rely on any of the changes before the first stable release of OCMock&nbsp;3 is available.
-	
-
-<h2>Download</h2>
-
-<p>The milestone releases are not stable production releases. Use them with caution. They may contain known bugs, and breaking API changes may occur between the milestone releases and the first stable release of OCMock&nbsp;3.
-
-<table>
-	<tr>
-		<th>Release</th>
-		<th>Platforms</th>
-		<th>Date</th>
-		<th>File</th>
-	</tr>
-	<tr>
-		<td>OCMock 3.0.M3</td>
-		<td>Xcode 5.1.1, OS X 10.6&ndash;10.9, iOS 5&ndash;7.1</td>
-		<td>31-May-2014</td>
-		<td><a href="{{ site.baseurl }}/downloads/ocmock-3.0.M3.dmg">ocmock-3.0.M3.dmg</a></td>
-	</tr>
-	<tr>
-		<td>OCMock 3.0.M2</td>
-		<td>Xcode 5.1.1, OS X 10.6&ndash;10.9, iOS 5&ndash;7.1</td>
-		<td>07-May-2014</td>
-		<td><a href="{{ site.baseurl }}/downloads/ocmock-3.0.M2.dmg">ocmock-3.0.M2.dmg</a></td>
-	</tr>
-	<tr>
-		<td>OCMock 3.0.M1</td>
-		<td>Xcode 5.1.1, OS X 10.6&ndash;10.9, iOS 5&ndash;7.1</td>
-		<td>26-Apr-2014</td>
-		<td><a href="{{ site.baseurl }}/downloads/ocmock-3.0.M1.dmg">ocmock-3.0.M1.dmg</a></td>
-	</tr>
-</table>
-
-<p>Source code is available in the <a href="https://github.com/erikdoe/ocmock">Github repository</a>.
+<p>This page describes the changes. For a description of all the features please consult the <a href="{{ site.baseurl }}/reference">reference page</a>.
 
 
-<h2>Feedback</h2>
+<h2 class="toc numbered">Modern syntax</h2>
 
-<p>We'd love to know what you think about the planned changes. Please leave a comment at the bottom of this page if you have feedback. For support with using OCMock please use the normal <a href="{{ site.baseurl }}/support">support channels</a>.
-
-
-<h2>Modern syntax (Milestone 1)</h2>
-
-<p>In addition to the existing syntax OCMock 3 introduces a new "modern" syntax that uses macros and round brackets. We believe that there are several benefits:
+<p>In addition to the existing syntax OCMock 3 introduces a new &ldquo;modern&rdquo; syntax that uses macros and round brackets. We believe that there are several benefits:
 
 <ul>
 	<li>Better error reporting: failures are reported with location in Xcode/AppCode
@@ -88,7 +49,7 @@ id partial = [OCMockObject partialMockForObject:anObject];
 [[[[partial expect] andForwardToRealObject] andReturn:@"TEST_STRING"] exampleMethod];
 {% endhighlight objc %}	
 
-<p>The following "functions" will be available. (They are not implemented as C functions.)
+<p>The following &ldquo;functions&rdquo; are available. (They are not implemented as C functions.)
 
 <p>Creating mock objects:
 <ul>
@@ -108,7 +69,7 @@ id partial = [OCMockObject partialMockForObject:anObject];
   <li><b>OCMExpect(ClassMethod(invocation))</b>: creates an expectation for the class method invocation
 </ul>		
 
-<p>The use of <b>ClassMethod</b> is only necessary if a class contains a class and instance method with the same name and the class method is to be mocked. In all other cases OCMock can determine automatically whether a class or instance method is targeted.
+<p>The use of <code>ClassMethod</code> is only necessary if a class contains a class and instance method with the same name and the class method is to be mocked. In all other cases OCMock can determine automatically whether a class or instance method is targeted.
 	
 <p>Setting up stubs and expectations:
 <ul>
@@ -125,14 +86,14 @@ id partial = [OCMockObject partialMockForObject:anObject];
 	<li><b>OCMVerifyAll(mock)</b>: verifies all expectations on the mock
 </ul>		
 
-<p>It is possible to mix and match these new "functions" with the traditional method-based syntax.
+<p>It is possible to mix and match the new syntax with the traditional method-based syntax.
 
 
-<h2>Verify after running (Milestone 2 and 3)</h2>
+<h2 class="numbered">Verify after running</h2>
 
 <p>Most of the original mock frameworks follow the <i>expect-run-verify</i> approach. OCMock is one of these frameworks. Over the years, as we all gathered more experience, it became clear that this approach has its problems, and the <a href="https://github.com/mockito/mockito">Mockito</a> framework pioneered a new approach: <i>verify-after-running</i>. There are no expectations, all mocks are <i>nice</i>, i.e. they do not complain when an unexpected method is called, and verification of specific calls is done after the code under test is run.
 	
-<p>OCMock 3 will support this approach to testing in addition to the traditional approach. With the modern syntax the default is to create nice mocks. On a mock that has no expectations set the <b>verify</b> method and the <b>OCMVerify</b> function allow verification after the fact:
+<p>OCMock 3 supports this approach to testing in addition to the traditional approach. With the modern syntax the default is to create nice mocks. On a mock that has no expectations set the <b>verify</b> method and the <b>OCMVerify</b> function allow verification after the fact:
 
 {% highlight objc %}
 id mock = OCMClassMock([NSString class]);
@@ -145,11 +106,9 @@ id mock = [OCMockObject niceMockForClass:[NSString class]];
 {% endhighlight objc %}
 
 <p>In this example, the code under test can call any methods on the mock object. No checking is done. Only when <b>OCMVerify()</b> or the <b>verify</b> method are called, the mock verifies whether the respective invocation has occured and, if not, reports an error.
-	
-<p>At present it is not clear how hard it will be to get verify-after-running work with partial mocks and class methods. Milestone 2 will provide the functionality for "regular" mocks, and in Milestone 3 we will tackle partial mocks and class methods.
 
 
-<h2>Apache 2 license</h2>
+<h2 class="numbered">Apache 2 license</h2>
 
-<p>It has become clear that a non-standard BSD-style license with attribution clause is not ideal. I am not a lawyer but the Apache 2 license seems quite close in spirit to the existing license, and it has the benefit of being a widely used standard open source license. For that reason OCMock 3 will be released under the Apache 2 license. If you are a previous commiter and you have concerns please do get in touch.
-	
+<p>It has become clear that a non-standard BSD-style license with attribution clause is not ideal. I am not a lawyer but the Apache 2 license seems quite close in spirit to the existing license, and it has the benefit of being a widely used standard open source license. For that reason OCMock 3 has been released under the Apache 2 license. If you are a previous contributor and you have concerns please do get in touch.
+
