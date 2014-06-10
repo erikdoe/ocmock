@@ -271,4 +271,17 @@
     XCTAssertEqual(expectedLine, (int)reportedLine, @"Should have reported correct line");
 }
 
+- (void)testShouldThrowDescriptiveExceptionWhenTryingToVerifyUnimplementedMethod
+{
+    id mock = OCMClassMock([NSString class]);
+
+    // have not found a way to report the error; it seems we must throw an
+    // exception to get out of the forwarding machinery
+//    OCMStub([mock arrayByAddingObject:nil]);
+    XCTAssertThrowsSpecificNamed(OCMVerify([mock arrayByAddingObject:nil]),
+                    NSException,
+                    NSInvalidArgumentException,
+                    @"should throw NSInvalidArgumentException exception");
+}
+
 @end

@@ -286,8 +286,21 @@
 	}
 }
 
+- (void)doesNotRecognizeSelector:(SEL)aSelector
+{
+    OCMMacroState *macroState = [OCMMacroState globalState];
+     if(macroState != nil)
+     {
+         // we can't do anything clever with the macro state because we must raise an exception here
+         [NSException raise:NSInvalidArgumentException format:@"%@: Cannot stub/expect/verify method '%@' because no such method exists in the mocked class.", self, NSStringFromSelector(aSelector)];
+     }
+     else
+     {
+         [super doesNotRecognizeSelector:aSelector];
+     }
+}
 
-#define mark  Verify After Run
+#pragma mark  Verify After Run
 
 - (void)verifyInvocation:(OCMInvocationMatcher *)matcher
 {
