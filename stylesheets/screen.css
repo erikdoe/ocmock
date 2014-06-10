@@ -8,6 +8,14 @@ div#main, div#footernav nav, div#footercopy footer  {
 	padding: 1em 2em;
 }
 
+html, body {
+    height: 100%;
+}
+
+div#main {
+    min-height: 60%;
+}
+
 div#footercopy footer {
 	padding: 0.5em 2em 0.5em 2em;
 }
