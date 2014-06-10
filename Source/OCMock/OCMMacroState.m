@@ -27,13 +27,12 @@ OCMMacroState *globalState;
 
 + (void)beginStubMacro
 {
-    globalState = [[OCMStubMacroState alloc] init];
+    globalState = [[[OCMStubMacroState alloc] init] autorelease];
 }
 
 + (OCMockRecorder *)endStubMacro
 {
     OCMockRecorder *recorder = [((OCMStubMacroState *)globalState) recorder];
-    [globalState autorelease];
     globalState = nil;
     return recorder;
 }
@@ -53,12 +52,11 @@ OCMMacroState *globalState;
 
 + (void)beginVerifyMacroAtLocation:(OCMLocation *)aLocation
 {
-    globalState = [[OCMVerifyMacroState alloc] initWithLocation:aLocation];
+    globalState = [[[OCMVerifyMacroState alloc] initWithLocation:aLocation] autorelease];
 }
 
 + (void)endVerifyMacro
 {
-    [globalState autorelease];
     globalState = nil;
 }
 
@@ -66,6 +64,14 @@ OCMMacroState *globalState;
 + (OCMMacroState *)globalState
 {
     return globalState;
+}
+
+
+- (void)dealloc
+{
+    if(globalState == self)
+        globalState = nil;
+    [super dealloc];
 }
 
 

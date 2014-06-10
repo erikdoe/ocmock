@@ -41,31 +41,15 @@
 #define OCMStub(invocation) \
 ({ \
     [OCMMacroState beginStubMacro]; \
-    OCMockRecorder *recorder = nil; \
-    @try \
-    { \
-        invocation; \
-    } \
-    @finally \
-    { \
-        recorder = [OCMMacroState endStubMacro]; \
-    } \
-    recorder; \
+    invocation; \
+    [OCMMacroState endStubMacro]; \
 })
 
 #define OCMExpect(invocation) \
 ({ \
     [OCMMacroState beginExpectMacro]; \
-    OCMockRecorder *recorder = nil; \
-    @try \
-    { \
-        invocation; \
-    } \
-    @finally \
-    { \
-        recorder = [OCMMacroState endExpectMacro]; \
-    } \
-    recorder; \
+    invocation; \
+    [OCMMacroState endExpectMacro]; \
 })
 
 #define ClassMethod(invocation) \
@@ -78,12 +62,6 @@
 #define OCMVerify(invocation) \
 ({ \
     [OCMMacroState beginVerifyMacroAtLocation:OCMMakeLocation(self, __FILE__, __LINE__)]; \
-    @try \
-    { \
-        invocation; \
-    } \
-    @finally \
-    { \
-        [OCMMacroState endVerifyMacro]; \
-    } \
+    invocation; \
+    [OCMMacroState endVerifyMacro]; \
 })
