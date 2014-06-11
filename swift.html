@@ -1,0 +1,134 @@
+---
+layout: default
+title: OCMock and Swift
+tags: []
+status: publish
+type: page
+published: true
+nosidebar: true
+comments: true
+---
+<h1>{{ page.title }}</h1>
+
+<p>This page decribes my current understanding of using OCMock with Swift. It will be updated as more information becomes available.
+
+<h2>General FAQ</h2>
+
+<h3>Will there be a mock framework for Swift written in Swift?</h3>
+
+<p>Maybe. As of now it doesn't look too likely, though, because mock frameworks depend heavily on access to the language runtime, and Swift does not seem to provide any.
+
+
+<h3>Do I even need a mock framework for Swift?</h3>
+
+<p>Yes and no. Swift has many useful language features that allow for more compact code. This should make creating mocks, stubs, and spies in Swift much less tedious than in Objective-C. That said, mock frameworks have proven convenient in many languages...
+  
+
+<h3>Can I use OCMock using the language bridge functionality?</h3>  
+<p>Yes, but with limitations. If you are brave. As of now this is highly experimental. There's no guarantee that OCMock will ever fully support Swift. 
+  
+   
+<h2>Using Swift with OCMock</h2>
+
+<p>The code in this section is taken from the <a href="https://github.com/erikdoe/ocmock/tree/master/Examples/SwiftExamples">SwiftExamples</a> project in the OCMock repository.
+  
+
+<h3>Creating a mock for a Swift class</h3>
+
+<pre><code>// class in Swift
+class Connection : NSObject {
+    
+    func fetchData() -> String {
+        return "real data returned from other system"
+    }
+}
+</code></pre>
+
+{% highlight objc %}
+// test in Objective-C
+- (void)testMockingAnObject
+{
+    id mock = OCMClassMock([Connection class]);
+    OCMStub([mock fetchData]).andReturn(@"stubbed!");
+{% endhighlight objc %}
+
+<p>As long as the Swift class inherits from <code>NSObject</code> it is possible to create a mock for it. Instance methods can be stubbed. 
+  
+<p>The test is obviously written in Objective-C. It might be possible to write a Swift wrapper around the core OCMock functionality so that tests can be written in Swift. 
+  
+ 
+<h3>Using the mock with another Swift object</h3>
+  
+<pre><code>// another class in Swift
+@objc
+class Controller {
+    var connection: Connection;
+    var data: String;
+    
+    class func newController() -> Controller {
+        return Controller()
+    }
+    
+    init() {
+        self.connection = Connection();
+        self.data = "";
+    }
+    
+    func redisplay() {
+        data = connection.fetchData();
+    }
+}
+</code></pre>
+
+{% highlight objc %}
+// test in Objective-C
+- (void)testMockingAnObject
+{
+    id mock = OCMClassMock([Connection class]);
+    OCMStub([mock fetchData]).andReturn(@"stubbed!");
+    
+    Controller *controller = [Controller newController];
+    controller.connection = mock;
+    
+    [controller redisplay];
+    
+    OCMVerify([mock fetchData]);
+    XCTAssertEqualObjects(@"stubbed!", controller.data, @"Excpected stubbed data in controller.");
+}
+{% endhighlight objc %}
+ 
+<p>It is possible to use the mock with a Swift object. That Swift object does not even have to inherit from <code>NSObject</code>. It must be made visible to Objective-C, though.
+    
+    
+<h3>Creating a partial mock for a Swift object</h3>
+
+{% highlight objc %}
+// using same Swift classes as above    
+- (void)testPartiallyMockingAnObject2
+{
+    Controller *controller = [Controller newController];
+
+    id mock = OCMPartialMock(controller.connection);
+    OCMStub([mock fetchData]).andReturn(@"stubbed!");
+    
+    [controller redisplay];
+    
+    OCMVerify([mock fetchData]);
+    XCTAssertEqualObjects(@"stubbed!", controller.data, @"Excpected stubbed data in controller.");
+}
+{% endhighlight objc %}
+
+<p>Partial mocks can be created for Swift objects that inherit from <code>NSObject</code>. 
+  
+<p>The sublassing mechanism used by OCMock seems to work, too. This allows OCMock to stub and verify methods on the real object. Note how we create the partial mock on the controller's existing connection, a Swift object. The controller keeps using a reference to the Swift object it has created, and OCMock can still verify that the <code>fetchData</code> method has been called.
+  
+
+<h3>Known limitations</h3>
+
+<ul>
+  <li>Tests have to be written in Objective-C
+  <li>Objects that should be mocked must inherit from <code>NSObject</code>
+  <li>No stubbing/expecting/verifying of class methods
+</ul>  
+  
+  
