@@ -35,6 +35,9 @@
 
 + (OCMMacroState *)globalState;
 
+- (void)switchToClassMethod;
+- (BOOL)hasSwitchedToClassMethod;
+
 - (void)handleInvocation:(NSInvocation *)anInvocation;
 
 @end

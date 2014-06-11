@@ -35,6 +35,16 @@
     return recorder;
 }
 
+- (void)switchToClassMethod
+{
+    shouldRecordAsClassMethod = YES;
+}
+
+- (BOOL)hasSwitchedToClassMethod
+{
+    return shouldRecordAsClassMethod;
+}
+
 - (void)handleInvocation:(NSInvocation *)anInvocation
 {
     OCMockObject *mock = [anInvocation target];

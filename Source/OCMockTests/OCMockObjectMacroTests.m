@@ -218,7 +218,7 @@
 }
 
 
-- (void)testCanExplicitlySelectClassMethod
+- (void)testCanExplicitlySelectClassMethodForStubs
 {
     id mock = OCMClassMock([TestClassWithClassMethods class]);
 
@@ -227,6 +227,26 @@
 
     XCTAssertEqualObjects(@"mocked-class", [TestClassWithClassMethods bar], @"Should have stubbed class method.");
     XCTAssertEqualObjects(@"mocked-instance", [mock bar], @"Should have stubbed instance method.");
+}
+
+
+- (void)testSelectsInstanceMethodForStubsWhenAmbiguous
+{
+    id mock = OCMClassMock([TestClassWithClassMethods class]);
+
+    OCMStub([mock bar]).andReturn(@"mocked-instance");
+
+    XCTAssertEqualObjects(@"mocked-instance", [mock bar], @"Should have stubbed instance method.");
+}
+
+
+- (void)testSelectsClassMethodForStubsWhenUnambiguous
+{
+    id mock = OCMClassMock([TestClassWithClassMethods class]);
+
+    OCMStub([mock foo]).andReturn(@"mocked-class");
+
+    XCTAssertEqualObjects(@"mocked-class", [TestClassWithClassMethods foo], @"Should have stubbed class method.");
 }
 
 

@@ -74,6 +74,15 @@ OCMMacroState *globalState;
     [super dealloc];
 }
 
+- (void)switchToClassMethod
+{
+
+}
+
+- (BOOL)hasSwitchedToClassMethod
+{
+    return NO;
+}
 
 - (void)handleInvocation:(NSInvocation *)anInvocation
 {

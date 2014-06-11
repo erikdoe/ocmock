@@ -18,6 +18,7 @@
 #import "OCClassMockObject.h"
 #import "NSObject+OCMAdditions.h"
 #import "OCMFunctions.h"
+#import "OCMMacroState.h"
 
 
 @implementation OCClassMockObject
@@ -134,7 +135,28 @@
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
-	return [mockedClass instanceMethodSignatureForSelector:aSelector];
+    OCMMacroState *macroState = [OCMMacroState globalState];
+    if(macroState != nil)
+    {
+        if([macroState hasSwitchedToClassMethod])
+        {
+            return [mockedClass methodSignatureForSelector:aSelector];
+        }
+        else
+        {
+            NSMethodSignature *signature = [mockedClass instanceMethodSignatureForSelector:aSelector];
+            if((signature == nil) && [mockedClass respondsToSelector:aSelector])
+            {
+                [macroState switchToClassMethod];
+                signature = [mockedClass methodSignatureForSelector:aSelector];
+            }
+            return signature;
+        }
+    }
+    else
+    {
+        return [mockedClass instanceMethodSignatureForSelector:aSelector];
+    }
 }
 
 - (Class)mockObjectClass
