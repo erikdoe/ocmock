@@ -20,8 +20,6 @@
 #import <OCMock/OCMArg.h>
 #import <OCMock/OCMLocation.h>
 #import <OCMock/OCMMacroState.h>
-#import <OCMock/OCMStubMacroState.h>
-#import <OCMock/OCMVerifyMacroState.h>
 #import <OCMock/NSNotificationCenter+OCMAdditions.h>
 
 
@@ -53,7 +51,7 @@
 })
 
 #define ClassMethod(invocation) \
-    [(OCMStubMacroState *)[OCMMacroState globalState] setShouldRecordAsClassMethod:YES]; \
+    [[OCMMacroState globalState] switchToClassMethod]; \
     invocation;
 
 

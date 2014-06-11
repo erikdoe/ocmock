@@ -8,12 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		030EF0B614632FD000B04273 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 030EF0B414632FD000B04273 /* InfoPlist.strings */; };
-		0316D6861916475A00FC48D1 /* OCMStubMacroState.h in Headers */ = {isa = PBXBuildFile; fileRef = 0316D6841916475A00FC48D1 /* OCMStubMacroState.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0316D6871916475A00FC48D1 /* OCMStubMacroState.h in Headers */ = {isa = PBXBuildFile; fileRef = 0316D6841916475A00FC48D1 /* OCMStubMacroState.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0316D6861916475A00FC48D1 /* OCMStubMacroState.h in Headers */ = {isa = PBXBuildFile; fileRef = 0316D6841916475A00FC48D1 /* OCMStubMacroState.h */; };
+		0316D6871916475A00FC48D1 /* OCMStubMacroState.h in Headers */ = {isa = PBXBuildFile; fileRef = 0316D6841916475A00FC48D1 /* OCMStubMacroState.h */; };
 		0316D6881916475A00FC48D1 /* OCMStubMacroState.m in Sources */ = {isa = PBXBuildFile; fileRef = 0316D6851916475A00FC48D1 /* OCMStubMacroState.m */; };
 		0316D6891916475A00FC48D1 /* OCMStubMacroState.m in Sources */ = {isa = PBXBuildFile; fileRef = 0316D6851916475A00FC48D1 /* OCMStubMacroState.m */; };
-		0316D68C1916477000FC48D1 /* OCMVerifyMacroState.h in Headers */ = {isa = PBXBuildFile; fileRef = 0316D68A1916477000FC48D1 /* OCMVerifyMacroState.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0316D68D1916477000FC48D1 /* OCMVerifyMacroState.h in Headers */ = {isa = PBXBuildFile; fileRef = 0316D68A1916477000FC48D1 /* OCMVerifyMacroState.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0316D68C1916477000FC48D1 /* OCMVerifyMacroState.h in Headers */ = {isa = PBXBuildFile; fileRef = 0316D68A1916477000FC48D1 /* OCMVerifyMacroState.h */; };
+		0316D68D1916477000FC48D1 /* OCMVerifyMacroState.h in Headers */ = {isa = PBXBuildFile; fileRef = 0316D68A1916477000FC48D1 /* OCMVerifyMacroState.h */; };
 		0316D68E1916477000FC48D1 /* OCMVerifyMacroState.m in Sources */ = {isa = PBXBuildFile; fileRef = 0316D68B1916477000FC48D1 /* OCMVerifyMacroState.m */; };
 		0316D68F1916477000FC48D1 /* OCMVerifyMacroState.m in Sources */ = {isa = PBXBuildFile; fileRef = 0316D68B1916477000FC48D1 /* OCMVerifyMacroState.m */; };
 		0322DA65191188D100CACAF1 /* OCMockObjectVerifyAfterRunTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0322DA64191188D100CACAF1 /* OCMockObjectVerifyAfterRunTests.m */; };

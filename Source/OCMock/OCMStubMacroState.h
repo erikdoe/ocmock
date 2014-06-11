@@ -27,7 +27,7 @@
 }
 
 - (void)setShouldRecordExpectation:(BOOL)flag;
-- (void)setShouldRecordAsClassMethod:(BOOL)flag;
+
 - (OCMockRecorder *)recorder;
 
 @end

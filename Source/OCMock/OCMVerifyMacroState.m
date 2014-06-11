@@ -29,11 +29,22 @@
     return self;
 }
 
+- (void)switchToClassMethod
+{
+    shouldVerifyClassMethod = YES;
+}
+
+- (BOOL)hasSwitchedToClassMethod
+{
+    return shouldVerifyClassMethod;
+}
+
 - (void)handleInvocation:(NSInvocation *)anInvocation
 {
     OCMockObject *mock = [anInvocation target];
     [anInvocation setTarget:nil];
     OCMInvocationMatcher *matcher = [[[OCMInvocationMatcher alloc] init] autorelease];
+    [matcher setRecordedAsClassMethod:shouldVerifyClassMethod];
     [matcher setInvocation:anInvocation];
     [mock verifyInvocation:matcher atLocation:location];
 }

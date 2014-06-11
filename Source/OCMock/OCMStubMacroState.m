@@ -25,11 +25,6 @@
     shouldRecordExpectation = flag;
 }
 
-- (void)setShouldRecordAsClassMethod:(BOOL)flag
-{
-    shouldRecordAsClassMethod = flag;
-}
-
 - (OCMockRecorder *)recorder
 {
     return recorder;

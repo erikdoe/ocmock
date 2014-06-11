@@ -89,7 +89,6 @@
     XCTAssertEqual(expectedLine, (int)reportedLine, @"Should have reported correct line");
 }
 
-
 - (void)testReportsIgnoredExceptionsAtVerifyLocation
 {
     id mock = OCMClassMock([NSString class]);
@@ -146,16 +145,6 @@
     XCTAssertEqual(456, actual.length, @"Should have returned stubbed value");
 }
 
-- (void)testCanUseVariablesInInvocationSpec
-{
-    id mock = OCMStrictClassMock([NSString class]);
-
-    NSString *expected = @"foo";
-    OCMStub([mock rangeOfString:expected]).andReturn(NSMakeRange(0, 3));
-
-    XCTAssertThrows([mock rangeOfString:@"bar"], @"Should not have accepted invocation with non-matching arg.");
-}
-
 - (void)testSetsUpExceptionThrowing
 {
     id mock = OCMClassMock([NSString class]);
@@ -164,7 +153,6 @@
 
     XCTAssertThrowsSpecificNamed([mock uppercaseString], NSException, @"TestException", @"Should have thrown correct exception");
 }
-
 
 - (void)testSetsUpNotificationPostingAndNotificationObserving
 {
@@ -182,7 +170,6 @@
 
     OCMVerifyAll(observer);
 }
-
 
 - (void)testSetsUpSubstituteCall
 {
@@ -218,35 +205,14 @@
 }
 
 
-- (void)testCanExplicitlySelectClassMethodForStubs
+- (void)testCanUseVariablesInInvocationSpec
 {
-    id mock = OCMClassMock([TestClassWithClassMethods class]);
+    id mock = OCMStrictClassMock([NSString class]);
 
-    OCMStub(ClassMethod([mock bar])).andReturn(@"mocked-class");
-    OCMStub([mock bar]).andReturn(@"mocked-instance");
+    NSString *expected = @"foo";
+    OCMStub([mock rangeOfString:expected]).andReturn(NSMakeRange(0, 3));
 
-    XCTAssertEqualObjects(@"mocked-class", [TestClassWithClassMethods bar], @"Should have stubbed class method.");
-    XCTAssertEqualObjects(@"mocked-instance", [mock bar], @"Should have stubbed instance method.");
-}
-
-
-- (void)testSelectsInstanceMethodForStubsWhenAmbiguous
-{
-    id mock = OCMClassMock([TestClassWithClassMethods class]);
-
-    OCMStub([mock bar]).andReturn(@"mocked-instance");
-
-    XCTAssertEqualObjects(@"mocked-instance", [mock bar], @"Should have stubbed instance method.");
-}
-
-
-- (void)testSelectsClassMethodForStubsWhenUnambiguous
-{
-    id mock = OCMClassMock([TestClassWithClassMethods class]);
-
-    OCMStub([mock foo]).andReturn(@"mocked-class");
-
-    XCTAssertEqualObjects(@"mocked-class", [TestClassWithClassMethods foo], @"Should have stubbed class method.");
+    XCTAssertThrows([mock rangeOfString:@"bar"], @"Should not have accepted invocation with non-matching arg.");
 }
 
 
@@ -297,11 +263,69 @@
 
     // have not found a way to report the error; it seems we must throw an
     // exception to get out of the forwarding machinery
-//    OCMStub([mock arrayByAddingObject:nil]);
     XCTAssertThrowsSpecificNamed(OCMVerify([mock arrayByAddingObject:nil]),
                     NSException,
                     NSInvalidArgumentException,
                     @"should throw NSInvalidArgumentException exception");
 }
+
+
+- (void)testCanExplicitlySelectClassMethodForStubs
+{
+    id mock = OCMClassMock([TestClassWithClassMethods class]);
+
+    OCMStub(ClassMethod([mock bar])).andReturn(@"mocked-class");
+    OCMStub([mock bar]).andReturn(@"mocked-instance");
+
+    XCTAssertEqualObjects(@"mocked-class", [TestClassWithClassMethods bar], @"Should have stubbed class method.");
+    XCTAssertEqualObjects(@"mocked-instance", [mock bar], @"Should have stubbed instance method.");
+}
+
+- (void)testSelectsInstanceMethodForStubsWhenAmbiguous
+{
+    id mock = OCMClassMock([TestClassWithClassMethods class]);
+
+    OCMStub([mock bar]).andReturn(@"mocked-instance");
+
+    XCTAssertEqualObjects(@"mocked-instance", [mock bar], @"Should have stubbed instance method.");
+}
+
+- (void)testSelectsClassMethodForStubsWhenUnambiguous
+{
+    id mock = OCMClassMock([TestClassWithClassMethods class]);
+
+    OCMStub([mock foo]).andReturn(@"mocked-class");
+
+    XCTAssertEqualObjects(@"mocked-class", [TestClassWithClassMethods foo], @"Should have stubbed class method.");
+}
+
+
+- (void)testCanExplicitlySelectClassMethodForVerify
+{
+    id mock = OCMClassMock([TestClassWithClassMethods class]);
+
+    [TestClassWithClassMethods bar];
+
+    OCMVerify(ClassMethod([mock bar]));
+}
+
+- (void)testSelectsInstanceMethodForVerifyWhenAmbiguous
+{
+    id mock = OCMClassMock([TestClassWithClassMethods class]);
+
+    [mock bar];
+
+    OCMVerify([mock bar]);
+}
+
+- (void)testSelectsClassMethodForVerifyWhenUnambiguous
+{
+    id mock = OCMClassMock([TestClassWithClassMethods class]);
+
+    [TestClassWithClassMethods foo];
+
+    OCMVerify([mock foo]);
+}
+
 
 @end
