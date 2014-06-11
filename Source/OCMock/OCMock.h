@@ -57,6 +57,8 @@
 
 #define OCMVerifyAll(mock) [mock verifyAtLocation:OCMMakeLocation(self, __FILE__, __LINE__)]
 
+#define OCMVerifyAllWithDelay(mock, delay) [mock verifyWithDelay:delay atLocation:OCMMakeLocation(self, __FILE__, __LINE__)]
+
 #define OCMVerify(invocation) \
 ({ \
     [OCMMacroState beginVerifyMacroAtLocation:OCMMakeLocation(self, __FILE__, __LINE__)]; \

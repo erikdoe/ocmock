@@ -113,6 +113,21 @@
     XCTAssertEqual(expectedLine, (int)reportedLine, @"Should have reported correct line");
 }
 
+- (void)testReportsVerifyWithDelayFailureWithCorrectLocation
+{
+    id mock = OCMClassMock([NSString class]);
+
+    [[mock expect] lowercaseString];
+
+    shouldCaptureFailure = YES;
+    OCMVerifyAllWithDelay(mock, 1); const char *expectedFile = __FILE__; int expectedLine = __LINE__;
+    shouldCaptureFailure = NO;
+
+    XCTAssertNotNil(reportedDescription, @"Should have recorded a failure with description.");
+    XCTAssertEqualObjects([NSString stringWithUTF8String:expectedFile], reportedFile, @"Should have reported correct file.");
+    XCTAssertEqual(expectedLine, (int)reportedLine, @"Should have reported correct line");
+}
+
 
 - (void)testSetsUpStubsForCorrectMethods
 {

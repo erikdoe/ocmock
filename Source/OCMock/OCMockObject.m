@@ -175,6 +175,11 @@
 
 - (void)verifyWithDelay:(NSTimeInterval)delay
 {
+    [self verifyWithDelay:delay atLocation:nil];
+}
+
+- (void)verifyWithDelay:(NSTimeInterval)delay atLocation:(OCMLocation *)location
+{
     NSTimeInterval step = 0.01;
     while(delay > 0)
     {
@@ -184,7 +189,7 @@
         delay -= step;
         step *= 2;
     }
-    [self verify];
+    [self verifyAtLocation:location];
 }
 
 - (void)stopMocking
@@ -195,12 +200,12 @@
 
 #pragma mark  Additional setup (called from recorder)
 
-- (void)prepareForMockingClassMethod:(SEL)aSelector
+- (void)prepareForMockingClassMethod:(__unused SEL)aSelector
 {
     // to be overridden by subclasses
 }
 
-- (void)prepareForMockingMethod:(SEL)aSelector
+- (void)prepareForMockingMethod:(__unused SEL)aSelector
 {
     // to be overridden by subclasses
 }

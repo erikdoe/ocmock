@@ -53,13 +53,14 @@
 - (id)verifyAtLocation:(OCMLocation *)location;
 
 - (void)verifyWithDelay:(NSTimeInterval)delay;
+- (void)verifyWithDelay:(NSTimeInterval)delay atLocation:(OCMLocation *)location;
 
 - (void)stopMocking;
 
 // internal use only
 
-- (void)prepareForMockingMethod:(SEL)aSelector;
-- (void)prepareForMockingClassMethod:(SEL)aSelector;
+- (void)prepareForMockingMethod:(__unused SEL)aSelector;
+- (void)prepareForMockingClassMethod:(__unused SEL)aSelector;
 
 - (BOOL)handleInvocation:(NSInvocation *)anInvocation;
 - (void)handleUnRecordedInvocation:(NSInvocation *)anInvocation;
