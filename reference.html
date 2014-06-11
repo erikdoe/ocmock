@@ -215,6 +215,8 @@ OCMVerify([mock someMethod]);
 <h3 class="numbered">Limitations</h3>
 
 <p>The limitations described in the section on <a href="#mocking-class-methods">mocking class methods</a> and <a href="#partial-mocks">partial mocks</a> apply to verifications, too. For example, it is not possible to verify class methods of <code>NSString</code>.
+  
+<p>It is currently not possible to verify a method with a delay. This is currently only possible using the <i>expect-run-verify</i> approach described below in <a href="#strict-mocks-and-expectations">strict mocks and expectations</a>.  
 
 
 <h2 id="argument-constraints" class="numbered">Argument constraints</h2>
@@ -456,12 +458,10 @@ OCMExpect([mock someMethod]);
 
 /* run code under test, which is assumed to call someMethod eventually */
 
-[mock verifyWithDelay:aDelay];
+OCMVerifyAllWithDelay(mock, aDelay);
 {% endhighlight objc %}
 
-<p>In certain cases the expected method will only be called when the run loop is active. For these cases it is possible to delay the verification for a while. Note that <code>aDelay</code> is the maximum the mock will wait. It normally returns as soon as the expectations have been met.
-
-<p><b>NOTE:</b> this should have a modern syntax.
+<p>In certain cases the expected method will only be called when the run loop is active. For these cases it is possible to delay the verification for a while. Note that <code>aDelay</code> (expressed as <code>NSTimeInterval</code>) is the maximum the mock will wait. It normally returns as soon as the expectations have been met.
 
 
 <h3 class="numbered">Verifying in order</h3>
