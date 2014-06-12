@@ -1,6 +1,15 @@
 Listing of notable changes by release. More detail is usually found in the Git 
 commit messages and/or the pull requests.
 
+OCMock 3.0 (2013-06-12)
+
+* Added macro for verify with delay
+* Fixed several critical bugs
+* Allowing nil as block in stub action. With partial mocks this makes it 
+  possible to overwrite a method to do nothing (Sam Stigler) 
+* More descriptive messages when trying to verify unknown method
+
+
 OCMock 3.0.M3 (2014-05-31)
 
 * Changed license to Apache 2 license
@@ -11,8 +20,6 @@ OCMock 3.0.M3 (2014-05-31)
   longer mocked in all subclasses. 
 * Throwing descriptive exception when attempting to create partial mock on
   toll-free bridged classes and tagged pointers (Mark Larsen)	
-* Allowing nil as block in stub action. With partial mocks this makes it 
-  possible to overwrite a method to do nothing (Sam Stigler) 
 
 
 OCMock 3.0.M2 (2014-05-07)
