@@ -68,6 +68,19 @@
 @end
 
 
+@interface TestClassWithProperty : NSObject
+
+@property (nonatomic, retain) NSString *title;
+
+@end
+
+@implementation TestClassWithProperty
+
+@synthesize title;
+
+@end
+
+
 @interface NotificationRecorderForTesting : NSObject
 {
 	@public
@@ -376,6 +389,15 @@ static NSString *TestNotification = @"TestNotification";
 	id returnValue = [mock uppercaseString];
 
 	XCTAssertNil(returnValue, @"Should have returned stubbed value, which is nil.");
+}
+
+- (void)testReturnsStubbedValueForProperty
+{
+    TestClassWithProperty *mock = [OCMockObject mockForClass:[TestClassWithProperty class]];
+
+    [[[(id)mock stub] andReturn:@"stubbed title"] title];
+
+    XCTAssertEqualObjects(@"stubbed title", mock.title);
 }
 
 
