@@ -14,9 +14,23 @@
  *  under the License.
  */
 
-#import "OCMRecorder.h"
+#import <Foundation/Foundation.h>
+
+@class OCMockObject;
+@class OCMInvocationMatcher;
 
 
-@interface OCMVerifier : OCMRecorder
+@interface OCMRecorder : NSProxy
+{
+    OCMockObject         *mockObject;
+    OCMInvocationMatcher *invocationMatcher;
+}
+
+- (id)initWithMockObject:(OCMockObject *)aMockObject;
+
+- (OCMInvocationMatcher *)invocationMatcher;
+
+- (id)classMethod;
+- (id)ignoringNonObjectArgs;
 
 @end

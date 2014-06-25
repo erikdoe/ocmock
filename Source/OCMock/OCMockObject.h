@@ -17,7 +17,7 @@
 #import <Foundation/Foundation.h>
 
 @class OCMLocation;
-@class OCMockRecorder;
+@class OCMStubRecorder;
 @class OCMInvocationMatcher;
 
 
@@ -58,9 +58,6 @@
 - (void)stopMocking;
 
 // internal use only
-
-- (void)prepareForMockingMethod:(__unused SEL)aSelector;
-- (void)prepareForMockingClassMethod:(__unused SEL)aSelector;
 
 - (BOOL)handleInvocation:(NSInvocation *)anInvocation;
 - (void)handleUnRecordedInvocation:(NSInvocation *)anInvocation;

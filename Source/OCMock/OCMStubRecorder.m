@@ -14,10 +14,8 @@
  *  under the License.
  */
 
-#import <objc/runtime.h>
-#import <OCMock/OCMockRecorder.h>
+#import "OCMStubRecorder.h"
 #import "OCClassMockObject.h"
-#import "OCMInvocationMatcher.h"
 #import "OCMReturnValueProvider.h"
 #import "OCMBoxedReturnValueProvider.h"
 #import "OCMExceptionReturnValueProvider.h"
@@ -34,33 +32,27 @@
 #pragma mark  -
 
 
-@implementation OCMockRecorder
+@implementation OCMStubRecorder
 
 #pragma mark  Initialisers, description, accessors, etc.
 
 - (id)initWithMockObject:(OCMockObject *)aMockObject
 {
-	mockObject = aMockObject;
-    invocationMatcher = [[OCMInvocationMatcher alloc] init];
+    [super initWithMockObject:aMockObject];
 	invocationHandlers = [[NSMutableArray alloc] init];
 	return self;
 }
 
 - (void)dealloc
 {
-    [invocationMatcher release];
 	[invocationHandlers release];
 	[super dealloc];
 }
 
-- (NSString *)description
-{
-    return [invocationMatcher description];
-}
 
-- (OCMInvocationMatcher *)invocationMatcher
+- (void)addInvocationHandler:(id)aHandler
 {
-    return invocationMatcher;
+    [invocationHandlers addObject:aHandler];
 }
 
 - (NSArray *)invocationHandlers
@@ -70,11 +62,6 @@
 
 
 #pragma mark  Recording invocation handlers
-
-- (void)addInvocationHandler:(id)aHandler
-{
-    [invocationHandlers addObject:aHandler];
-}
 
 - (id)andReturn:(id)anObject
 {
@@ -119,69 +106,14 @@
 }
 
 
-#pragma mark  Modifying the matcher
-
-- (id)classMethod
-{
-    // should we handle the case where this is called with a mock that isn't a class mock?
-    [invocationMatcher setRecordedAsClassMethod:YES];
-    return self;
-}
-
-- (id)ignoringNonObjectArgs
-{
-    [invocationMatcher setIgnoreNonObjectArgs:YES];
-    return self;
-}
-
-
-#pragma mark  Recording the actual invocation
-
-- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
-{
-    if([invocationMatcher recordedAsClassMethod])
-        return [[(OCClassMockObject *)mockObject mockedClass] methodSignatureForSelector:aSelector];
-    
-    NSMethodSignature *signature = [mockObject methodSignatureForSelector:aSelector];
-    if(signature == nil)
-    {
-        // if we're a working with a class mock and there is a class method, auto-switch
-        if(([object_getClass(mockObject) isSubclassOfClass:[OCClassMockObject class]]) &&
-           ([[(OCClassMockObject *)mockObject mockedClass] respondsToSelector:aSelector]))
-        {
-            [self classMethod];
-            signature = [self methodSignatureForSelector:aSelector];
-        }
-    }
-    return signature;
-}
-
-- (void)forwardInvocation:(NSInvocation *)anInvocation
-{
-    if([invocationMatcher recordedAsClassMethod])
-        [mockObject prepareForMockingClassMethod:[anInvocation selector]];
-    else
-        [mockObject prepareForMockingMethod:[anInvocation selector]];
-//	if(recordedInvocation != nil)
-//		[NSException raise:NSInternalInconsistencyException format:@"Recorder received two methods to record."];
-	[anInvocation setTarget:nil];
-    [invocationMatcher setInvocation:anInvocation];
-}
-
-- (void)doesNotRecognizeSelector:(SEL)aSelector
-{
-    [NSException raise:NSInvalidArgumentException format:@"%@: cannot stub or expect method '%@' because no such method exists in the mocked class.", mockObject, NSStringFromSelector(aSelector)];
-}
-
-
 @end
 
 
-@implementation OCMockRecorder(Properties)
+@implementation OCMStubRecorder (Properties)
 
 @dynamic _andReturn;
 
-- (OCMockRecorder *(^)(NSValue *))_andReturn
+- (OCMStubRecorder *(^)(NSValue *))_andReturn
 {
     id (^theBlock)(id) = ^ (NSValue *aValue)
     {
@@ -202,7 +134,7 @@
 
 @dynamic _andThrow;
 
-- (OCMockRecorder *(^)(NSException *))_andThrow
+- (OCMStubRecorder *(^)(NSException *))_andThrow
 {
     id (^theBlock)(id) = ^ (NSException * anException)
     {
@@ -214,7 +146,7 @@
 
 @dynamic _andPost;
 
-- (OCMockRecorder *(^)(NSNotification *))_andPost
+- (OCMStubRecorder *(^)(NSNotification *))_andPost
 {
     id (^theBlock)(id) = ^ (NSNotification * aNotification)
     {
@@ -226,7 +158,7 @@
 
 @dynamic _andCall;
 
-- (OCMockRecorder *(^)(id, SEL))_andCall
+- (OCMStubRecorder *(^)(id, SEL))_andCall
 {
     id (^theBlock)(id, SEL) = ^ (id anObject, SEL aSelector)
     {
@@ -238,7 +170,7 @@
 
 @dynamic _andDo;
 
-- (OCMockRecorder *(^)(void (^)(NSInvocation *)))_andDo
+- (OCMStubRecorder *(^)(void (^)(NSInvocation *)))_andDo
 {
     id (^theBlock)(void (^)(NSInvocation *)) = ^ (void (^ blockToCall)(NSInvocation *))
     {
@@ -250,7 +182,7 @@
 
 @dynamic _andForwardToRealObject;
 
-- (OCMockRecorder *(^)(void))_andForwardToRealObject
+- (OCMStubRecorder *(^)(void))_andForwardToRealObject
 {
     id (^theBlock)(void) = ^ (void)
     {

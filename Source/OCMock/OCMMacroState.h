@@ -17,7 +17,7 @@
 #import <Foundation/Foundation.h>
 
 @class OCMLocation;
-@class OCMockRecorder;
+@class OCMStubRecorder;
 
 
 @interface OCMMacroState : NSObject
@@ -25,10 +25,10 @@
 }
 
 + (void)beginStubMacro;
-+ (OCMockRecorder *)endStubMacro;
++ (OCMStubRecorder *)endStubMacro;
 
 + (void)beginExpectMacro;
-+ (OCMockRecorder *)endExpectMacro;
++ (OCMStubRecorder *)endExpectMacro;
 
 + (void)beginVerifyMacroAtLocation:(OCMLocation *)aLocation;
 + (void)endVerifyMacro;

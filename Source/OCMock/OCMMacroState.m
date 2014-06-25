@@ -15,7 +15,7 @@
  */
 
 #import "OCMMacroState.h"
-#import "OCMockRecorder.h"
+#import "OCMStubRecorder.h"
 #import "OCMVerifyMacroState.h"
 #import "OCMStubMacroState.h"
 
@@ -30,9 +30,9 @@ OCMMacroState *globalState;
     globalState = [[[OCMStubMacroState alloc] init] autorelease];
 }
 
-+ (OCMockRecorder *)endStubMacro
++ (OCMStubRecorder *)endStubMacro
 {
-    OCMockRecorder *recorder = [((OCMStubMacroState *)globalState) recorder];
+    OCMStubRecorder *recorder = [((OCMStubMacroState *)globalState) recorder];
     globalState = nil;
     return recorder;
 }
@@ -44,7 +44,7 @@ OCMMacroState *globalState;
     [(OCMStubMacroState *)globalState setShouldRecordExpectation:YES];
 }
 
-+ (OCMockRecorder *)endExpectMacro
++ (OCMStubRecorder *)endExpectMacro
 {
     return [self endStubMacro];
 }

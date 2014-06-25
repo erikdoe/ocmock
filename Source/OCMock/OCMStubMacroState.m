@@ -16,7 +16,7 @@
 
 #import "OCMStubMacroState.h"
 #import "OCMockObject.h"
-#import "OCMockRecorder.h"
+#import "OCMStubRecorder.h"
 
 @implementation OCMStubMacroState
 
@@ -25,7 +25,7 @@
     shouldRecordExpectation = flag;
 }
 
-- (OCMockRecorder *)recorder
+- (OCMStubRecorder *)recorder
 {
     return recorder;
 }

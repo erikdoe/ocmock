@@ -19,7 +19,7 @@
 #import "OCProtocolMockObject.h"
 #import "OCPartialMockObject.h"
 #import "OCObserverMockObject.h"
-#import <OCMock/OCMockRecorder.h>
+#import "OCMStubRecorder.h"
 #import <OCMock/OCMLocation.h>
 #import "NSInvocation+OCMAdditions.h"
 #import "OCMInvocationMatcher.h"
@@ -111,17 +111,22 @@
 }
 
 
+#pragma mark  Public API
+
 - (void)setExpectationOrderMatters:(BOOL)flag
 {
     expectationOrderMatters = flag;
 }
 
+- (void)stopMocking
+{
+    // no-op for mock objects that are not class object or partial mocks
+}
 
-#pragma mark  Public API
 
 - (id)stub
 {
-    OCMockRecorder *recorder = [[[OCMockRecorder alloc] initWithMockObject:self] autorelease];
+    OCMStubRecorder *recorder = [[[OCMStubRecorder alloc] initWithMockObject:self] autorelease];
 	[recorders addObject:recorder];
 	return recorder;
 }
@@ -129,7 +134,7 @@
 
 - (id)expect
 {
-	OCMockRecorder *recorder = [self stub];
+	OCMStubRecorder *recorder = [self stub];
 	[expectations addObject:recorder];
 	return recorder;
 }
@@ -137,7 +142,7 @@
 
 - (id)reject
 {
-	OCMockRecorder *recorder = [self stub];
+	OCMStubRecorder *recorder = [self stub];
 	[rejections addObject:recorder];
 	return recorder;
 }
@@ -192,22 +197,25 @@
     [self verifyAtLocation:location];
 }
 
-- (void)stopMocking
+
+#pragma mark Verify after running
+
+- (void)verifyInvocation:(OCMInvocationMatcher *)matcher
 {
-    // no-op for mock objects that are not class object or partial mocks
+    [self verifyInvocation:matcher atLocation:nil];
 }
 
-
-#pragma mark  Additional setup (called from recorder)
-
-- (void)prepareForMockingClassMethod:(__unused SEL)aSelector
+- (void)verifyInvocation:(OCMInvocationMatcher *)matcher atLocation:(OCMLocation *)location
 {
-    // to be overridden by subclasses
-}
+    for(NSInvocation *invocation in invocations)
+    {
+        if([matcher matchesInvocation:invocation])
+            return;
+    }
+    NSString *description = [NSString stringWithFormat:@"%@: Method %@ was not invoked.",
+     [self description], [matcher description]];
 
-- (void)prepareForMockingMethod:(__unused SEL)aSelector
-{
-    // to be overridden by subclasses
+    OCMReportFailure(location, description);
 }
 
 
@@ -215,7 +223,7 @@
 
 - (BOOL)handleSelector:(SEL)sel
 {
-    for (OCMockRecorder *recorder in recorders)
+    for (OCMStubRecorder *recorder in recorders)
         if ([[recorder invocationMatcher] matchesSelector:sel])
             return YES;
 
@@ -238,7 +246,7 @@
 
 - (BOOL)handleInvocation:(NSInvocation *)anInvocation
 {
-	OCMockRecorder *recorder = nil;
+	OCMStubRecorder *recorder = nil;
 	unsigned int			   i;
 
     [invocations addObject:anInvocation];
@@ -305,26 +313,6 @@
      }
 }
 
-#pragma mark  Verify After Run
-
-- (void)verifyInvocation:(OCMInvocationMatcher *)matcher
-{
-    [self verifyInvocation:matcher atLocation:nil];
-}
-
-- (void)verifyInvocation:(OCMInvocationMatcher *)matcher atLocation:(OCMLocation *)location
-{
-    for(NSInvocation *invocation in invocations)
-    {
-        if([matcher matchesInvocation:invocation])
-            return;
-    }
-    NSString *description = [NSString stringWithFormat:@"%@: Method %@ was not invoked.",
-     [self description], [matcher description]];
-
-    OCMReportFailure(location, description);
-}
-
 
 #pragma mark  Helper methods
 
@@ -332,7 +320,7 @@
 {
 	NSMutableString *outputString = [NSMutableString string];
 	
-	OCMockRecorder *currentObject;
+	OCMStubRecorder *currentObject;
 	NSEnumerator *recorderEnumerator = [recorders objectEnumerator];
 	while((currentObject = [recorderEnumerator nextObject]) != nil)
 	{

@@ -15,7 +15,7 @@
  */
 
 #import <XCTest/XCTest.h>
-#import <OCMock/OCMockRecorder.h>
+#import "OCMStubRecorder.h"
 #import <OCMock/OCMockObject.h>
 #import "OCMReturnValueProvider.h"
 #import "OCMExceptionReturnValueProvider.h"
@@ -23,19 +23,19 @@
 #import "OCMInvocationMatcher.h"
 
 
-@interface OCMockRecorderTests : XCTestCase
+@interface OCMStubRecorderTests : XCTestCase
 
 @end
 
 
-@implementation OCMockRecorderTests
+@implementation OCMStubRecorderTests
 
 - (void)testCreatesInvocationMatcher
 {
     NSString *arg = @"I love mocks.";
 
     id mock = [OCMockObject mockForClass:[NSString class]];
-    OCMockRecorder *recorder = [[[OCMockRecorder alloc] initWithMockObject:mock] autorelease];
+    OCMStubRecorder *recorder = [[[OCMStubRecorder alloc] initWithMockObject:mock] autorelease];
     [(id)recorder initWithString:arg];
 
     NSMethodSignature *signature = [NSString instanceMethodSignatureForSelector:@selector(initWithString:)];
@@ -48,7 +48,7 @@
 - (void)testAddsReturnValueProvider
 {
     id mock = [OCMockObject mockForClass:[NSString class]];
-    OCMockRecorder *recorder = [[[OCMockRecorder alloc] initWithMockObject:mock] autorelease];
+    OCMStubRecorder *recorder = [[[OCMStubRecorder alloc] initWithMockObject:mock] autorelease];
     [recorder andReturn:@"foo"];
     NSArray *handlerList = [recorder invocationHandlers];
 
@@ -59,7 +59,7 @@
 - (void)testAddsExceptionReturnValueProvider
 {
     id mock = [OCMockObject mockForClass:[NSString class]];
-    OCMockRecorder *recorder = [[[OCMockRecorder alloc] initWithMockObject:mock] autorelease];
+    OCMStubRecorder *recorder = [[[OCMStubRecorder alloc] initWithMockObject:mock] autorelease];
     [recorder andThrow:[NSException exceptionWithName:@"TestException" reason:@"A reason" userInfo:nil]];
     NSArray *handlerList = [recorder invocationHandlers];
 

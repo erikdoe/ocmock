@@ -16,18 +16,18 @@
 
 #import "OCMMacroState.h"
 
-@class OCMockRecorder;
+@class OCMStubRecorder;
 
 
 @interface OCMStubMacroState : OCMMacroState
 {
     BOOL           shouldRecordExpectation;
     BOOL           shouldRecordAsClassMethod;
-    OCMockRecorder *recorder;
+    OCMStubRecorder *recorder;
 }
 
 - (void)setShouldRecordExpectation:(BOOL)flag;
 
-- (OCMockRecorder *)recorder;
+- (OCMStubRecorder *)recorder;
 
 @end
