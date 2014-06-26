@@ -1,0 +1,3 @@
+coverage_service: coveralls
+xcodeproj: Source/OCMock.xcodeproj
+build_directory: Source/Build//OCMock.build/Debug/OCMock.build/Objects-normal/x86_64
