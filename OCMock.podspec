@@ -17,10 +17,10 @@ Pod::Spec.new do |s|
   s.social_media_url   = "http://twitter.com/erikdoe"
   
   s.source       = { :git => "https://github.com/erikdoe/ocmock.git", :tag => "v3.0" }
-  s.source_files  = "Source", "Source/**/*.{h,m}"
+  s.source_files  = "Source/OCMock/*.{h,m}"
   
   s.public_header_files = ["OCMock.h", "OCMockObject.h", "OCMockRecorder.h", "OCMArg.h", "OCMConstraint.h", "OCMLocation.h", "OCMMacroState.h", "NSNotificationCenter+OCMAdditions.h"].map { |file|
-    "Source/" + file
+    "Source/OCMock/" + file
   }
   
   s.framework = "XCTest"
