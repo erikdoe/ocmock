@@ -1,4 +1,8 @@
 language: objective-c  
-before_install: cd Source
+before_install: 
+  - gem i slather --no-ri --no-rdoc
+  - cd Source
 script: "../Tools/travis.sh"
- 
+after_success: 
+  - cd ..
+  - slather
