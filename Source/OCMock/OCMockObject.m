@@ -27,6 +27,11 @@
 #import "OCMFunctions.h"
 #import "OCMVerifier.h"
 
+@interface NSProxy ()
+
+- (void)doesNotRecognizeSelector:(SEL)aSelector;
+
+@end
 
 @implementation OCMockObject
 
