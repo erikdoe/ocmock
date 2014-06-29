@@ -14,22 +14,10 @@
  *  under the License.
  */
 
-#import <Foundation/Foundation.h>
-
-@class OCMockObject;
-@class OCMInvocationMatcher;
+#import "OCMRecorder.h"
 
 
-@interface OCMockRecorder : NSProxy
-{
-    OCMockObject         *mockObject;
-    OCMInvocationMatcher *invocationMatcher;
-    NSMutableArray       *invocationHandlers;
-}
-
-- (id)initWithMockObject:(OCMockObject *)aMockObject;
-
-//- (void)releaseInvocation;
+@interface OCMStubRecorder : OCMRecorder
 
 - (id)andReturn:(id)anObject;
 - (id)andReturnValue:(NSValue *)aValue;
@@ -39,36 +27,28 @@
 - (id)andDo:(void (^)(NSInvocation *invocation))block;
 - (id)andForwardToRealObject;
 
-- (id)classMethod;
-- (id)ignoringNonObjectArgs;
-
-- (OCMInvocationMatcher *)invocationMatcher;
-
-- (void)addInvocationHandler:(id)aHandler;
-- (NSArray *)invocationHandlers;
-
 @end
 
 
-@interface OCMockRecorder(Properties)
+@interface OCMStubRecorder (Properties)
 
 #define andReturn(aValue) _andReturn(({ typeof(aValue) _v = (aValue); [NSValue value:&_v withObjCType:@encode(typeof(_v))]; }))
-@property (nonatomic, readonly) OCMockRecorder *(^ _andReturn)(NSValue *);
+@property (nonatomic, readonly) OCMStubRecorder *(^ _andReturn)(NSValue *);
 
 #define andThrow(anException) _andThrow(anException)
-@property (nonatomic, readonly) OCMockRecorder *(^ _andThrow)(NSException *);
+@property (nonatomic, readonly) OCMStubRecorder *(^ _andThrow)(NSException *);
 
 #define andPost(aNotification) _andPost(aNotification)
-@property (nonatomic, readonly) OCMockRecorder *(^ _andPost)(NSNotification *);
+@property (nonatomic, readonly) OCMStubRecorder *(^ _andPost)(NSNotification *);
 
 #define andCall(anObject, aSelector) _andCall(anObject, aSelector)
-@property (nonatomic, readonly) OCMockRecorder *(^ _andCall)(id, SEL);
+@property (nonatomic, readonly) OCMStubRecorder *(^ _andCall)(id, SEL);
 
 #define andDo(aBlock) _andDo(aBlock)
-@property (nonatomic, readonly) OCMockRecorder *(^ _andDo)(void (^)(NSInvocation *));
+@property (nonatomic, readonly) OCMStubRecorder *(^ _andDo)(void (^)(NSInvocation *));
 
 #define andForwardToRealObject() _andForwardToRealObject()
-@property (nonatomic, readonly) OCMockRecorder *(^ _andForwardToRealObject)(void);
+@property (nonatomic, readonly) OCMStubRecorder *(^ _andForwardToRealObject)(void);
 
 @end
 

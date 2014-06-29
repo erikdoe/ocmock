@@ -15,13 +15,12 @@
  */
 
 #import <OCMock/OCMockObject.h>
-#import <OCMock/OCMockRecorder.h>
+#import <OCMock/OCMRecorder.h>
+#import <OCMock/OCMStubRecorder.h>
 #import <OCMock/OCMConstraint.h>
 #import <OCMock/OCMArg.h>
 #import <OCMock/OCMLocation.h>
 #import <OCMock/OCMMacroState.h>
-#import <OCMock/OCMStubMacroState.h>
-#import <OCMock/OCMVerifyMacroState.h>
 #import <OCMock/NSNotificationCenter+OCMAdditions.h>
 
 
@@ -53,11 +52,13 @@
 })
 
 #define ClassMethod(invocation) \
-    [(OCMStubMacroState *)[OCMMacroState globalState] setShouldRecordAsClassMethod:YES]; \
+    [[OCMMacroState globalState] switchToClassMethod]; \
     invocation;
 
 
 #define OCMVerifyAll(mock) [mock verifyAtLocation:OCMMakeLocation(self, __FILE__, __LINE__)]
+
+#define OCMVerifyAllWithDelay(mock, delay) [mock verifyWithDelay:delay atLocation:OCMMakeLocation(self, __FILE__, __LINE__)]
 
 #define OCMVerify(invocation) \
 ({ \

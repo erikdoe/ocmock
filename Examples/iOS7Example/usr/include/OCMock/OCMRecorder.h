@@ -14,20 +14,24 @@
  *  under the License.
  */
 
-#import "OCMMacroState.h"
+#import <Foundation/Foundation.h>
 
-@class OCMockRecorder;
+@class OCMockObject;
+@class OCMInvocationMatcher;
 
 
-@interface OCMStubMacroState : OCMMacroState
+@interface OCMRecorder : NSProxy
 {
-    BOOL           shouldRecordExpectation;
-    BOOL           shouldRecordAsClassMethod;
-    OCMockRecorder *recorder;
+    OCMockObject         *mockObject;
+    OCMInvocationMatcher *invocationMatcher;
 }
 
-- (void)setShouldRecordExpectation:(BOOL)flag;
-- (void)setShouldRecordAsClassMethod:(BOOL)flag;
-- (OCMockRecorder *)recorder;
+- (id)initWithMockObject:(OCMockObject *)aMockObject;
+
+- (void)createInvocationMatcher;
+- (OCMInvocationMatcher *)invocationMatcher;
+
+- (id)classMethod;
+- (id)ignoringNonObjectArgs;
 
 @end
