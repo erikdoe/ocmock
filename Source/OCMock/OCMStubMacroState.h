@@ -22,7 +22,6 @@
 @interface OCMStubMacroState : OCMMacroState
 {
     BOOL           shouldRecordExpectation;
-    BOOL           shouldRecordAsClassMethod;
     OCMStubRecorder *recorder;
 }
 

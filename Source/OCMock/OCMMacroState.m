@@ -18,12 +18,14 @@
 #import "OCMStubRecorder.h"
 #import "OCMVerifyMacroState.h"
 #import "OCMStubMacroState.h"
+#import "OCMockObject.h"
 
 
 @implementation OCMMacroState
 
 OCMMacroState *globalState;
 
+#pragma mark  Methods to begin/end macros
 
 + (void)beginStubMacro
 {
@@ -61,11 +63,12 @@ OCMMacroState *globalState;
 }
 
 
+#pragma mark  Accessing global state
+
 + (OCMMacroState *)globalState
 {
     return globalState;
 }
-
 
 - (void)dealloc
 {
@@ -74,15 +77,20 @@ OCMMacroState *globalState;
     [super dealloc];
 }
 
+#pragma mark  Attributes
+
 - (void)switchToClassMethod
 {
-
+    hasSwitchedToClassMethod = YES;
 }
 
 - (BOOL)hasSwitchedToClassMethod
 {
-    return NO;
+    return hasSwitchedToClassMethod;
 }
+
+
+#pragma mark  Handling invocations for the mock
 
 - (void)handleInvocation:(NSInvocation *)anInvocation
 {

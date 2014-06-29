@@ -22,6 +22,7 @@
 
 @interface OCMMacroState : NSObject
 {
+    BOOL hasSwitchedToClassMethod;
 }
 
 + (void)beginStubMacro;

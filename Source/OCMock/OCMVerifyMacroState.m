@@ -30,24 +30,15 @@
     return self;
 }
 
-- (void)switchToClassMethod
-{
-    shouldVerifyClassMethod = YES;
-}
-
-- (BOOL)hasSwitchedToClassMethod
-{
-    return shouldVerifyClassMethod;
-}
-
 - (void)handleInvocation:(NSInvocation *)anInvocation
 {
     OCMockObject *mock = [anInvocation target];
     OCMVerifier *verifier = [[[OCMVerifier alloc] initWithMockObject:mock] autorelease];
     [verifier setLocation:location];
-    if(shouldVerifyClassMethod)
+    if(hasSwitchedToClassMethod)
         [verifier classMethod];
     [verifier forwardInvocation:anInvocation];
 }
+
 
 @end

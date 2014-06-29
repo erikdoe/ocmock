@@ -21,7 +21,6 @@
 
 @interface OCMVerifyMacroState : OCMMacroState
 {
-    BOOL           shouldVerifyClassMethod;
     OCMLocation    *location;
 }
 

@@ -30,23 +30,14 @@
     return recorder;
 }
 
-- (void)switchToClassMethod
-{
-    shouldRecordAsClassMethod = YES;
-}
-
-- (BOOL)hasSwitchedToClassMethod
-{
-    return shouldRecordAsClassMethod;
-}
-
 - (void)handleInvocation:(NSInvocation *)anInvocation
 {
     OCMockObject *mock = [anInvocation target];
     recorder = shouldRecordExpectation ? [mock expect] : [mock stub];
-    if(shouldRecordAsClassMethod)
+    if(hasSwitchedToClassMethod)
         [recorder classMethod];
     [recorder forwardInvocation:anInvocation];
 }
+
 
 @end
