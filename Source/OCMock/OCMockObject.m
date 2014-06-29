@@ -301,7 +301,8 @@
     }
     else
     {
-        [super doesNotRecognizeSelector:aSelector];
+        [NSException raise:NSInvalidArgumentException format:@"-[%@ %@]: unrecognized selector sent to instance %p",
+                        [self description], NSStringFromSelector(aSelector), (void *)self];
     }
 }
 

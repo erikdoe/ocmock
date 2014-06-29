@@ -30,7 +30,7 @@
 
 @implementation TestClassWithSelectorMethod
 
-- (void)doWithSelector:(SEL)aSelector
+- (void)doWithSelector:(__unused SEL)aSelector
 {
 }
 
@@ -45,7 +45,7 @@
 
 @implementation TestClassWithTypeQualifierMethod
 
-- (void)aSpecialMethod:(byref in void *)someArg
+- (void)aSpecialMethod:(byref in __unused void *)someArg
 {
 }
 
@@ -764,7 +764,10 @@ static NSString *TestNotification = @"TestNotification";
 - (void)testAdjustsRetainCountWhenStubbingMethodsThatCreateObjects
 {
     NSString *objectToReturn = [NSString stringWithFormat:@"This is not a %@.", @"string constant"];
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "NotReleasedValue"
     [[[mock stub] andReturn:objectToReturn] mutableCopy];
+#pragma clang diagnostic pop
 
     NSUInteger retainCountBefore = [objectToReturn retainCount];
     id returnedObject = [mock mutableCopy];
@@ -773,6 +776,11 @@ static NSString *TestNotification = @"TestNotification";
 
     XCTAssertEqualObjects(objectToReturn, returnedObject, @"Should not stubbed copy method");
     XCTAssertEqual(retainCountBefore, retainCountAfter, @"Should have incremented retain count in copy stub.");
+}
+
+- (void)testComplainsWhenUnimplementedMethodIsCalled
+{
+    XCTAssertThrowsSpecificNamed([mock performSelector:NSSelectorFromString(@"foo")], NSException, NSInvalidArgumentException);
 }
 
 
@@ -832,7 +840,7 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testPartialMockShouldNotRaiseWhenDescribing
 {
-    mock = [OCMockObject partialMockForObject:[[NSObject alloc] init]];
+    mock = [OCMockObject partialMockForObject:[[[NSObject alloc] init] autorelease]];
     
     XCTAssertNoThrow(NSLog(@"Testing description handling dummy methods... %@ %@ %@ %@ %@",
                           @{@"bar": mock},
