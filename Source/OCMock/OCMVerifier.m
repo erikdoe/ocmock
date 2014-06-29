@@ -17,6 +17,7 @@
 #import <objc/runtime.h>
 #import "OCMVerifier.h"
 #import "OCMockObject.h"
+#import "OCMLocation.h"
 
 
 @implementation OCMVerifier
@@ -24,7 +25,7 @@
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
     [super forwardInvocation:anInvocation];
-    [mockObject verifyInvocation:invocationMatcher];
+    [mockObject verifyInvocation:invocationMatcher atLocation:self.location];
 }
 
 

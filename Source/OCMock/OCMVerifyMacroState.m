@@ -18,6 +18,7 @@
 #import "OCMInvocationMatcher.h"
 #import "OCMLocation.h"
 #import "OCMockObject.h"
+#import "OCMVerifier.h"
 
 
 @implementation OCMVerifyMacroState
@@ -42,11 +43,11 @@
 - (void)handleInvocation:(NSInvocation *)anInvocation
 {
     OCMockObject *mock = [anInvocation target];
-    [anInvocation setTarget:nil];
-    OCMInvocationMatcher *matcher = [[[OCMInvocationMatcher alloc] init] autorelease];
-    [matcher setRecordedAsClassMethod:shouldVerifyClassMethod];
-    [matcher setInvocation:anInvocation];
-    [mock verifyInvocation:matcher atLocation:location];
+    OCMVerifier *verifier = [[[OCMVerifier alloc] initWithMockObject:mock] autorelease];
+    [verifier setLocation:location];
+    if(shouldVerifyClassMethod)
+        [verifier classMethod];
+    [verifier forwardInvocation:anInvocation];
 }
 
 @end

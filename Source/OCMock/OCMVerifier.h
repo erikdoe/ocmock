@@ -15,8 +15,11 @@
  */
 
 #import "OCMRecorder.h"
+#import "OCMLocation.h"
 
 
 @interface OCMVerifier : OCMRecorder
+
+@property(retain) OCMLocation *location;
 
 @end
