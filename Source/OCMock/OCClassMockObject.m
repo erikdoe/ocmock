@@ -20,7 +20,6 @@
 #import "OCMFunctions.h"
 #import "OCMMacroState.h"
 
-
 @implementation OCClassMockObject
 
 #pragma mark  Initialisers, description, accessors, etc.

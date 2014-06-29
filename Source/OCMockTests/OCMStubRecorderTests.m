@@ -19,9 +19,8 @@
 #import <OCMock/OCMockObject.h>
 #import "OCMReturnValueProvider.h"
 #import "OCMExceptionReturnValueProvider.h"
-#import "OCMArg.h"
 #import "OCMInvocationMatcher.h"
-
+#import "OCMInvocationStub.h"
 
 @interface OCMStubRecorderTests : XCTestCase
 
@@ -50,10 +49,10 @@
     id mock = [OCMockObject mockForClass:[NSString class]];
     OCMStubRecorder *recorder = [[[OCMStubRecorder alloc] initWithMockObject:mock] autorelease];
     [recorder andReturn:@"foo"];
-    NSArray *handlerList = [recorder invocationHandlers];
+    NSArray *actionList = [(OCMInvocationStub *)[recorder invocationMatcher] invocationActions];
 
-    XCTAssertEqual((NSUInteger)1, [handlerList count], @"Should have added one handler.");
-    XCTAssertEqualObjects([OCMReturnValueProvider class], [[handlerList objectAtIndex:0] class], @"Should have added correct handler.");
+    XCTAssertEqual((NSUInteger)1, [actionList count], @"Should have added one action.");
+    XCTAssertEqualObjects([OCMReturnValueProvider class], [[actionList objectAtIndex:0] class], @"Should have added correct action.");
 }
 
 - (void)testAddsExceptionReturnValueProvider
@@ -61,10 +60,10 @@
     id mock = [OCMockObject mockForClass:[NSString class]];
     OCMStubRecorder *recorder = [[[OCMStubRecorder alloc] initWithMockObject:mock] autorelease];
     [recorder andThrow:[NSException exceptionWithName:@"TestException" reason:@"A reason" userInfo:nil]];
-    NSArray *handlerList = [recorder invocationHandlers];
+    NSArray *actionList = [(OCMInvocationStub *)[recorder invocationMatcher] invocationActions];
 
-    XCTAssertEqual((NSUInteger)1, [handlerList count], @"Should have added one handler.");
-    XCTAssertEqualObjects([OCMExceptionReturnValueProvider class], [[handlerList objectAtIndex:0] class], @"Should have added correct handler.");
+    XCTAssertEqual((NSUInteger)1, [actionList count], @"Should have added one action.");
+    XCTAssertEqualObjects([OCMExceptionReturnValueProvider class], [[actionList objectAtIndex:0] class], @"Should have added correct action.");
 
 }
 

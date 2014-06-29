@@ -14,24 +14,41 @@
  *  under the License.
  */
 
-#import <Foundation/Foundation.h>
+#import "OCMInvocationStub.h"
 
-@class OCMockObject;
-@class OCMInvocationMatcher;
+@implementation OCMInvocationStub
 
-
-@interface OCMRecorder : NSProxy
+- (id)init
 {
-    OCMockObject         *mockObject;
-    OCMInvocationMatcher *invocationMatcher;
+    self = [super init];
+    invocationActions = [[NSMutableArray alloc] init];
+    return self;
 }
 
-- (id)initWithMockObject:(OCMockObject *)aMockObject;
+- (void)dealloc
+{
+    [invocationActions release];
+    [super dealloc];
+}
 
-- (void)createInvocationMatcher;
-- (OCMInvocationMatcher *)invocationMatcher;
 
-- (id)classMethod;
-- (id)ignoringNonObjectArgs;
+- (void)addInvocationAction:(id)anAction
+{
+    [invocationActions addObject:anAction];
+}
+
+- (NSArray *)invocationActions
+{
+    return invocationActions;
+}
+
+
+- (BOOL)handleInvocation:(NSInvocation *)anInvocation
+{
+    if(![self matchesInvocation:anInvocation])
+        return NO;
+    [invocationActions makeObjectsPerformSelector:@selector(handleInvocation:) withObject:anInvocation];
+    return YES;
+}
 
 @end

@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2014 Erik Doernenburg and contributors
+ *  Copyright (c) 2004-2014 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -14,24 +14,10 @@
  *  under the License.
  */
 
-#import <Foundation/Foundation.h>
+#import <OCMock/OCMock.h>
 
-@class OCMockObject;
-@class OCMInvocationMatcher;
+@interface OCMExpectationRecorder : OCMStubRecorder
 
-
-@interface OCMRecorder : NSProxy
-{
-    OCMockObject         *mockObject;
-    OCMInvocationMatcher *invocationMatcher;
-}
-
-- (id)initWithMockObject:(OCMockObject *)aMockObject;
-
-- (void)createInvocationMatcher;
-- (OCMInvocationMatcher *)invocationMatcher;
-
-- (id)classMethod;
-- (id)ignoringNonObjectArgs;
+- (id)never;
 
 @end

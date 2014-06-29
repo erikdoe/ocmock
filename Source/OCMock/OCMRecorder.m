@@ -26,8 +26,13 @@
 {
     // no super, we're inheriting from NSProxy
 	mockObject = aMockObject;
-    invocationMatcher = [[OCMInvocationMatcher alloc] init];
+    [self createInvocationMatcher];
 	return self;
+}
+
+- (void)createInvocationMatcher
+{
+    invocationMatcher = [[OCMInvocationMatcher alloc] init];
 }
 
 - (void)dealloc

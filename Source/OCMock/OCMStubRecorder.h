@@ -18,9 +18,6 @@
 
 
 @interface OCMStubRecorder : OCMRecorder
-{
-    NSMutableArray  *invocationHandlers;
-}
 
 - (id)andReturn:(id)anObject;
 - (id)andReturnValue:(NSValue *)aValue;
@@ -29,9 +26,6 @@
 - (id)andCall:(SEL)selector onObject:(id)anObject;
 - (id)andDo:(void (^)(NSInvocation *invocation))block;
 - (id)andForwardToRealObject;
-
-- (void)addInvocationHandler:(id)aHandler;
-- (NSArray *)invocationHandlers;
 
 @end
 

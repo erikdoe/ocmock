@@ -24,6 +24,7 @@
 #import "OCMBlockCaller.h"
 #import "OCMRealObjectForwarder.h"
 #import "OCMFunctions.h"
+#import "OCMInvocationStub.h"
 
 @interface NSObject(HCMatcherDummy)
 - (BOOL)matches:(id)item;
@@ -36,73 +37,68 @@
 
 #pragma mark  Initialisers, description, accessors, etc.
 
-- (id)initWithMockObject:(OCMockObject *)aMockObject
+- (void)createInvocationMatcher
 {
-    [super initWithMockObject:aMockObject];
-	invocationHandlers = [[NSMutableArray alloc] init];
-	return self;
+    invocationMatcher = [[OCMInvocationStub alloc] init];
 }
 
-- (void)dealloc
+- (OCMInvocationStub *)stub
 {
-	[invocationHandlers release];
-	[super dealloc];
+    return (OCMInvocationStub *)invocationMatcher;
 }
 
 
-- (void)addInvocationHandler:(id)aHandler
-{
-    [invocationHandlers addObject:aHandler];
-}
-
-- (NSArray *)invocationHandlers
-{
-    return invocationHandlers;
-}
-
-
-#pragma mark  Recording invocation handlers
+#pragma mark  Recording invocation actions
 
 - (id)andReturn:(id)anObject
 {
-	[self addInvocationHandler:[[[OCMReturnValueProvider alloc] initWithValue:anObject] autorelease]];
+	[[self stub] addInvocationAction:[[[OCMReturnValueProvider alloc] initWithValue:anObject] autorelease]];
 	return self;
 }
 
 - (id)andReturnValue:(NSValue *)aValue
 {
-	[self addInvocationHandler:[[[OCMBoxedReturnValueProvider alloc] initWithValue:aValue] autorelease]];
+    [[self stub] addInvocationAction:[[[OCMBoxedReturnValueProvider alloc] initWithValue:aValue] autorelease]];
 	return self;
 }
 
 - (id)andThrow:(NSException *)anException
 {
-	[self addInvocationHandler:[[[OCMExceptionReturnValueProvider alloc] initWithValue:anException] autorelease]];
+    [[self stub] addInvocationAction:[[[OCMExceptionReturnValueProvider alloc] initWithValue:anException] autorelease]];
 	return self;
 }
 
 - (id)andPost:(NSNotification *)aNotification
 {
-	[self addInvocationHandler:[[[OCMNotificationPoster alloc] initWithNotification:aNotification] autorelease]];
+    [[self stub] addInvocationAction:[[[OCMNotificationPoster alloc] initWithNotification:aNotification] autorelease]];
 	return self;
 }
 
 - (id)andCall:(SEL)selector onObject:(id)anObject
 {
-	[self addInvocationHandler:[[[OCMIndirectReturnValueProvider alloc] initWithProvider:anObject andSelector:selector] autorelease]];
+    [[self stub] addInvocationAction:[[[OCMIndirectReturnValueProvider alloc] initWithProvider:anObject andSelector:selector] autorelease]];
 	return self;
 }
 
 - (id)andDo:(void (^)(NSInvocation *))aBlock 
 {
-	[self addInvocationHandler:[[[OCMBlockCaller alloc] initWithCallBlock:aBlock] autorelease]];
+    [[self stub] addInvocationAction:[[[OCMBlockCaller alloc] initWithCallBlock:aBlock] autorelease]];
 	return self;
 }
 
 - (id)andForwardToRealObject
 {
-    [self addInvocationHandler:[[[OCMRealObjectForwarder alloc] init] autorelease]];
+    [[self stub] addInvocationAction:[[[OCMRealObjectForwarder alloc] init] autorelease]];
     return self;
+}
+
+
+#pragma mark Finishing recording
+
+- (void)forwardInvocation:(NSInvocation *)anInvocation
+{
+    [super forwardInvocation:anInvocation];
+    [mockObject addStub:[self stub]];
 }
 
 

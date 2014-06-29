@@ -14,24 +14,16 @@
  *  under the License.
  */
 
-#import <Foundation/Foundation.h>
+#import "OCMInvocationStub.h"
 
-@class OCMockObject;
-@class OCMInvocationMatcher;
-
-
-@interface OCMRecorder : NSProxy
+@interface OCMInvocationExpectation : OCMInvocationStub
 {
-    OCMockObject         *mockObject;
-    OCMInvocationMatcher *invocationMatcher;
+    BOOL matchAndReject;
+    BOOL isSatisfied;
 }
 
-- (id)initWithMockObject:(OCMockObject *)aMockObject;
+- (void)setMatchAndReject:(BOOL)flag;
 
-- (void)createInvocationMatcher;
-- (OCMInvocationMatcher *)invocationMatcher;
-
-- (id)classMethod;
-- (id)ignoringNonObjectArgs;
+- (BOOL)isSatisfied;
 
 @end
