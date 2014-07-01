@@ -362,9 +362,26 @@ static NSString *TestNotification = @"TestNotification";
 	XCTAssertEqual(42, returnValue, @"Should have returned stubbed value.");
 }
 
+- (void)testReturnsStubbedUnsignedLongReturnValue
+{
+	mock = [OCMockObject mockForClass:[NSNumber class]];
+	[[[mock stub] andReturnValue:@42LU] unsignedLongValue];
+	unsigned long returnValue = [mock unsignedLongValue];
+
+	STAssertEquals(42LU, returnValue, @"Should have returned stubbed value.");
+}
+
+- (void)testReturnsStubbedBoolReturnValue
+{
+	[[[mock stub] andReturnValue:@YES] boolValue];
+	BOOL returnValue = [mock boolValue];
+
+	STAssertEquals(YES, returnValue, @"Should have returned stubbed value.");
+}
+
 - (void)testRaisesWhenBoxedValueTypesDoNotMatch
 {
-	[[[mock stub] andReturnValue:@42.0] intValue];
+	[[[mock stub] andReturnValue:[NSValue valueWithRange:NSMakeRange(0, 1)]] intValue];
 
 	XCTAssertThrows([mock intValue], @"Should have raised an exception.");
 }
