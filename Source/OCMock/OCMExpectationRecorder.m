@@ -19,9 +19,14 @@
 
 @implementation OCMExpectationRecorder
 
-- (void)createInvocationMatcher
+#pragma mark  Initialisers, description, accessors, etc.
+
+- (id)init
 {
+    self = [super init];
+    [invocationMatcher release];
     invocationMatcher = [[OCMInvocationExpectation alloc] init];
+    return self;
 }
 
 - (OCMInvocationExpectation *)expectation

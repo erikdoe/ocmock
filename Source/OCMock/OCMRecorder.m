@@ -22,17 +22,22 @@
 
 @implementation OCMRecorder
 
-- (id)initWithMockObject:(OCMockObject *)aMockObject
+- (id)init
 {
     // no super, we're inheriting from NSProxy
-	mockObject = aMockObject;
-    [self createInvocationMatcher];
+    return self;
+}
+
+- (id)initWithMockObject:(OCMockObject *)aMockObject
+{
+    [self init];
+    [self setMockObject:aMockObject];
 	return self;
 }
 
-- (void)createInvocationMatcher
+- (void)setMockObject:(OCMockObject *)aMockObject
 {
-    invocationMatcher = [[OCMInvocationMatcher alloc] init];
+    mockObject = aMockObject;
 }
 
 - (void)dealloc

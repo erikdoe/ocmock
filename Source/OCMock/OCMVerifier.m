@@ -18,9 +18,17 @@
 #import "OCMVerifier.h"
 #import "OCMockObject.h"
 #import "OCMLocation.h"
+#import "OCMInvocationMatcher.h"
 
 
 @implementation OCMVerifier
+
+- (id)init
+{
+    self = [super init];
+    invocationMatcher = [[OCMInvocationMatcher alloc] init];
+    return self;
+}
 
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {

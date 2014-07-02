@@ -26,9 +26,11 @@
     OCMInvocationMatcher *invocationMatcher;
 }
 
+- (id)init;
 - (id)initWithMockObject:(OCMockObject *)aMockObject;
 
-- (void)createInvocationMatcher;
+- (void)setMockObject:(OCMockObject *)aMockObject;
+
 - (OCMInvocationMatcher *)invocationMatcher;
 
 - (id)classMethod;

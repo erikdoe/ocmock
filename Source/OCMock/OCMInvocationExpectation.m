@@ -38,9 +38,8 @@
         isSatisfied = YES;
         if(matchAndReject)
         {
-            NSString *reason = [NSString stringWithFormat:@"%@: explicitly disallowed method invoked: %@",
-                                   [self description], [anInvocation invocationDescription]];
-            [[NSException exceptionWithName:NSInternalInconsistencyException reason:reason userInfo:nil] raise];
+            [NSException raise:NSInternalInconsistencyException format:@"%@: explicitly disallowed method invoked: %@",
+                    [self description], [anInvocation invocationDescription]];
         }
     }
     return result;

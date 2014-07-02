@@ -17,12 +17,13 @@
 #import <Foundation/Foundation.h>
 
 @class OCMLocation;
+@class OCMRecorder;
 @class OCMStubRecorder;
 
 
 @interface OCMMacroState : NSObject
 {
-    BOOL hasSwitchedToClassMethod;
+    OCMRecorder *recorder;
 }
 
 + (void)beginStubMacro;

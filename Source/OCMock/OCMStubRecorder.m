@@ -37,9 +37,11 @@
 
 #pragma mark  Initialisers, description, accessors, etc.
 
-- (void)createInvocationMatcher
+- (id)init
 {
+    self = [super init];
     invocationMatcher = [[OCMInvocationStub alloc] init];
+    return self;
 }
 
 - (OCMInvocationStub *)stub

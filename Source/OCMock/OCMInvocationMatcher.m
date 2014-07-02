@@ -65,6 +65,7 @@
     if(OCMIsAliasSelector(sel) &&
        OCMOriginalSelectorForAlias(sel) == [recordedInvocation selector])
         return YES;
+
     return NO;
 }
 

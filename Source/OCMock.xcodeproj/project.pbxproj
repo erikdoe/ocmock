@@ -8,14 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		030EF0B614632FD000B04273 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 030EF0B414632FD000B04273 /* InfoPlist.strings */; };
-		0316D6861916475A00FC48D1 /* OCMStubMacroState.h in Headers */ = {isa = PBXBuildFile; fileRef = 0316D6841916475A00FC48D1 /* OCMStubMacroState.h */; };
-		0316D6871916475A00FC48D1 /* OCMStubMacroState.h in Headers */ = {isa = PBXBuildFile; fileRef = 0316D6841916475A00FC48D1 /* OCMStubMacroState.h */; };
-		0316D6881916475A00FC48D1 /* OCMStubMacroState.m in Sources */ = {isa = PBXBuildFile; fileRef = 0316D6851916475A00FC48D1 /* OCMStubMacroState.m */; };
-		0316D6891916475A00FC48D1 /* OCMStubMacroState.m in Sources */ = {isa = PBXBuildFile; fileRef = 0316D6851916475A00FC48D1 /* OCMStubMacroState.m */; };
-		0316D68C1916477000FC48D1 /* OCMVerifyMacroState.h in Headers */ = {isa = PBXBuildFile; fileRef = 0316D68A1916477000FC48D1 /* OCMVerifyMacroState.h */; };
-		0316D68D1916477000FC48D1 /* OCMVerifyMacroState.h in Headers */ = {isa = PBXBuildFile; fileRef = 0316D68A1916477000FC48D1 /* OCMVerifyMacroState.h */; };
-		0316D68E1916477000FC48D1 /* OCMVerifyMacroState.m in Sources */ = {isa = PBXBuildFile; fileRef = 0316D68B1916477000FC48D1 /* OCMVerifyMacroState.m */; };
-		0316D68F1916477000FC48D1 /* OCMVerifyMacroState.m in Sources */ = {isa = PBXBuildFile; fileRef = 0316D68B1916477000FC48D1 /* OCMVerifyMacroState.m */; };
 		0322DA65191188D100CACAF1 /* OCMockObjectVerifyAfterRunTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0322DA64191188D100CACAF1 /* OCMockObjectVerifyAfterRunTests.m */; };
 		0322DA66191188D100CACAF1 /* OCMockObjectVerifyAfterRunTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0322DA64191188D100CACAF1 /* OCMockObjectVerifyAfterRunTests.m */; };
 		0322DA6919118B4600CACAF1 /* OCMVerifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 0322DA6719118B4600CACAF1 /* OCMVerifier.h */; };
@@ -146,23 +138,23 @@
 		03E98D4E18F308B400522D42 /* OCMLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E98D4A18F308B400522D42 /* OCMLocation.m */; };
 		03E98D5018F310EE00522D42 /* OCMockObjectMacroTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E98D4F18F310EE00522D42 /* OCMockObjectMacroTests.m */; };
 		03E98D5118F310EE00522D42 /* OCMockObjectMacroTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E98D4F18F310EE00522D42 /* OCMockObjectMacroTests.m */; };
-		2FA28112A4A7F8133862C871 /* OCMMacroState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA280F57DFBB36CE40FAEB6 /* OCMMacroState.m */; };
+		2FA2800D12E95D5ABC965753 /* OCMMacroState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA280987F4EA8A4D79000D0 /* OCMMacroState.m */; };
+		2FA28209EB1F41964DF3031A /* OCMMacroState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA280987F4EA8A4D79000D0 /* OCMMacroState.m */; };
+		2FA2821C9066C5E439288C76 /* OCMMacroState.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA28006D043CBDBBAEF6E3F /* OCMMacroState.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2FA282F0C0A4CABE4E2C7646 /* OCMInvocationMatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28CB1EB14C6B2BE9A20C6 /* OCMInvocationMatcher.m */; };
 		2FA284EBCD82935B4F8A5A2C /* OCMInvocationExpectation.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA288509D545BDBE094BCC8 /* OCMInvocationExpectation.h */; };
 		2FA28598D23EC190EE19F3AE /* OCMFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA28EC49F6C59B940AE6D00 /* OCMFunctions.h */; };
 		2FA28641AAD0AC2F876C9E48 /* OCMInvocationMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA28CCC33B99D6B658E7AF8 /* OCMInvocationMatcher.h */; };
 		2FA286C7B8862280E6C1A585 /* OCMInvocationExpectation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA2875564A6AD0510A847A6 /* OCMInvocationExpectation.m */; };
 		2FA286F90395E317F983A20A /* OCMFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28C8717BE4B7A89119BA2 /* OCMFunctions.m */; };
-		2FA2872E3D665A7952A487BE /* OCMMacroState.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA28ED9AC631B1E88BF0AF2 /* OCMMacroState.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2FA287ACE547BB41937BDEC3 /* NSObject+OCMAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA28C5F4A475BEC0C28BDC3 /* NSObject+OCMAdditions.h */; };
 		2FA288447C48241BE2CAA63D /* OCMFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA28EC49F6C59B940AE6D00 /* OCMFunctions.h */; };
 		2FA288B20FB3A42BA0B7BAB8 /* OCMInvocationMatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28CB1EB14C6B2BE9A20C6 /* OCMInvocationMatcher.m */; };
+		2FA28B6CEF4CC6FD5E7D09B5 /* OCMMacroState.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA28006D043CBDBBAEF6E3F /* OCMMacroState.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2FA28BA90F0D55E4CF6787F0 /* OCMFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28C8717BE4B7A89119BA2 /* OCMFunctions.m */; };
-		2FA28CDD69DD3C08BF2C634C /* OCMMacroState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA280F57DFBB36CE40FAEB6 /* OCMMacroState.m */; };
 		2FA28D38ED9D83A3E0A620B3 /* NSObject+OCMAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28991BEFD67DEF2CCF7D2 /* NSObject+OCMAdditions.m */; };
 		2FA28E1EB6B8536785258DF5 /* OCMInvocationMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA28CCC33B99D6B658E7AF8 /* OCMInvocationMatcher.h */; };
 		2FA28E506BE0D91A95A20243 /* OCMInvocationExpectation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA2875564A6AD0510A847A6 /* OCMInvocationExpectation.m */; };
-		2FA28E90A41960260D74EE8E /* OCMMacroState.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA28ED9AC631B1E88BF0AF2 /* OCMMacroState.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2FA28FE116284C3E4A7FF179 /* OCMInvocationExpectation.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA288509D545BDBE094BCC8 /* OCMInvocationExpectation.h */; };
 		D31108BA1828DB8700737925 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D31108B81828DB8700737925 /* InfoPlist.strings */; };
 		D31108C31828DBD600737925 /* OCMockObjectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B316251463350E0052CD09 /* OCMockObjectTests.m */; };
@@ -201,10 +193,6 @@
 		030EF0B814632FD000B04273 /* OCMock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OCMock.h; sourceTree = "<group>"; };
 		030EF0DC14632FF700B04273 /* libOCMock.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libOCMock.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		030EF0E114632FF700B04273 /* OCMockLib-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OCMockLib-Prefix.pch"; sourceTree = "<group>"; };
-		0316D6841916475A00FC48D1 /* OCMStubMacroState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMStubMacroState.h; sourceTree = "<group>"; };
-		0316D6851916475A00FC48D1 /* OCMStubMacroState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMStubMacroState.m; sourceTree = "<group>"; };
-		0316D68A1916477000FC48D1 /* OCMVerifyMacroState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMVerifyMacroState.h; sourceTree = "<group>"; };
-		0316D68B1916477000FC48D1 /* OCMVerifyMacroState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMVerifyMacroState.m; sourceTree = "<group>"; };
 		0322DA64191188D100CACAF1 /* OCMockObjectVerifyAfterRunTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMockObjectVerifyAfterRunTests.m; sourceTree = "<group>"; };
 		0322DA6719118B4600CACAF1 /* OCMVerifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMVerifier.h; sourceTree = "<group>"; };
 		0322DA6819118B4600CACAF1 /* OCMVerifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMVerifier.m; sourceTree = "<group>"; };
@@ -276,7 +264,8 @@
 		03E98D4918F308B400522D42 /* OCMLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMLocation.h; sourceTree = "<group>"; };
 		03E98D4A18F308B400522D42 /* OCMLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMLocation.m; sourceTree = "<group>"; };
 		03E98D4F18F310EE00522D42 /* OCMockObjectMacroTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMockObjectMacroTests.m; sourceTree = "<group>"; };
-		2FA280F57DFBB36CE40FAEB6 /* OCMMacroState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMMacroState.m; sourceTree = "<group>"; };
+		2FA28006D043CBDBBAEF6E3F /* OCMMacroState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMMacroState.h; sourceTree = "<group>"; };
+		2FA280987F4EA8A4D79000D0 /* OCMMacroState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMMacroState.m; sourceTree = "<group>"; };
 		2FA286BFBD8B9D068B41E7EF /* OCMockObjectProtocolMocksTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMockObjectProtocolMocksTests.m; sourceTree = "<group>"; };
 		2FA2875564A6AD0510A847A6 /* OCMInvocationExpectation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMInvocationExpectation.m; sourceTree = "<group>"; };
 		2FA288509D545BDBE094BCC8 /* OCMInvocationExpectation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMInvocationExpectation.h; sourceTree = "<group>"; };
@@ -287,7 +276,6 @@
 		2FA28CCC33B99D6B658E7AF8 /* OCMInvocationMatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMInvocationMatcher.h; sourceTree = "<group>"; };
 		2FA28DEDB9163597B7C49F3D /* NSMethodSignatureOCMAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSMethodSignatureOCMAdditionsTests.m; sourceTree = "<group>"; };
 		2FA28EC49F6C59B940AE6D00 /* OCMFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMFunctions.h; sourceTree = "<group>"; };
-		2FA28ED9AC631B1E88BF0AF2 /* OCMMacroState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMMacroState.h; sourceTree = "<group>"; };
 		2FA28EDBF243639C57F88A1B /* OCMArgTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMArgTests.m; sourceTree = "<group>"; };
 		D31108AD1828DB8700737925 /* OCMockLibTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OCMockLibTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D31108B71828DB8700737925 /* OCMockLibTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OCMockLibTests-Info.plist"; sourceTree = "<group>"; };
@@ -452,6 +440,8 @@
 			children = (
 				03E98D4918F308B400522D42 /* OCMLocation.h */,
 				03E98D4A18F308B400522D42 /* OCMLocation.m */,
+				2FA28006D043CBDBBAEF6E3F /* OCMMacroState.h */,
+				2FA280987F4EA8A4D79000D0 /* OCMMacroState.m */,
 			);
 			name = Helper;
 			sourceTree = "<group>";
@@ -471,7 +461,6 @@
 				03C7BF15195DAB8500A545DD /* Matcher */,
 				03B31619146334040052CD09 /* Actions */,
 				037ECD5618FB0D2E00AF0E4C /* Helper */,
-				03C7BF07195DA23900A545DD /* Macro State */,
 			);
 			name = "Core Mocks";
 			sourceTree = "<group>";
@@ -536,19 +525,6 @@
 				03B3159C146333BF0052CD09 /* OCMObserverRecorder.m */,
 			);
 			name = "Observer Mocks";
-			sourceTree = "<group>";
-		};
-		03C7BF07195DA23900A545DD /* Macro State */ = {
-			isa = PBXGroup;
-			children = (
-				2FA28ED9AC631B1E88BF0AF2 /* OCMMacroState.h */,
-				2FA280F57DFBB36CE40FAEB6 /* OCMMacroState.m */,
-				0316D6841916475A00FC48D1 /* OCMStubMacroState.h */,
-				0316D6851916475A00FC48D1 /* OCMStubMacroState.m */,
-				0316D68A1916477000FC48D1 /* OCMVerifyMacroState.h */,
-				0316D68B1916477000FC48D1 /* OCMVerifyMacroState.m */,
-			);
-			name = "Macro State";
 			sourceTree = "<group>";
 		};
 		03C7BF14195DAB7900A545DD /* Recorder */ = {
@@ -620,7 +596,6 @@
 				03B315CD146333BF0052CD09 /* OCMBoxedReturnValueProvider.h in Headers */,
 				03B315D7146333BF0052CD09 /* OCMExceptionReturnValueProvider.h in Headers */,
 				03B315DC146333BF0052CD09 /* OCMIndirectReturnValueProvider.h in Headers */,
-				0316D6861916475A00FC48D1 /* OCMStubMacroState.h in Headers */,
 				03E98D4B18F308B400522D42 /* OCMLocation.h in Headers */,
 				03B315E1146333BF0052CD09 /* OCMNotificationPoster.h in Headers */,
 				03B315E6146333BF0052CD09 /* OCMObserverRecorder.h in Headers */,
@@ -628,15 +603,14 @@
 				03B315FA146333C00052CD09 /* OCMRealObjectForwarder.h in Headers */,
 				03B315FF146333C00052CD09 /* OCMReturnValueProvider.h in Headers */,
 				03B31604146333C00052CD09 /* OCObserverMockObject.h in Headers */,
-				0316D68C1916477000FC48D1 /* OCMVerifyMacroState.h in Headers */,
 				03B31609146333C00052CD09 /* OCPartialMockObject.h in Headers */,
 				03B31613146333C00052CD09 /* OCProtocolMockObject.h in Headers */,
 				2FA287ACE547BB41937BDEC3 /* NSObject+OCMAdditions.h in Headers */,
 				2FA28641AAD0AC2F876C9E48 /* OCMInvocationMatcher.h in Headers */,
 				0322DA6919118B4600CACAF1 /* OCMVerifier.h in Headers */,
-				2FA2872E3D665A7952A487BE /* OCMMacroState.h in Headers */,
 				2FA288447C48241BE2CAA63D /* OCMFunctions.h in Headers */,
 				2FA28FE116284C3E4A7FF179 /* OCMInvocationExpectation.h in Headers */,
+				2FA2821C9066C5E439288C76 /* OCMMacroState.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -660,7 +634,6 @@
 				03B315CE146333BF0052CD09 /* OCMBoxedReturnValueProvider.h in Headers */,
 				03B315D8146333BF0052CD09 /* OCMExceptionReturnValueProvider.h in Headers */,
 				03B315DD146333BF0052CD09 /* OCMIndirectReturnValueProvider.h in Headers */,
-				0316D6871916475A00FC48D1 /* OCMStubMacroState.h in Headers */,
 				03E98D4C18F308B400522D42 /* OCMLocation.h in Headers */,
 				03B315E2146333BF0052CD09 /* OCMNotificationPoster.h in Headers */,
 				03B315E7146333BF0052CD09 /* OCMObserverRecorder.h in Headers */,
@@ -668,15 +641,14 @@
 				03B315FB146333C00052CD09 /* OCMRealObjectForwarder.h in Headers */,
 				03DCED6F183406DA0059089E /* NSObject+OCMAdditions.h in Headers */,
 				03B31600146333C00052CD09 /* OCMReturnValueProvider.h in Headers */,
-				0316D68D1916477000FC48D1 /* OCMVerifyMacroState.h in Headers */,
 				03B31605146333C00052CD09 /* OCObserverMockObject.h in Headers */,
 				03B3160A146333C00052CD09 /* OCPartialMockObject.h in Headers */,
 				03B31614146333C00052CD09 /* OCProtocolMockObject.h in Headers */,
 				2FA28E1EB6B8536785258DF5 /* OCMInvocationMatcher.h in Headers */,
 				0322DA6A19118B4600CACAF1 /* OCMVerifier.h in Headers */,
-				2FA28E90A41960260D74EE8E /* OCMMacroState.h in Headers */,
 				2FA28598D23EC190EE19F3AE /* OCMFunctions.h in Headers */,
 				2FA284EBCD82935B4F8A5A2C /* OCMInvocationExpectation.h in Headers */,
+				2FA28B6CEF4CC6FD5E7D09B5 /* OCMMacroState.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -858,7 +830,6 @@
 				03B315E8146333BF0052CD09 /* OCMObserverRecorder.m in Sources */,
 				03B315ED146333C00052CD09 /* OCMockObject.m in Sources */,
 				03B315F2146333C00052CD09 /* OCMStubRecorder.m in Sources */,
-				0316D6881916475A00FC48D1 /* OCMStubMacroState.m in Sources */,
 				03B315F7146333C00052CD09 /* OCMPassByRefSetter.m in Sources */,
 				03B315FC146333C00052CD09 /* OCMRealObjectForwarder.m in Sources */,
 				03E98D4D18F308B400522D42 /* OCMLocation.m in Sources */,
@@ -869,10 +840,9 @@
 				03B31615146333C00052CD09 /* OCProtocolMockObject.m in Sources */,
 				2FA28D38ED9D83A3E0A620B3 /* NSObject+OCMAdditions.m in Sources */,
 				2FA282F0C0A4CABE4E2C7646 /* OCMInvocationMatcher.m in Sources */,
-				2FA28CDD69DD3C08BF2C634C /* OCMMacroState.m in Sources */,
 				2FA28BA90F0D55E4CF6787F0 /* OCMFunctions.m in Sources */,
-				0316D68E1916477000FC48D1 /* OCMVerifyMacroState.m in Sources */,
 				2FA286C7B8862280E6C1A585 /* OCMInvocationExpectation.m in Sources */,
+				2FA2800D12E95D5ABC965753 /* OCMMacroState.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -897,7 +867,6 @@
 				03B315E5146333BF0052CD09 /* OCMNotificationPoster.m in Sources */,
 				03B315EA146333BF0052CD09 /* OCMObserverRecorder.m in Sources */,
 				03B315EF146333C00052CD09 /* OCMockObject.m in Sources */,
-				0316D6891916475A00FC48D1 /* OCMStubMacroState.m in Sources */,
 				03B315F4146333C00052CD09 /* OCMStubRecorder.m in Sources */,
 				03B315F9146333C00052CD09 /* OCMPassByRefSetter.m in Sources */,
 				03E98D4E18F308B400522D42 /* OCMLocation.m in Sources */,
@@ -908,10 +877,9 @@
 				03B3160D146333C00052CD09 /* OCPartialMockObject.m in Sources */,
 				03B31617146333C00052CD09 /* OCProtocolMockObject.m in Sources */,
 				2FA288B20FB3A42BA0B7BAB8 /* OCMInvocationMatcher.m in Sources */,
-				2FA28112A4A7F8133862C871 /* OCMMacroState.m in Sources */,
 				2FA286F90395E317F983A20A /* OCMFunctions.m in Sources */,
-				0316D68F1916477000FC48D1 /* OCMVerifyMacroState.m in Sources */,
 				2FA28E506BE0D91A95A20243 /* OCMInvocationExpectation.m in Sources */,
+				2FA28209EB1F41964DF3031A /* OCMMacroState.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
