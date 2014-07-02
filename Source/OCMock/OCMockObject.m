@@ -236,7 +236,7 @@
 {
     if([OCMMacroState globalState] != nil)
     {
-        [[OCMMacroState globalState] handleInvocation:anInvocation];
+        [[OCMMacroState globalState] forwardInvocation:anInvocation forMock:self];
     }
     else
     {

@@ -19,6 +19,7 @@
 @class OCMLocation;
 @class OCMRecorder;
 @class OCMStubRecorder;
+@class OCMockObject;
 
 
 @interface OCMMacroState : NSObject
@@ -38,8 +39,8 @@
 + (OCMMacroState *)globalState;
 
 - (void)switchToClassMethod;
-- (BOOL)hasSwitchedToClassMethod;
 
-- (void)handleInvocation:(NSInvocation *)anInvocation;
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector forMock:(OCMockObject *)aMockObject;
+- (void)forwardInvocation:(NSInvocation *)anInvocation forMock:(OCMockObject *)aMockObject;
 
 @end

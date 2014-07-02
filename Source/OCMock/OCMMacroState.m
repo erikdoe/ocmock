@@ -105,17 +105,24 @@ OCMMacroState *globalState;
     [recorder classMethod];
 }
 
-- (BOOL)hasSwitchedToClassMethod
-{
-    return [[recorder invocationMatcher] recordedAsClassMethod];
-}
-
 
 #pragma mark  Handling invocations for the mock
 
-- (void)handleInvocation:(NSInvocation *)anInvocation
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector forMock:(OCMockObject *)aMockObject
 {
-    [recorder setMockObject:[anInvocation target]];
+    [recorder setMockObject:aMockObject];
+    // The recorder will ask the mock for the signature but we're likely here because a class mock
+    // is asking us for the signature to allow for auto-switching to class methods. To avoid an
+    // infinite loop we temporarily reset the global state so that the mock provides the answer.
+    globalState = nil;
+    NSMethodSignature *signature = [recorder methodSignatureForSelector:aSelector];
+    globalState = self;
+    return signature;
+}
+
+- (void)forwardInvocation:(NSInvocation *)anInvocation forMock:(OCMockObject *)aMockObject
+{
+    [recorder setMockObject:aMockObject];
     [recorder forwardInvocation:anInvocation];
 }
 

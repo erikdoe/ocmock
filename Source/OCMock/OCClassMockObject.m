@@ -134,23 +134,9 @@
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
-    OCMMacroState *macroState = [OCMMacroState globalState];
-    if(macroState != nil)
+    if([OCMMacroState globalState] != nil)
     {
-        if([macroState hasSwitchedToClassMethod])
-        {
-            return [mockedClass methodSignatureForSelector:aSelector];
-        }
-        else
-        {
-            NSMethodSignature *signature = [mockedClass instanceMethodSignatureForSelector:aSelector];
-            if((signature == nil) && [mockedClass respondsToSelector:aSelector])
-            {
-                [macroState switchToClassMethod];
-                signature = [mockedClass methodSignatureForSelector:aSelector];
-            }
-            return signature;
-        }
+        return [[OCMMacroState globalState] methodSignatureForSelector:aSelector forMock:self];
     }
     else
     {
