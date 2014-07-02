@@ -160,6 +160,15 @@
     XCTAssertEqual(456, actual.length, @"Should have returned stubbed value");
 }
 
+- (void)testSetsUpStubReturningNilForIdReturnType
+{
+    id mock = OCMClassMock([NSString class]);
+
+    OCMStub([mock lowercaseString]).andReturn(nil);
+
+    XCTAssertNil([mock lowercaseString], @"Should have returned stubbed value");
+}
+
 - (void)testSetsUpExceptionThrowing
 {
     id mock = OCMClassMock([NSString class]);
