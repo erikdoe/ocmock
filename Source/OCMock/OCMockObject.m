@@ -223,6 +223,18 @@
 
 #pragma mark  Handling invocations
 
+- (id)forwardingTargetForSelector:(SEL)aSelector
+{
+    if([OCMMacroState globalState] != nil)
+    {
+        OCMRecorder *recorder = [[OCMMacroState globalState] recorder];
+        [recorder setMockObject:self];
+        return recorder;
+    }
+    return nil;
+}
+
+
 - (BOOL)handleSelector:(SEL)sel
 {
     for(OCMInvocationStub *recorder in stubs)
@@ -234,22 +246,15 @@
 
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
-    if([OCMMacroState globalState] != nil)
+    @try
     {
-        [[OCMMacroState globalState] forwardInvocation:anInvocation forMock:self];
+        if([self handleInvocation:anInvocation] == NO)
+            [self handleUnRecordedInvocation:anInvocation];
     }
-    else
+    @catch(NSException *e)
     {
-        @try
-        {
-            if([self handleInvocation:anInvocation] == NO)
-                [self handleUnRecordedInvocation:anInvocation];
-        }
-        @catch(NSException *e)
-        {
-            [exceptions addObject:e];
-            [e raise];
-        }
+        [exceptions addObject:e];
+        [e raise];
     }
 }
 
@@ -291,7 +296,7 @@
 	}
 }
 
-- (void)doesNotRecognizeSelector:(SEL)aSelector
+- (void)doesNotRecognizeSelector:(SEL)aSelector __unused
 {
     if([OCMMacroState globalState] != nil)
     {

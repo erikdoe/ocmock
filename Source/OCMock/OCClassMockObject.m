@@ -134,14 +134,7 @@
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
-    if([OCMMacroState globalState] != nil)
-    {
-        return [[OCMMacroState globalState] methodSignatureForSelector:aSelector forMock:self];
-    }
-    else
-    {
-        return [mockedClass instanceMethodSignatureForSelector:aSelector];
-    }
+    return [mockedClass instanceMethodSignatureForSelector:aSelector];
 }
 
 - (Class)mockObjectClass

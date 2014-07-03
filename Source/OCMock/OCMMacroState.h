@@ -38,6 +38,8 @@
 
 + (OCMMacroState *)globalState;
 
+- (OCMRecorder *)recorder;
+
 - (void)switchToClassMethod;
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector forMock:(OCMockObject *)aMockObject;
