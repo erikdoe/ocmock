@@ -49,13 +49,13 @@
 
 @end
 
-@interface TestObjectWithDelegate : NSObject
+@interface TestClassWithDelegate : NSObject
 
 @property (nonatomic, weak) TestDelegate *delegate;
 
 @end
 
-@implementation TestObjectWithDelegate
+@implementation TestClassWithDelegate
 
 - (void)run
 {
@@ -116,7 +116,7 @@
     XCTAssertNoThrow([myMock aSpecialMethod:"foo"], @"Should not complain about method with type qualifiers.");
 }
 
-#if 0
+#if 0 // can't test this with ARC
 - (void)testAdjustsRetainCountWhenStubbingMethodsThatCreateObjects
 {
     id mock = [OCMockObject mockForClass:[NSString class]];
@@ -131,7 +131,7 @@
     [returnedObject release]; // the expectation is that we have to call release after a copy
     NSUInteger retainCountAfter = [objectToReturn retainCount];
 
-    XCTAssertEqualObjects(objectToReturn, returnedObject, @"Should not stubbed copy method");
+    XCTAssertEqualObjects(objectToReturn, returnedObject, @"Should have stubbed copy method");
     XCTAssertEqual(retainCountBefore, retainCountAfter, @"Should have incremented retain count in copy stub.");
 }
 #endif
@@ -171,5 +171,22 @@
     [mock stopMocking];
 }
 
+
+- (void)testWeakReferencesShouldStayAround
+{
+    TestClassWithDelegate *object = [TestClassWithDelegate new];
+
+    TestDelegate *delegate = [TestDelegate new];
+    object.delegate = delegate;
+    XCTAssertNotNil(object.delegate, @"Should have delegate");
+
+    id mockDelegate = OCMPartialMock(delegate);
+    XCTAssertNotNil(object.delegate, @"Should still have delegate");
+
+    [object run];
+
+    OCMVerify([mockDelegate go]);
+    XCTAssertNotNil(object.delegate, @"Should still have delegate");
+}
 
 @end

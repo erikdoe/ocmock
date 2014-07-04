@@ -1,6 +1,13 @@
 Listing of notable changes by release. More detail is usually found in the Git 
 commit messages and/or the pull requests.
 
+OCMock 3.0.1 (unreleased)
+
+* Fixed bug that prevented stubs from returning nil
+* Fixed bug related to handling of weak references
+* Improved error message when trying to mock undefined method
+
+
 OCMock 3.0 (2013-06-12)
 
 * Added macro for verify with delay
