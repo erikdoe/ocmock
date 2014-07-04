@@ -37,21 +37,6 @@
 @end
 
 
-@interface TestClassWithTypeQualifierMethod : NSObject
-
-- (void)aSpecialMethod:(byref in void *)someArg;
-
-@end
-
-@implementation TestClassWithTypeQualifierMethod
-
-- (void)aSpecialMethod:(byref in __unused void *)someArg
-{
-}
-
-@end
-
-
 @interface TestClassWithIntPointerMethod : NSObject
 
 - (void)returnValueInPointer:(int *)ptr;
@@ -393,11 +378,11 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testReturnsStubbedValueForProperty
 {
-    TestClassWithProperty *mock = [OCMockObject mockForClass:[TestClassWithProperty class]];
+    TestClassWithProperty *myMock = [OCMockObject mockForClass:[TestClassWithProperty class]];
 
-    [[[(id)mock stub] andReturn:@"stubbed title"] title];
+    [[[(id)myMock stub] andReturn:@"stubbed title"] title];
 
-    XCTAssertEqualObjects(@"stubbed title", mock.title);
+    XCTAssertEqualObjects(@"stubbed title", myMock.title);
 }
 
 
@@ -744,69 +729,6 @@ static NSString *TestNotification = @"TestNotification";
 
 
 // --------------------------------------------------------------------------------------
-//	mocks should honour the NSObject contract, etc.
-// --------------------------------------------------------------------------------------
-
-- (void)testRespondsToValidSelector
-{
-	XCTAssertTrue([mock respondsToSelector:@selector(lowercaseString)]);
-}
-
-- (void)testDoesNotRespondToInvalidSelector
-{
-    // We use a selector that's not implemented by the mock, which is an NSString
-	XCTAssertFalse([mock respondsToSelector:@selector(arrayWithArray:)]);
-}
-
-- (void)testCanStubValueForKeyMethod
-{
-	id returnValue;
-
-	mock = [OCMockObject mockForClass:[NSObject class]];
-	[[[mock stub] andReturn:@"SomeValue"] valueForKey:@"SomeKey"];
-
-	returnValue = [mock valueForKey:@"SomeKey"];
-
-	XCTAssertEqualObjects(@"SomeValue", returnValue, @"Should have returned value that was set up.");
-}
-
-- (void)testForwardsIsKindOfClass
-{
-    XCTAssertTrue([mock isKindOfClass:[NSString class]], @"Should have pretended to be the mocked class.");
-}
-
-- (void)testWorksWithTypeQualifiers
-{
-    id myMock = [OCMockObject mockForClass:[TestClassWithTypeQualifierMethod class]];
-
-    XCTAssertNoThrow([[myMock expect] aSpecialMethod:"foo"], @"Should not complain about method with type qualifiers.");
-    XCTAssertNoThrow([myMock aSpecialMethod:"foo"], @"Should not complain about method with type qualifiers.");
-}
-
-- (void)testAdjustsRetainCountWhenStubbingMethodsThatCreateObjects
-{
-    NSString *objectToReturn = [NSString stringWithFormat:@"This is not a %@.", @"string constant"];
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "NotReleasedValue"
-    [[[mock stub] andReturn:objectToReturn] mutableCopy];
-#pragma clang diagnostic pop
-
-    NSUInteger retainCountBefore = [objectToReturn retainCount];
-    id returnedObject = [mock mutableCopy];
-    [returnedObject release]; // the expectation is that we have to call release after a copy
-    NSUInteger retainCountAfter = [objectToReturn retainCount];
-
-    XCTAssertEqualObjects(objectToReturn, returnedObject, @"Should not stubbed copy method");
-    XCTAssertEqual(retainCountBefore, retainCountAfter, @"Should have incremented retain count in copy stub.");
-}
-
-- (void)testComplainsWhenUnimplementedMethodIsCalled
-{
-    XCTAssertThrowsSpecificNamed([mock performSelector:NSSelectorFromString(@"foo")], NSException, NSInvalidArgumentException);
-}
-
-
-// --------------------------------------------------------------------------------------
 //  some internal tests
 // --------------------------------------------------------------------------------------
 
@@ -844,34 +766,6 @@ static NSString *TestNotification = @"TestNotification";
 	[[mock expect] lowercaseString];
 	[mock lowercaseString];
 	[mock expect];
-}
-
-
-- (void)testMockShouldNotRaiseWhenDescribing
-{
-    mock = [OCMockObject mockForClass:[NSObject class]];
-
-    XCTAssertNoThrow(NSLog(@"Testing description handling dummy methods... %@ %@ %@ %@ %@",
-                          @{@"foo": mock},
-                          @[mock],
-                          [NSSet setWithObject:mock],
-                          [mock description],
-                          mock),
-                    @"asking for the description of a mock shouldn't cause a test to fail.");
-}
-
-- (void)testPartialMockShouldNotRaiseWhenDescribing
-{
-    mock = [OCMockObject partialMockForObject:[[[NSObject alloc] init] autorelease]];
-    
-    XCTAssertNoThrow(NSLog(@"Testing description handling dummy methods... %@ %@ %@ %@ %@",
-                          @{@"bar": mock},
-                          @[mock],
-                          [NSSet setWithObject:mock],
-                          [mock description],
-                          mock),
-                    @"asking for the description of a mock shouldn't cause a test to fail.");
-    [mock stopMocking];
 }
 
 

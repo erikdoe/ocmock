@@ -18,7 +18,7 @@
 #import <OCMock/OCMock.h>
 #import "OCClassMockObject.h"
 #import "OCPartialMockObject.h"
-#import "OCMFunctions.h"
+
 
 #pragma mark   Helper classes
 
