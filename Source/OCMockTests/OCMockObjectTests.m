@@ -79,13 +79,11 @@
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[notification release];
-	[super dealloc];
 }
 
 - (void)receiveNotification:(NSNotification *)aNotification
 {
-	notification = [aNotification retain];
+	notification = aNotification;
 }
 
 @end
@@ -212,7 +210,7 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testAcceptsStubbedMethodWithPointerArgument
 {
-	NSError *error;
+    NSError __autoreleasing *error;
 	[[[mock stub] andReturnValue:@YES] writeToFile:[OCMArg any] atomically:YES encoding:NSMacOSRomanStringEncoding error:&error];
 
 	XCTAssertTrue([mock writeToFile:@"foo" atomically:YES encoding:NSMacOSRomanStringEncoding error:&error]);
@@ -266,7 +264,7 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testAcceptsStubbedMethodWithPointerPointerArgument
 {
-	NSError *error = nil;
+	NSError __autoreleasing *error = nil;
 	[[mock stub] initWithContentsOfFile:@"foo.txt" encoding:NSASCIIStringEncoding error:&error];
 	[mock initWithContentsOfFile:@"foo.txt" encoding:NSASCIIStringEncoding error:&error];
 }
@@ -400,7 +398,7 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testPostsNotificationWhenAskedTo
 {
-	NotificationRecorderForTesting *observer = [[[NotificationRecorderForTesting alloc] init] autorelease];
+	NotificationRecorderForTesting *observer = [[NotificationRecorderForTesting alloc] init];
 	[[NSNotificationCenter defaultCenter] addObserver:observer selector:@selector(receiveNotification:) name:TestNotification object:nil];
 
 	NSNotification *notification = [NSNotification notificationWithName:TestNotification object:self];
@@ -415,7 +413,7 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testPostsNotificationInAdditionToReturningValue
 {
-	NotificationRecorderForTesting *observer = [[[NotificationRecorderForTesting alloc] init] autorelease];
+	NotificationRecorderForTesting *observer = [[NotificationRecorderForTesting alloc] init];
 	[[NSNotificationCenter defaultCenter] addObserver:observer selector:@selector(receiveNotification:) name:TestNotification object:nil];
 
 	NSNotification *notification = [NSNotification notificationWithName:TestNotification object:self];
@@ -644,11 +642,9 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testFailsVerifyExpectedMethodsWithoutDelay
 {
-    [mock retain];
     dispatch_async(dispatch_queue_create("mockqueue", nil), ^{
         [NSThread sleepForTimeInterval:0.1];
         [mock lowercaseString];
-        [mock release];
     });
     
 	[[mock expect] lowercaseString];
@@ -663,12 +659,9 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testAcceptsAndVerifiesExpectedMethodsWithDelayBlockTimeout
 {
-    [mock retain];
-    
     dispatch_async(dispatch_queue_create("mockqueue", nil), ^{
         [NSThread sleepForTimeInterval:1];
         [mock lowercaseString];
-        [mock release];
     });
     
 	[[mock expect] lowercaseString];

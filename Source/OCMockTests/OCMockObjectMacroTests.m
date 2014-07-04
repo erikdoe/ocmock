@@ -212,7 +212,7 @@
 
 - (void)testCanChainPropertyBasedActions
 {
-    id mock = OCMPartialMock([[[TestClassForMacroTesting alloc] init] autorelease]);
+    id mock = OCMPartialMock([[TestClassForMacroTesting alloc] init]);
 
     __block BOOL didCallBlock = NO;
     void (^theBlock)(NSInvocation *) = ^(NSInvocation *invocation)

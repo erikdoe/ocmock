@@ -35,6 +35,38 @@
 @end
 
 
+@interface TestDelegate : NSObject
+
+- (void)go;
+
+@end
+
+@implementation TestDelegate
+
+- (void)go
+{
+}
+
+@end
+
+@interface TestObjectWithDelegate : NSObject
+
+@property (nonatomic, weak) TestDelegate *delegate;
+
+@end
+
+@implementation TestObjectWithDelegate
+
+- (void)run
+{
+    TestDelegate *delegate = self.delegate;
+    [delegate go];
+}
+
+@end
+
+
+
 #pragma mark   Tests for interaction with runtime and foundation conventions
 
 @interface OCMockObjectRuntimeTests : XCTestCase
@@ -84,7 +116,7 @@
     XCTAssertNoThrow([myMock aSpecialMethod:"foo"], @"Should not complain about method with type qualifiers.");
 }
 
-
+#if 0
 - (void)testAdjustsRetainCountWhenStubbingMethodsThatCreateObjects
 {
     id mock = [OCMockObject mockForClass:[NSString class]];
@@ -102,7 +134,7 @@
     XCTAssertEqualObjects(objectToReturn, returnedObject, @"Should not stubbed copy method");
     XCTAssertEqual(retainCountBefore, retainCountAfter, @"Should have incremented retain count in copy stub.");
 }
-
+#endif
 
 - (void)testComplainsWhenUnimplementedMethodIsCalled
 {
@@ -127,7 +159,7 @@
 
 - (void)testPartialMockShouldNotRaiseWhenDescribing
 {
-    id mock = [OCMockObject partialMockForObject:[[[NSObject alloc] init] autorelease]];
+    id mock = [OCMockObject partialMockForObject:[[NSObject alloc] init]];
 
     XCTAssertNoThrow(NSLog(@"Testing description handling dummy methods... %@ %@ %@ %@ %@",
             @{@"bar": mock},
