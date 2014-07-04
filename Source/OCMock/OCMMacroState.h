@@ -42,7 +42,4 @@
 
 - (void)switchToClassMethod;
 
-- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector forMock:(OCMockObject *)aMockObject;
-- (void)forwardInvocation:(NSInvocation *)anInvocation forMock:(OCMockObject *)aMockObject;
-
 @end
