@@ -120,7 +120,7 @@
     [[mock expect] lowercaseString];
 
     shouldCaptureFailure = YES;
-    OCMVerifyAllWithDelay(mock, 1); const char *expectedFile = __FILE__; int expectedLine = __LINE__;
+    OCMVerifyAllWithDelay(mock, 0.05); const char *expectedFile = __FILE__; int expectedLine = __LINE__;
     shouldCaptureFailure = NO;
 
     XCTAssertNotNil(reportedDescription, @"Should have recorded a failure with description.");
