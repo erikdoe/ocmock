@@ -157,18 +157,26 @@
 
 - (id)verifyAtLocation:(OCMLocation *)location
 {
-	if([expectations count] == 1)
+    NSMutableArray *unsatisfiedExpectations = [NSMutableArray array];
+    for(OCMInvocationExpectation *e in expectations)
+    {
+        if(![e isSatisfied])
+            [unsatisfiedExpectations addObject:e];
+    }
+
+	if([unsatisfiedExpectations count] == 1)
 	{
         NSString *description = [NSString stringWithFormat:@"%@: expected method was not invoked: %@",
-         [self description], [[expectations objectAtIndex:0] description]];
+         [self description], [[unsatisfiedExpectations objectAtIndex:0] description]];
         OCMReportFailure(location, description);
 	}
-	else if([expectations count] > 0)
+	else if([unsatisfiedExpectations count] > 0)
 	{
 		NSString *description = [NSString stringWithFormat:@"%@: %@ expected methods were not invoked: %@",
-         [self description], @([expectations count]), [self _stubDescriptions:YES]];
+         [self description], @([unsatisfiedExpectations count]), [self _stubDescriptions:YES]];
         OCMReportFailure(location, description);
 	}
+
 	if([exceptions count] > 0)
 	{
         NSString *description = [NSString stringWithFormat:@"%@: %@ (This is a strict mock failure that was ignored when it actually occured.)",

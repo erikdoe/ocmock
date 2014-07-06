@@ -23,6 +23,8 @@
 - (void)setMatchAndReject:(BOOL)flag
 {
     matchAndReject = flag;
+    if(matchAndReject)
+        isSatisfied = YES;
 }
 
 - (BOOL)isSatisfied
@@ -35,7 +37,7 @@
     BOOL result = [super handleInvocation:anInvocation];
     if(result)
     {
-        isSatisfied = YES;
+        isSatisfied = !matchAndReject;
         if(matchAndReject)
         {
             [NSException raise:NSInternalInconsistencyException format:@"%@: explicitly disallowed method invoked: %@",

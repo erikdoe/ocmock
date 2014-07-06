@@ -720,6 +720,18 @@ static NSString *TestNotification = @"TestNotification";
     XCTAssertThrows([mock uppercaseString], @"Should have complained about rejected method being called.");
 }
 
+- (void)testUncalledRejectStubDoesNotCountAsExpectation
+{
+    mock = [OCMockObject niceMockForClass:[NSString class]];
+
+    [[mock expect] lowercaseString];
+    [[mock reject] uppercaseString];
+    [mock lowercaseString];
+
+    XCTAssertNoThrow([mock verify], @"Should not have any unmet expectations.");
+
+}
+
 
 // --------------------------------------------------------------------------------------
 //  some internal tests
