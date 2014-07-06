@@ -35,11 +35,11 @@
 
     id mock = [OCMockObject mockForClass:[NSString class]];
     OCMStubRecorder *recorder = [[OCMStubRecorder alloc] initWithMockObject:mock];
-    [(id)recorder initWithString:arg];
+    [(id)recorder stringByAppendingString:arg];
 
-    NSMethodSignature *signature = [NSString instanceMethodSignatureForSelector:@selector(initWithString:)];
+    NSMethodSignature *signature = [NSString instanceMethodSignatureForSelector:@selector(stringByAppendingString:)];
     NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-    [invocation setSelector:@selector(initWithString:)];
+    [invocation setSelector:@selector(stringByAppendingString:)];
     [invocation setArgument:&arg atIndex:2];
     XCTAssertTrue([[recorder invocationMatcher] matchesInvocation:invocation], @"Should match.");
 }

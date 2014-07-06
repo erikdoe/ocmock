@@ -183,6 +183,7 @@
 
     id partialMock1 = [OCMockObject partialMockForObject:object];
 
+    XCTAssertNotNil(partialMock1, @"Should have created first partial mock.");
     XCTAssertThrows([OCMockObject partialMockForObject:object], @"Should not have allowed creation of second partial mock");
 }
 
