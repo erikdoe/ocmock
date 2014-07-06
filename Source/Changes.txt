@@ -6,6 +6,7 @@ OCMock 3.0.1 (unreleased)
 * Fixed bug that prevented stubs from returning nil
 * Fixed bug related to handling of weak references
 * Improved error message when trying to mock undefined method
+* Added support for matching of char* arguments
 
 
 OCMock 3.0 (2013-06-12)

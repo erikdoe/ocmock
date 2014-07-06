@@ -229,12 +229,32 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testAcceptsStubbedMethodWithAnyPointerArgument
 {
-    [[[mock stub] andReturn:@"foo"] initWithCharacters:[OCMArg anyPointer] length:3];
+    [[mock stub] getCharacters:[OCMArg anyPointer]];
+    
+    unichar buffer[10];
+    XCTAssertNoThrow([mock getCharacters:buffer], @"Should have stubbed method.");
+}
 
-    unichar characters[] = { 'b', 'a', 'r' };
-    id result = [mock initWithCharacters:characters length:3];
 
-    XCTAssertEqualObjects(@"foo", result, @"Should have mocked method.");
+- (void)testAcceptsStubbedMethodWithMatchingCharPointer
+{
+    char buffer[10] = "foo";
+    [[[mock stub] andReturnValue:@YES] getCString:buffer maxLength:10 encoding:NSASCIIStringEncoding];
+
+    BOOL result = [mock getCString:buffer maxLength:10 encoding:NSASCIIStringEncoding];
+
+    XCTAssertEqual(YES, result, @"Should have stubbed method.");
+}
+
+- (void)testAcceptsStubbedMethodWithAnyPointerArgumentForCharPointer
+{
+
+    [[[mock stub] andReturnValue:@YES] getCString:[OCMArg anyPointer] maxLength:10 encoding:NSASCIIStringEncoding];
+
+    char buffer[10] = "foo";
+    BOOL result = [mock getCString:buffer maxLength:10 encoding:NSASCIIStringEncoding];
+
+    XCTAssertEqual(YES, result, @"Should have stubbed method.");
 }
 
 
