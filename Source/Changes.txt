@@ -1,7 +1,7 @@
 Listing of notable changes by release. More detail is usually found in the Git 
 commit messages and/or the pull requests.
 
-OCMock 3.0.1 (unreleased)
+OCMock 3.0.1 (2014-07-06)
 
 * Fixed bug that prevented stubs from returning nil
 * Fixed bug related to handling of weak references
@@ -9,7 +9,7 @@ OCMock 3.0.1 (unreleased)
 * Added support for matching of char* arguments
 
 
-OCMock 3.0 (2013-06-12)
+OCMock 3.0 (2014-06-12)
 
 * Added macro for verify with delay
 * Fixed several critical bugs
