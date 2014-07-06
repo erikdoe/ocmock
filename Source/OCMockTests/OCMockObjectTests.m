@@ -285,16 +285,16 @@ static NSString *TestNotification = @"TestNotification";
 - (void)testAcceptsStubbedMethodWithPointerPointerArgument
 {
 	NSError __autoreleasing *error = nil;
-	[[mock stub] initWithContentsOfFile:@"foo.txt" encoding:NSASCIIStringEncoding error:&error];
-	[mock initWithContentsOfFile:@"foo.txt" encoding:NSASCIIStringEncoding error:&error];
+    [[mock stub] writeToFile:@"foo.txt" atomically:NO encoding:NSASCIIStringEncoding error:&error];
+    [mock writeToFile:@"foo.txt" atomically:NO encoding:NSASCIIStringEncoding error:&error];
 }
 
 
 - (void)testRaisesExceptionWhenMethodWithWrongPointerPointerArgumentIsCalled
 {
 	NSError *error = nil, *error2;
-	[[mock stub] initWithContentsOfFile:@"foo.txt" encoding:NSASCIIStringEncoding error:&error];
-	XCTAssertThrows([mock initWithContentsOfFile:@"foo.txt" encoding:NSASCIIStringEncoding error:&error2], @"Should have raised.");
+    [[mock stub] writeToFile:@"foo.txt" atomically:NO encoding:NSASCIIStringEncoding error:&error];
+	XCTAssertThrows([mock writeToFile:@"foo.txt" atomically:NO encoding:NSASCIIStringEncoding error:&error2], @"Should have raised.");
 }
 
 

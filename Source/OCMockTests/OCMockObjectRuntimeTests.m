@@ -139,7 +139,7 @@
 - (void)testComplainsWhenUnimplementedMethodIsCalled
 {
     id mock = [OCMockObject mockForClass:[NSString class]];
-    XCTAssertThrowsSpecificNamed([mock performSelector:NSSelectorFromString(@"foo")], NSException, NSInvalidArgumentException);
+    XCTAssertThrowsSpecificNamed([mock performSelector:@selector(sortedArrayHint)], NSException, NSInvalidArgumentException);
 }
 
 
