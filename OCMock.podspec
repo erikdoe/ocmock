@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "OCMock"
-  s.version      = "3.0.1"
+  s.version      = "3.0.2"
   
   s.summary      = "Mock objects for Objective-C"
   s.description      = <<-DESC
@@ -16,10 +16,10 @@ Pod::Spec.new do |s|
   s.author             = { "Erik Doernenburg" => "erik@doernenburg.com" }
   s.social_media_url   = "http://twitter.com/erikdoe"
   
-  s.source       = { :git => "https://github.com/erikdoe/ocmock.git", :tag => "v3.0.1" }
+  s.source       = { :git => "https://github.com/erikdoe/ocmock.git", :tag => "v3.0.2" }
   s.source_files  = "Source/OCMock/*.{h,m}"
   
-  s.public_header_files = ["OCMock.h", "OCMockObject.h", "OCMockRecorder.h", "OCMArg.h", "OCMConstraint.h", "OCMLocation.h", "OCMMacroState.h", "NSNotificationCenter+OCMAdditions.h"].map { |file|
+  s.public_header_files = ["OCMock.h", "OCMockObject.h", "OCMArg.h", "OCMConstraint.h", "OCMLocation.h", "OCMMacroState.h", "OCMRecorder.h", "OCMStubRecorder.h", "NSNotificationCenter+OCMAdditions.h"].map { |file|
     "Source/OCMock/" + file
   }
   

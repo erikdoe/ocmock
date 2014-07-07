@@ -1,6 +1,11 @@
 Listing of notable changes by release. More detail is usually found in the Git 
 commit messages and/or the pull requests.
 
+OCMock 3.0.2 (2014-07-07)
+
+* Fixed podspec
+
+
 OCMock 3.0.1 (2014-07-06)
 
 * Fixed bug that prevented stubs from returning nil
