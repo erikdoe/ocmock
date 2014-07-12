@@ -16,11 +16,15 @@
 
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
-
+#import "OCMBoxedReturnValueProvider.h"
 
 // --------------------------------------------------------------------------------------
 //	Helper classes and protocols for testing
 // --------------------------------------------------------------------------------------
+
+@interface OCMBoxedReturnValueProvider (Private)
+- (BOOL)isMethodReturnType:(const char *)returnType compatibleWithValueType:(const char *)valueType;
+@end
 
 @interface TestClassWithSelectorMethod : NSObject
 
@@ -52,6 +56,12 @@
 
 @end
 
+@interface TestClassWithOpaquePointerMethod : NSObject
+typedef struct TestOpaque *OpaquePtr;
+
+- (OpaquePtr)opaquePtrValue;
+
+@end
 
 @interface TestClassWithProperty : NSObject
 
@@ -378,11 +388,94 @@ static NSString *TestNotification = @"TestNotification";
 	XCTAssertEqual(42, returnValue, @"Should have returned stubbed value.");
 }
 
+- (void)testReturnsStubbedUnsignedLongReturnValue
+{
+    mock = [OCMockObject mockForClass:[NSNumber class]];
+    [[[mock expect] andReturnValue:@42LU] unsignedLongValue];
+    unsigned long returnValue = [mock unsignedLongValue];
+    XCTAssertEqual(returnValue, 42LU, @"Should have returned stubbed value.");
+
+    [[[mock expect] andReturnValue:@42] unsignedLongValue];
+    returnValue = [mock unsignedLongValue];
+    XCTAssertEqual(returnValue, 42LU, @"Should have returned stubbed value.");
+
+    [[[mock expect] andReturnValue:@42.0] unsignedLongValue];
+    returnValue = [mock unsignedLongValue];
+    XCTAssertEqual(returnValue, 42LU, @"Should have returned stubbed value.");
+
+    [[[mock expect] andReturnValue:OCMOCK_VALUE((char)42)] unsignedLongValue];
+    returnValue = [mock unsignedLongValue];
+    XCTAssertEqual(returnValue, 42LU, @"Should have returned stubbed value.");
+
+    [[[mock expect] andReturnValue:OCMOCK_VALUE((float)42)] unsignedLongValue];
+    returnValue = [mock unsignedLongValue];
+    XCTAssertEqual(returnValue, 42LU, @"Should have returned stubbed value.");
+
+    [[[mock expect] andReturnValue:OCMOCK_VALUE((float)42.5)] unsignedLongValue];
+    XCTAssertThrows([mock unsignedLongValue], @"Should not be able to convert non-integer float to long");
+
+#if !__LP64__
+    [[[mock expect] andReturnValue:OCMOCK_VALUE((long long)LLONG_MAX)] unsignedLongValue];
+    XCTAssertThrows([mock unsignedLongValue], @"Should not be able to convert large long long to long");
+#endif
+}
+
+- (void)testReturnsStubbedBoolReturnValue
+{
+    [[[mock expect] andReturnValue:@YES] boolValue];
+    BOOL returnValue = [mock boolValue];
+    XCTAssertEqual(returnValue, YES, @"Should have returned stubbed value.");
+
+    [[[mock expect] andReturnValue:OCMOCK_VALUE(YES)] boolValue];
+    returnValue = [mock boolValue];
+    XCTAssertEqual(returnValue, YES, @"Should have returned stubbed value.");
+
+    [[[mock expect] andReturnValue:OCMOCK_VALUE(1)] boolValue];
+    returnValue = [mock boolValue];
+    XCTAssertEqual(returnValue, YES, @"Should have returned stubbed value.");
+
+    [[[mock expect] andReturnValue:OCMOCK_VALUE(300)] boolValue];
+    XCTAssertThrows([mock boolValue], @"Should not be able to convert large integer into BOOL");
+}
+
 - (void)testRaisesWhenBoxedValueTypesDoNotMatch
 {
-	[[[mock stub] andReturnValue:@42.0] intValue];
+	[[[mock stub] andReturnValue:[NSValue valueWithRange:NSMakeRange(0, 0)]] intValue];
 
 	XCTAssertThrows([mock intValue], @"Should have raised an exception.");
+}
+
+- (void)testOpaqueStructComparison
+{
+    TestClassWithOpaquePointerMethod *obj = [TestClassWithOpaquePointerMethod new];
+    OpaquePtr val = [obj opaquePtrValue];
+    id mockVal = [OCMockObject partialMockForObject:obj];
+    [[[mockVal stub] andReturnValue:OCMOCK_VALUE(val)] opaquePtrValue];
+    OpaquePtr val2 = [obj opaquePtrValue];
+    XCTAssertEqual(val, val2);
+
+    // from https://github.com/erikdoe/ocmock/pull/97
+    const char *type1 =
+    "r^{GURL={basic_string<char, std::__1::char_traits<char>, std::__1::alloca"
+    "tor<char> >={__compressed_pair<std::__1::basic_string<char, std::__1::cha"
+    "r_traits<char>, std::__1::allocator<char> >::__rep, std::__1::allocator<c"
+    "har> >={__rep}}}B{Parsed={Component=ii}{Component=ii}{Component=ii}{Compo"
+    "nent=ii}{Component=ii}{Component=ii}{Component=ii}{Component=ii}^{Parsed}"
+    "}{scoped_ptr<GURL, base::DefaultDeleter<GURL> >={scoped_ptr_impl<GURL, ba"
+    "se::DefaultDeleter<GURL> >={Data=^{GURL}}}}}";
+
+    const char *type2 =
+    "r^{GURL={basic_string<char, std::__1::char_traits<char>, std::__1::alloca"
+    "tor<char> >={__compressed_pair<std::__1::basic_string<char, std::__1::cha"
+    "r_traits<char>, std::__1::allocator<char> >::__rep, std::__1::allocator<c"
+    "har> >={__rep=(?={__long=II*}{__short=(?=Cc)[11c]}{__raw=[3L]})}}}B{Parse"
+    "d={Component=ii}{Component=ii}{Component=ii}{Component=ii}{Component=ii}{"
+    "Component=ii}{Component=ii}{Component=ii}^{Parsed}}{scoped_ptr<GURL, base"
+    "::DefaultDeleter<GURL> >={scoped_ptr_impl<GURL, base::DefaultDeleter<GURL"
+    "> >={Data=^{GURL}}}}}";
+
+    OCMBoxedReturnValueProvider *boxed = [OCMBoxedReturnValueProvider new];
+    XCTAssertTrue([boxed isMethodReturnType:type1 compatibleWithValueType:type2]);
 }
 
 - (void)testReturnsStubbedNilReturnValue
@@ -793,5 +886,23 @@ static NSString *TestNotification = @"TestNotification";
 	[mock expect];
 }
 
+
+@end
+
+@implementation TestClassWithOpaquePointerMethod
+
+typedef struct TestOpaque {
+    int i;
+    int j;
+} TestOpaque;
+
+TestOpaque myOpaque;
+
+- (OpaquePtr)opaquePtrValue
+{
+    myOpaque.i = 3;
+    myOpaque.i = 4;
+    return &myOpaque;
+}
 
 @end
