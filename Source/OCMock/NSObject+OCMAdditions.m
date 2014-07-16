@@ -28,10 +28,10 @@
 #ifndef __arm64__
     NSMethodSignature *sig = [self instanceMethodSignatureForSelector:aSelector];
     if([sig usesSpecialStructureReturn])
-        return class_getMethodImplementation_stret(self, selectorWithNoImplementation);
+        return class_getMethodImplementation_stret([NSObject class], selectorWithNoImplementation);
 #endif
     
-    return class_getMethodImplementation(self, selectorWithNoImplementation);
+    return class_getMethodImplementation([NSObject class], selectorWithNoImplementation);
 }
 
 

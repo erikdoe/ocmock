@@ -93,7 +93,7 @@
     class_addMethod(newMetaClass, @selector(forwardInvocation:), myForwardIMP, method_getTypeEncoding(myForwardMethod));
 
     /* adding forwarder for all class methods (instance methods on meta class) to allow for verify after run */
-    NSArray *whiteList = @[@"class", @"forwardingTargetForSelector:", @"methodSignatureForSelector:", @"forwardInvocation:"];
+    NSArray *whiteList = @[@"class", @"forwardingTargetForSelector:", @"methodSignatureForSelector:", @"forwardInvocation:", @"isBlock"];
     [NSObject enumerateMethodsInClass:originalMetaClass usingBlock:^(SEL selector) {
             if(![whiteList containsObject:NSStringFromSelector(selector)])
                 [self setupForwarderForClassMethodSelector:selector];
