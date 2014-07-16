@@ -145,7 +145,7 @@
 
     OCMStub([mock boolValue]).andReturn(YES);
 
-    XCTAssertEqual(1, [mock boolValue], @"Should have returned stubbed value");
+    XCTAssertEqual(YES, [mock boolValue], @"Should have returned stubbed value");
 }
 
 - (void)testSetsUpStubsWithStructureReturnValues
@@ -156,8 +156,8 @@
     OCMStub([mock rangeOfString:[OCMArg any]]).andReturn(expected);
 
     NSRange actual = [mock rangeOfString:@"substring"];
-    XCTAssertEqual(123, actual.location, @"Should have returned stubbed value");
-    XCTAssertEqual(456, actual.length, @"Should have returned stubbed value");
+    XCTAssertEqual((NSUInteger)123, actual.location, @"Should have returned stubbed value");
+    XCTAssertEqual((NSUInteger)456, actual.length, @"Should have returned stubbed value");
 }
 
 - (void)testSetsUpStubReturningNilForIdReturnType
