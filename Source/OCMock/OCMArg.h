@@ -27,6 +27,7 @@
 + (id)isNil;
 + (id)isNotNil;
 + (id)isNotEqual:(id)value;
++ (id)isKindOfClass:(Class)klass;
 + (id)checkWithSelector:(SEL)selector onObject:(id)anObject;
 + (id)checkWithBlock:(BOOL (^)(id obj))block;
 
