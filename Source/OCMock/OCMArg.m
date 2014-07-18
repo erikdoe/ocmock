@@ -40,6 +40,13 @@
 	return [OCMIsNotNilConstraint constraint];
 }
 
++ (id)isEqual:(id)value
+{
+	OCMIsEqualConstraint *constraint = [OCMIsEqualConstraint constraint];
+	constraint->testValue = value;
+	return constraint;
+}
+
 + (id)isNotEqual:(id)value
 {
 	OCMIsNotEqualConstraint *constraint = [OCMIsNotEqualConstraint constraint];

@@ -30,6 +30,15 @@
 @interface OCMIsNotNilConstraint : OCMConstraint
 @end
 
+
+@interface OCMIsEqualConstraint : OCMConstraint
+{
+@public
+	id testValue;
+}
+
+@end
+
 @interface OCMIsNotEqualConstraint : OCMConstraint
 {
 	@public

@@ -15,6 +15,7 @@
 + (id __autoreleasing *)anyObjectRef;
 + (id)isNil;
 + (id)isNotNil;
++ (id)isEqual:(id)value;
 + (id)isNotEqual:(id)value;
 + (id)checkWithSelector:(SEL)selector onObject:(id)anObject;
 + (id)checkWithBlock:(BOOL (^)(id obj))block;

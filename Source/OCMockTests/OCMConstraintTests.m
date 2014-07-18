@@ -47,6 +47,16 @@
 	XCTAssertFalse([constraint evaluate:nil], @"Should not have accepted nil.");	
 }
 
+- (void)testIsEqualAcceptsOnlyValue
+{
+	OCMIsEqualConstraint *constraint = [OCMIsEqualConstraint constraint];
+	constraint->testValue = @"foo";
+    
+	XCTAssertTrue([constraint evaluate:@"foo"], @"Should have accepted value.");
+	XCTAssertFalse([constraint evaluate:@"bar"], @"Should not have accepted other value.");
+	XCTAssertFalse([constraint evaluate:nil], @"Should not have accepted nil.");
+}
+
 - (void)testNotEqualAcceptsAnythingButValue
 {
 	OCMIsNotEqualConstraint *constraint = [OCMIsNotEqualConstraint constraint];
