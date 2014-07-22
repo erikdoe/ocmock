@@ -1,6 +1,12 @@
 Listing of notable changes by release. More detail is usually found in the Git 
 commit messages and/or the pull requests.
 
+OCMock 3.1 (unreleased)
+
+* Converting number types to make andReturn more intuitive (Carl Lindberg)
+* Macros now silence warnings about unused return values (Gordon Fontenot)
+
+
 OCMock 3.0.2 (2014-07-07)
 
 * Fixed podspec
