@@ -19,6 +19,7 @@
 #import "NSObject+OCMAdditions.h"
 #import "OCMFunctions.h"
 #import "OCMMacroState.h"
+#import "NSRegularExpression+OCMAdditions.h"
 
 @implementation OCClassMockObject
 
@@ -93,10 +94,18 @@
     class_addMethod(newMetaClass, @selector(forwardInvocation:), myForwardIMP, method_getTypeEncoding(myForwardMethod));
 
     /* adding forwarder for all class methods (instance methods on meta class) to allow for verify after run */
-    NSArray *whiteList = @[@"class", @"forwardingTargetForSelector:", @"methodSignatureForSelector:", @"forwardInvocation:", @"isBlock"];
-    [NSObject enumerateMethodsInClass:originalMetaClass usingBlock:^(SEL selector) {
-            if(![whiteList containsObject:NSStringFromSelector(selector)])
-                [self setupForwarderForClassMethodSelector:selector];
+    NSArray *blackList = @[@"class", @"forwardingTargetForSelector:", @"methodSignatureForSelector:", @"forwardInvocation:", @"isBlock",
+            @"instanceMethodForwarderForSelector:", @"instanceMethodSignatureForSelector:"];
+    NSRegularExpression *classRegex = [NSRegularExpression regularExpressionWithPattern:@"^(NS|UI).*" options:0 error:NULL];
+    [NSObject enumerateMethodsInClass:originalMetaClass usingBlock:^(Class cls, SEL sel) {
+        NSString *className = NSStringFromClass(cls);
+        NSString *selName = NSStringFromSelector(sel);
+        if([blackList containsObject:selName])
+            return;
+        if([classRegex matchesString:className] && ([selName rangeOfString:@"_"].location != NSNotFound))
+            return;
+//        NSLog(@"Setting up forwarder in %@ for +[%@ %@]", NSStringFromClass(mockedClass), className, selName);
+        [self setupForwarderForClassMethodSelector:sel];
     }];
 }
 

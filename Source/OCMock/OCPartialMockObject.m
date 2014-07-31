@@ -14,12 +14,14 @@
  *  under the License.
  */
 
+#import <Foundation/Foundation.h>
 #import <objc/runtime.h>
 #import "OCMockObject.h"
 #import "OCPartialMockObject.h"
 #import "NSMethodSignature+OCMAdditions.h"
 #import "NSObject+OCMAdditions.h"
 #import "OCMFunctions.h"
+#import "NSRegularExpression+OCMAdditions.h"
 
 
 @implementation OCPartialMockObject
@@ -116,11 +118,18 @@
     class_addMethod(subclass, @selector(class), myObjectClassImp, objectClassTypes);
 
     /* Adding forwarder for all instance methods to allow for verify after run */
-    NSArray *whiteList = @[@"class", @"forwardingTargetForSelector:", @"methodSignatureForSelector:", @"forwardInvocation:",
-            @"allowsWeakReference", @"_isDeallocating", @"retainWeakReference", @"_tryRetain", @"isBlock"];
-    [NSObject enumerateMethodsInClass:mockedClass usingBlock:^(SEL selector) {
-        if(![whiteList containsObject:NSStringFromSelector(selector)])
-            [self setupForwarderForSelector:selector];
+    NSArray *blackList = @[@"class", @"forwardingTargetForSelector:", @"methodSignatureForSelector:", @"forwardInvocation:",
+            @"allowsWeakReference", @"retainWeakReference", @"isBlock"];
+    NSRegularExpression *classRegex = [NSRegularExpression regularExpressionWithPattern:@"^(NS|UI).*" options:0 error:NULL];
+    [NSObject enumerateMethodsInClass:mockedClass usingBlock:^(Class cls, SEL sel) {
+        NSString *className = NSStringFromClass(cls);
+        NSString *selName = NSStringFromSelector(sel);
+        if([blackList containsObject:selName])
+            return;
+        if([classRegex matchesString:className] && ([selName rangeOfString:@"_"].location != NSNotFound))
+            return;
+//        NSLog(@"Setting up forwarder in %@ for -[%@ %@]", NSStringFromClass(mockedClass), className, selName);
+        [self setupForwarderForSelector:sel];
     }];
 }
 

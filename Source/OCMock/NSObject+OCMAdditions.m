@@ -35,17 +35,18 @@
 }
 
 
-+ (void)enumerateMethodsInClass:(Class)aClass usingBlock:(void (^)(SEL selector))aBlock
++ (void)enumerateMethodsInClass:(Class)aClass usingBlock:(void (^)(Class cls, SEL sel))aBlock
 {
     for(Class cls = aClass; cls != nil; cls = class_getSuperclass(cls))
     {
         Method *methodList = class_copyMethodList(cls, NULL);
         if(methodList == NULL)
             continue;
+
         for(Method *mPtr = methodList; *mPtr != NULL; mPtr++)
         {
-            SEL selector = method_getName(*mPtr);
-            aBlock(selector);
+            SEL sel = method_getName(*mPtr);
+            aBlock(cls, sel);
         }
         free(methodList);
     }
