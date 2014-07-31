@@ -17,11 +17,14 @@
 #import <Foundation/Foundation.h>
 
 @class OCMLocation;
+@class OCMRecorder;
 @class OCMStubRecorder;
+@class OCMockObject;
 
 
 @interface OCMMacroState : NSObject
 {
+    OCMRecorder *recorder;
 }
 
 + (void)beginStubMacro;
@@ -35,9 +38,8 @@
 
 + (OCMMacroState *)globalState;
 
-- (void)switchToClassMethod;
-- (BOOL)hasSwitchedToClassMethod;
+- (OCMRecorder *)recorder;
 
-- (void)handleInvocation:(NSInvocation *)anInvocation;
+- (void)switchToClassMethod;
 
 @end
