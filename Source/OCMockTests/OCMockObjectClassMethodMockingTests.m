@@ -30,6 +30,18 @@
 
 @implementation TestClassWithClassMethods
 
+static NSUInteger initializeCallCount = 0;
+
++ (void)initialize
+{
+    initializeCallCount += 1;
+}
+
++ (NSUInteger)initializeCallCount
+{
+    return initializeCallCount;
+}
+
 + (NSString *)foo
 {
     return @"Foo-ClassMethod";
@@ -274,6 +286,19 @@
 
     [[[mock expect] andForwardToRealObject] foo];
     XCTAssertThrows([mock foo]);
+}
+
+- (void)testInitializeIsNotCalledOnSuperclass
+{
+    NSUInteger countBefore = [TestClassWithClassMethods initializeCallCount];
+
+    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    [TestClassWithClassMethods foo];
+    [[mock verify] foo];
+
+    NSUInteger countAfter = [TestClassWithClassMethods initializeCallCount];
+
+    XCTAssertEqual(countBefore, countAfter, @"Creating a mock should not have resulted in call to +initialize");
 }
 
 

@@ -18,7 +18,6 @@
 #import "OCClassMockObject.h"
 #import "NSObject+OCMAdditions.h"
 #import "OCMFunctions.h"
-#import "OCMMacroState.h"
 #import "NSRegularExpression+OCMAdditions.h"
 
 @implementation OCClassMockObject
@@ -93,6 +92,12 @@
     IMP myForwardIMP = method_getImplementation(myForwardMethod);
     class_addMethod(newMetaClass, @selector(forwardInvocation:), myForwardIMP, method_getTypeEncoding(myForwardMethod));
 
+    /* create a dummy initialize method */
+    Method myDummyInitializeMethod = class_getInstanceMethod([self mockObjectClass], @selector(initializeForClassObject));
+    const char *initializeTypes = method_getTypeEncoding(myDummyInitializeMethod);
+    IMP myDummyInitializeIMP = method_getImplementation(myDummyInitializeMethod);
+    class_addMethod(newMetaClass, @selector(initialize), myDummyInitializeIMP, initializeTypes);
+
     /* adding forwarder for all class methods (instance methods on meta class) to allow for verify after run */
     NSArray *blackList = @[@"class", @"forwardingTargetForSelector:", @"methodSignatureForSelector:", @"forwardInvocation:", @"isBlock",
             @"instanceMethodForwarderForSelector:", @"instanceMethodSignatureForSelector:"];
@@ -143,6 +148,11 @@
         [anInvocation setSelector:OCMAliasForOriginalSelector([anInvocation selector])];
         [anInvocation invoke];
     }
+}
+
+- (void)initializeForClassObject
+{
+    // we really just want to have an implementation so that the superclass's is not called
 }
 
 
