@@ -97,6 +97,24 @@
 @end
 
 
+@interface NSObject(OCMCategoryForTesting)
+
+- (NSString *)categoryMethod;
+
+@end
+
+@implementation NSObject(OCMCategoryForTesting)
+
+- (NSString *)categoryMethod
+{
+    return @"Foo-Category";
+}
+
+@end
+
+
+
+
 @interface OCMockObjectPartialMocksTests : XCTestCase
 {
     int numKVOCallbacks;
@@ -157,6 +175,14 @@
     XCTAssertTrue(NSEqualRects(NSZeroRect, [mock methodRect1]), @"Should have called through to stubbed method.");
 }
 
+- (void)testInvocationsOfNSObjectCategoryMethodsCanBeStubbed
+{
+    TestClassThatCallsSelf *realObject = [[TestClassThatCallsSelf alloc] init];
+   	id mock = [OCMockObject partialMockForObject:realObject];
+    [[[mock stub] andReturn:@"stubbed"] categoryMethod];
+    XCTAssertEqualObjects(@"stubbed", [realObject categoryMethod], @"Should have stubbed NSObject's method");
+}
+
 
 - (void)testPartialMockClassOverrideReportsOriginalClass
 {
@@ -169,11 +195,6 @@
 	[mock stopMocking];
 	XCTAssertEqualObjects([realObject class], origClass, @"Classes different after stopMocking");
 	XCTAssertEqualObjects(object_getClass(realObject), origClass, @"Classes different after stopMocking");
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-	numKVOCallbacks++;
 }
 
 
@@ -279,6 +300,13 @@
 	XCTAssertEqualObjects([realObject class], origClass, @"Classes different after stopKVO");
 	XCTAssertEqualObjects(object_getClass(realObject), origClass, @"Classes different after stopKVO");
 }
+
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+	numKVOCallbacks++;
+}
+
 
 #pragma mark   Tests for end of stubbing with partial mocks
 

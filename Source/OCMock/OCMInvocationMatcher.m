@@ -31,7 +31,7 @@
 
 @implementation OCMInvocationMatcher
 
-- (void)setInvocation:(NSInvocation *)anInvocation;
+- (void)setInvocation:(NSInvocation *)anInvocation
 {
     [recordedInvocation release];
     // When the method has a char* argument we do not retain the arguments. This makes it possible
@@ -60,6 +60,11 @@
 - (NSString *)description
 {
     return [recordedInvocation invocationDescription];
+}
+
+- (NSInvocation *)recordedInvocation
+{
+    return recordedInvocation;
 }
 
 - (BOOL)matchesSelector:(SEL)sel
