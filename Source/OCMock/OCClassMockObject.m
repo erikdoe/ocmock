@@ -105,7 +105,14 @@
         if([classRegex matchesString:className] && ([selName rangeOfString:@"_"].location != NSNotFound))
             return;
 //        NSLog(@"Setting up forwarder in %@ for +[%@ %@]", NSStringFromClass(mockedClass), className, selName);
-        [self setupForwarderForClassMethodSelector:sel];
+        @try
+        {
+            [self setupForwarderForClassMethodSelector:sel];
+        }
+        @catch(NSException *e)
+        {
+            // ignore for now
+        }
     }];
 }
 
