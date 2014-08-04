@@ -19,6 +19,7 @@
 #import "NSObject+OCMAdditions.h"
 #import "OCMFunctions.h"
 #import "NSRegularExpression+OCMAdditions.h"
+#import "OCMInvocationStub.h"
 
 @implementation OCClassMockObject
 
@@ -64,6 +65,13 @@
     originalMetaClass = nil;
 }
 
+- (void)addStub:(OCMInvocationStub *)aStub
+{
+    [super addStub:aStub];
+    if([aStub recordedAsClassMethod])
+        [self setupForwarderForClassMethodSelector:[[aStub recordedInvocation] selector]];
+}
+
 
 #pragma mark  Class method mocking
 
@@ -103,6 +111,8 @@
             @"instanceMethodForwarderForSelector:", @"instanceMethodSignatureForSelector:"];
     NSRegularExpression *classRegex = [NSRegularExpression regularExpressionWithPattern:@"^(NS|UI).*" options:0 error:NULL];
     [NSObject enumerateMethodsInClass:originalMetaClass usingBlock:^(Class cls, SEL sel) {
+        if((cls == object_getClass([NSObject class])) || (cls == object_getClass([NSProxy class])))
+            return;
         NSString *className = NSStringFromClass(cls);
         NSString *selName = NSStringFromSelector(sel);
         if([blackList containsObject:selName])
@@ -123,6 +133,10 @@
 
 - (void)setupForwarderForClassMethodSelector:(SEL)selector
 {
+    SEL aliasSelector = OCMAliasForOriginalSelector(selector);
+    if(class_getClassMethod(mockedClass, aliasSelector) != NULL)
+        return;
+
     Method originalMethod = class_getClassMethod(mockedClass, selector);
     IMP originalIMP = method_getImplementation(originalMethod);
     const char *types = method_getTypeEncoding(originalMethod);
@@ -130,7 +144,6 @@
     Class metaClass = object_getClass(mockedClass);
     IMP forwarderIMP = [metaClass instanceMethodForwarderForSelector:selector];
     class_replaceMethod(metaClass, selector, forwarderIMP, types);
-    SEL aliasSelector = OCMAliasForOriginalSelector(selector);
     class_addMethod(metaClass, aliasSelector, originalIMP, types);
 }
 

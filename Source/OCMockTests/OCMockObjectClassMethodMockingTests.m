@@ -288,7 +288,7 @@ static NSUInteger initializeCallCount = 0;
     XCTAssertThrows([mock foo]);
 }
 
-- (void)testInitializeIsNotCalledOnSuperclass
+- (void)testInitializeIsNotCalledOnMockedClass
 {
     NSUInteger countBefore = [TestClassWithClassMethods initializeCallCount];
 
@@ -299,6 +299,18 @@ static NSUInteger initializeCallCount = 0;
     NSUInteger countAfter = [TestClassWithClassMethods initializeCallCount];
 
     XCTAssertEqual(countBefore, countAfter, @"Creating a mock should not have resulted in call to +initialize");
+}
+
+- (void)testCanStubNSObjectClassMethodsIncludingAlloc
+{
+    TestClassWithClassMethods *dummyObject = [[TestClassWithClassMethods alloc] init];
+
+    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    [[[mock stub] andReturn:dummyObject] new];
+
+    id newObject = [TestClassWithClassMethods new];
+
+    XCTAssertEqualObjects(dummyObject, newObject, @"Should have stubbed +new method");
 }
 
 
