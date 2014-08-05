@@ -28,10 +28,23 @@
 #pragma mark   Helper classes
 
 @interface TestClassWithSimpleMethod : NSObject
++ (NSUInteger)initializeCallCount;
 - (NSString *)foo;
 @end
 
 @implementation TestClassWithSimpleMethod
+
+static NSUInteger initializeCallCount = 0;
+
++ (void)initialize
+{
+    initializeCallCount += 1;
+}
+
++ (NSUInteger)initializeCallCount
+{
+    return initializeCallCount;
+}
 
 - (NSString *)foo
 {
@@ -184,6 +197,8 @@
 }
 
 
+#pragma mark   Tests for behaviour when setting up partial mocks
+
 - (void)testPartialMockClassOverrideReportsOriginalClass
 {
 	TestClassThatCallsSelf *realObject = [[TestClassThatCallsSelf alloc] init];
@@ -197,6 +212,19 @@
 	XCTAssertEqualObjects(object_getClass(realObject), origClass, @"Classes different after stopMocking");
 }
 
+- (void)testInitializeIsNotCalledOnMockedClass
+{
+    NSUInteger countBefore = [TestClassWithSimpleMethod initializeCallCount];
+
+    TestClassWithSimpleMethod *object = [[TestClassWithSimpleMethod alloc] init];
+    id mock = [OCMockObject partialMockForObject:object];
+    [[[mock expect] andForwardToRealObject] foo];
+    [object foo];
+
+    NSUInteger countAfter = [TestClassWithSimpleMethod initializeCallCount];
+
+    XCTAssertEqual(countBefore, countAfter, @"Creating a mock should not have resulted in call to +initialize");
+}
 
 - (void)testRefusesToCreateTwoPartialMocksForTheSameObject
 {
