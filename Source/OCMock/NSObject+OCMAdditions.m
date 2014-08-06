@@ -20,14 +20,33 @@
 
 @implementation NSObject(OCMAdditions)
 
+static NSMutableDictionary *_OCMReturnTypeCache;
+
 + (IMP)instanceMethodForwarderForSelector:(SEL)aSelector
 {
-    // use NSSelectorFromString and not @selector to avoid warning
-    SEL selectorWithNoImplementation = NSSelectorFromString(@"methodWhichMustNotExist::::");
+    // use sel_registerName() and not @selector to avoid warning
+    SEL selectorWithNoImplementation = sel_registerName("methodWhichMustNotExist::::");
 
 #ifndef __arm64__
-    NSMethodSignature *sig = [self instanceMethodSignatureForSelector:aSelector];
-    if([sig usesSpecialStructureReturn])
+    if(_OCMReturnTypeCache == nil)
+        _OCMReturnTypeCache = [[NSMutableDictionary alloc] init];
+
+    BOOL needsStructureReturn;
+    NSString *cacheKey = [NSString stringWithFormat:@"%p-%p", (void *)self, aSelector];
+    NSNumber *cachedValue = [_OCMReturnTypeCache objectForKey:cacheKey];
+
+    if(cachedValue == nil)
+    {
+        NSMethodSignature *sig = [self instanceMethodSignatureForSelector:aSelector];
+        needsStructureReturn = [sig usesSpecialStructureReturn];
+        [_OCMReturnTypeCache setObject:[NSNumber numberWithBool:needsStructureReturn] forKey:cacheKey];
+    }
+    else
+    {
+        needsStructureReturn = [cachedValue boolValue];
+    }
+
+    if(needsStructureReturn)
         return class_getMethodImplementation_stret([NSObject class], selectorWithNoImplementation);
 #endif
     

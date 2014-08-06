@@ -162,7 +162,7 @@
         types = ([[mockedClass instanceMethodSignatureForSelector:sel] fullObjCTypes]);
 
     Class subclass = object_getClass([self realObject]);
-    IMP forwarderIMP = [subclass instanceMethodForwarderForSelector:sel];
+    IMP forwarderIMP = [mockedClass instanceMethodForwarderForSelector:sel];
     class_replaceMethod(subclass, sel, forwarderIMP, types);
 	class_addMethod(subclass, aliasSelector, originalIMP, types);
 }

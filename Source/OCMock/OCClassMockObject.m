@@ -142,7 +142,7 @@
     const char *types = method_getTypeEncoding(originalMethod);
 
     Class metaClass = object_getClass(mockedClass);
-    IMP forwarderIMP = [metaClass instanceMethodForwarderForSelector:selector];
+    IMP forwarderIMP = [originalMetaClass instanceMethodForwarderForSelector:selector];
     class_replaceMethod(metaClass, selector, forwarderIMP, types);
     class_addMethod(metaClass, aliasSelector, originalIMP, types);
 }
