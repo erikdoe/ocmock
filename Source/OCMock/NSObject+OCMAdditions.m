@@ -32,7 +32,8 @@ static NSMutableDictionary *_OCMReturnTypeCache;
         _OCMReturnTypeCache = [[NSMutableDictionary alloc] init];
 
     BOOL needsStructureReturn;
-    NSString *cacheKey = [NSString stringWithFormat:@"%p-%p", (void *)self, aSelector];
+    void *rawCacheKey[2] = { (void *)self, aSelector };
+    NSData *cacheKey = [NSData dataWithBytes:rawCacheKey length:sizeof(rawCacheKey)];
     NSNumber *cachedValue = [_OCMReturnTypeCache objectForKey:cacheKey];
 
     if(cachedValue == nil)
