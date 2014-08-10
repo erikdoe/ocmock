@@ -167,7 +167,7 @@
 	if([unsatisfiedExpectations count] == 1)
 	{
         NSString *description = [NSString stringWithFormat:@"%@: expected method was not invoked: %@",
-         [self description], [[unsatisfiedExpectations objectAtIndex:0] description]];
+         [self description], [unsatisfiedExpectations[0] description]];
         OCMReportFailure(location, description);
 	}
 	else if([unsatisfiedExpectations count] > 0)
@@ -180,7 +180,7 @@
 	if([exceptions count] > 0)
 	{
         NSString *description = [NSString stringWithFormat:@"%@: %@ (This is a strict mock failure that was ignored when it actually occured.)",
-         [self description], [[exceptions objectAtIndex:0] description]];
+         [self description], [exceptions[0] description]];
         OCMReportFailure(location, description);
 	}
 
@@ -275,14 +275,14 @@
     }];
     if(idx == NSNotFound)
    		return NO;
-    OCMInvocationStub *stub = [stubs objectAtIndex:idx];
+    OCMInvocationStub *stub = stubs[idx];
 
 	if([expectations containsObject:stub])
 	{
-		if(expectationOrderMatters && ([expectations objectAtIndex:0] != stub))
+		if(expectationOrderMatters && (expectations[0] != stub))
 		{
 			[NSException raise:NSInternalInconsistencyException	format:@"%@: unexpected method invoked: %@\n\texpected:\t%@",  
-			 [self description], [stub description], [[expectations objectAtIndex:0] description]];
+			 [self description], [stub description], [expectations[0] description]];
 			
 		}
         if([(OCMInvocationExpectation *)stub isSatisfied])

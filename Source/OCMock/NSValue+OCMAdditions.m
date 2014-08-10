@@ -43,22 +43,22 @@ static CFNumberType OCMNumberTypeForObjCType(const char *objcType)
 
 static NSNumber *OCMNumberForValue(NSValue *value)
 {
-#define CREATE_NUM(_type, _meth) ({ _type _v; [value getValue:&_v]; [NSNumber _meth _v]; })
+#define CREATE_NUM(_type) ({ _type _v; [value getValue:&_v]; @(_v); })
     switch([value objCType][0])
     {
-        case 'c': return CREATE_NUM(char,               numberWithChar:);
-        case 'C': return CREATE_NUM(unsigned char,      numberWithUnsignedChar:);
-        case 'B': return CREATE_NUM(bool,               numberWithBool:);
-        case 's': return CREATE_NUM(short,              numberWithShort:);
-        case 'S': return CREATE_NUM(unsigned short,     numberWithUnsignedShort:);
-        case 'i': return CREATE_NUM(int,                numberWithInt:);
-        case 'I': return CREATE_NUM(unsigned int,       numberWithUnsignedInt:);
-        case 'l': return CREATE_NUM(long,               numberWithLong:);
-        case 'L': return CREATE_NUM(unsigned long,      numberWithUnsignedLong:);
-        case 'q': return CREATE_NUM(long long,          numberWithLongLong:);
-        case 'Q': return CREATE_NUM(unsigned long long, numberWithUnsignedLongLong:);
-        case 'f': return CREATE_NUM(float,              numberWithFloat:);
-        case 'd': return CREATE_NUM(double,             numberWithDouble:);
+        case 'c': return CREATE_NUM(char);
+        case 'C': return CREATE_NUM(unsigned char);
+        case 'B': return CREATE_NUM(bool);
+        case 's': return CREATE_NUM(short);
+        case 'S': return CREATE_NUM(unsigned short);
+        case 'i': return CREATE_NUM(int);
+        case 'I': return CREATE_NUM(unsigned int);
+        case 'l': return CREATE_NUM(long);
+        case 'L': return CREATE_NUM(unsigned long);
+        case 'q': return CREATE_NUM(long long);
+        case 'Q': return CREATE_NUM(unsigned long long);
+        case 'f': return CREATE_NUM(float);
+        case 'd': return CREATE_NUM(double);
         default:  return nil;
     }
 }

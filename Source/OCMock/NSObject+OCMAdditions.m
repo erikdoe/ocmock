@@ -34,13 +34,13 @@ static NSMutableDictionary *_OCMReturnTypeCache;
     BOOL needsStructureReturn;
     void *rawCacheKey[2] = { (void *)self, aSelector };
     NSData *cacheKey = [NSData dataWithBytes:rawCacheKey length:sizeof(rawCacheKey)];
-    NSNumber *cachedValue = [_OCMReturnTypeCache objectForKey:cacheKey];
+    NSNumber *cachedValue = _OCMReturnTypeCache[cacheKey];
 
     if(cachedValue == nil)
     {
         NSMethodSignature *sig = [self instanceMethodSignatureForSelector:aSelector];
         needsStructureReturn = [sig usesSpecialStructureReturn];
-        [_OCMReturnTypeCache setObject:[NSNumber numberWithBool:needsStructureReturn] forKey:cacheKey];
+        _OCMReturnTypeCache[cacheKey] = @(needsStructureReturn);
     }
     else
     {
