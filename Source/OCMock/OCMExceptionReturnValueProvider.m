@@ -19,7 +19,7 @@
 
 @implementation OCMExceptionReturnValueProvider
 
-- (void)handleInvocation:(NSInvocation *)anInvocation
+- (void) __attribute__((noreturn)) handleInvocation:(NSInvocation *)anInvocation
 {
 	@throw returnValue;
 }

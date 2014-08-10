@@ -124,7 +124,7 @@
         {
             [self setupForwarderForClassMethodSelector:sel];
         }
-        @catch(NSException *e)
+        @catch(__unused NSException *e)
         {
             // ignore for now
         }
