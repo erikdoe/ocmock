@@ -58,6 +58,13 @@
 	return constraint;
 }
 
++ (id)isKindOfClass:(Class)klass
+{
+	return [[[OCMBlockConstraint alloc] initWithConstraintBlock:^BOOL(id obj) {
+        return [obj isKindOfClass:klass];
+    }] autorelease];
+}
+
 + (id)checkWithSelector:(SEL)selector onObject:(id)anObject
 {
 	return [OCMConstraint constraintWithSelector:selector onObject:anObject];
