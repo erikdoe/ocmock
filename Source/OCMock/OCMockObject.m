@@ -85,7 +85,7 @@
 
 #pragma mark  Initialisers, description, accessors, etc.
 
-- (id)init
+- (instancetype)init
 {
 	// no [super init], we're inheriting from NSProxy
 	expectationOrderMatters = NO;
