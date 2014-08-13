@@ -246,14 +246,16 @@ OCMStub([mock someMethodWithSelectorArgument:[OCMArg anySelector]])
 <h3 class="numbered">Matching arguments</h3>
 
 {% highlight objc %}
-OCMStub([mock someMethod:[OCMArg isNil])
-OCMStub([mock someMethod:[OCMArg isNotNil])
-OCMStub([mock someMethod:[OCMArg isNotEqual:aValue])
-OCMStub([mock someMethod:[OCMArg checkWithSelector:aSelector onObject:anObject])
-OCMStub([mock someMethod:[OCMArg checkWithBlock:^BOOL(id value) { /* return YES if value is ok */ }])
+OCMStub([mock someMethod:aValue)
+OCMStub([mock someMethod:[OCMArg isNil]])
+OCMStub([mock someMethod:[OCMArg isNotNil]])
+OCMStub([mock someMethod:[OCMArg isNotEqual:aValue]])
+OCMStub([mock someMethod:[OCMArg isKindOfClass:[SomeClass class]]])
+OCMStub([mock someMethod:[OCMArg checkWithSelector:aSelector onObject:anObject]])
+OCMStub([mock someMethod:[OCMArg checkWithBlock:^BOOL(id value) { /* return YES if value is ok */ }]])
 {% endhighlight objc %}
 
-<p>Several methods on <code>OCMArg</code> allow matching specific values. They should be self-explanatory.
+<p>If an argument is passed in the stub is created, the stub only matches invocations with that exact argument. Calls with different arguments are not matched. The <code>OCMArg</code> class provides several methods that allow matching values in different ways.
 	
 <p>For <code>checkWithSelector:onObject:</code>, when the mock object receives <code>someMethod:</code>, it invokes <code>aSelector</code> on <code>anObject</code>. If the method takes an argument the mock will pass the argument that was passed to <code>someMethod:</code>. The method should return a boolean indicating whether the argument matched the expectation or not.</p>
 
@@ -546,11 +548,10 @@ OCMStub([classMock copy])).andReturn(myObject);
 	
 {% highlight objc %}
 id classMock = OCMClassMock([SomeClass class]);
-OCMStub([classMock alloc])).andReturn(classMock);
-OCMStub([classMock init])).andReturn(myObject);
+OCMStub([classMock new])).andReturn(myObject);
 {% endhighlight objc %}
 
-<p>It possible, although not advisable, to stub out alloc/init for a class. If you find yourself doing this a lot, please consider the <a href="http://en.wikipedia.org/wiki/Dependency_injection">dependency injection</a> pattern.	
+<p>It possible, although not advisable, to stub out <code>new</code> for a class. If you find yourself doing this a lot, please consider the <a href="http://en.wikipedia.org/wiki/Dependency_injection">dependency injection</a> pattern. It is not possible to stub the <code>init</code> method, because that is implemented by the mock itself.
 	
 
 <h3 class="numbered">Instance-based method swizzling</h3>
