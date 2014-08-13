@@ -18,7 +18,6 @@
 #import "OCClassMockObject.h"
 #import "NSObject+OCMAdditions.h"
 #import "OCMFunctions.h"
-#import "NSRegularExpression+OCMAdditions.h"
 #import "OCMInvocationStub.h"
 
 @implementation OCClassMockObject
@@ -106,20 +105,19 @@
     IMP myDummyInitializeIMP = method_getImplementation(myDummyInitializeMethod);
     class_addMethod(newMetaClass, @selector(initialize), myDummyInitializeIMP, initializeTypes);
 
-    /* adding forwarder for all class methods (instance methods on meta class) to allow for verify after run */
-    NSArray *blackList = @[@"class", @"forwardingTargetForSelector:", @"methodSignatureForSelector:", @"forwardInvocation:", @"isBlock",
+    /* adding forwarder for most class methods (instance methods on meta class) to allow for verify after run */
+    NSArray *methodBlackList = @[@"class", @"forwardingTargetForSelector:", @"methodSignatureForSelector:", @"forwardInvocation:", @"isBlock",
             @"instanceMethodForwarderForSelector:", @"instanceMethodSignatureForSelector:"];
-    NSRegularExpression *classRegex = [NSRegularExpression regularExpressionWithPattern:@"^(NS|UI).*" options:0 error:NULL];
     [NSObject enumerateMethodsInClass:originalMetaClass usingBlock:^(Class cls, SEL sel) {
-        if((cls == object_getClass([NSObject class])) || (cls == object_getClass([NSProxy class])))
+        if((cls == object_getClass([NSObject class])) || (cls == [NSObject class]) || (cls == object_getClass(cls)))
             return;
         NSString *className = NSStringFromClass(cls);
         NSString *selName = NSStringFromSelector(sel);
-        if([blackList containsObject:selName])
+        if(([className hasPrefix:@"NS"] || [className hasPrefix:@"UI"]) &&
+           ([selName hasPrefix:@"_"] || [selName hasSuffix:@"_"]))
             return;
-        if([classRegex matchesString:className] && ([selName rangeOfString:@"_"].location != NSNotFound))
+        if([methodBlackList containsObject:selName])
             return;
-//        NSLog(@"Setting up forwarder in %@ for +[%@ %@]", NSStringFromClass(mockedClass), className, selName);
         @try
         {
             [self setupForwarderForClassMethodSelector:sel];

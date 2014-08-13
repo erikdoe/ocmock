@@ -34,10 +34,6 @@
 		03618D86195B553400389166 /* OCMRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 03618D82195B553400389166 /* OCMRecorder.m */; };
 		037ECD5418FAD84100AF0E4C /* OCMInvocationMatcherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 037ECD5318FAD84100AF0E4C /* OCMInvocationMatcherTests.m */; };
 		037ECD5518FAD84100AF0E4C /* OCMInvocationMatcherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 037ECD5318FAD84100AF0E4C /* OCMInvocationMatcherTests.m */; };
-		03A4A4C31986D2290014927C /* NSRegularExpression+OCMAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 03A4A4C11986D2290014927C /* NSRegularExpression+OCMAdditions.h */; };
-		03A4A4C41986D2290014927C /* NSRegularExpression+OCMAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 03A4A4C11986D2290014927C /* NSRegularExpression+OCMAdditions.h */; };
-		03A4A4C51986D2290014927C /* NSRegularExpression+OCMAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A4A4C21986D2290014927C /* NSRegularExpression+OCMAdditions.m */; };
-		03A4A4C61986D2290014927C /* NSRegularExpression+OCMAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A4A4C21986D2290014927C /* NSRegularExpression+OCMAdditions.m */; };
 		03B315AF146333BF0052CD09 /* NSInvocation+OCMAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 03B31585146333BF0052CD09 /* NSInvocation+OCMAdditions.h */; };
 		03B315B0146333BF0052CD09 /* NSInvocation+OCMAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 03B31585146333BF0052CD09 /* NSInvocation+OCMAdditions.h */; };
 		03B315B1146333BF0052CD09 /* NSInvocation+OCMAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B31586146333BF0052CD09 /* NSInvocation+OCMAdditions.m */; };
@@ -218,8 +214,6 @@
 		03618D82195B553400389166 /* OCMRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMRecorder.m; sourceTree = "<group>"; };
 		037ECD5318FAD84100AF0E4C /* OCMInvocationMatcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMInvocationMatcherTests.m; sourceTree = "<group>"; };
 		039F91C516EFB493006C3D70 /* OCMockObjectClassMethodMockingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMockObjectClassMethodMockingTests.m; sourceTree = "<group>"; };
-		03A4A4C11986D2290014927C /* NSRegularExpression+OCMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSRegularExpression+OCMAdditions.h"; sourceTree = "<group>"; };
-		03A4A4C21986D2290014927C /* NSRegularExpression+OCMAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSRegularExpression+OCMAdditions.m"; sourceTree = "<group>"; };
 		03AC5C1416DF9FA500D82ECD /* OCMockObjectPartialMocksTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMockObjectPartialMocksTests.m; sourceTree = "<group>"; };
 		03B31585146333BF0052CD09 /* NSInvocation+OCMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSInvocation+OCMAdditions.h"; sourceTree = "<group>"; };
 		03B31586146333BF0052CD09 /* NSInvocation+OCMAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSInvocation+OCMAdditions.m"; sourceTree = "<group>"; };
@@ -494,8 +488,6 @@
 				2FA28991BEFD67DEF2CCF7D2 /* NSObject+OCMAdditions.m */,
 				2FA286EAC1682979C696D4D6 /* NSValue+OCMAdditions.h */,
 				2FA28896E5EEFD7C2F12C2F8 /* NSValue+OCMAdditions.m */,
-				03A4A4C11986D2290014927C /* NSRegularExpression+OCMAdditions.h */,
-				03A4A4C21986D2290014927C /* NSRegularExpression+OCMAdditions.m */,
 				2FA28C8717BE4B7A89119BA2 /* OCMFunctions.m */,
 				2FA28EC49F6C59B940AE6D00 /* OCMFunctions.h */,
 			);
@@ -613,7 +605,6 @@
 				03B315BE146333BF0052CD09 /* OCClassMockObject.h in Headers */,
 				03B315C8146333BF0052CD09 /* OCMBlockCaller.h in Headers */,
 				03C7BF10195DAB5300A545DD /* OCMExpectationRecorder.h in Headers */,
-				03A4A4C31986D2290014927C /* NSRegularExpression+OCMAdditions.h in Headers */,
 				03B315CD146333BF0052CD09 /* OCMBoxedReturnValueProvider.h in Headers */,
 				03B315D7146333BF0052CD09 /* OCMExceptionReturnValueProvider.h in Headers */,
 				03B315DC146333BF0052CD09 /* OCMIndirectReturnValueProvider.h in Headers */,
@@ -653,7 +644,6 @@
 				03B315BF146333BF0052CD09 /* OCClassMockObject.h in Headers */,
 				03B315C9146333BF0052CD09 /* OCMBlockCaller.h in Headers */,
 				03C7BF11195DAB5300A545DD /* OCMExpectationRecorder.h in Headers */,
-				03A4A4C41986D2290014927C /* NSRegularExpression+OCMAdditions.h in Headers */,
 				03B315CE146333BF0052CD09 /* OCMBoxedReturnValueProvider.h in Headers */,
 				03B315D8146333BF0052CD09 /* OCMExceptionReturnValueProvider.h in Headers */,
 				03B315DD146333BF0052CD09 /* OCMIndirectReturnValueProvider.h in Headers */,
@@ -850,7 +840,6 @@
 				03B315D4146333BF0052CD09 /* OCMConstraint.m in Sources */,
 				03B315D9146333BF0052CD09 /* OCMExceptionReturnValueProvider.m in Sources */,
 				03B315DE146333BF0052CD09 /* OCMIndirectReturnValueProvider.m in Sources */,
-				03A4A4C51986D2290014927C /* NSRegularExpression+OCMAdditions.m in Sources */,
 				03B315E3146333BF0052CD09 /* OCMNotificationPoster.m in Sources */,
 				03B315E8146333BF0052CD09 /* OCMObserverRecorder.m in Sources */,
 				03B315ED146333C00052CD09 /* OCMockObject.m in Sources */,
@@ -889,7 +878,6 @@
 				03DCED6D183406BC0059089E /* NSObject+OCMAdditions.m in Sources */,
 				03B315D6146333BF0052CD09 /* OCMConstraint.m in Sources */,
 				03B315DB146333BF0052CD09 /* OCMExceptionReturnValueProvider.m in Sources */,
-				03A4A4C61986D2290014927C /* NSRegularExpression+OCMAdditions.m in Sources */,
 				03B315E0146333BF0052CD09 /* OCMIndirectReturnValueProvider.m in Sources */,
 				03B315E5146333BF0052CD09 /* OCMNotificationPoster.m in Sources */,
 				03B315EA146333BF0052CD09 /* OCMObserverRecorder.m in Sources */,
