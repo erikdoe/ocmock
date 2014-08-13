@@ -51,6 +51,11 @@
 	return [OCMIsNotNilConstraint constraint];
 }
 
++ (id)isEqual:(id)value
+{
+    return value;
+}
+
 + (id)isNotEqual:(id)value
 {
 	OCMIsNotEqualConstraint *constraint = [OCMIsNotEqualConstraint constraint];
@@ -58,10 +63,10 @@
 	return constraint;
 }
 
-+ (id)isKindOfClass:(Class)klass
++ (id)isKindOfClass:(Class)cls
 {
 	return [[[OCMBlockConstraint alloc] initWithConstraintBlock:^BOOL(id obj) {
-        return [obj isKindOfClass:klass];
+        return [obj isKindOfClass:cls];
     }] autorelease];
 }
 
