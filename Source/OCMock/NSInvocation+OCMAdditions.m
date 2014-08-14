@@ -175,7 +175,7 @@
 	unsigned int i;
 	for(i = 2; i < numberOfArgs; i++)
 	{
-		[description appendFormat:@"%@%@:", (i > 2 ? @" " : @""), selectorParts[(i - 2)]];
+		[description appendFormat:@"%@%@:", (i > 2 ? @" " : @""), [selectorParts objectAtIndex:(i - 2)]];
 		[description appendString:[self argumentDescriptionAtIndex:i]];
 	}
 	

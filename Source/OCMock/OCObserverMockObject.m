@@ -110,7 +110,7 @@
 	limit = expectationOrderMatters ? 1 : [recorders count];
 	for(i = 0; i < limit; i++)
 	{
-		if([recorders[i] matchesNotification:aNotification])
+		if([[recorders objectAtIndex:i] matchesNotification:aNotification])
 		{
 			[recorders removeObjectAtIndex:i];
 			return;

@@ -52,7 +52,7 @@
     NSArray *actionList = [(OCMInvocationStub *)[recorder invocationMatcher] invocationActions];
 
     XCTAssertEqual((NSUInteger)1, [actionList count], @"Should have added one action.");
-    XCTAssertEqualObjects([OCMReturnValueProvider class], [actionList[0] class], @"Should have added correct action.");
+    XCTAssertEqualObjects([OCMReturnValueProvider class], [[actionList objectAtIndex:0] class], @"Should have added correct action.");
 }
 
 - (void)testAddsExceptionReturnValueProvider
@@ -63,7 +63,7 @@
     NSArray *actionList = [(OCMInvocationStub *)[recorder invocationMatcher] invocationActions];
 
     XCTAssertEqual((NSUInteger)1, [actionList count], @"Should have added one action.");
-    XCTAssertEqualObjects([OCMExceptionReturnValueProvider class], [actionList[0] class], @"Should have added correct action.");
+    XCTAssertEqualObjects([OCMExceptionReturnValueProvider class], [[actionList objectAtIndex:0] class], @"Should have added correct action.");
 
 }
 
