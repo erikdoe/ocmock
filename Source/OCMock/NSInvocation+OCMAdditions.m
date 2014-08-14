@@ -364,8 +364,8 @@
 	char *cStringPtr;
 	
 	[self getArgument:&cStringPtr atIndex:anInt];
-    	strlcpy(buffer, cStringPtr, sizeof(buffer));
-    	strlcpy(buffer + 100, "...", sizeof(buffer));
+	strlcpy(buffer, cStringPtr, sizeof(buffer));
+	strlcpy(buffer + 100, "...", (sizeof(buffer) - 100));
 	return [NSString stringWithFormat:@"\"%s\"", buffer];
 }
 
