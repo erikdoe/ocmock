@@ -490,7 +490,7 @@ OCMExpect([mock someMethod]);
 
 /* run code under test */
 
-OCMVerifyAll(); // will complain that someMethod has not been called
+OCMVerifyAll(mock); // will complain that someMethod has not been called
 {% endhighlight objc %}
 
 <p>The code above first sets up a stub for <code>someMethod</code> and afterwards an expectation for the same method. Due to the way mock objects are currently implemented any calls to <code>someMethod</code> are handled by the stub. This means that even if the method is called the verify fails. It is possible to avoid this problem by adding <code>andReturn</code> to the expect statement. You can also set up a stub after the expect.
