@@ -1,21 +1,42 @@
-//---------------------------------------------------------------------------------------
-//  $Id$
-//  Copyright (c) 2006-2009 by Mulle Kybernetik. See License file for details.
-//---------------------------------------------------------------------------------------
+/*
+ *  Copyright (c) 2006-2014 Erik Doernenburg and contributors
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may
+ *  not use these files except in compliance with the License. You may obtain
+ *  a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ *  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ *  License for the specific language governing permissions and limitations
+ *  under the License.
+ */
 
 #import "NSInvocation+OCMAdditions.h"
+#import "OCMFunctions.h"
 
 
 @implementation NSInvocation(OCMAdditions)
 
-- (id)getArgumentAtIndexAsObject:(int)argIndex
+- (BOOL)hasCharPointerArgument
 {
-	const char* argType;
-	
-	argType = [[self methodSignature] getArgumentTypeAtIndex:argIndex];
-	while(strchr("rnNoORV", argType[0]) != NULL)
-		argType += 1;
-	
+    NSMethodSignature *signature = [self methodSignature];
+    for(NSUInteger i = 0; i < [signature numberOfArguments]; i++)
+    {
+        const char *argType = OCMTypeWithoutQualifiers([signature getArgumentTypeAtIndex:i]);
+        if(strcmp(argType, "*") == 0)
+            return NO;
+    }
+    return YES;
+}
+
+
+- (id)getArgumentAtIndexAsObject:(NSInteger)argIndex
+{
+	const char *argType = OCMTypeWithoutQualifiers([[self methodSignature] getArgumentTypeAtIndex:(NSUInteger)argIndex]);
+
 	if((strlen(argType) > 1) && (strchr("{^", argType[0]) == NULL) && (strcmp("@?", argType) != 0))
 		[NSException raise:NSInvalidArgumentException format:@"Cannot handle argument type '%s'.", argType];
 	
@@ -119,6 +140,7 @@
 			return [NSNumber numberWithBool:value];
 		}
 		case '^':
+        case '*':
         {
             void *value = NULL;
             [self getArgument:&value atIndex:argIndex];
@@ -127,7 +149,7 @@
 		case '{': // structure
 		{
 			NSUInteger argSize;
-			NSGetSizeAndAlignment([[self methodSignature] getArgumentTypeAtIndex:argIndex], &argSize, NULL);
+			NSGetSizeAndAlignment([[self methodSignature] getArgumentTypeAtIndex:(NSUInteger)argIndex], &argSize, NULL);
 			if(argSize == 0) // TODO: Can this happen? Is frameLength a good choice in that case?
                 argSize = [[self methodSignature] frameLength];
 			NSMutableData *argumentData = [[[NSMutableData alloc] initWithLength:argSize] autorelease];
@@ -150,21 +172,19 @@
 	
 	NSArray *selectorParts = [NSStringFromSelector([self selector]) componentsSeparatedByString:@":"];
 	NSMutableString *description = [[NSMutableString alloc] init];
-	unsigned int i;
+	NSUInteger i;
 	for(i = 2; i < numberOfArgs; i++)
 	{
 		[description appendFormat:@"%@%@:", (i > 2 ? @" " : @""), [selectorParts objectAtIndex:(i - 2)]];
-		[description appendString:[self argumentDescriptionAtIndex:i]];
+		[description appendString:[self argumentDescriptionAtIndex:(NSInteger)i]];
 	}
 	
 	return [description autorelease];
 }
 
-- (NSString *)argumentDescriptionAtIndex:(int)argIndex
+- (NSString *)argumentDescriptionAtIndex:(NSInteger)argIndex
 {
-	const char *argType = [[self methodSignature] getArgumentTypeAtIndex:argIndex];
-	if(strchr("rnNoORV", argType[0]) != NULL)
-		argType += 1;
+	const char *argType = OCMTypeWithoutQualifiers([[self methodSignature] getArgumentTypeAtIndex:(NSUInteger)argIndex]);
 
 	switch(*argType)
 	{
@@ -193,7 +213,7 @@
 }
 
 
-- (NSString *)objectDescriptionAtIndex:(int)anInt
+- (NSString *)objectDescriptionAtIndex:(NSInteger)anInt
 {
 	id object;
 	
@@ -207,14 +227,14 @@
 		return [object description] ?: @"<nil description>";
 }
 
-- (NSString *)boolDescriptionAtIndex:(int)anInt
+- (NSString *)boolDescriptionAtIndex:(NSInteger)anInt
 {
 	bool value;
 	[self getArgument:&value atIndex:anInt];
 	return value? @"YES" : @"NO";
 }
 
-- (NSString *)charDescriptionAtIndex:(int)anInt
+- (NSString *)charDescriptionAtIndex:(NSInteger)anInt
 {
 	unsigned char buffer[128];
 	memset(buffer, 0x0, 128);
@@ -228,7 +248,7 @@
 		return [NSString stringWithFormat:@"'%c'", *buffer];
 }
 
-- (NSString *)unsignedCharDescriptionAtIndex:(int)anInt
+- (NSString *)unsignedCharDescriptionAtIndex:(NSInteger)anInt
 {
 	unsigned char buffer[128];
 	memset(buffer, 0x0, 128);
@@ -237,7 +257,7 @@
 	return [NSString stringWithFormat:@"'%c'", *buffer];
 }
 
-- (NSString *)intDescriptionAtIndex:(int)anInt
+- (NSString *)intDescriptionAtIndex:(NSInteger)anInt
 {
 	int intValue;
 	
@@ -245,7 +265,7 @@
 	return [NSString stringWithFormat:@"%d", intValue];
 }
 
-- (NSString *)unsignedIntDescriptionAtIndex:(int)anInt
+- (NSString *)unsignedIntDescriptionAtIndex:(NSInteger)anInt
 {
 	unsigned int intValue;
 	
@@ -253,7 +273,7 @@
 	return [NSString stringWithFormat:@"%d", intValue];
 }
 
-- (NSString *)shortDescriptionAtIndex:(int)anInt
+- (NSString *)shortDescriptionAtIndex:(NSInteger)anInt
 {
 	short shortValue;
 	
@@ -261,7 +281,7 @@
 	return [NSString stringWithFormat:@"%hi", shortValue];
 }
 
-- (NSString *)unsignedShortDescriptionAtIndex:(int)anInt
+- (NSString *)unsignedShortDescriptionAtIndex:(NSInteger)anInt
 {
 	unsigned short shortValue;
 	
@@ -269,7 +289,7 @@
 	return [NSString stringWithFormat:@"%hu", shortValue];
 }
 
-- (NSString *)longDescriptionAtIndex:(int)anInt
+- (NSString *)longDescriptionAtIndex:(NSInteger)anInt
 {
 	long longValue;
 	
@@ -277,7 +297,7 @@
 	return [NSString stringWithFormat:@"%ld", longValue];
 }
 
-- (NSString *)unsignedLongDescriptionAtIndex:(int)anInt
+- (NSString *)unsignedLongDescriptionAtIndex:(NSInteger)anInt
 {
 	unsigned long longValue;
 	
@@ -285,7 +305,7 @@
 	return [NSString stringWithFormat:@"%lu", longValue];
 }
 
-- (NSString *)longLongDescriptionAtIndex:(int)anInt
+- (NSString *)longLongDescriptionAtIndex:(NSInteger)anInt
 {
 	long long longLongValue;
 	
@@ -293,7 +313,7 @@
 	return [NSString stringWithFormat:@"%qi", longLongValue];
 }
 
-- (NSString *)unsignedLongLongDescriptionAtIndex:(int)anInt
+- (NSString *)unsignedLongLongDescriptionAtIndex:(NSInteger)anInt
 {
 	unsigned long long longLongValue;
 	
@@ -301,7 +321,7 @@
 	return [NSString stringWithFormat:@"%qu", longLongValue];
 }
 
-- (NSString *)doubleDescriptionAtIndex:(int)anInt
+- (NSString *)doubleDescriptionAtIndex:(NSInteger)anInt
 {
 	double doubleValue;
 	
@@ -309,7 +329,7 @@
 	return [NSString stringWithFormat:@"%f", doubleValue];
 }
 
-- (NSString *)floatDescriptionAtIndex:(int)anInt
+- (NSString *)floatDescriptionAtIndex:(NSInteger)anInt
 {
 	float floatValue;
 	
@@ -317,7 +337,7 @@
 	return [NSString stringWithFormat:@"%f", floatValue];
 }
 
-- (NSString *)longDoubleDescriptionAtIndex:(int)anInt
+- (NSString *)longDoubleDescriptionAtIndex:(NSInteger)anInt
 {
 	long double longDoubleValue;
 	
@@ -325,12 +345,12 @@
 	return [NSString stringWithFormat:@"%Lf", longDoubleValue];
 }
 
-- (NSString *)structDescriptionAtIndex:(int)anInt
+- (NSString *)structDescriptionAtIndex:(NSInteger)anInt
 {
     return [NSString stringWithFormat:@"(%@)", [[self getArgumentAtIndexAsObject:anInt] description]];
 }
 
-- (NSString *)pointerDescriptionAtIndex:(int)anInt
+- (NSString *)pointerDescriptionAtIndex:(NSInteger)anInt
 {
 	void *buffer;
 	
@@ -338,7 +358,7 @@
 	return [NSString stringWithFormat:@"%p", buffer];
 }
 
-- (NSString *)cStringDescriptionAtIndex:(int)anInt
+- (NSString *)cStringDescriptionAtIndex:(NSInteger)anInt
 {
 	char buffer[104];
 	char *cStringPtr;
@@ -349,7 +369,7 @@
 	return [NSString stringWithFormat:@"\"%s\"", buffer];
 }
 
-- (NSString *)selectorDescriptionAtIndex:(int)anInt
+- (NSString *)selectorDescriptionAtIndex:(NSInteger)anInt
 {
 	SEL selectorValue;
 	

@@ -1,7 +1,18 @@
-//---------------------------------------------------------------------------------------
-//  $Id$
-//  Copyright (c) 2013 by Mulle Kybernetik. See License file for details.
-//---------------------------------------------------------------------------------------
+/*
+ *  Copyright (c) 2013-2014 Erik Doernenburg and contributors
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may
+ *  not use these files except in compliance with the License. You may obtain
+ *  a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ *  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ *  License for the specific language governing permissions and limitations
+ *  under the License.
+ */
 
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
@@ -61,7 +72,7 @@ typedef InterfaceForTypedef* PointerTypedefInterface;
 - (void)testSetsCorrectNameForProtocolMockObjects
 {
     id mock = [OCMockObject mockForProtocol:@protocol(NSLocking)];
-    XCTAssertEqualObjects(@"OCMockObject[NSLocking]", [mock description], @"Should have returned correct description.");
+    XCTAssertEqualObjects(@"OCMockObject(NSLocking)", [mock description], @"Should have returned correct description.");
 }
 
 - (void)testRaisesWhenUnknownMethodIsCalledOnProtocol

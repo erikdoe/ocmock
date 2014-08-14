@@ -1,12 +1,24 @@
-//---------------------------------------------------------------------------------------
-//  $Id$
-//  Copyright (c) 2013 by Mulle Kybernetik. See License file for details.
-//---------------------------------------------------------------------------------------
+/*
+ *  Copyright (c) 2013-2014 Erik Doernenburg and contributors
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may
+ *  not use these files except in compliance with the License. You may obtain
+ *  a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ *  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ *  License for the specific language governing permissions and limitations
+ *  under the License.
+ */
 
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
 #import "OCClassMockObject.h"
 #import "OCPartialMockObject.h"
+
 
 #pragma mark   Helper classes
 
@@ -17,6 +29,18 @@
 @end
 
 @implementation TestClassWithClassMethods
+
+static NSUInteger initializeCallCount = 0;
+
++ (void)initialize
+{
+    initializeCallCount += 1;
+}
+
++ (NSUInteger)initializeCallCount
+{
+    return initializeCallCount;
+}
 
 + (NSString *)foo
 {
@@ -59,7 +83,7 @@
     id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
 
     [[[[mock stub] classMethod] andReturn:@"mocked"] foo];
-    
+
     XCTAssertEqualObjects(@"mocked", [TestClassWithClassMethods foo], @"Should have stubbed class method.");
 }
 
@@ -136,16 +160,13 @@
     XCTAssertEqualObjects(@"mocked-superclass", [TestClassWithClassMethods foo], @"Should have stubbed method");
 }
 
-// The following test does not verify behaviour; it shows a problem. It only passes when run in
-// isolation because otherwise the other tests cause the problem that this test demonstrates.
-
-- (void)_ignore_testShowThatStubbingSuperclassMethodInSubclassLeavesImplementationInSubclass
+- (void)testStubbingIsOnlyActiveAtTheClassItWasAdded
 {
-    // stage 1: stub in superclass affects both superclass and subclass
+    // stage 1: stub in superclass affects only superclass
     id superclassMock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
     [[[[superclassMock stub] classMethod] andReturn:@"mocked-superclass"] foo];
     XCTAssertEqualObjects(@"mocked-superclass", [TestClassWithClassMethods foo], @"Should have stubbed method");
-    XCTAssertEqualObjects(@"mocked-superclass", [TestSubclassWithClassMethods foo], @"Should have stubbed method");
+    XCTAssertEqualObjects(@"Foo-ClassMethod", [TestSubclassWithClassMethods foo], @"Should NOT have stubbed method");
     [superclassMock stopMocking];
 
     // stage 2: stub in subclass affects only subclass
@@ -155,9 +176,7 @@
     XCTAssertEqualObjects(@"mocked-subclass", [TestSubclassWithClassMethods foo], @"Should have stubbed method");
     [subclassMock stopMocking];
 
-    // stage 3: should be like stage 1, but it isn't (see last assert)
-    // This is because the subclass mock can't remove the method added to the subclass in stage 2
-    // and instead has to point the method in the subclass to the real implementation.
+    // stage 3: like stage 1; also demonstrates that subclass cleared all stubs
     id superclassMock2 = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
     [[[[superclassMock2 stub] classMethod] andReturn:@"mocked-superclass"] foo];
     XCTAssertEqualObjects(@"mocked-superclass", [TestClassWithClassMethods foo], @"Should have stubbed method");
@@ -204,7 +223,7 @@
     XCTAssertEqualObjects(@"mocked-foo", [TestClassWithClassMethods foo], @"Should have stubbed class method 'foo'.");
     XCTAssertEqualObjects(@"mocked-bar", [TestClassWithClassMethods bar], @"Should have stubbed class method 'bar'.");
 
-    [mock release];
+    mock = nil;
 
     XCTAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo], @"Should have 'unstubbed' class method 'foo'.");
     XCTAssertEqualObjects(@"Bar-ClassMethod", [TestClassWithClassMethods bar], @"Should have 'unstubbed' class method 'bar'.");
@@ -220,10 +239,22 @@
     XCTAssertEqualObjects(@"mocked-foo", [TestClassWithClassMethods foo], @"Should have stubbed class method 'foo'.");
     XCTAssertEqualObjects(@"mocked-bar", [TestClassWithClassMethods bar], @"Should have stubbed class method 'bar'.");
     
-    [mock release];
+    mock = nil;
     
     XCTAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo], @"Should have 'unstubbed' class method 'foo'.");
     XCTAssertEqualObjects(@"Bar-ClassMethod", [TestClassWithClassMethods bar], @"Should have 'unstubbed' class method 'bar'.");
+}
+
+- (void)testSecondClassMockDeactivatesFirst
+{
+    id mock1 = [[OCClassMockObject alloc] initWithClass:[TestClassWithClassMethods class]];
+    [[[mock1 stub] andReturn:@"mocked-foo-1"] foo];
+
+    id mock2 = [[OCClassMockObject alloc] initWithClass:[TestClassWithClassMethods class]];
+    XCTAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo]);
+
+    [mock2 stopMocking];
+    XCTAssertNoThrow([TestClassWithClassMethods foo]);
 }
 
 - (void)testForwardToRealObject
@@ -255,6 +286,31 @@
 
     [[[mock expect] andForwardToRealObject] foo];
     XCTAssertThrows([mock foo]);
+}
+
+- (void)testInitializeIsNotCalledOnMockedClass
+{
+    NSUInteger countBefore = [TestClassWithClassMethods initializeCallCount];
+
+    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    [TestClassWithClassMethods foo];
+    [[mock verify] foo];
+
+    NSUInteger countAfter = [TestClassWithClassMethods initializeCallCount];
+
+    XCTAssertEqual(countBefore, countAfter, @"Creating a mock should not have resulted in call to +initialize");
+}
+
+- (void)testCanStubNSObjectClassMethodsIncludingAlloc
+{
+    TestClassWithClassMethods *dummyObject = [[TestClassWithClassMethods alloc] init];
+
+    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    [[[mock stub] andReturn:dummyObject] new];
+
+    id newObject = [TestClassWithClassMethods new];
+
+    XCTAssertEqualObjects(dummyObject, newObject, @"Should have stubbed +new method");
 }
 
 

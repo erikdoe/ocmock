@@ -1,26 +1,33 @@
-//---------------------------------------------------------------------------------------
-//  $Id$
-//  Copyright (c) 2004-2009 by Mulle Kybernetik. See License file for details.
-//---------------------------------------------------------------------------------------
+/*
+ *  Copyright (c) 2004-2014 Erik Doernenburg and contributors
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may
+ *  not use these files except in compliance with the License. You may obtain
+ *  a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ *  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ *  License for the specific language governing permissions and limitations
+ *  under the License.
+ */
 
 #import <OCMock/OCMockObject.h>
 #import "OCClassMockObject.h"
 #import "OCProtocolMockObject.h"
 #import "OCPartialMockObject.h"
 #import "OCObserverMockObject.h"
-#import <OCMock/OCMockRecorder.h>
+#import "OCMStubRecorder.h"
 #import <OCMock/OCMLocation.h>
 #import "NSInvocation+OCMAdditions.h"
 #import "OCMInvocationMatcher.h"
 #import "OCMMacroState.h"
-
-
-@interface OCMockObject(Private)
-+ (id)_makeNice:(OCMockObject *)mock;
-- (NSString *)_recorderDescriptions:(BOOL)onlyExpectations;
-@end
-
-#pragma mark  -
+#import "OCMFunctions.h"
+#import "OCMVerifier.h"
+#import "OCMInvocationExpectation.h"
+#import "OCMExpectationRecorder.h"
 
 
 @implementation OCMockObject
@@ -30,7 +37,7 @@
 + (void)initialize
 {
 	if([[NSInvocation class] instanceMethodSignatureForSelector:@selector(getArgumentAtIndexAsObject:)] == NULL)
-		[NSException raise:NSInternalInconsistencyException format:@"** Expected method not present; the method getArgumentAtIndexAsObject: is not implemented by NSInvocation. If you see this exception it is likely that you are using the static library version of OCMock and your project is not configured correctly to load categories from static libraries. Did you forget to add the -force_load linker flag?"];
+		[NSException raise:NSInternalInconsistencyException format:@"** Expected method not present; the method getArgumentAtIndexAsObject: is not implemented by NSInvocation. If you see this exception it is likely that you are using the static library version of OCMock and your project is not configured correctly to load categories from static libraries. Did you forget to add the -ObjC linker flag?"];
 }
 
 
@@ -78,23 +85,23 @@
 
 #pragma mark  Initialisers, description, accessors, etc.
 
-- (id)init
+- (instancetype)init
 {
 	// no [super init], we're inheriting from NSProxy
 	expectationOrderMatters = NO;
-	recorders = [[NSMutableArray alloc] init];
+	stubs = [[NSMutableArray alloc] init];
 	expectations = [[NSMutableArray alloc] init];
-	rejections = [[NSMutableArray alloc] init];
 	exceptions = [[NSMutableArray alloc] init];
-	return self;
+    invocations = [[NSMutableArray alloc] init];
+    return self;
 }
 
 - (void)dealloc
 {
-	[recorders release];
+	[stubs release];
 	[expectations release];
-	[rejections	release];
 	[exceptions release];
+    [invocations release];
 	[super dealloc];
 }
 
@@ -103,81 +110,90 @@
 	return @"OCMockObject";
 }
 
+- (void)addStub:(OCMInvocationStub *)aStub
+{
+    [stubs addObject:aStub];
+}
+
+- (void)addExpectation:(OCMInvocationExpectation *)anExpectation
+{
+    [expectations addObject:anExpectation];
+}
+
+
+#pragma mark  Public API
 
 - (void)setExpectationOrderMatters:(BOOL)flag
 {
     expectationOrderMatters = flag;
 }
 
+- (void)stopMocking
+{
+    // no-op for mock objects that are not class object or partial mocks
+}
 
-#pragma mark  Public API
 
 - (id)stub
 {
-	OCMockRecorder *recorder = [self getNewRecorder];
-	[recorders addObject:recorder];
-	return recorder;
+	return [[[OCMStubRecorder alloc] initWithMockObject:self] autorelease];
 }
-
 
 - (id)expect
 {
-	OCMockRecorder *recorder = [self stub];
-	[expectations addObject:recorder];
-	return recorder;
+    return [[[OCMExpectationRecorder alloc] initWithMockObject:self] autorelease];
 }
-
 
 - (id)reject
 {
-	OCMockRecorder *recorder = [self stub];
-	[rejections addObject:recorder];
-	return recorder;
+	return [[self expect] never];
 }
 
 
-- (void)verify
+- (id)verify
 {
-	if([expectations count] == 1)
-	{
-		[NSException raise:NSInternalInconsistencyException format:@"%@: expected method was not invoked: %@", 
-			[self description], [[expectations objectAtIndex:0] description]];
-	}
-	if([expectations count] > 0)
-	{
-		[NSException raise:NSInternalInconsistencyException format:@"%@ : %@ expected methods were not invoked: %@", 
-			[self description], @([expectations count]), [self _recorderDescriptions:YES]];
-	}
-	if([exceptions count] > 0)
-	{
-		[[exceptions objectAtIndex:0] raise];
-	}
+    return [self verifyAtLocation:nil];
 }
 
-- (void)verifyAtLocation:(OCMLocation *)location
+- (id)verifyAtLocation:(OCMLocation *)location
 {
-	if([expectations count] == 1)
+    NSMutableArray *unsatisfiedExpectations = [NSMutableArray array];
+    for(OCMInvocationExpectation *e in expectations)
+    {
+        if(![e isSatisfied])
+            [unsatisfiedExpectations addObject:e];
+    }
+
+	if([unsatisfiedExpectations count] == 1)
 	{
         NSString *description = [NSString stringWithFormat:@"%@: expected method was not invoked: %@",
-         [self description], [[expectations objectAtIndex:0] description]];
-        [location reportFailure:description];
+         [self description], [[unsatisfiedExpectations objectAtIndex:0] description]];
+        OCMReportFailure(location, description);
 	}
-	else if([expectations count] > 0)
+	else if([unsatisfiedExpectations count] > 0)
 	{
 		NSString *description = [NSString stringWithFormat:@"%@: %@ expected methods were not invoked: %@",
-         [self description], @([expectations count]), [self _recorderDescriptions:YES]];
-        [location reportFailure:description];
+         [self description], @([unsatisfiedExpectations count]), [self _stubDescriptions:YES]];
+        OCMReportFailure(location, description);
 	}
+
 	if([exceptions count] > 0)
 	{
         NSString *description = [NSString stringWithFormat:@"%@: %@ (This is a strict mock failure that was ignored when it actually occured.)",
          [self description], [[exceptions objectAtIndex:0] description]];
-        [location reportFailure:description];
+        OCMReportFailure(location, description);
 	}
+
+    return [[[OCMVerifier alloc] initWithMockObject:self] autorelease];
 }
 
 
 - (void)verifyWithDelay:(NSTimeInterval)delay
+{
+    [self verifyWithDelay:delay atLocation:nil];
+}
+
+- (void)verifyWithDelay:(NSTimeInterval)delay atLocation:(OCMLocation *)location
 {
     NSTimeInterval step = 0.01;
     while(delay > 0)
@@ -188,21 +204,49 @@
         delay -= step;
         step *= 2;
     }
-    [self verify];
+    [self verifyAtLocation:location];
 }
 
-- (void)stopMocking
+
+#pragma mark Verify after running
+
+- (void)verifyInvocation:(OCMInvocationMatcher *)matcher
 {
-    // no-op for mock objects that are not class object or partial mocks
+    [self verifyInvocation:matcher atLocation:nil];
+}
+
+- (void)verifyInvocation:(OCMInvocationMatcher *)matcher atLocation:(OCMLocation *)location
+{
+    for(NSInvocation *invocation in invocations)
+    {
+        if([matcher matchesInvocation:invocation])
+            return;
+    }
+    NSString *description = [NSString stringWithFormat:@"%@: Method %@ was not invoked.",
+     [self description], [matcher description]];
+
+    OCMReportFailure(location, description);
 }
 
 
 #pragma mark  Handling invocations
 
+- (id)forwardingTargetForSelector:(SEL)aSelector
+{
+    if([OCMMacroState globalState] != nil)
+    {
+        OCMRecorder *recorder = [[OCMMacroState globalState] recorder];
+        [recorder setMockObject:self];
+        return recorder;
+    }
+    return nil;
+}
+
+
 - (BOOL)handleSelector:(SEL)sel
 {
-    for (OCMockRecorder *recorder in recorders)
-        if ([[recorder invocationMatcher] matchesSelector:sel])
+    for(OCMInvocationStub *recorder in stubs)
+        if([recorder matchesSelector:sel])
             return YES;
 
     return NO;
@@ -210,62 +254,44 @@
 
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
-    OCMMacroState *macroState = [OCMMacroState globalState];
-    if(macroState != nil)
-    {
-        OCMockRecorder *recorder = nil;
-        if([macroState shouldRecordExpectation])
-            recorder = [self expect];
-        else
-            recorder = [self stub];
-        [recorder forwardInvocation:anInvocation];
-        [macroState setRecorder:recorder];
-    }
-    else
+    @try
     {
         if([self handleInvocation:anInvocation] == NO)
             [self handleUnRecordedInvocation:anInvocation];
+    }
+    @catch(NSException *e)
+    {
+        [exceptions addObject:e];
+        [e raise];
     }
 }
 
 - (BOOL)handleInvocation:(NSInvocation *)anInvocation
 {
-	OCMockRecorder *recorder = nil;
-	unsigned int			   i;
-	
-	for(i = 0; i < [recorders count]; i++)
-	{
-		recorder = [recorders objectAtIndex:i];
-		if([[recorder invocationMatcher] matchesInvocation:anInvocation])
-			break;
-	}
-	
-	if(i == [recorders count])
-		return NO;
-	
-	if([rejections containsObject:recorder]) 
-	{
-		NSException *exception = [NSException exceptionWithName:NSInternalInconsistencyException reason:
-								  [NSString stringWithFormat:@"%@: explicitly disallowed method invoked: %@", [self description], 
-								   [anInvocation invocationDescription]] userInfo:nil];
-		[exceptions addObject:exception];
-		[exception raise];
-	}
+    [invocations addObject:anInvocation];
 
-	if([expectations containsObject:recorder])
+    NSUInteger idx = [stubs indexOfObjectPassingTest:^BOOL(id s, NSUInteger i, BOOL *stop) {
+        return [(OCMInvocationStub *)s handleInvocation:anInvocation];
+    }];
+    if(idx == NSNotFound)
+   		return NO;
+    OCMInvocationStub *stub = [stubs objectAtIndex:idx];
+
+	if([expectations containsObject:stub])
 	{
-		if(expectationOrderMatters && ([expectations objectAtIndex:0] != recorder))
+		if(expectationOrderMatters && ([expectations objectAtIndex:0] != stub))
 		{
 			[NSException raise:NSInternalInconsistencyException	format:@"%@: unexpected method invoked: %@\n\texpected:\t%@",  
-			 [self description], [recorder description], [[expectations objectAtIndex:0] description]];
+			 [self description], [stub description], [[expectations objectAtIndex:0] description]];
 			
 		}
-		[[recorder retain] autorelease];
-		[expectations removeObject:recorder];
-		[recorders removeObjectAtIndex:i];
+        if([(OCMInvocationExpectation *)stub isSatisfied])
+        {
+            [expectations removeObject:stub];
+            [stubs removeObject:stub];
+        }
 	}
-	[[recorder invocationHandlers] makeObjectsPerformSelector:@selector(handleInvocation:) withObject:anInvocation];
-	
+
 	return YES;
 }
 
@@ -273,49 +299,50 @@
 {
 	if(isNice == NO)
 	{
-		NSException *exception = [NSException exceptionWithName:NSInternalInconsistencyException reason:
-								  [NSString stringWithFormat:@"%@: unexpected method invoked: %@ %@",  [self description], 
-								   [anInvocation invocationDescription], [self _recorderDescriptions:NO]] userInfo:nil];
-		[exceptions addObject:exception];
-		[exception raise];
+		[NSException raise:NSInternalInconsistencyException format:@"%@: unexpected method invoked: %@ %@",
+                        [self description], [anInvocation invocationDescription], [self _stubDescriptions:NO]];
 	}
+}
+
+- (void)doesNotRecognizeSelector:(SEL)aSelector __unused
+{
+    if([OCMMacroState globalState] != nil)
+    {
+        // we can't do anything clever with the macro state because we must raise an exception here
+        [NSException raise:NSInvalidArgumentException format:@"%@: Cannot stub/expect/verify method '%@' because no such method exists in the mocked class.",
+                        [self description], NSStringFromSelector(aSelector)];
+    }
+    else
+    {
+        [NSException raise:NSInvalidArgumentException format:@"-[%@ %@]: unrecognized selector sent to instance %p",
+                        [self description], NSStringFromSelector(aSelector), (void *)self];
+    }
 }
 
 
 #pragma mark  Helper methods
 
-- (id)getNewRecorder
-{
-	return [[[OCMockRecorder alloc] initWithSignatureResolver:self] autorelease];
-}
-
-
-- (NSString *)_recorderDescriptions:(BOOL)onlyExpectations
+- (NSString *)_stubDescriptions:(BOOL)onlyExpectations
 {
 	NSMutableString *outputString = [NSMutableString string];
-	
-	OCMockRecorder *currentObject;
-	NSEnumerator *recorderEnumerator = [recorders objectEnumerator];
-	while((currentObject = [recorderEnumerator nextObject]) != nil)
-	{
-		NSString *prefix;
+    for(OCMStubRecorder *stub in stubs)
+    {
+		NSString *prefix = @"";
 		
 		if(onlyExpectations)
 		{
-			if(![expectations containsObject:currentObject])
+			if([expectations containsObject:stub] == NO)
 				continue;
-			prefix = @" ";
 		}
 		else
 		{
-			if ([expectations containsObject:currentObject])
-				prefix = @"expected: ";
+			if([expectations containsObject:stub])
+				prefix = @"expected:\t";
 			else
-				prefix = @"stubbed: ";
+				prefix = @"stubbed:\t";
 		}
-		[outputString appendFormat:@"\n\t%@\t%@", prefix, [currentObject description]];
+		[outputString appendFormat:@"\n\t%@%@", prefix, [stub description]];
 	}
-	
 	return outputString;
 }
 

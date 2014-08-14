@@ -1,21 +1,33 @@
-//---------------------------------------------------------------------------------------
-//  $Id$
-//  Copyright (c) 2004-2013 by Mulle Kybernetik. See License file for details.
-//---------------------------------------------------------------------------------------
+/*
+ *  Copyright (c) 2004-2014 Erik Doernenburg and contributors
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may
+ *  not use these files except in compliance with the License. You may obtain
+ *  a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ *  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ *  License for the specific language governing permissions and limitations
+ *  under the License.
+ */
 
 #import <Foundation/Foundation.h>
 
+@class OCMockObject;
 @class OCMInvocationMatcher;
 
 
 @interface OCMockRecorder : NSProxy
 {
-    id                   signatureResolver;
+    OCMockObject         *mockObject;
     OCMInvocationMatcher *invocationMatcher;
     NSMutableArray       *invocationHandlers;
 }
 
-- (id)initWithSignatureResolver:(id)anObject;
+- (id)initWithMockObject:(OCMockObject *)aMockObject;
 
 //- (void)releaseInvocation;
 
@@ -24,7 +36,7 @@
 - (id)andThrow:(NSException *)anException;
 - (id)andPost:(NSNotification *)aNotification;
 - (id)andCall:(SEL)selector onObject:(id)anObject;
-- (id)andDo:(void (^)(NSInvocation *))block;
+- (id)andDo:(void (^)(NSInvocation *invocation))block;
 - (id)andForwardToRealObject;
 
 - (id)classMethod;
@@ -40,8 +52,11 @@
 
 @interface OCMockRecorder(Properties)
 
-#define andReturn(anObject) _andReturn(anObject)
-@property (nonatomic, readonly) OCMockRecorder *(^ _andReturn)(id);
+#define andReturn(aValue) _andReturn(({ typeof(aValue) _v = (aValue); [NSValue value:&_v withObjCType:@encode(typeof(_v))]; }))
+@property (nonatomic, readonly) OCMockRecorder *(^ _andReturn)(NSValue *);
+
+#define andThrow(anException) _andThrow(anException)
+@property (nonatomic, readonly) OCMockRecorder *(^ _andThrow)(NSException *);
 
 #define andPost(aNotification) _andPost(aNotification)
 @property (nonatomic, readonly) OCMockRecorder *(^ _andPost)(NSNotification *);

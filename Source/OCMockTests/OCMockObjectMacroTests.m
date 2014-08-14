@@ -1,6 +1,18 @@
-//---------------------------------------------------------------------------------------
-//  Copyright (c) 2014 by Mulle Kybernetik. See License file for details.
-//---------------------------------------------------------------------------------------
+/*
+ *  Copyright (c) 2014 Erik Doernenburg and contributors
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may
+ *  not use these files except in compliance with the License. You may obtain
+ *  a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ *  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ *  License for the specific language governing permissions and limitations
+ *  under the License.
+ */
 
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
@@ -21,6 +33,15 @@
     return @"FOO";
 }
 
+@end
+
+
+// implemented in OCMockObjectClassMethodMockingTests
+
+@interface TestClassWithClassMethods : NSObject
++ (NSString *)foo;
++ (NSString *)bar;
+- (NSString *)bar;
 @end
 
 
@@ -60,14 +81,13 @@
     [[mock expect] lowercaseString];
     
     shouldCaptureFailure = YES;
-    OCMVerify(mock); const char *expectedFile = __FILE__; int expectedLine = __LINE__;
+    OCMVerifyAll(mock); const char *expectedFile = __FILE__; int expectedLine = __LINE__;
     shouldCaptureFailure = NO;
     
     XCTAssertNotNil(reportedDescription, @"Should have recorded a failure with description.");
     XCTAssertEqualObjects([NSString stringWithUTF8String:expectedFile], reportedFile, @"Should have reported correct file.");
     XCTAssertEqual(expectedLine, (int)reportedLine, @"Should have reported correct line");
 }
-
 
 - (void)testReportsIgnoredExceptionsAtVerifyLocation
 {
@@ -85,10 +105,25 @@
     }
 
     shouldCaptureFailure = YES;
-    OCMVerify(mock); const char *expectedFile = __FILE__; int expectedLine = __LINE__;
+    OCMVerifyAll(mock); const char *expectedFile = __FILE__; int expectedLine = __LINE__;
     shouldCaptureFailure = NO;
     
     XCTAssertTrue([reportedDescription rangeOfString:@"ignored"].location != NSNotFound, @"Should have reported ignored exceptions.");
+    XCTAssertEqualObjects([NSString stringWithUTF8String:expectedFile], reportedFile, @"Should have reported correct file.");
+    XCTAssertEqual(expectedLine, (int)reportedLine, @"Should have reported correct line");
+}
+
+- (void)testReportsVerifyWithDelayFailureWithCorrectLocation
+{
+    id mock = OCMClassMock([NSString class]);
+
+    [[mock expect] lowercaseString];
+
+    shouldCaptureFailure = YES;
+    OCMVerifyAllWithDelay(mock, 0.05); const char *expectedFile = __FILE__; int expectedLine = __LINE__;
+    shouldCaptureFailure = NO;
+
+    XCTAssertNotNil(reportedDescription, @"Should have recorded a failure with description.");
     XCTAssertEqualObjects([NSString stringWithUTF8String:expectedFile], reportedFile, @"Should have reported correct file.");
     XCTAssertEqual(expectedLine, (int)reportedLine, @"Should have reported correct line");
 }
@@ -104,6 +139,44 @@
     XCTAssertThrows([mock lowercaseString]);
 }
 
+- (void)testSetsUpStubsWithNonObjectReturnValues
+{
+    id mock = OCMStrictClassMock([NSString class]);
+
+    OCMStub([mock boolValue]).andReturn(YES);
+
+    XCTAssertEqual(1, [mock boolValue], @"Should have returned stubbed value");
+}
+
+- (void)testSetsUpStubsWithStructureReturnValues
+{
+    id mock = OCMStrictClassMock([NSString class]);
+
+    NSRange expected = NSMakeRange(123, 456);
+    OCMStub([mock rangeOfString:[OCMArg any]]).andReturn(expected);
+
+    NSRange actual = [mock rangeOfString:@"substring"];
+    XCTAssertEqual(123, actual.location, @"Should have returned stubbed value");
+    XCTAssertEqual(456, actual.length, @"Should have returned stubbed value");
+}
+
+- (void)testSetsUpStubReturningNilForIdReturnType
+{
+    id mock = OCMClassMock([NSString class]);
+
+    OCMStub([mock lowercaseString]).andReturn(nil);
+
+    XCTAssertNil([mock lowercaseString], @"Should have returned stubbed value");
+}
+
+- (void)testSetsUpExceptionThrowing
+{
+    id mock = OCMClassMock([NSString class]);
+
+    OCMStub([mock uppercaseString]).andThrow([NSException exceptionWithName:@"TestException" reason:@"Testing" userInfo:nil]);
+
+    XCTAssertThrowsSpecificNamed([mock uppercaseString], NSException, @"TestException", @"Should have thrown correct exception");
+}
 
 - (void)testSetsUpNotificationPostingAndNotificationObserving
 {
@@ -119,9 +192,8 @@
 
     [mock stringValue];
 
-    OCMVerify(observer);
+    OCMVerifyAll(observer);
 }
-
 
 - (void)testSetsUpSubstituteCall
 {
@@ -140,7 +212,7 @@
 
 - (void)testCanChainPropertyBasedActions
 {
-    id mock = OCMPartialMock([[[TestClassForMacroTesting alloc] init] autorelease]);
+    id mock = OCMPartialMock([[TestClassForMacroTesting alloc] init]);
 
     __block BOOL didCallBlock = NO;
     void (^theBlock)(NSInvocation *) = ^(NSInvocation *invocation)
@@ -156,6 +228,18 @@
     XCTAssertEqualObjects(@"FOO", actual, @"Should have forwarded invocation");
 }
 
+
+- (void)testCanUseVariablesInInvocationSpec
+{
+    id mock = OCMStrictClassMock([NSString class]);
+
+    NSString *expected = @"foo";
+    OCMStub([mock rangeOfString:expected]).andReturn(NSMakeRange(0, 3));
+
+    XCTAssertThrows([mock rangeOfString:@"bar"], @"Should not have accepted invocation with non-matching arg.");
+}
+
+
 - (void)testSetsUpExpectations
 {
     id mock = OCMClassMock([TestClassForMacroTesting class]);
@@ -167,5 +251,105 @@
     XCTAssertEqual([mock stringValue], @"TEST_STRING", @"Should have stubbed method, too");
     XCTAssertNoThrow([mock verify], @"Should have accepted invocation as matching expectation");
 }
+
+
+- (void)testShouldNotReportErrorWhenMethodWasInvoked
+{
+    id mock = OCMClassMock([NSString class]);
+
+    [mock lowercaseString];
+
+    shouldCaptureFailure = YES;
+    OCMVerify([mock lowercaseString]);
+    shouldCaptureFailure = NO;
+
+    XCTAssertNil(reportedDescription, @"Should not have recorded a failure.");
+}
+
+- (void)testShouldReportErrorWhenMethodWasNotInvoked
+{
+    id mock = OCMClassMock([NSString class]);
+
+    [mock lowercaseString];
+
+    shouldCaptureFailure = YES;
+    OCMVerify([mock uppercaseString]); const char *expectedFile = __FILE__; int expectedLine = __LINE__;
+    shouldCaptureFailure = NO;
+
+    XCTAssertNotNil(reportedDescription, @"Should have recorded a failure with description.");
+    XCTAssertEqualObjects([NSString stringWithUTF8String:expectedFile], reportedFile, @"Should have reported correct file.");
+    XCTAssertEqual(expectedLine, (int)reportedLine, @"Should have reported correct line");
+}
+
+- (void)testShouldThrowDescriptiveExceptionWhenTryingToVerifyUnimplementedMethod
+{
+    id mock = OCMClassMock([NSString class]);
+
+    // have not found a way to report the error; it seems we must throw an
+    // exception to get out of the forwarding machinery
+    XCTAssertThrowsSpecificNamed(OCMVerify([mock arrayByAddingObject:nil]),
+                    NSException,
+                    NSInvalidArgumentException,
+                    @"should throw NSInvalidArgumentException exception");
+}
+
+
+- (void)testCanExplicitlySelectClassMethodForStubs
+{
+    id mock = OCMClassMock([TestClassWithClassMethods class]);
+
+    OCMStub(ClassMethod([mock bar])).andReturn(@"mocked-class");
+    OCMStub([mock bar]).andReturn(@"mocked-instance");
+
+    XCTAssertEqualObjects(@"mocked-class", [TestClassWithClassMethods bar], @"Should have stubbed class method.");
+    XCTAssertEqualObjects(@"mocked-instance", [mock bar], @"Should have stubbed instance method.");
+}
+
+- (void)testSelectsInstanceMethodForStubsWhenAmbiguous
+{
+    id mock = OCMClassMock([TestClassWithClassMethods class]);
+
+    OCMStub([mock bar]).andReturn(@"mocked-instance");
+
+    XCTAssertEqualObjects(@"mocked-instance", [mock bar], @"Should have stubbed instance method.");
+}
+
+- (void)testSelectsClassMethodForStubsWhenUnambiguous
+{
+    id mock = OCMClassMock([TestClassWithClassMethods class]);
+
+    OCMStub([mock foo]).andReturn(@"mocked-class");
+
+    XCTAssertEqualObjects(@"mocked-class", [TestClassWithClassMethods foo], @"Should have stubbed class method.");
+}
+
+
+- (void)testCanExplicitlySelectClassMethodForVerify
+{
+    id mock = OCMClassMock([TestClassWithClassMethods class]);
+
+    [TestClassWithClassMethods bar];
+
+    OCMVerify(ClassMethod([mock bar]));
+}
+
+- (void)testSelectsInstanceMethodForVerifyWhenAmbiguous
+{
+    id mock = OCMClassMock([TestClassWithClassMethods class]);
+
+    [mock bar];
+
+    OCMVerify([mock bar]);
+}
+
+- (void)testSelectsClassMethodForVerifyWhenUnambiguous
+{
+    id mock = OCMClassMock([TestClassWithClassMethods class]);
+
+    [TestClassWithClassMethods foo];
+
+    OCMVerify([mock foo]);
+}
+
 
 @end

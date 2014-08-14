@@ -1,29 +1,31 @@
-//---------------------------------------------------------------------------------------
-//  Copyright (c) 2014 by Mulle Kybernetik. See License file for details.
-//---------------------------------------------------------------------------------------
+/*
+ *  Copyright (c) 2014 Erik Doernenburg and contributors
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may
+ *  not use these files except in compliance with the License. You may obtain
+ *  a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ *  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ *  License for the specific language governing permissions and limitations
+ *  under the License.
+ */
 
 #import "OCMLocation.h"
 
-@interface NSException(OCMKnownExceptionMethods)
-+ (NSException *)failureInFile:(NSString *)file atLine:(int)line withDescription:(NSString *)formatString, ...;
-@end
-
-@interface NSObject(OCMKnownTestCaseMethods)
-- (void)recordFailureWithDescription:(NSString *)description inFile:(NSString *)file atLine:(NSUInteger)line expected:(BOOL)expected;
-- (void)failWithException:(NSException *)exception;
-@end
-
-
 @implementation OCMLocation
 
-+ (id)locationWithTestCase:(id)aTestCase file:(NSString *)aFile line:(NSUInteger)aLine
++ (instancetype)locationWithTestCase:(id)aTestCase file:(NSString *)aFile line:(NSUInteger)aLine
 {
     return [[[OCMLocation alloc] initWithTestCase:aTestCase file:aFile line:aLine] autorelease];
 }
 
-- (id)initWithTestCase:(id)aTestCase file:(NSString *)aFile line:(NSUInteger)aLine
+- (instancetype)initWithTestCase:(id)aTestCase file:(NSString *)aFile line:(NSUInteger)aLine
 {
-    [super init];
+    self = [super init];
     testCase = aTestCase;
     file = [aFile retain];
     line = aLine;
@@ -49,38 +51,6 @@
 - (NSUInteger)line
 {
     return line;
-}
-
-
-- (void)reportFailure:(NSString *)description
-{
-    if((testCase != nil) && [testCase respondsToSelector:@selector(recordFailureWithDescription:inFile:atLine:expected:)])
-    {
-        [testCase recordFailureWithDescription:description inFile:file atLine:line expected:NO];
-    }
-    else if((testCase != nil) && [testCase respondsToSelector:@selector(failWithException:)])
-    {
-        NSException *exception = nil;
-        if([NSException instancesRespondToSelector:@selector(failureInFile:atLine:withDescription:)])
-        {
-            exception = [NSException failureInFile:file atLine:(int)line withDescription:description];
-        }
-        else
-        {
-            NSString *reason = [NSString stringWithFormat:@"%@:%lu %@", file, (unsigned long)line, description];
-            exception = [NSException exceptionWithName:@"OCMockTestFailure" reason:reason userInfo:nil];
-        }
-        [testCase failWithException:exception];
-    }
-    else
-    {
-        NSLog(@"%@:%lu %@", file, (unsigned long)line, description);
-        NSString *reason = [NSString stringWithFormat:@"%@:%lu %@", file, (unsigned long)line, description];
-        NSException *exception = [NSException exceptionWithName:@"OCMockTestFailure" reason:reason userInfo:nil];
-        [exception raise];
-        
-    }
-    
 }
 
 @end
