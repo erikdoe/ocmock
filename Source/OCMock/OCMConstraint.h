@@ -33,7 +33,7 @@
 
 @interface OCMIsEqualConstraint : OCMConstraint
 {
-@public
+    @public
 	id testValue;
 }
 

@@ -42,9 +42,7 @@
 
 + (id)isEqual:(id)value
 {
-	OCMIsEqualConstraint *constraint = [OCMIsEqualConstraint constraint];
-	constraint->testValue = value;
-	return constraint;
+	return value;
 }
 
 + (id)isNotEqual:(id)value
