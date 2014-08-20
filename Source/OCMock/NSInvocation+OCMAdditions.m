@@ -39,16 +39,16 @@
 
 	if((strlen(argType) > 1) && (strchr("{^", argType[0]) == NULL) && (strcmp("@?", argType) != 0))
 		[NSException raise:NSInvalidArgumentException format:@"Cannot handle argument type '%s'.", argType];
-	
-	switch (argType[0]) 
+
+    if(OCMIsObjectType(argType))
+    {
+        id value;
+     	[self getArgument:&value atIndex:argIndex];
+     	return value;
+    }
+
+	switch(argType[0])
 	{
-		case '#':
-		case '@': 
-		{
-			id value;
-			[self getArgument:&value atIndex:argIndex];
-			return value;
-		}
 		case ':':
  		{
  			SEL s = (SEL)0;

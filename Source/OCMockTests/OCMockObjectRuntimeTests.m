@@ -35,6 +35,23 @@
 @end
 
 
+typedef NSString TypedefString;
+
+@interface TestClassWithTypedefObjectArgument : NSObject
+
+- (NSString *)stringForTypedef:(TypedefString *)string;
+
+@end
+
+@implementation TestClassWithTypedefObjectArgument
+
+- (NSString *)stringForTypedef:(TypedefString *)string
+{
+    return @"Whatever. Doesn't matter.";
+}
+@end
+
+
 @interface TestDelegate : NSObject
 
 - (void)go;
@@ -115,6 +132,15 @@
     XCTAssertNoThrow([[myMock expect] aSpecialMethod:"foo"], @"Should not complain about method with type qualifiers.");
     XCTAssertNoThrow([myMock aSpecialMethod:"foo"], @"Should not complain about method with type qualifiers.");
 }
+
+- (void)testWorksWithTypedefsToObjects
+{
+    id myMock = [OCMockObject mockForClass:[TestClassWithTypedefObjectArgument class]];
+    [[[myMock stub] andReturn:@"stubbed"] stringForTypedef:[OCMArg any]];
+     id actualReturn = [myMock stringForTypedef:@"Some arg that shouldn't matter"];
+     XCTAssertEqualObjects(actualReturn, @"stubbed", @"Should have matched invocation.");
+}
+
 
 #if 0 // can't test this with ARC
 - (void)testAdjustsRetainCountWhenStubbingMethodsThatCreateObjects

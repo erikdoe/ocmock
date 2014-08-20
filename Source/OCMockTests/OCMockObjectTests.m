@@ -63,6 +63,24 @@ typedef struct TestOpaque *OpaquePtr;
 
 @end
 
+@implementation TestClassWithOpaquePointerMethod
+
+typedef struct TestOpaque {
+    int i;
+    int j;
+} TestOpaque;
+
+TestOpaque myOpaque;
+
+- (OpaquePtr)opaquePtrValue
+{
+    myOpaque.i = 3;
+    myOpaque.i = 4;
+    return &myOpaque;
+}
+
+@end
+
 @interface TestClassWithProperty : NSObject
 
 @property (nonatomic, retain) NSString *title;
@@ -889,20 +907,4 @@ static NSString *TestNotification = @"TestNotification";
 
 @end
 
-@implementation TestClassWithOpaquePointerMethod
 
-typedef struct TestOpaque {
-    int i;
-    int j;
-} TestOpaque;
-
-TestOpaque myOpaque;
-
-- (OpaquePtr)opaquePtrValue
-{
-    myOpaque.i = 3;
-    myOpaque.i = 4;
-    return &myOpaque;
-}
-
-@end

@@ -49,6 +49,11 @@ BOOL OCMIsObjectType(const char *objCType)
     if([regex numberOfMatchesInString:type options:0 range:NSMakeRange(0, type.length)] > 0)
         return YES;
 
+    // if the return type is a block we treat it like an object
+    // TODO: if the runtime were to encode the block's argument and/or return types, this test would not be sufficient
+    if(strcmp(objCType, @encode(void(^)())) == 0)
+        return YES;
+
     return NO;
 }
 
