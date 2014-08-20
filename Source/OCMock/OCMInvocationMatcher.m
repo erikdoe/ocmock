@@ -37,7 +37,7 @@
     // When the method has a char* argument we do not retain the arguments. This makes it possible
     // to match char* args literally and with anyPointer. Not retaining the argument means that
     // in these cases tests that use their own autorelease pools may fail unexpectedly.
-    if([anInvocation hasCharPointerArgument])
+    if(![anInvocation hasCharPointerArgument])
         [anInvocation retainArguments];
     recordedInvocation = [anInvocation retain];
 }

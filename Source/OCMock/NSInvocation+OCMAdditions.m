@@ -27,9 +27,9 @@
     {
         const char *argType = OCMTypeWithoutQualifiers([signature getArgumentTypeAtIndex:i]);
         if(strcmp(argType, "*") == 0)
-            return NO;
+            return YES;
     }
-    return YES;
+    return NO;
 }
 
 
