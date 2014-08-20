@@ -40,7 +40,7 @@ static NSMutableDictionary *_OCMReturnTypeCache;
     {
         NSMethodSignature *sig = [self instanceMethodSignatureForSelector:aSelector];
         needsStructureReturn = [sig usesSpecialStructureReturn];
-        [_OCMReturnTypeCache setObject:[NSNumber numberWithBool:needsStructureReturn] forKey:cacheKey];
+        [_OCMReturnTypeCache setObject:@(needsStructureReturn) forKey:cacheKey];
     }
     else
     {
