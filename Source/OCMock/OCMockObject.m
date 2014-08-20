@@ -270,12 +270,17 @@
 {
     [invocations addObject:anInvocation];
 
-    NSUInteger idx = [stubs indexOfObjectPassingTest:^BOOL(id s, NSUInteger i, BOOL *stop) {
-        return [(OCMInvocationStub *)s handleInvocation:anInvocation];
-    }];
-    if(idx == NSNotFound)
+    // Search for the stub which handles the invocation
+    // Note: we don't want to use indexOfObjectPassingTest: because it introduces an autorelease pool which causes a crash
+    OCMInvocationStub *stub = nil;
+    for (OCMInvocationStub *s in stubs) {
+        if ([s handleInvocation:anInvocation]) {
+            stub = s;
+            break;
+        }
+    }
+    if(!stub)
    		return NO;
-    OCMInvocationStub *stub = [stubs objectAtIndex:idx];
 
 	if([expectations containsObject:stub])
 	{
