@@ -49,6 +49,11 @@ BOOL OCMIsObjectType(const char *objCType)
     if([regex numberOfMatchesInString:type options:0 range:NSMakeRange(0, type.length)] > 0)
         return YES;
 
+    // if the return type is a block we treat it like an object
+    // TODO: if the runtime were to encode the block's argument and/or return types, this test would not be sufficient
+    if(strcmp(objCType, @encode(void(^)())) == 0)
+        return YES;
+
     return NO;
 }
 
@@ -185,6 +190,7 @@ Class OCMGetIsa(id object)
 #pragma mark  Alias for renaming real methods
 
 NSString *OCMRealMethodAliasPrefix = @"ocmock_replaced_";
+const char *OCMRealMethodAliasPrefixCString = "ocmock_replaced_";
 
 BOOL OCMIsAliasSelector(SEL selector)
 {
@@ -193,9 +199,11 @@ BOOL OCMIsAliasSelector(SEL selector)
 
 SEL OCMAliasForOriginalSelector(SEL selector)
 {
-    NSString *string = NSStringFromSelector(selector);
-    return NSSelectorFromString([OCMRealMethodAliasPrefix stringByAppendingString:string]);
-
+    char aliasName[2048];
+    const char *originalName = sel_getName(selector);
+    strlcpy(aliasName, OCMRealMethodAliasPrefixCString, sizeof(aliasName));
+    strlcat(aliasName, originalName, sizeof(aliasName));
+    return sel_registerName(aliasName);
 }
 
 SEL OCMOriginalSelectorForAlias(SEL selector)
