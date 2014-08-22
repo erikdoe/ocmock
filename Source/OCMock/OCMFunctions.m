@@ -39,7 +39,7 @@ BOOL OCMIsObjectType(const char *objCType)
 {
     objCType = OCMTypeWithoutQualifiers(objCType);
 
-    if(strcmp(objCType, @encode(id)) == 0)
+    if(strcmp(objCType, @encode(id)) == 0 || strcmp(objCType, @encode(Class)) == 0)
         return YES;
 
     // if the returnType is a typedef to an object, it has the form ^{OriginClass=#}
