@@ -21,7 +21,6 @@ nosidebar: true
 </ul>
   
   
-
 <h2 class="toc">Contents</h2>
 
 <ol>
@@ -34,6 +33,7 @@ nosidebar: true
   <li><a href="#strict-mocks-and-expectations">Strict mocks and expectations</a>
   <li><a href="#observer-mocks">Observer mocks</a>
   <li><a href="#advanced-topics">Advanced topics</a>
+  <li><a href="#limitations">Limitations</a>
 </ol>
 
 
@@ -212,13 +212,6 @@ OCMVerify([mock someMethod]);
 <p>It is possible to stub a method and still verify that it has been called.
 	
 
-<h3 class="numbered">Limitations</h3>
-
-<p>The limitations described in the section on <a href="#mocking-class-methods">mocking class methods</a> and <a href="#partial-mocks">partial mocks</a> apply to verifications, too. For example, it is not possible to verify class methods of <code>NSString</code>.
-  
-<p>It is currently not possible to verify a method with a delay. This is currently only possible using the <i>expect-run-verify</i> approach described below in <a href="#strict-mocks-and-expectations">strict mocks and expectations</a>.  
-
-
 <h2 id="argument-constraints" class="numbered">Argument constraints</h2>
 
 <h3 class="numbered">The <i>any</i> constraint</h3>
@@ -255,7 +248,7 @@ OCMStub([mock someMethod:[OCMArg checkWithSelector:aSelector onObject:anObject]]
 OCMStub([mock someMethod:[OCMArg checkWithBlock:^BOOL(id value) { /* return YES if value is ok */ }]])
 {% endhighlight objc %}
 
-<p>If an argument is passed in the stub is created, the stub only matches invocations with that exact argument. Calls with different arguments are not matched. The <code>OCMArg</code> class provides several methods that allow matching values in different ways.
+<p>If an argument is passed when the stub is created, the stub only matches invocations with that exact argument. Calls with different arguments are not matched. The <code>OCMArg</code> class provides several methods that allow matching values in different ways.
 	
 <p>For <code>checkWithSelector:onObject:</code>, when the mock object receives <code>someMethod:</code>, it invokes <code>aSelector</code> on <code>anObject</code>. If the method takes an argument the mock will pass the argument that was passed to <code>someMethod:</code>. The method should return a boolean indicating whether the argument matched the expectation or not.</p>
 
@@ -325,25 +318,6 @@ id classMock = OCMClassMock([SomeClass class]);
 <p>When the class is returned to its original state, its meta class will be switched back to the original meta class. This effectively removes all the stubs. However, this also makes it impossible for the mock to add new stubs or to verify interactions. You should really not use a mock after having called <code>stopMocking</code>.
 
 	
-<h3 class="numbered">Limitations</h3>
-{% highlight objc %}
-id stringMock = OCMClassMock([NSString class]);
-// the following will not work
-OCMStub([stringMock stringWithContentsOfFile:[OCMArg any] encoding:NSUTF8StringEncoding error:[OCMArg setTo:nil]]);
-{% endhighlight objc %}
-
-<p>It is not possible to stub or verify class methods on <code>NSString</code>. Trying to do so has no effect.
-
-{% highlight objc %}
-// don't do this
-id mock1 = OCMClassMock([SomeClass class]);
-OCMStub([mock1 aClassMethod]);
-id mock2 = OCMClassMock([SomeClass class]);
-OCMStub([mock2 anotherClassMethod]);
-{% endhighlight objc %}
-
-<p>As mentioned above, if the mock object that added a stubbed class method is not deallocated then the stubbed method will persist, even across tests. If multiple mock objects manipulate the same class at the same time the behaviour is undefined.
-
 <h2 id="partial-mocks" class="numbered">Partial mocks</h2>
 
 <h3 class="numbered">Stubbing methods</h3>
@@ -389,26 +363,6 @@ id partialMock = OCMPartialMock(anObject);
 
 <p>When the object is returned to its original state, its class will be switched back to the original class. This effectively removes all the stubs. However, this also makes it impossible for the partial mock to add new stubs or to verify interactions. You should really not use a partial mock after having called <code>stopMocking</code>.
 	
-
-<h3 class="numbered">Limitations</h3>
-
-{% highlight objc %}
-id partialMockForString = OCMPartialMock(@"Foo"); // will throw an exception
-
-NSDate *date = [NSDate dateWithTimeIntervalSince1970:0];
-id partialMockForDate = OCMPartialMock(date); // will throw on some architectures
-{% endhighlight objc %}
-
-<p>It is not possible to create partial mocks for instances of toll-free bridged class, e.g. <code>NSString</code>, or for objects represented with tagged pointers, e.g. <code>NSDate</code> on some architectures. The mock object will throw a descriptive exception should you try to do this.
-	
-{% highlight objc %}
-id partialMockForString = OCMPartialMock(anObject);
-OCMStub([partialMock class]).andReturn(someOtherClass); // will not work
-{% endhighlight objc %}
-
-<p>It is not possible to mock certain core runtime methods including <code>class</code>, <code>methodSignatureForSelector:</code>, and <code>forwardInvocation:</code>. Note that <code>class</code> is automatically stubbed to return the original class of the object, and not the dynamic subclass used by the partial mock.
-
-
 
 <h2 id="strict-mocks-and-expectations" class="numbered">Strict mocks and expectations</h2>
 
@@ -481,21 +435,6 @@ OCMExpect([mock anotherMethod]);
 <p>The mock can be told to verify that expected methods are called in the same order as the expectations are set up. As soon as a method is called that is not next on the &ldquo;expected list&rdquo; the mock will fail fast and throw an exception.
 
 
-<h3 class="numbered">Limitations</h3>
-
-{% highlight objc %}
-id mock = OCMStrictClassMock([SomeClass class]);
-OCMStub([mock someMethod]).andReturn(@"a string");
-OCMExpect([mock someMethod]);
-
-/* run code under test */
-
-OCMVerifyAll(mock); // will complain that someMethod has not been called
-{% endhighlight objc %}
-
-<p>The code above first sets up a stub for <code>someMethod</code> and afterwards an expectation for the same method. Due to the way mock objects are currently implemented any calls to <code>someMethod</code> are handled by the stub. This means that even if the method is called the verify fails. It is possible to avoid this problem by adding <code>andReturn</code> to the expect statement. You can also set up a stub after the expect.
-
-
 <h2 id="observer-mocks" class="numbered">Observer mocks</h2>
 
 <h3 class="numbered">Setup</h3>
@@ -565,6 +504,100 @@ OCMStub([partialMock someMethod]).andCall(differentObject, @selector(differentMe
 
 <p>After these two lines, when <code>someMethod</code> is sent to <code>anObject</code> the implementation of that method is not invoked. Instead, <code>differentMethod</code> is called on <code>differentObject</code>. Other instances of the same class are not affected; for these the original implementation of <code>someMethod</code> is still invoked. The methods can have different names but their signatures should be the same.
 
+
+<h2 id="limitations" class="numbered">Limitations</h2>
+
+<h3 class="numbered">Only one mock at a time can stub class methods on a given class</h3>
+
+{% highlight objc %}
+// don't do this
+id mock1 = OCMClassMock([SomeClass class]);
+OCMStub([mock1 aClassMethod]);
+id mock2 = OCMClassMock([SomeClass class]);
+OCMStub([mock2 anotherClassMethod]);
+{% endhighlight objc %}
+
+<p>As mentioned above, if the mock object that added a stubbed class method is not deallocated then the stubbed method will persist, even across tests. If multiple mock objects manipulate the same class at the same time the behaviour is undefined.
+
+
+<h3 class="numbered">Setting up expect after stub on the same method does not work</h3>
+
+{% highlight objc %}
+id mock = OCMStrictClassMock([SomeClass class]);
+OCMStub([mock someMethod]).andReturn(@"a string");
+OCMExpect([mock someMethod]);
+
+/* run code under test */
+
+OCMVerifyAll(mock); // will complain that someMethod has not been called
+{% endhighlight objc %}
+
+<p>The code above first sets up a stub for <code>someMethod</code> and afterwards an expectation for the same method. Due to the way mock objects are currently implemented any calls to <code>someMethod</code> are handled by the stub. This means that even if the method is called the verify fails. It is possible to avoid this problem by adding <code>andReturn</code> to the expect statement. You can also set up a stub after the expect.
+
+
+<h3 class="numbered">Partial mocks cannot be created for certain special classes</h3>
+
+{% highlight objc %}
+id partialMockForString = OCMPartialMock(@"Foo"); // will throw an exception
+
+NSDate *date = [NSDate dateWithTimeIntervalSince1970:0];
+id partialMockForDate = OCMPartialMock(date); // will throw on some architectures
+{% endhighlight objc %}
+
+<p>It is not possible to create partial mocks for instances of toll-free bridged class, e.g. <code>NSString</code>, or for objects represented with tagged pointers, e.g. <code>NSDate</code> on some architectures. The mock object will throw a descriptive exception should you try to do this.
+	
+
+<h3 class="numbered">Certain methods cannot be stubbed or verified</h3>
+
+{% highlight objc %}
+id partialMockForString = OCMPartialMock(anObject);
+OCMStub([partialMock class]).andReturn(someOtherClass); // will not work
+{% endhighlight objc %}
+
+<p>It is not possible to mock certain core runtime methods including <code>class</code>, <code>methodSignatureForSelector:</code>, and <code>forwardInvocation:</code>. Note that <code>class</code> is automatically stubbed to return the original class of the object, and not the dynamic subclass used by the partial mock.
+
+
+<h3 class="numbered">Class methods on NSString cannot be stubbed or verified</h3>
+
+{% highlight objc %}
+id stringMock = OCMClassMock([NSString class]);
+// the following will not work
+OCMStub([stringMock stringWithContentsOfFile:[OCMArg any] encoding:NSUTF8StringEncoding error:[OCMArg setTo:nil]]);
+{% endhighlight objc %}
+
+<p>It is not possible to stub or verify class methods on <code>NSString</code>. Trying to do so has no effect.
+
+
+<h3 class="numbered">Methods on NSObject cannot be verified</h3>
+
+{% highlight objc %}
+id mock = OCMClassMock([NSObject class]);
+
+/* run code under test, which calls awakeAfterUsingCoder: */
+
+OCMVerify([mock awakeAfterUsingCoder:[OCMArg any]]); // still fails
+{% endhighlight objc %}
+
+<p>It is not possible use <i>verify-after-running</i> with methods implemented in NSObject or a category on it. In some cases it is possible to stub the method and then verify it. It is possible to use <i>verify-after-running</i> when the method is overriden in a subclass.
+
+
+<h3 class="numbered">Private methods in core Apple classes cannot be verified</h3>
+
+{% highlight objc %}
+UIWindow *window = /* get window somehow */
+id mock = OCMPartialMock(window);
+
+/* run code under test, which causes _sendTouchesForEvent: to be invoked */
+
+OCMVerify([mock _sendTouchesForEvent:[OCMArg any]]); // still fails
+{% endhighlight objc %}
+
+<p>It is not possible use <i>verify-after-running</i> with private methods in core Apple classes. Specifically, all methods with an underscore prefix and/or suffix in a class with either NS or UI as prefix. In some cases it is possible to stub the method and then verify it.
+
+
+<h3 class="numbered">Verify-after-running cannot use a delay</h3>
+
+<p>It is currently not possible to verify a method with a delay. This is currently only possible using the <i>expect-run-verify</i> approach described below in <a href="#strict-mocks-and-expectations">strict mocks and expectations</a>.  
 
 
 <h2>More detail</h2>
