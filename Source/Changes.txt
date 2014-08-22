@@ -5,6 +5,12 @@ OCMock 3.1 (unreleased)
 
 * Converting number types to make andReturn more intuitive (Carl Lindberg)
 * Macros now silence warnings about unused return values (Gordon Fontenot)
+* Added isKindOfClass constraint (Ash Furrow)
+* Performance and stability improvements. As a result it is no longer possible
+  use verify-after-running to verify certain methods:
+  - All methods implemented by NSObject and categories on it
+  - Private methods in core Apple classes, ie. the class name has an NS or UI
+    prefix and the method has an underscore prefix and/or suffix.
 
 
 OCMock 3.0.2 (2014-07-07)
