@@ -1,2 +1,0 @@
-#!/bin/sh
-jekyll build
