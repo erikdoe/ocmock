@@ -1,7 +1,7 @@
 Listing of notable changes by release. More detail is usually found in the Git 
 commit messages and/or the pull requests.
 
-OCMock 3.1 (unreleased)
+OCMock 3.1 (2014-08-22)
 
 * Converting number types to make andReturn more intuitive (Carl Lindberg)
 * Macros now silence warnings about unused return values (Gordon Fontenot)
