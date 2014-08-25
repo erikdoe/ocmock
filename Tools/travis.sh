@@ -8,8 +8,10 @@ SCRIPT_DIR=$(dirname "$0")
 run_xcodebuild ()
 {
 	local scheme=$1
-             
-	xcodebuild -scheme "$scheme" -configuration Debug test OBJROOT="$PWD/build" SYMROOT="$PWD/build"
+	local sdk=$2
+	local destination=$3
+	echo "*** Building and testing $scheme..."
+	xcodebuild -scheme "$scheme" -sdk "$sdk" -destination="$destination" -configuration Debug test OBJROOT="$PWD/build" SYMROOT="$PWD/build"
 
 	local status=$?
  
@@ -18,9 +20,7 @@ run_xcodebuild ()
  
 build_scheme ()
 {
-	local scheme=$1
- 
-	run_xcodebuild "$scheme" 2>&1 | awk -f "$SCRIPT_DIR/xcodebuild.awk"
+	run_xcodebuild "$1" "$2" "$3" 2>&1 | awk -f "$SCRIPT_DIR/xcodebuild.awk"
  
 	local awkstatus=$?
 	local xcstatus=${PIPESTATUS[0]}
@@ -36,7 +36,6 @@ build_scheme ()
 	return $xcstatus
 }
  
-echo "*** Building..."
- 
-build_scheme OCMock || exit $?
-#build_scheme OCMockLib || exit $?
+build_scheme OCMock macosx || exit $?
+# Specified the destination for OCMockLib scheme in order to fix the `Error spawning child process: No such file or directory` error.
+build_scheme OCMockLib iphonesimulator "platform=iOS Simulator,name=iPhone Retina (4-inch),OS=7.0" || exit $?
