@@ -25,11 +25,17 @@
 
 - (void)methodWithInt:(int)i andObject:(id)o;
 
+- (void)methodWithClass:(Class)class;
+
 @end
 
 @implementation TestClassForRecorder
 
 - (void)methodWithInt:(int)i andObject:(id)o
+{
+}
+
+- (void)methodWithClass:(Class)class
 {
 }
 
@@ -112,6 +118,20 @@
     [testInvocation setArgument:&arg1 atIndex:2];
     [testInvocation setArgument:&actual atIndex:3];
     XCTAssertFalse([matcher matchesInvocation:testInvocation], @"Should not match.");
+}
+
+- (void)testMatchesInvocationWithClassObjectArgument
+{
+    Class arg1 = NSObject.class;
+
+    OCMInvocationMatcher *matcher = [[OCMInvocationMatcher alloc] init];
+    NSInvocation *recordedInvocation = [self invocationForTargetClass:[TestClassForRecorder class] selector:@selector(methodWithClass:)];
+    [recordedInvocation setArgument:&arg1 atIndex:2];
+    [matcher setInvocation:recordedInvocation];
+
+    NSInvocation *testInvocation = [self invocationForTargetClass:[TestClassForRecorder class] selector:@selector(methodWithClass:)];
+    [testInvocation setArgument:&arg1 atIndex:2];
+    XCTAssertTrue([matcher matchesInvocation:testInvocation], @"Should match.");
 }
 
 @end
