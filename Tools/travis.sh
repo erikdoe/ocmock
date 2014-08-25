@@ -6,10 +6,11 @@
 SCRIPT_DIR=$(dirname "$0")
 
 run_xcodebuild ()
-{
+{             
 	local scheme=$1
-             
-	xcodebuild -scheme "$scheme" -configuration Debug test OBJROOT="$PWD/build" SYMROOT="$PWD/build"
+	local sdk=$2
+	echo "*** Building and testing $scheme..."
+	xcodebuild -scheme "$scheme" -sdk "$sdk" -configuration Debug test OBJROOT="$PWD/build" SYMROOT="$PWD/build" | xcpretty -ct
 
 	local status=$?
  
@@ -17,10 +18,8 @@ run_xcodebuild ()
 }
  
 build_scheme ()
-{
-	local scheme=$1
- 
-	run_xcodebuild "$scheme" 2>&1 | awk -f "$SCRIPT_DIR/xcodebuild.awk"
+{ 
+	run_xcodebuild "$1" "$2" 2>&1 | awk -f "$SCRIPT_DIR/xcodebuild.awk"
  
 	local awkstatus=$?
 	local xcstatus=${PIPESTATUS[0]}
@@ -36,7 +35,5 @@ build_scheme ()
 	return $xcstatus
 }
  
-echo "*** Building..."
- 
-build_scheme OCMock || exit $?
-#build_scheme OCMockLib || exit $?
+build_scheme OCMock macosx || exit $?
+build_scheme OCMockLib iphonesimulator || exit $?
