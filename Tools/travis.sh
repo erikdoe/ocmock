@@ -36,4 +36,4 @@ build_scheme ()
 }
  
 build_scheme OCMock macosx || exit $?
-build_scheme OCMockLib iphonesimulator || exit $?
+build_scheme OCMockLib "iphonesimulator7.1" || exit $?
