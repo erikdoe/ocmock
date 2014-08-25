@@ -6,11 +6,11 @@
 SCRIPT_DIR=$(dirname "$0")
 
 run_xcodebuild ()
-{             
+{
 	local scheme=$1
 	local sdk=$2
 	echo "*** Building and testing $scheme..."
-	xcodebuild -scheme "$scheme" -sdk "$sdk" -configuration Debug test OBJROOT="$PWD/build" SYMROOT="$PWD/build" | xcpretty -ct
+	xcodebuild -scheme "$scheme" -sdk "$sdk" -configuration Debug test OBJROOT="$PWD/build" SYMROOT="$PWD/build"
 
 	local status=$?
  
@@ -18,7 +18,7 @@ run_xcodebuild ()
 }
  
 build_scheme ()
-{ 
+{
 	run_xcodebuild "$1" "$2" 2>&1 | awk -f "$SCRIPT_DIR/xcodebuild.awk"
  
 	local awkstatus=$?
