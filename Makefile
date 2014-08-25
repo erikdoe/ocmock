@@ -4,7 +4,7 @@ IPHONE = -scheme OCMockLib -sdk iphonesimulator -destination 'name=iPhone Retina
 MACOSX = -scheme OCMock -sdk macosx $(BUILD_DIR)
 XCODEBUILD = xcodebuild -project "$(CURDIR)/Source/OCMock.xcodeproj"
 
-default: clean test
+ci: clean test
 
 clean:
 	$(XCODEBUILD) clean
