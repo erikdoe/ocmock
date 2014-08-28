@@ -1,4 +1,4 @@
 language: objective-c  
-before_install: cd Source
-script: "../Tools/travis.sh"
- 
+before_install:
+    - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
+script: make
