@@ -1,3 +1,10 @@
+# This makefile is mainly intended for use on the CI server (Travis). It
+# requires xcpretty to be installed.
+
+# If you are trying to build a release locally consider using the build.rb
+# script in the Tools directory instead.
+
+
 BUILD_DIR = OBJROOT="$(CURDIR)/build" SYMROOT="$(CURDIR)/build"
 SHELL = /bin/bash -e -o pipefail
 IPHONE = -scheme OCMockLib -sdk iphonesimulator -destination 'name=iPhone Retina (4-inch)' $(BUILD_DIR)
