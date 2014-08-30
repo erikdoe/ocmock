@@ -1,0 +1,10 @@
+---
+layout: post
+title: 10 Years of OCMock
+tags:
+- Release
+status: publish
+type: post
+published: true
+---
+Today is the 10th anniversary of OCMock's first release. The original code for that release is preserved in the [Git repo](https://github.com/erikdoe/ocmock/tree/8c364f1463be472ed992fb20fe03383d12c30e82/Source). Looking back I find it surprising with how little code it all began.

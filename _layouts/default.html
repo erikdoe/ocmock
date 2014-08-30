@@ -116,7 +116,7 @@
 				<header>
 					<h2>Latest News</h2>
 				</header>
-				{% for post in site.posts limit: 1 %}
+				{% for post in site.posts limit: 2 %}
 				<article>
 					<h3>{{ post.title }}</h3>
 					<p class="postdate">{{ post.date | date:"%d %b %Y" }}

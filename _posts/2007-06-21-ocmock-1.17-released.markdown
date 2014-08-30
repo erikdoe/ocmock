@@ -7,4 +7,4 @@ status: publish
 type: post
 published: true
 ---
-New release which combines several contributions, adding support for mock observers of notifications, setters for pass-by-reference arguments, and several improvements to existing features. The default binary release now uses @rpath, which allows for more flexible deployment, and it supports garbage collection.
+New release which combines several contributions. Added nice mocks, which ignore unexpected invocations, and exceptions meant to cause the test to fail fast are now rethrown in verify. 
