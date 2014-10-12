@@ -3,12 +3,10 @@ layout: minimal
 title: Front Page
 ---
 
-<div id="welcome" class="group">
+<section id="welcome" class="group">
   <div id="welcomebox">
-    <div id="welcomebox-logo">
       <img id="logo" src="{{ site.baseurl }}/images/logo-252x81.png" width="252" height="81" alt="OCMock"><br>
-    </div>
-    <div id="welcomebox-text">
+      <div id="welcomebox-text">
       <ul>
         <li><b>Mock objects for Objective-C</b>
         <li>Stubs - return values for specific method invocations
@@ -29,11 +27,11 @@ title: Front Page
 		  <p class="morenews"><a href="{{ site.baseurl }}/news">more news &rarr;</a>
     </div>
   </div>
-</div>
+</section>
 
   
-<div id="main" class="group">
-	<section id="content">
+<section id="content" class="group">
+  <div id="contentbox">
 
 <h2>Adding OCMock to your project</h2>
 <ul>
@@ -128,5 +126,5 @@ OCMVerify([[myObjectMock writeToDatabase]);
 	<li>...post a question on StackOverflow with the <a href="http://stackoverflow.com/questions/tagged/ocmock"><span class="tag">ocmock</span></a> tag.
 </ul>
 
-  </section>
-</div>
+  </div>
+</section>

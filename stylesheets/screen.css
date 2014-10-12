@@ -95,7 +95,7 @@ section#content h2 {
 	border-bottom: 1px solid #CCC;
 }
 
-div#main p:first-child {
+#contentbox p:first-child {
 	margin-top: 0;
 }
 
@@ -184,7 +184,7 @@ pre {
 
 /* layout */
 
-header nav, #welcomebox, div#newsbox, div#main, footer nav, footer div#footercopy {
+header nav, #welcomebox, #contentbox, footer nav, footer div#footercopy {
 	max-width: 850px;
 	min-width: 300px;
 	margin: 0 auto 0 auto;
@@ -195,11 +195,11 @@ html, body {
     height: 100%;
 }
 
-div#main {
+#contentbox {
     min-height: 60%;
 }
 
-section#content {
+#contentbox {
 	margin-bottom: 4em;
 }
 
@@ -218,23 +218,22 @@ article {
 
 /* front-page special layout / formatting */
 
-#welcome {
+section#welcome {
     background: #FFC249;
     background: url('../images/background.jpg');
     background-repeat: no-repeat;
     background-size: 100% 100%; 
     margin-bottom: 1em;
-    width: 100%;
 }
 
-#welcomebox-logo {
+#welcomebox #logo {
     float:left;
-    margin: 4em 3em 0 0;
+    margin: 5.0em 3em 0 0;
 }
 
 #welcomebox-text {
     float:left;
-    margin: 1.8em 0;
+    margin: 1.6em 0;
     width: 60%;
 }
 
@@ -356,23 +355,21 @@ footer p {
 /* responsive top nav for small (presumably touch) screens */
 
 @media screen and (max-width: 840px) {
-    #welcome {
+    section#welcome {
         background: #FFC249;
+    }
     #welcomebox {
         margin: 0 auto;
         padding: 0 0.5em 1em 0.5em;
-    }
-    #welcomebox-logo {
-        margin-top: 0;
-    }
-    #welcomebox-buttons {
-        display: none;
     }
     #welcomebox-text {
         margin: 1em auto;
         width: 100%;
     }
-    div#main, footer nav, footer div#footercopy {
+    #welcomebox-buttons {
+        display: none;
+    }
+    #contentbox, footer nav, footer div#footercopy {
         margin: 0 auto 0 auto;
         padding: 1em 0.5em;
     }
