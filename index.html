@@ -1,19 +1,39 @@
 ---
-layout: default
+layout: minimal
+title: Front Page
 ---
-<h2>About</h2>
 
-<p>OCMock is an Objective-C implementation of mock objects. It provides
- <ul>
-	 <li style="margin-top: 4px;">stubs that return pre-determined values for specific method invocations,
-   <li>dynamic mocks that can be used to verify interaction patterns, and
-	 <li>partial mocks to overwrite selected methods of existing objects.
-</ul>
+<div id="welcome" class="group">
+  <div id="welcomebox">
+    <div id="welcomebox-logo">
+      <img id="logo" src="{{ site.baseurl }}/images/logo-252x81.png" width="252" height="81" alt="OCMock"><br>
+    </div>
+    <div id="welcomebox-text">
+      <ul>
+        <li><b>Mock objects for Objective-C</b>
+        <li>Stubs - return values for specific method invocations
+        <li>Dynamic Mocks - verify interaction patterns
+	      <li>Partial Mocks - overwrite methods of existing objects
+      </ul>
 
-<p>If you are unfamiliar with the concept of mock objects please have a look at the <a href="{{ site.baseurl }}/introduction">introduction</a> on this site.
+      <div id="welcomebox-buttons">
+        <span class="welcomebox-btn"><a href="{{ site.baseurl }}/download">Download</a></span>
+      </div>
 
-<p>The remainder of this page should have everything to get you started. Enjoy!
+      {% for post in site.posts limit: 2 %}
+      <article>
+		    <h3>{{ post.title }} <span class="postdate">({{ post.date | date:"%d %b %Y" }})</span></h3>
+        {{ post.content }}
+      </article>
+		  {% endfor %}
+		  <p class="morenews"><a href="{{ site.baseurl }}/news">more news &rarr;</a>
+    </div>
+  </div>
+</div>
 
+  
+<div id="main" class="group">
+	<section id="content">
 
 <h2>Adding OCMock to your project</h2>
 <ul>
@@ -107,3 +127,6 @@ OCMVerify([[myObjectMock writeToDatabase]);
 	<li>For feedback and questions please use the <a href="http://www.mulle-kybernetik.com/forum/viewforum.php?f=4">OCMock forum</a> on this site or...
 	<li>...post a question on StackOverflow with the <a href="http://stackoverflow.com/questions/tagged/ocmock"><span class="tag">ocmock</span></a> tag.
 </ul>
+
+  </section>
+</div>

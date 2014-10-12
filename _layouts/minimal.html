@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+
+		<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+		<title>{% if page.title %}{{ page.title }} &middot; {% endif %}OCMock</title>
+
+		<link type="text/css" rel="stylesheet" href="{{ site.baseurl }}/stylesheets/reset.css">
+		<link type="text/css" rel="stylesheet" href="{{ site.baseurl }}/stylesheets/screen.css">
+		<link type="text/css" rel="stylesheet" href="{{ site.baseurl }}/stylesheets/pygmentize.css">
+		<link type="text/css" rel="stylesheet" href="{{ site.baseurl }}/stylesheets/juvia.css">
+
+		<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
+
+		<script src="{{ site.baseurl }}/scripts/retina.min.js"></script>
+		<script src="{{ site.baseurl }}/scripts/jquery.min.js"></script>
+
+		{% if page.comments %}
+	    
+	  <script type="text/javascript" class="juvia">
+		(function() {
+		    var options = {
+		        container   : '#comments',
+		        site_key    : 'cu3qkn7uajrdbxnx9unjwumu7vfksen',
+		        topic_key   : location.pathname,
+		        topic_url   : location.href,
+		        topic_title : document.title || location.href,
+		        include_base: !window.Juvia,
+		        include_css : false
+		    };
+
+		    function makeQueryString(options) {
+		        var key, params = [];
+		        for (key in options) {
+		            params.push(
+		                encodeURIComponent(key) +
+		                '=' +
+		                encodeURIComponent(options[key]));
+		        }
+		        return params.join('&');
+		    }
+
+		    function makeApiUrl(options) {
+		        // Makes sure that each call generates a unique URL, otherwise
+		        // the browser may not actually perform the request.
+		        if (!('_juviaRequestCounter' in window)) {
+		            window._juviaRequestCounter = 0;
+		        }
+
+		        var result =
+		            'http://comments.ocmock.org/api/show_topic.js' +
+		            '?_c=' + window._juviaRequestCounter +
+		            '&' + makeQueryString(options);
+		        window._juviaRequestCounter++;
+		        return result;
+		    }
+
+		    var s       = document.createElement('script');
+		    s.async     = true;
+		    s.type      = 'text/javascript';
+		    s.className = 'juvia';
+		    s.src       = makeApiUrl(options);
+		    (document.getElementsByTagName('head')[0] ||
+		     document.getElementsByTagName('body')[0]).appendChild(s);
+		})();
+		</script>
+
+		{% endif %}
+
+		<script>
+		$(document).ready(function() {
+		$('#navmenu-btn').click(function() {
+		  $('li.textnav').toggle();
+		})});
+		</script>
+  	
+	</head>
+
+  <body class="{{ page.layout }} {{ page.title }}">
+
+    <header class="group">
+    	<div id="navmenu-btn">≡</div>
+    	<nav>
+        {% unless (page.title == "Front Page") %}
+        <a href="{{ site.baseurl }}/"><img id="logo" src="{{ site.baseurl }}/images/ocmock.png" width="126" height="41" alt="OCMock"></a>
+	      {% endunless %}
+    		<ul>
+    			<li class="textnav"><a href="{{ site.baseurl }}/introduction">Introduction</a></li>
+    			<li class="textnav"><a href="{{ site.baseurl }}/reference">Reference</a></li>
+    			<li class="textnav"><a href="{{ site.baseurl }}/ios">iOS</a></li>
+    			<li class="textnav"><a href="{{ site.baseurl }}/swift">Swift</a></li>
+    			<li class="textnav"><a href="{{ site.baseurl }}/tutorials">Tutorials</a></li>
+    			<li class="textnav"><a href="{{ site.baseurl }}/support">Support</a></li>
+    			<li class="textnav"><a href="{{ site.baseurl }}/download">Download</a></li>
+    		</ul>
+    	</nav>
+    </header>
+
+    {{ content }}
+
+		<footer class="group">
+			<nav>
+				<div class="navblock">
+					<h2>Site</h2>
+					<ul>
+						<li><a href="{{ site.baseurl }}/">Home</a></li>
+						<li><a href="{{ site.baseurl }}/download">Download</a></li>
+						<li><a href="{{ site.baseurl }}/news">News Archive</a></li>
+				  </ul>
+				</div>
+				<div class="navblock">
+					<h2>Docs</h2>
+					<ul>
+					  <li><a href="{{ site.baseurl }}/introduction">Introduction</a></li>
+						<li><a href="{{ site.baseurl }}/reference">Reference</a></li>
+						<li><a href="{{ site.baseurl }}/ios">iOS Project Setup</a></li>
+						<li><a href="{{ site.baseurl }}/tutorials">Tutorials</a></li>
+				  </ul>
+				</div>
+				<div class="navblock">
+					<h2>Support</h2>
+					<ul>
+						<li><a href="http://www.mulle-kybernetik.com/forum/viewforum.php?f=4">OCMock Forum</a></li>
+						<li><a href="http://stackoverflow.com/questions/tagged/ocmock">StackOverflow</a></li>
+						<li><a href="{{ site.baseurl }}/support">More info</a></li>
+				  </ul>
+				</div>
+			</nav>
+
+      <div id="footercopy" class="group">
+		  	<p class="copyright">Copyright &copy; 2004-2014 by Erik D&ouml;rnenburg
+	  	</div>
+		</footer>
+
+		<!-- Start of StatCounter Code -->
+    <script type="text/javascript">
+    var sc_project=5243075; 
+    var sc_invisible=1; 
+    var sc_partition=59; 
+    var sc_click_stat=1; 
+    var sc_security="accd6a4e"; 
+    </script>
+
+    <script type="text/javascript" src="http://www.statcounter.com/counter/counter.js"></script>
+    <noscript><div class="statcounter">
+    <a title="hit counter" href="http://www.statcounter.com/blogger/" target="_blank">
+    <img class="statcounter" src="http://c.statcounter.com/5243075/0/accd6a4e/1/" alt="hit counter">
+    </a>
+    </div></noscript>
+		<!-- End of StatCounter Code -->
+
+  </body>
+</html>

@@ -1,46 +1,4 @@
 
-/* layout */
-
-div#main, div#footernav nav, div#footercopy footer  {
-	max-width: 980px;
-	min-width: 300px;
-	margin: 0 auto 0 auto;
-	padding: 1em 2em;
-}
-
-html, body {
-    height: 100%;
-}
-
-div#main {
-    min-height: 60%;
-}
-
-div#footercopy footer {
-	padding: 0.5em 2em 0.5em 2em;
-}
-
-section#content {
-	margin-bottom: 4em;
-}
-
-section#sidebar {
-}
-
-article {
-	margin-bottom: 2em;
-}
-
-.group:after {
-	visibility: hidden;
-	display:    block;
-	font-size:  0;
-	content:    " ";
-	clear:      both;
-	height:     0;
-}
-
-
 /* General typography and formatting */
 
 h1, h2, h3 {
@@ -72,8 +30,8 @@ h3 + div.highlight {
     margin-top: 0.5em;
 }
 
-p, th, td, ul, ol, li { 
-	font-family: sans-serif;
+p, li, th, td { 
+	font-family: "Helvetica Neue", Helvetica, arial, sans-serif;
 	font-size: 0.9375em; 
 	line-height: 1.5em;
 	color: #444;
@@ -132,7 +90,7 @@ p.postdate {
 
 /* main sections formatting */
 
-div#main h2 {
+section#content h2 {
 	padding-bottom: 3px;
 	border-bottom: 1px solid #CCC;
 }
@@ -145,21 +103,20 @@ section#content p {
 	padding-left: 0.1em;
 }
 
-div#main li {
-	font-size: 100%;
+section#content li {
 	margin-left: 1.8em;
 	line-height: 1.8em;
 }
 
-div#main ul li {
+section#content ul li {
 	list-style-type: disc;
 }
 
-div#main ol li {
+section#content ol li {
 	list-style-type: decimal;
 }
 
-div#main li:first-child {
+section#content li:first-child {
 	margin-top: .8em;
 }
 
@@ -179,16 +136,16 @@ h3.numbered:before {
 	counter-increment: h3-counter;
 }
 
-div#main table {
+section#content table {
 	margin-top: 1em;    
 	width: 100%;
 }
 
-div#main th {
+section#content th {
 	font-weight: bold;
 }
 
-div#main th, td {
+section#content th, section#content td {
 	background: #EEE;
 	text-align: left;
 	padding: 5px 10px 2px 8px;
@@ -225,197 +182,236 @@ pre {
 }
 
 
-/* sidebar formatting */
+/* layout */
 
-section#sidebar h3 {
-	margin-top: 0.7em;
+header nav, #welcomebox, div#newsbox, div#main, footer nav, footer div#footercopy {
+	max-width: 850px;
+	min-width: 300px;
+	margin: 0 auto 0 auto;
+	padding: 1em 2em;
 }
 
-section#sidebar article {
-	margin-bottom: 1.5em;
+html, body {
+    height: 100%;
 }
 
-section#sidebar p {
-	font-size: 0.8125em;
+div#main {
+    min-height: 60%;
 }
 
-section#sidebar {
+section#content {
+	margin-bottom: 4em;
+}
+
+article {
 	margin-bottom: 2em;
 }
 
-
-/* masthead header */
-
-div#masthead header {
- 	background: black;
-	padding: 0.3em 0 0.4em 0;
+.group:after {
+	visibility: hidden;
+	display:    block;
+	font-size:  0;
+	content:    " ";
+	clear:      both;
+	height:     0;
 }
 
-div#masthead header h1 {
-  	text-align: center;
- 	font-family: Cochin, Georgia, serif;
-	font-variant: small-caps;
-  	font-size: 1.25em;
-	color: #AAA;
-	margin: 0;
+/* front-page special layout / formatting */
+
+#welcome {
+    background: #FFC249;
+    background: url('../images/background.jpg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%; 
+    margin-bottom: 1em;
+    width: 100%;
 }
 
-div#masthead header p {
-  	text-align: center;
- 	font-family: Cochin, Georgia, serif;
-	font-variant: small-caps;
-	font-size: 0.75em;
-	color: #AAA;
-	margin: 0;
-	padding: 0;
-	line-height: 0.9em;
-	max-width: 100%;
+#welcomebox-logo {
+    float:left;
+    margin: 4em 3em 0 0;
 }
 
-div#masthead header a {
-	color: #AAA;
-	text-decoration: none;
+#welcomebox-text {
+    float:left;
+    margin: 1.8em 0;
+    width: 60%;
 }
 
-div#masthead header a:hover {
-	color: #CCC;
+#welcomebox h2 {
+    margin: 1.2em 0 0.2em 0;
 }
 
-/* masthead navigation */
-
-div#masthead {
-    background: #F3BB36;
-    border-top: 3px solid #D28C25;
-    margin-bottom: 1.5em;
+#welcomebox h3 {
+    margin: 0.875em 0 0.2em 0;
 }
 
-#logo {
-    margin-bottom: -3px;
+#welcomebox ul {
+    margin-bottom: 2em;
 }
 
-div#masthead nav ul {
-	max-width: 980px;
-	margin: 0 auto 0.5em auto;
-	padding: 2em 2em 0.7em 2em;
+#welcomebox li {
+    margin-top: 0.3em;
+    font-size: 1.3em;
+}
+
+#welcomebox-text .postdate {
+    font-size: 0.777em;
+}
+
+#welcomebox article {
+    margin-top: 0.75em;
+    margin-bottom: 0;
+}
+
+#welcomebox article p {
+    margin-top: 0.2em;
+}
+
+#welcomebox .morenews {
+    margin: 0;
+    float: right;
+}
+
+#welcomebox-buttons {
+    margin: 3em 0;
+}
+
+.welcomebox-btn {
+    border-radius: 3px;
+    background: #F69923;
+    padding: 0.6em;
+    margin-right: 1em;
+	font-family: "Helvetica Neue", Helvetica, arial, sans-serif;
+}
+
+.welcomebox-btn a {
+    color: white;
+    text-decoration: none;
+}
+
+
+/* header */
+
+header {
+    background: #FFC249;
+    border-top: 4px solid #F69923;
+}
+
+header nav {
+	margin-bottom: 0.5em;
+}
+
+header #logo {
+/*    margin: 1em 0.5em 0 0;*/
+}
+
+header nav ul {
+    float: right;
+    padding-bottom: 0.7em;
 /*    border-bottom: 1px solid #CCC;*/
 }
 
-div#masthead nav li {
+header nav li {
 	display: inline;
 	padding-right: 1em;
-	font-size: 1.2em;
+	font-size: 1.0em;
 	vertical-align: text-bottom;
-}
-
-div#masthead nav li:first-child {
-	margin-right: 1em;
 }
 
 div#navmenu-btn {
-	background-color: #333;
-	color: #CCC;
-	font-size: 1.75em;
-	text-align: right;
-	vertical-align: text-bottom;
-	padding: 3px 4px 0 0;
 	display: none;
 }
 
 
 /* footer formatting */
 
-div#footernav, div#footercopy {
+footer {
 	background: #CCC;
 }
 
-div#footercopy footer {
-    border-top: 1px solid #AAA;
-}
-
-div#footernav nav div.navblock {
+footer nav div.navblock {
 	float: left;
-	min-width: 230px;
+	min-width: 234px;
 	margin-bottom: 1em;
+    margin-left: 0;
 }
 
-div#footernav h2 {
+footer div#footercopy {
+    border-top: 1px solid #AAA;
+    clear: both;
+}
+
+footer h2 {
 	font-size: 1em;
 	margin-bottom: 0.2em;
 }
 
-div#footercopy p {
-	font-size: 0.75em;
+footer p {
+	font-size: 0.875em;
 	margin-top: 0;
 }
 
 
 /* responsive top nav for small (presumably touch) screens */
 
-@media screen and (max-width: 650px) {
-	div#main, div#footernav nav, div#footercopy footer  {
-		margin: 0 auto 0 auto;
-		padding: 1em 0.5em;
-	}
-	div#navmenu-btn {
-		display: block;
-	}
-	nav {
-	 	padding: 0;
-		font-size: 1.5em;
-	  	color: #EEE;
-	}
-	div#masthead nav ul {
-		position: relative;
-		padding: 0;
-		margin: 0 auto 0 auto;
-		padding:0 0 5px 0;
-		min-height: 100px; 
-		border-bottom: none;
-	}
-	div#masthead nav li {
-		padding-right: 10px;
-		text-align: right;
-	}
-	div#masthead nav li:first-child {
-		float: left;
-		position: absolute;
-		bottom: 2px;
-		left: 5px;
-	}
-	div#masthead nav li.textnav {
-		display: none;
-		text-align: right;
-		background-color: #444;
-	}
-	div#masthead nav li.textnav a {
-		color: #CCC;
-	}
-}
-
-
-/* responsive sidebar for reasonably wide screens */
-
-@media screen and (min-width: 800px) {
-  	section#content {
-		float: left;
-		width: 75%;
-	}
-  	section#sidebar {
-	   	float: right;
-	  	width: 20%;
-  	}
-    section#sidebar {
-        padding: 0.5em;
-        border: solid 1px #CCC;
-    	border-radius: 2px 2px 2px 2px;
-    	background: #EEE;
+@media screen and (max-width: 840px) {
+    #welcome {
+        background: #FFC249;
+    #welcomebox {
+        margin: 0 auto;
+        padding: 0 0.5em 1em 0.5em;
     }
-	section#sidebar header h2 {
-		border-bottom: none;
-		letter-spacing: 80%;
-		text-transform: uppercase;
-		margin: 0 0 0.5em 0;
-		font-size: 1.2em;
-	}
+    #welcomebox-logo {
+        margin-top: 0;
+    }
+    #welcomebox-buttons {
+        display: none;
+    }
+    #welcomebox-text {
+        margin: 1em auto;
+        width: 100%;
+    }
+    div#main, footer nav, footer div#footercopy {
+        margin: 0 auto 0 auto;
+        padding: 1em 0.5em;
+    }
+    header {
+        border-top: 0;
+    }
+    div#navmenu-btn {
+        display: block;
+    	background-color: #333;
+    	color: #CCC;
+    	font-size: 1.75em;
+    	text-align: right;
+    	vertical-align: text-bottom;
+    	padding: 4px 4px 0 0;
+    }
+    nav {
+        font-size: 1.5em;
+    }
+    header nav {
+        padding: 0 0 0 0.5em;
+    }
+    header nav ul {
+        position: relative;
+        padding: 0 0 5px 0;
+        min-height: 100px;
+        border-bottom: none;
+    }
+    header nav li.textnav {
+        padding-left: 10px;
+        padding-right: 10px;
+        display: none;
+        text-align: right;
+        background-color: #333;
+    }
+    header nav li.textnav a {
+        color: #CCC;
+    }
+    footer nav div.navblock {
+        float: none;
+    }
 }
 
