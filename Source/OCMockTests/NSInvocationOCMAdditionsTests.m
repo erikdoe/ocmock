@@ -22,7 +22,7 @@
 
 - (id)ocmtest_initWithLongDouble:(long double)ldbl
 {
-    return [self initWithBytes:&ldbl objCType:@encode(typeof(ldbl))];
+    return [self initWithBytes:&ldbl objCType:@encode(__typeof__(ldbl))];
 }
 
 @end

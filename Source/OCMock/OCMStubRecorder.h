@@ -32,7 +32,7 @@
 
 @interface OCMStubRecorder (Properties)
 
-#define andReturn(aValue) _andReturn(({ typeof(aValue) _v = (aValue); [NSValue value:&_v withObjCType:@encode(typeof(_v))]; }))
+#define andReturn(aValue) _andReturn(({ __typeof__(aValue) _v = (aValue); [NSValue value:&_v withObjCType:@encode(__typeof__(_v))]; }))
 @property (nonatomic, readonly) OCMStubRecorder *(^ _andReturn)(NSValue *);
 
 #define andThrow(anException) _andThrow(anException)
