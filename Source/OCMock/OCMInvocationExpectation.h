@@ -23,6 +23,7 @@
 }
 
 - (void)setMatchAndReject:(BOOL)flag;
+- (BOOL)isMatchAndReject;
 
 - (BOOL)isSatisfied;
 
