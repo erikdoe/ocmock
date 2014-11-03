@@ -45,9 +45,11 @@ title: Front Page
 {% endhighlight objc %}
 
 
-<h2>Creating stubs for instance and class methods</h2>
+<h2>Using OCMock &ndash; the short version</h2>
 
-<p>A mock object stands in for a real object. With stubs we can specify what to return when:
+<h3>Creating stubs for instance and class methods</h3>
+
+<p>A mock object stands in for a real object. With stubs we can specify what to return when a method is invoked:
 
 {% highlight objc %}
 // create a mock for the user defaults
@@ -60,7 +62,7 @@ OCMStub([userDefaultsMock stringForKey:@"MyAppURLKey"]).andReturn(@"http://testu
 OCMStub([userDefaultsMock stringForKey:[OCMArg any]]).andReturn(@"http://testurl");
 {% endhighlight objc %}
 
-<p>How do we get the code under test to use the mock? A pattern that is often implemented together with mocks is <a href="http://en.wikipedia.org/wiki/Dependency_injection">dependency injection</a>. With cases like <code>NSUserDefaults</code> we can take an even simpler approach. Our code under test is likely to use the standard shared instance, which is returned by the <code>standardUserDefaults</code> factory class method. We can simply stub that class method:
+<p>How do we get the code that we want to test to use the mock? A pattern that is often implemented together with mocks is <a href="http://en.wikipedia.org/wiki/Dependency_injection">dependency injection</a>. With cases like <code>NSUserDefaults</code> we can take an even simpler approach. Our code under test is likely to use the standard shared instance, which is returned by the <code>standardUserDefaults</code> factory class method. We can simply stub that class method:
 
 {% highlight objc %}
 // stub a class method to return our mock, and not the standard shared instance
@@ -70,9 +72,9 @@ OCMStub([userDefaultsMock standardUserDefaults]).andReturn(userDefaultsMock);
 <p>Class methods can be stubbed like instance methods. If a class has a class method and an instance method with the same name, OCMock provides a way to specify which one to target. This is described on the <a href="{{ site.baseurl }}/reference#mocking-class-methods">reference page</a>.
 
 
-<h2>Verifying behaviour with a mock</h2>
+<h3>Verifying behaviour with a mock</h3>
 
-<p>Sometimes we not only want to stub a method but we want to ensure, or verify, that a given method has been called by the code under test.
+<p>Sometimes we not only want to stub a method but we want to ensure (verify) that a given method has been called by the code under test.
 
 {% highlight objc %}
 // create a mock for the user defaults and make sure it's used
@@ -89,7 +91,7 @@ OCMVerify([userDefaultsMock setObject:@"http://someurl" forKey:@"MyAppURLKey"]);
 <p>When verifying method invocations matchers can be used for the arguments in the same way as described above.
 
 
-<h2>Mocking methods on an existing object: partial mocks</h2>
+<h3>Mocking methods on an existing object: partial mocks</h3>
 
 <p>Sometimes we only want to stub or verify a couple of methods, but use the real implementation for all other methods. This is where partial mocks come in:
 
