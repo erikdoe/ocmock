@@ -23,6 +23,5 @@ Pod::Spec.new do |s|
     "Source/OCMock/" + file
   }
   
-  s.framework = "XCTest"
   s.requires_arc = false
 end
