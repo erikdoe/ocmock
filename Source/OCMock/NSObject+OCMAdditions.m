@@ -20,14 +20,14 @@
 
 @implementation NSObject(OCMAdditions)
 
-static NSMutableDictionary *_OCMReturnTypeCache;
-
 + (IMP)instanceMethodForwarderForSelector:(SEL)aSelector
 {
     // use sel_registerName() and not @selector to avoid warning
     SEL selectorWithNoImplementation = sel_registerName("methodWhichMustNotExist::::");
 
 #ifndef __arm64__
+    static NSMutableDictionary *_OCMReturnTypeCache;
+    
     if(_OCMReturnTypeCache == nil)
         _OCMReturnTypeCache = [[NSMutableDictionary alloc] init];
 
