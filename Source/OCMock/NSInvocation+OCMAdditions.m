@@ -131,7 +131,7 @@
 		{
 			long double value;
 			[self getArgument:&value atIndex:argIndex];
-			return [NSValue valueWithBytes:&value objCType:@encode(typeof(value))];
+			return [NSValue valueWithBytes:&value objCType:@encode(__typeof(value))];
 		}
 		case 'B':
 		{
@@ -310,7 +310,7 @@
 	long long longLongValue;
 	
 	[self getArgument:&longLongValue atIndex:anInt];
-	return [NSString stringWithFormat:@"%qi", longLongValue];
+	return [NSString stringWithFormat:@"%lli", longLongValue];
 }
 
 - (NSString *)unsignedLongLongDescriptionAtIndex:(NSInteger)anInt
@@ -318,7 +318,7 @@
 	unsigned long long longLongValue;
 	
 	[self getArgument:&longLongValue atIndex:anInt];
-	return [NSString stringWithFormat:@"%qu", longLongValue];
+	return [NSString stringWithFormat:@"%llu", longLongValue];
 }
 
 - (NSString *)doubleDescriptionAtIndex:(NSInteger)anInt

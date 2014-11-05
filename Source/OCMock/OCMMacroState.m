@@ -24,7 +24,7 @@
 
 @implementation OCMMacroState
 
-OCMMacroState *globalState;
+static OCMMacroState *globalState;
 
 #pragma mark  Methods to begin/end macros
 

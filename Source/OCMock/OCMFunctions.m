@@ -155,7 +155,7 @@ BOOL OCMEqualTypesAllowingOpaqueStructs(const char *type1, const char *type2)
     {
         return OCMEqualTypesAllowingOpaqueStructsInternal(type1, type2);
     }
-    @catch (NSException *e)
+    @catch (__unused NSException *e)
     {
         /* Probably a bitfield or something that NSGetSizeAndAlignment chokes on, oh well */
         return NO;
@@ -189,8 +189,8 @@ Class OCMGetIsa(id object)
 
 #pragma mark  Alias for renaming real methods
 
-NSString *OCMRealMethodAliasPrefix = @"ocmock_replaced_";
-const char *OCMRealMethodAliasPrefixCString = "ocmock_replaced_";
+static NSString *const OCMRealMethodAliasPrefix = @"ocmock_replaced_";
+static const char *const OCMRealMethodAliasPrefixCString = "ocmock_replaced_";
 
 BOOL OCMIsAliasSelector(SEL selector)
 {
@@ -217,7 +217,7 @@ SEL OCMOriginalSelectorForAlias(SEL selector)
 
 #pragma mark  Wrappers around associative references
 
-NSString *OCMClassMethodMockObjectKey = @"OCMClassMethodMockObjectKey";
+static NSString *const OCMClassMethodMockObjectKey = @"OCMClassMethodMockObjectKey";
 
 void OCMSetAssociatedMockForClass(OCClassMockObject *mock, Class aClass)
 {
@@ -238,7 +238,7 @@ OCClassMockObject *OCMGetAssociatedMockForClass(Class aClass, BOOL includeSuperc
     return mock;
 }
 
-NSString *OCMPartialMockObjectKey = @"OCMPartialMockObjectKey";
+static NSString *const OCMPartialMockObjectKey = @"OCMPartialMockObjectKey";
 
 void OCMSetAssociatedMockForObject(OCClassMockObject *mock, id anObject)
 {
