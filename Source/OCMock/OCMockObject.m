@@ -285,7 +285,7 @@
     OCMInvocationStub *stub = nil;
     for(stub in stubs)
     {
-        if([stub handleInvocation:anInvocation])
+        if([stub matchesInvocation:anInvocation])
             break;
     }
     if(stub == nil)
@@ -298,12 +298,14 @@
         {
             [NSException raise:NSInternalInconsistencyException format:@"%@: unexpected method invoked: %@\n\texpected:\t%@", [self description], [stub description], [[expectations objectAtIndex:0] description]];
         }
-        if([(OCMInvocationExpectation *)stub isSatisfied])
+
+        if(![(OCMInvocationExpectation *)stub isMatchAndReject])
         {
             [expectations removeObject:stub];
             [stubs removeObject:stub];
         }
     }
+    [stub handleInvocation:anInvocation];
 
     return YES;
 }
