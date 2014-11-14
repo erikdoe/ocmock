@@ -285,6 +285,7 @@
     OCMInvocationStub *stub = nil;
     for(stub in stubs)
     {
+        // If the stub forwards its invocation to the real object, then we don't want to do handleInvocation: yet, since forwarding the invocation to the real object could call a method that is expected to happen after this one, which is bad if expectationOrderMatters is YES
         if([stub matchesInvocation:anInvocation])
             break;
     }
@@ -299,6 +300,7 @@
             [NSException raise:NSInternalInconsistencyException format:@"%@: unexpected method invoked: %@\n\texpected:\t%@", [self description], [stub description], [[expectations objectAtIndex:0] description]];
         }
 
+        // We can't check isSatisfied yet, since the stub won't be satisfied until we call handleInvocation:, and we don't want to call handleInvocation: yes for the reason in the comment above, since we'll still have the current expectation in the expectations array, which will cause an exception if expectationOrderMatters is YES and we're not ready for any future expected methods to be called yet
         if(![(OCMInvocationExpectation *)stub isMatchAndReject])
         {
             [expectations removeObject:stub];
