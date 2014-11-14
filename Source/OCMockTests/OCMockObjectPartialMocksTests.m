@@ -255,6 +255,15 @@ static NSUInteger initializeCallCount = 0;
     XCTAssertNoThrow([object method2], @"Since method1 should be rejected, we shouldn't expect it to be called before method2.");
 }
 
+- (void)testExpectedMethodCallsExpectedMethodWithExpectationOrdering {
+    TestClassThatCallsSelf *object = [[TestClassThatCallsSelf alloc] init];
+    id mock = OCMPartialMock(object);
+    [mock setExpectationOrderMatters:YES];
+    [[[mock expect] andForwardToRealObject] method1];
+    [[[mock expect] andForwardToRealObject] method2];
+    XCTAssertNoThrow([object method1], @"Calling an expected method that internally calls another expected method should not make expectations appear to be out of order.");
+}
+
 #if TARGET_RT_64_BIT
 
 - (void)testRefusesToCreatePartialMockForTaggedPointers
