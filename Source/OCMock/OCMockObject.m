@@ -289,6 +289,8 @@
         if([stub matchesInvocation:anInvocation])
             break;
     }
+    // Retain the stub in case it ends up being removed from stubs and expectations, since we still have to call handleInvocation on the stub at the end
+    [stub retain];
     if(stub == nil)
         return NO;
 
@@ -308,6 +310,7 @@
         }
     }
     [stub handleInvocation:anInvocation];
+    [stub release];
 
     return YES;
 }
