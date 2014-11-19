@@ -44,7 +44,15 @@
 	{
         methodDescription = protocol_getMethodDescription(mockedProtocol, aSelector, NO, YES);
     }
-    if(methodDescription.name == NULL) 
+    if (methodDescription.name == NULL)
+    {
+        methodDescription = protocol_getMethodDescription(mockedProtocol, aSelector, YES, NO);
+    }
+    if (methodDescription.name == NULL)
+    {
+        methodDescription = protocol_getMethodDescription(mockedProtocol, aSelector, NO, NO);
+    }
+    if(methodDescription.name == NULL)
 	{
         return nil;
     }

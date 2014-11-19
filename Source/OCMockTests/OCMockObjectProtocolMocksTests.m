@@ -23,6 +23,7 @@
 // --------------------------------------------------------------------------------------
 
 @protocol TestProtocol
++ (NSString *)stringValueClassMethod;
 - (int)primitiveValue;
 @optional
 - (id)objectValue;
@@ -136,6 +137,20 @@ typedef InterfaceForTypedef* PointerTypedefInterface;
     id mock = [OCMockObject niceMockForProtocol:@protocol(TestProtocol)];
     [[mock expect] primitiveValue];
     XCTAssertThrows([mock verify], @"Should have raised an exception because method was not called.");
+}
+
+- (void)testProtocolClassMethod
+{
+    id mockedViewController = OCMProtocolMock(@protocol(TestProtocol));
+
+    // FIXED: This line compiles fine, but throws an exception at run time.
+    OCMStub([mockedViewController stringValueClassMethod]).andReturn(@"stubbed");
+
+    id result = [mockedViewController stringValueClassMethod];
+
+    XCTAssertEqual(@"stubbed", result, @"Should have stubbed the class method.");
+
+    OCMVerify([mockedViewController stringValueClassMethod]);
 }
 
 @end
