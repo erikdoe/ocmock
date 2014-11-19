@@ -266,18 +266,6 @@
     }
 }
 
-- (OCMInvocationExpectation *)_firstNonNeverExpectation
-{
-    for (OCMInvocationExpectation *expectation in expectations)
-    {
-        if (![expectation isMatchAndReject])
-        {
-            return expectation;
-        }
-    }
-    return nil;
-}
-
 - (BOOL)handleInvocation:(NSInvocation *)anInvocation
 {
     [invocations addObject:anInvocation];
@@ -294,25 +282,35 @@
     if(stub == nil)
         return NO;
 
-    if([expectations containsObject:stub])
-    {
-        OCMInvocationExpectation *expectation = [self _firstNonNeverExpectation];
-        if(expectationOrderMatters && expectation && (expectation != stub))
-        {
-            [NSException raise:NSInternalInconsistencyException format:@"%@: unexpected method invoked: %@\n\texpected:\t%@", [self description], [stub description], [[expectations objectAtIndex:0] description]];
-        }
+     if([expectations containsObject:stub])
+     {
+          OCMInvocationExpectation *expectation = [self _nextExptectedInvocation];
+          if(expectationOrderMatters && (expectation != stub))
+          {
+               [NSException raise:NSInternalInconsistencyException format:@"%@: unexpected method invoked: %@\n\texpected:\t%@",
+                            [self description], [stub description], [[expectations objectAtIndex:0] description]];
+          }
 
-        // We can't check isSatisfied yet, since the stub won't be satisfied until we call handleInvocation:, and we don't want to call handleInvocation: yes for the reason in the comment above, since we'll still have the current expectation in the expectations array, which will cause an exception if expectationOrderMatters is YES and we're not ready for any future expected methods to be called yet
-        if(![(OCMInvocationExpectation *)stub isMatchAndReject])
-        {
-            [expectations removeObject:stub];
-            [stubs removeObject:stub];
-        }
-    }
-    [stub handleInvocation:anInvocation];
-    [stub release];
+          // We can't check isSatisfied yet, since the stub won't be satisfied until we call handleInvocation:, and we don't want to call handleInvocation: yes for the reason in the comment above, since we'll still have the current expectation in the expectations array, which will cause an exception if expectationOrderMatters is YES and we're not ready for any future expected methods to be called yet
+          if(![(OCMInvocationExpectation *)stub isMatchAndReject])
+          {
+               [expectations removeObject:stub];
+               [stubs removeObject:stub];
+          }
+     }
+     [stub handleInvocation:anInvocation];
+     [stub release];
 
-    return YES;
+     return YES;
+}
+
+
+- (OCMInvocationExpectation *)_nextExptectedInvocation
+{
+    for(OCMInvocationExpectation *expectation in expectations)
+        if(![expectation isMatchAndReject])
+            return expectation;
+    return nil;
 }
 
 - (void)handleUnRecordedInvocation:(NSInvocation *)anInvocation

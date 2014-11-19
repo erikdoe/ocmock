@@ -131,7 +131,7 @@
 		{
 			long double value;
 			[self getArgument:&value atIndex:argIndex];
-			return [NSValue valueWithBytes:&value objCType:@encode(typeof(value))];
+			return [NSValue valueWithBytes:&value objCType:@encode(__typeof__(value))];
 		}
 		case 'B':
 		{

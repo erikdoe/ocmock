@@ -245,16 +245,6 @@ static NSUInteger initializeCallCount = 0;
                                  @"should throw NSInvalidArgumentException exception");
 }
 
-- (void)testRejectThenExpectWithExpectationOrdering
-{
-    TestClassThatCallsSelf *object = [[TestClassThatCallsSelf alloc] init];
-    id mock = OCMPartialMock(object);
-    [mock setExpectationOrderMatters:YES];
-    [[mock reject] method1];
-    [[mock expect] method2];
-    XCTAssertNoThrow([object method2], @"Since method1 should be rejected, we shouldn't expect it to be called before method2.");
-}
-
 - (void)testExpectedMethodCallsExpectedMethodWithExpectationOrdering {
     TestClassThatCallsSelf *object = [[TestClassThatCallsSelf alloc] init];
     id mock = OCMPartialMock(object);
