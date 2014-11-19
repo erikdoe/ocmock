@@ -141,16 +141,10 @@ typedef InterfaceForTypedef* PointerTypedefInterface;
 
 - (void)testProtocolClassMethod
 {
-    id mockedViewController = OCMProtocolMock(@protocol(TestProtocol));
-
-    // FIXED: This line compiles fine, but throws an exception at run time.
-    OCMStub([mockedViewController stringValueClassMethod]).andReturn(@"stubbed");
-
-    id result = [mockedViewController stringValueClassMethod];
-
+    id mock = OCMProtocolMock(@protocol(TestProtocol));
+    OCMStub([mock stringValueClassMethod]).andReturn(@"stubbed");
+    id result = [mock stringValueClassMethod];
     XCTAssertEqual(@"stubbed", result, @"Should have stubbed the class method.");
-
-    OCMVerify([mockedViewController stringValueClassMethod]);
 }
 
 @end

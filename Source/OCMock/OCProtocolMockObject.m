@@ -39,23 +39,18 @@
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
-	struct objc_method_description methodDescription = protocol_getMethodDescription(mockedProtocol, aSelector, YES, YES);
-    if(methodDescription.name == NULL) 
-	{
-        methodDescription = protocol_getMethodDescription(mockedProtocol, aSelector, NO, YES);
-    }
-    if (methodDescription.name == NULL)
+
+    struct objc_method_description methodDescription;
+    struct { BOOL isRequired; BOOL isInstance; } opts[4] = { {YES, YES}, {NO, YES}, {YES, NO}, {NO, NO} };
+    for(int i = 0; i < 4; i++)
     {
-        methodDescription = protocol_getMethodDescription(mockedProtocol, aSelector, YES, NO);
-    }
-    if (methodDescription.name == NULL)
-    {
-        methodDescription = protocol_getMethodDescription(mockedProtocol, aSelector, NO, NO);
+        methodDescription = protocol_getMethodDescription(mockedProtocol, aSelector, opts[i].isRequired, opts[i].isInstance);
+        if(methodDescription.name != NULL)
+            break;
     }
     if(methodDescription.name == NULL)
-	{
         return nil;
-    }
+
 	return [NSMethodSignature signatureWithObjCTypes:methodDescription.types];
 }
 
