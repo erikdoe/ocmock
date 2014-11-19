@@ -27,6 +27,11 @@
         isSatisfied = YES;
 }
 
+- (BOOL)isMatchAndReject
+{
+  return matchAndReject;
+}
+
 - (BOOL)isSatisfied
 {
     return isSatisfied;
