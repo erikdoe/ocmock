@@ -824,6 +824,15 @@ static NSString *TestNotification = @"TestNotification";
 	XCTAssertThrows([mock uppercaseString], @"Should have complained about wrong sequence.");
 }
 
+- (void)testRejectThenExpectWithExpectationOrdering
+{
+    [mock setExpectationOrderMatters:YES];
+    [[mock reject] lowercaseString];
+    [[mock expect] uppercaseString];
+    XCTAssertNoThrow([mock uppercaseString], @"Since lowercaseString should be rejected, we shouldn't expect it to be called before uppercaseString.");
+}
+
+
 
 // --------------------------------------------------------------------------------------
 //	nice mocks don't complain about unknown methods, unless told to

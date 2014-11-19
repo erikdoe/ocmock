@@ -266,18 +266,6 @@
     }
 }
 
-- (OCMInvocationExpectation *)_firstNonNeverExpectation
-{
-    for (OCMInvocationExpectation *expectation in expectations)
-    {
-        if (![expectation isMatchAndReject])
-        {
-            return expectation;
-        }
-    }
-    return nil;
-}
-
 - (BOOL)handleInvocation:(NSInvocation *)anInvocation
 {
     [invocations addObject:anInvocation];
@@ -291,21 +279,31 @@
     if(stub == nil)
         return NO;
 
-    if([expectations containsObject:stub])
-    {
-        OCMInvocationExpectation *expectation = [self _firstNonNeverExpectation];
-        if(expectationOrderMatters && expectation && (expectation != stub))
+	if([expectations containsObject:stub])
+	{
+        OCMInvocationExpectation *expectation = [self _nextExptectedInvocation];
+        if(expectationOrderMatters && (expectation != stub))
         {
-            [NSException raise:NSInternalInconsistencyException format:@"%@: unexpected method invoked: %@\n\texpected:\t%@", [self description], [stub description], [[expectations objectAtIndex:0] description]];
+            [NSException raise:NSInternalInconsistencyException format:@"%@: unexpected method invoked: %@\n\texpected:\t%@",
+                            [self description], [stub description], [[expectations objectAtIndex:0] description]];
         }
         if([(OCMInvocationExpectation *)stub isSatisfied])
         {
             [expectations removeObject:stub];
             [stubs removeObject:stub];
         }
-    }
+	}
 
-    return YES;
+	return YES;
+}
+
+
+- (OCMInvocationExpectation *)_nextExptectedInvocation
+{
+    for(OCMInvocationExpectation *expectation in expectations)
+        if(![expectation isMatchAndReject])
+            return expectation;
+    return nil;
 }
 
 - (void)handleUnRecordedInvocation:(NSInvocation *)anInvocation
