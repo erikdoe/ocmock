@@ -58,7 +58,7 @@
 {
     NSString *classname = NSStringFromClass(class);
     NSString *reason = nil;
-    if([classname hasPrefix:@"__NSTagged"])
+    if([classname hasPrefix:@"__NSTagged"] || [classname hasPrefix:@"NSTagged"])
         reason = [NSString stringWithFormat:@"OCMock does not support partially mocking tagged classes; got %@", classname];
     else if([classname hasPrefix:@"__NSCF"])
         reason = [NSString stringWithFormat:@"OCMock does not support partially mocking toll-free bridged classes; got %@", classname];
