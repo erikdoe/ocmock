@@ -17,6 +17,7 @@
 #import <XCTest/XCTest.h>
 #import "OCMArg.h"
 #import "OCMConstraint.h"
+#import "OCMPassByRefSetter.h"
 
 #if TARGET_OS_IPHONE
 #define NSRect CGRect
@@ -73,12 +74,21 @@
 }
 
 -(void)testResolvesAnyPointerToAny{
-
+    
     void *anyPointer = [OCMArg anyPointer];
     NSValue *anyPointerValue = [NSValue valueWithPointer:anyPointer];
     
     XCTAssertTrue([[OCMArg resolveSpecialValues:anyPointerValue] isKindOfClass:[OCMAnyConstraint class]]);
+    
+}
 
+-(void)testResolvesPassByRefSetterValueToItsPointer{
+    
+    NSNumber *value = @1;
+    OCMPassByRefSetter *setter = [[OCMPassByRefSetter alloc] initWithValue:value];
+    NSValue *passByRefSetterValue = [NSValue value:&setter withObjCType:@encode(void *)];
+    XCTAssertEqual([OCMArg resolveSpecialValues:passByRefSetterValue], setter, @"NSValue wrapping OCMPassByRefSetter does not resolve to the underlying OCMPassByRefSetter");
+    
 }
 
 @end
