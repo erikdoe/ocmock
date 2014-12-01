@@ -65,4 +65,20 @@
     
 }
 
+-(void)testResolvesArbitrarySelectorToItself{
+
+    NSValue *arbirary = [NSValue value:NSSelectorFromString(@"someSelector") withObjCType:@encode(SEL)];
+    XCTAssertEqual([OCMArg resolveSpecialValues:arbirary], arbirary, @"Arbirary selector is not resolved to itself");
+    
+}
+
+-(void)testResolvesAnyPointerToAny{
+
+    void *anyPointer = [OCMArg anyPointer];
+    NSValue *anyPointerValue = [NSValue valueWithPointer:anyPointer];
+    
+    XCTAssertTrue([[OCMArg resolveSpecialValues:anyPointerValue] isKindOfClass:[OCMAnyConstraint class]]);
+
+}
+
 @end
