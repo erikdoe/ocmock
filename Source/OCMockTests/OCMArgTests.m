@@ -56,4 +56,13 @@
 	XCTAssertFalse([constraint evaluate:nil], @"Should not have accepted nil.");
 }
 
+-(void)testResolvesAnySelectorToAny{
+
+    SEL anySelector = [OCMArg anySelector];
+    NSValue *anySelectorValue = [NSValue valueWithBytes:&anySelector objCType:@encode(SEL)];
+    
+    XCTAssertTrue([[OCMArg resolveSpecialValues:anySelectorValue] isKindOfClass:[OCMAnyConstraint class]]);
+    
+}
+
 @end
