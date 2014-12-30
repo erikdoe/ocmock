@@ -423,4 +423,12 @@ static NSUInteger initializeCallCount = 0;
 }
 
 
+#pragma mark    Test for nil to raise an exception instead of crash
+
+- (void)testMockingNilDoesntCrashTests
+{
+    XCTAssertThrows(OCMPartialMock(nil));
+}
+
+
 @end
