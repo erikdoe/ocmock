@@ -29,6 +29,7 @@
 
 - (id)initWithObject:(NSObject *)anObject
 {
+    NSParameterAssert(anObject != nil);
     [self assertClassIsSupported:[anObject class]];
 	[super initWithClass:[anObject class]];
 	realObject = [anObject retain];
