@@ -24,6 +24,7 @@
 
 - (id)initWithProtocol:(Protocol *)aProtocol
 {
+    NSParameterAssert(aProtocol != nil);
 	[super init];
 	mockedProtocol = aProtocol;
 	return self;
