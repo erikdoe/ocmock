@@ -1,6 +1,12 @@
 Listing of notable changes by release. More detail is usually found in the Git 
 commit messages and/or the pull requests.
 
+OCMock 3.1.2 (2015-01-08)
+
+* Fixed bugs around reject and expectation orders (Mason Glidden, Ben Asher)
+* Small adjustments to build file and dependencies
+
+
 OCMock 3.1.1 (2014-08-23)
 
 * Fixed a recently introduced bug that resulted in class arguments and return
