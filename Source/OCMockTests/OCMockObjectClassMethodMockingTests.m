@@ -288,6 +288,11 @@ static NSUInteger initializeCallCount = 0;
     XCTAssertThrows([mock foo]);
 }
 
+- (void)testRefusesToCreateClassMockForNilClass
+{
+    XCTAssertThrows(OCMClassMock(nil));
+}
+
 - (void)testInitializeIsNotCalledOnMockedClass
 {
     NSUInteger countBefore = [TestClassWithClassMethods initializeCallCount];
@@ -311,14 +316,6 @@ static NSUInteger initializeCallCount = 0;
     id newObject = [TestClassWithClassMethods new];
 
     XCTAssertEqualObjects(dummyObject, newObject, @"Should have stubbed +new method");
-}
-
-
-#pragma mark    Test for nil to raise an exception instead of crash
-
-- (void)testMockingNilDoesntCrashTests
-{
-    XCTAssertThrows(OCMClassMock(nil));
 }
 
 @end

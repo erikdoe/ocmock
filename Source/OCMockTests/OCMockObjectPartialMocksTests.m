@@ -267,6 +267,11 @@ static NSUInteger initializeCallCount = 0;
 
 #endif
 
+- (void)testRefusesToCreatePartialMockForNilObject
+{
+    XCTAssertThrows(OCMPartialMock(nil));
+}
+
 
 #pragma mark   Tests for KVO interaction with mocks
 
@@ -420,14 +425,6 @@ static NSUInteger initializeCallCount = 0;
 	id mock = [OCMockObject partialMockForObject:foo];
 	[[[mock stub] andCall:@selector(aMethodWithVoidReturn) onObject:self] methodVoid];
 	XCTAssertNoThrow([foo method1], @"Should have worked.");
-}
-
-
-#pragma mark    Test for nil to raise an exception instead of crash
-
-- (void)testMockingNilDoesntCrashTests
-{
-    XCTAssertThrows(OCMPartialMock(nil));
 }
 
 

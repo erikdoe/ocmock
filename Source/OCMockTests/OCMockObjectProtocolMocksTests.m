@@ -147,10 +147,7 @@ typedef InterfaceForTypedef* PointerTypedefInterface;
     XCTAssertEqual(@"stubbed", result, @"Should have stubbed the class method.");
 }
 
-
-#pragma mark    Test for nil to raise an exception instead of crash
-
-- (void)testMockingNilDoesntCrashTests
+- (void)testRefusesToCreateProtocolMockForNilProtocol
 {
     XCTAssertThrows(OCMProtocolMock(nil));
 }
