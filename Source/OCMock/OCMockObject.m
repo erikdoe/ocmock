@@ -112,12 +112,18 @@
 
 - (void)addStub:(OCMInvocationStub *)aStub
 {
-    [stubs addObject:aStub];
+	@synchronized(self)
+	{
+		[stubs addObject:aStub];
+	}
 }
 
 - (void)addExpectation:(OCMInvocationExpectation *)anExpectation
 {
-    [expectations addObject:anExpectation];
+	@synchronized(self)
+	{
+		[expectations addObject:anExpectation];
+	}
 }
 
 
@@ -158,11 +164,14 @@
 - (id)verifyAtLocation:(OCMLocation *)location
 {
     NSMutableArray *unsatisfiedExpectations = [NSMutableArray array];
-    for(OCMInvocationExpectation *e in expectations)
-    {
-        if(![e isSatisfied])
-            [unsatisfiedExpectations addObject:e];
-    }
+    @synchronized(self)
+	{
+		for(OCMInvocationExpectation *e in expectations)
+		{
+			if(![e isSatisfied])
+				[unsatisfiedExpectations addObject:e];
+		}
+	}
 
 	if([unsatisfiedExpectations count] == 1)
 	{
@@ -198,8 +207,11 @@
     NSTimeInterval step = 0.01;
     while(delay > 0)
     {
-        if([expectations count] == 0)
-            break;
+		@synchronized(self)
+		{
+			if([expectations count] == 0)
+				break;
+		}
         [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:step]];
         delay -= step;
         step *= 2;
@@ -217,11 +229,14 @@
 
 - (void)verifyInvocation:(OCMInvocationMatcher *)matcher atLocation:(OCMLocation *)location
 {
-    for(NSInvocation *invocation in invocations)
-    {
-        if([matcher matchesInvocation:invocation])
-            return;
-    }
+	@synchronized(self)
+	{
+		for(NSInvocation *invocation in invocations)
+		{
+			if([matcher matchesInvocation:invocation])
+				return;
+		}
+	}
     NSString *description = [NSString stringWithFormat:@"%@: Method %@ was not invoked.",
      [self description], [matcher description]];
 
@@ -245,10 +260,13 @@
 
 - (BOOL)handleSelector:(SEL)sel
 {
-    for(OCMInvocationStub *recorder in stubs)
-        if([recorder matchesSelector:sel])
-            return YES;
-
+	@synchronized(self)
+	{
+		for(OCMInvocationStub *recorder in stubs)
+			if([recorder matchesSelector:sel])
+				return YES;
+	}
+	
     return NO;
 }
 
@@ -268,49 +286,55 @@
 
 - (BOOL)handleInvocation:(NSInvocation *)anInvocation
 {
-    [invocations addObject:anInvocation];
+	@synchronized(self)
+	{
+		[invocations addObject:anInvocation];
 
-    OCMInvocationStub *stub = nil;
-    for(stub in stubs)
-    {
-        // If the stub forwards its invocation to the real object, then we don't want to do handleInvocation: yet, since forwarding the invocation to the real object could call a method that is expected to happen after this one, which is bad if expectationOrderMatters is YES
-        if([stub matchesInvocation:anInvocation])
-            break;
-    }
-    // Retain the stub in case it ends up being removed from stubs and expectations, since we still have to call handleInvocation on the stub at the end
-    [stub retain];
-    if(stub == nil)
-        return NO;
+		OCMInvocationStub *stub = nil;
+		for(stub in stubs)
+		{
+			// If the stub forwards its invocation to the real object, then we don't want to do handleInvocation: yet, since forwarding the invocation to the real object could call a method that is expected to happen after this one, which is bad if expectationOrderMatters is YES
+			if([stub matchesInvocation:anInvocation])
+				break;
+		}
+		// Retain the stub in case it ends up being removed from stubs and expectations, since we still have to call handleInvocation on the stub at the end
+		[stub retain];
+		if(stub == nil)
+			return NO;
 
-     if([expectations containsObject:stub])
-     {
-          OCMInvocationExpectation *expectation = [self _nextExptectedInvocation];
-          if(expectationOrderMatters && (expectation != stub))
-          {
-               [NSException raise:NSInternalInconsistencyException format:@"%@: unexpected method invoked: %@\n\texpected:\t%@",
-                            [self description], [stub description], [[expectations objectAtIndex:0] description]];
-          }
+		 if([expectations containsObject:stub])
+		 {
+			  OCMInvocationExpectation *expectation = [self _nextExptectedInvocation];
+			  if(expectationOrderMatters && (expectation != stub))
+			  {
+				   [NSException raise:NSInternalInconsistencyException format:@"%@: unexpected method invoked: %@\n\texpected:\t%@",
+								[self description], [stub description], [[expectations objectAtIndex:0] description]];
+			  }
 
-          // We can't check isSatisfied yet, since the stub won't be satisfied until we call handleInvocation:, and we don't want to call handleInvocation: yes for the reason in the comment above, since we'll still have the current expectation in the expectations array, which will cause an exception if expectationOrderMatters is YES and we're not ready for any future expected methods to be called yet
-          if(![(OCMInvocationExpectation *)stub isMatchAndReject])
-          {
-               [expectations removeObject:stub];
-               [stubs removeObject:stub];
-          }
-     }
-     [stub handleInvocation:anInvocation];
-     [stub release];
-
+			  // We can't check isSatisfied yet, since the stub won't be satisfied until we call handleInvocation:, and we don't want to call handleInvocation: yes for the reason in the comment above, since we'll still have the current expectation in the expectations array, which will cause an exception if expectationOrderMatters is YES and we're not ready for any future expected methods to be called yet
+			  if(![(OCMInvocationExpectation *)stub isMatchAndReject])
+			  {
+				   [expectations removeObject:stub];
+				   [stubs removeObject:stub];
+			  }
+		 }
+		 [stub handleInvocation:anInvocation];
+		 [stub release];
+	}
+	
      return YES;
 }
 
 
 - (OCMInvocationExpectation *)_nextExptectedInvocation
 {
-    for(OCMInvocationExpectation *expectation in expectations)
-        if(![expectation isMatchAndReject])
-            return expectation;
-    return nil;
+	@synchronized(self)
+	{
+		for(OCMInvocationExpectation *expectation in expectations)
+			if(![expectation isMatchAndReject])
+				return expectation;
+    }
+	return nil;
 }
 
 - (void)handleUnRecordedInvocation:(NSInvocation *)anInvocation
@@ -343,23 +367,26 @@
 - (NSString *)_stubDescriptions:(BOOL)onlyExpectations
 {
 	NSMutableString *outputString = [NSMutableString string];
-    for(OCMStubRecorder *stub in stubs)
-    {
-		NSString *prefix = @"";
-		
-		if(onlyExpectations)
+	@synchronized(self)
+	{
+		for(OCMStubRecorder *stub in stubs)
 		{
-			if([expectations containsObject:stub] == NO)
-				continue;
-		}
-		else
-		{
-			if([expectations containsObject:stub])
-				prefix = @"expected:\t";
+			NSString *prefix = @"";
+			
+			if(onlyExpectations)
+			{
+				if([expectations containsObject:stub] == NO)
+					continue;
+			}
 			else
-				prefix = @"stubbed:\t";
+			{
+				if([expectations containsObject:stub])
+					prefix = @"expected:\t";
+				else
+					prefix = @"stubbed:\t";
+			}
+			[outputString appendFormat:@"\n\t%@%@", prefix, [stub description]];
 		}
-		[outputString appendFormat:@"\n\t%@%@", prefix, [stub description]];
 	}
 	return outputString;
 }
