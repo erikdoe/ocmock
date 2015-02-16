@@ -17,6 +17,7 @@
 #import <XCTest/XCTest.h>
 #import "OCMArg.h"
 #import "OCMConstraint.h"
+#import "OCMPassByRefSetter.h"
 
 #if TARGET_OS_IPHONE
 #define NSRect CGRect
@@ -54,6 +55,40 @@
 	XCTAssertTrue([constraint evaluate:@"foo"], @"Should have accepted \"foo\".");
 	XCTAssertFalse([constraint evaluate:[NSArray array]], @"Should not have accepted other value.");
 	XCTAssertFalse([constraint evaluate:nil], @"Should not have accepted nil.");
+}
+
+-(void)testResolvesAnySelectorToAny{
+
+    SEL anySelector = [OCMArg anySelector];
+    NSValue *anySelectorValue = [NSValue valueWithBytes:&anySelector objCType:@encode(SEL)];
+    
+    XCTAssertTrue([[OCMArg resolveSpecialValues:anySelectorValue] isKindOfClass:[OCMAnyConstraint class]]);
+    
+}
+
+-(void)testResolvesArbitrarySelectorToItself{
+
+    NSValue *arbirary = [NSValue value:NSSelectorFromString(@"someSelector") withObjCType:@encode(SEL)];
+    XCTAssertEqual([OCMArg resolveSpecialValues:arbirary], arbirary, @"Arbirary selector is not resolved to itself");
+    
+}
+
+-(void)testResolvesAnyPointerToAny{
+    
+    void *anyPointer = [OCMArg anyPointer];
+    NSValue *anyPointerValue = [NSValue valueWithPointer:anyPointer];
+    
+    XCTAssertTrue([[OCMArg resolveSpecialValues:anyPointerValue] isKindOfClass:[OCMAnyConstraint class]]);
+    
+}
+
+-(void)testResolvesPassByRefSetterValueToItsPointer{
+    
+    NSNumber *value = @1;
+    OCMPassByRefSetter *setter = [[OCMPassByRefSetter alloc] initWithValue:value];
+    NSValue *passByRefSetterValue = [NSValue value:&setter withObjCType:@encode(void *)];
+    XCTAssertEqual([OCMArg resolveSpecialValues:passByRefSetterValue], setter, @"NSValue wrapping OCMPassByRefSetter does not resolve to the underlying OCMPassByRefSetter");
+    
 }
 
 @end
