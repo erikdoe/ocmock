@@ -41,11 +41,15 @@
 {
    [super handleInvocation:anInvocation];
 
-    isSatisfied = !matchAndReject;
     if(matchAndReject)
     {
+        isSatisfied = NO;
         [NSException raise:NSInternalInconsistencyException format:@"%@: explicitly disallowed method invoked: %@",
                 [self description], [anInvocation invocationDescription]];
+    }
+    else
+    {
+        isSatisfied = YES;
     }
 }
 
