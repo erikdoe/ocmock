@@ -43,12 +43,11 @@
 }
 
 
-- (BOOL)handleInvocation:(NSInvocation *)anInvocation
+- (void)handleInvocation:(NSInvocation *)anInvocation
 {
-    if(![self matchesInvocation:anInvocation])
-        return NO;
+//    if(![self matchesInvocation:anInvocation])
+//        return NO;
     [invocationActions makeObjectsPerformSelector:@selector(handleInvocation:) withObject:anInvocation];
-    return YES;
 }
 
 @end

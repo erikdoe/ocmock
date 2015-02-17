@@ -914,6 +914,19 @@ static NSString *TestNotification = @"TestNotification";
 }
 
 
+- (void)testArgumentConstraintsAreOnlyCalledAsOftenAsTheMethodIsCalled
+{
+    __block int count = 0;
+
+    [[mock stub] hasSuffix:[OCMArg checkWithBlock:^(id value) { count++; return YES; }]];
+
+    [mock hasSuffix:@"foo"];
+    [mock hasSuffix:@"bar"];
+
+    XCTAssertEqual(2, count, @"Should have evaluated constraint only twice");
+}
+
+
 @end
 
 

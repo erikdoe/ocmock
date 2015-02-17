@@ -37,19 +37,16 @@
     return isSatisfied;
 }
 
-- (BOOL)handleInvocation:(NSInvocation *)anInvocation
+- (void)handleInvocation:(NSInvocation *)anInvocation
 {
-    BOOL result = [super handleInvocation:anInvocation];
-    if(result)
+   [super handleInvocation:anInvocation];
+
+    isSatisfied = !matchAndReject;
+    if(matchAndReject)
     {
-        isSatisfied = !matchAndReject;
-        if(matchAndReject)
-        {
-            [NSException raise:NSInternalInconsistencyException format:@"%@: explicitly disallowed method invoked: %@",
-                    [self description], [anInvocation invocationDescription]];
-        }
+        [NSException raise:NSInternalInconsistencyException format:@"%@: explicitly disallowed method invoked: %@",
+                [self description], [anInvocation invocationDescription]];
     }
-    return result;
 }
 
 @end
