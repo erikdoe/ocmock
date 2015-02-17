@@ -397,6 +397,18 @@ static NSUInteger initializeCallCount = 0;
 	[mock verify];
 }
 
+- (void)testReturnValueFromRealObjectShouldBeReturnedEvenWithPrecedingAndCall
+{
+  TestClassThatCallsSelf *object = [[TestClassThatCallsSelf alloc] init];
+  OCMockObject *mock = OCMPartialMock(object);
+  [[[[mock stub] andCall:@selector(firstReturnValueMethod) onObject:self] andForwardToRealObject] method2];
+  XCTAssertEqualObjects([object method2], @"Foo", @"Should have returned value from real object.");
+}
+
+- (NSString *)firstReturnValueMethod
+{
+    return @"Bar";
+}
 
 #pragma mark   Tests for method swizzling with partial mocks
 

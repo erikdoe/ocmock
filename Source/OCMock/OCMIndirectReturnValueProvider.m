@@ -16,6 +16,7 @@
 
 #import "NSMethodSignature+OCMAdditions.h"
 #import "OCMIndirectReturnValueProvider.h"
+#import "NSInvocation+OCMAdditions.h"
 
 
 @implementation OCMIndirectReturnValueProvider
@@ -36,9 +37,15 @@
 
 - (void)handleInvocation:(NSInvocation *)anInvocation
 {
-	[anInvocation setTarget:provider];
+    id originalTarget = [anInvocation target];
+    SEL originalSelector = [anInvocation selector];
+
+    [anInvocation setTarget:provider];
 	[anInvocation setSelector:selector];
 	[anInvocation invoke];
+
+    [anInvocation setTarget:originalTarget];
+    [anInvocation setSelector:originalSelector];
 }
 
 @end
