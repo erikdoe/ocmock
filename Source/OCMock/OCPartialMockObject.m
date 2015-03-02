@@ -22,6 +22,32 @@
 #import "OCMFunctions.h"
 #import "OCMInvocationStub.h"
 
+/// Returns the class which should be used for mocking the object.
+Class OCPartialMockObjectClassForObject(NSObject *object);
+
+Class OCPartialMockObjectClassForObject(NSObject *object)
+{
+    /*
+     Core Data dynamically subclasses managed oject subclasses at runtime in order to implement
+     modeled setters and getters for attributes and relationships.
+     
+     If we are mocking a managed object, ensure we create a mock subclass from
+     Core Data's private subclass, not the exposed class.
+     */
+    
+    static Class managedObjectClass = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        managedObjectClass = NSClassFromString(@"NSManagedObject");
+    });
+    
+    if (managedObjectClass && [object isKindOfClass:managedObjectClass]) {
+        return object_getClass(object);
+    } else {
+        return [object class];
+    }
+}
+
 
 @implementation OCPartialMockObject
 
@@ -30,11 +56,14 @@
 - (id)initWithObject:(NSObject *)anObject
 {
     NSParameterAssert(anObject != nil);
-    [self assertClassIsSupported:[anObject class]];
-	[super initWithClass:[anObject class]];
-	realObject = [anObject retain];
+
+    Class const class = OCPartialMockObjectClassForObject(anObject);
+
+    [self assertClassIsSupported:class];
+    [super initWithClass:class];
+    realObject = [anObject retain];
     [self prepareObjectForInstanceMethodMocking];
-	return self;
+    return self;
 }
 
 - (void)dealloc
