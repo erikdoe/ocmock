@@ -10,7 +10,10 @@ comments: true
 ---
 <h1>{{ page.title }}</h1>
 
-<p>This page decribes my current understanding of using OCMock with Swift. It will be updated as more information becomes available.
+<p>This page decribes my current understanding of using OCMock with Swift. It will be updated as more information becomes available. 
+	
+<p>Last updated for Xcode 6.1.
+
 
 <h2>General FAQ</h2>
 
@@ -36,8 +39,7 @@ comments: true
 <h3>Creating a mock for a Swift class</h3>
 
 <pre><code>// class in Swift
-class Connection : NSObject {
-    
+class ServerConnection : NSObject {
     func fetchData() -> String {
         return "real data returned from other system"
     }
@@ -48,7 +50,7 @@ class Connection : NSObject {
 // test in Objective-C
 - (void)testMockingAnObject
 {
-    id mock = OCMClassMock([Connection class]);
+    id mock = OCMClassMock([ServerConnection class]);
     OCMStub([mock fetchData]).andReturn(@"stubbed!");
 {% endhighlight objc %}
 
@@ -70,7 +72,7 @@ class Controller {
     }
     
     init() {
-        self.connection = Connection();
+        self.connection = ServerConnection();
         self.data = "";
     }
     
@@ -79,12 +81,11 @@ class Controller {
     }
 }
 </code></pre>
-
 {% highlight objc %}
 // test in Objective-C
 - (void)testMockingAnObject
 {
-    id mock = OCMClassMock([Connection class]);
+    id mock = OCMClassMock([ServerConnection class]);
     OCMStub([mock fetchData]).andReturn(@"stubbed!");
     
     Controller *controller = [Controller newController];
@@ -96,11 +97,25 @@ class Controller {
     XCTAssertEqualObjects(@"stubbed!", controller.data, @"Excpected stubbed data in controller.");
 }
 {% endhighlight objc %}
- 
+
 <p>It is possible to use the mock with a Swift object. That Swift object does not even have to inherit from <code>NSObject</code>. It must be made visible to Objective-C, though.
-    
-<p><b>Please see comments below. This does not work with the latest version of Swift anymore.</b>    
-    
+	
+<p>However, note the declaration of the <code>connection</code> variable in the controller class. Unfortunately, it is necessary at the moment to use a protocol. Changing the type from <code>Connection</code> to <code>ServerConnection</code> will make the test crash.
+
+<pre><code>// protocol needed to make above example work
+@objc
+protocol Connection {
+    func fetchData() -> String
+}
+
+class ServerConnection : NSObject, Connection {
+    func fetchData() -> String {
+        return "real data returned from other system"
+    }
+}
+</code></pre>
+	
+	    
 <h3>Creating a partial mock for a Swift object</h3>
 
 {% highlight objc %}
@@ -129,6 +144,7 @@ class Controller {
 <ul>
   <li>Tests have to be written in Objective-C
   <li>Objects that should be mocked must inherit from <code>NSObject</code>
+  <li>References to objects that are replaced with a mock must use protocols
   <li>No stubbing/expecting/verifying of class methods
 </ul>  
   
