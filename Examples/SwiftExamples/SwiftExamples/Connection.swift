@@ -8,8 +8,12 @@
 
 import Foundation
 
-class Connection : NSObject {
-    
+@objc
+protocol Connection {
+    func fetchData() -> String
+}
+
+class ServerConnection : NSObject, Connection {
     func fetchData() -> String {
         return "real data returned from other system"
     }
