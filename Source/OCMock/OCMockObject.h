@@ -44,6 +44,8 @@
 
 - (instancetype)init;
 
+- (NSString *)invocationsDescription;
+
 - (void)setExpectationOrderMatters:(BOOL)flag;
 
 - (id)stub;
