@@ -128,6 +128,11 @@
     expectationOrderMatters = flag;
 }
 
+- (void)setRetainArguments:(BOOL)flag
+{
+    retainArguments = flag;
+}
+
 - (void)stopMocking
 {
     // no-op for mock objects that are not class object or partial mocks
@@ -254,6 +259,10 @@
 
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
+    if (retainArguments) {
+        [anInvocation retainArguments];
+    }
+
     @try
     {
         if([self handleInvocation:anInvocation] == NO)

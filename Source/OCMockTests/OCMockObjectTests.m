@@ -926,6 +926,27 @@ static NSString *TestNotification = @"TestNotification";
     XCTAssertEqual(2, count, @"Should have evaluated constraint only twice");
 }
 
+- (void)testInvocationObjectsAreRetainingArguments
+{
+    mock = [OCMockObject niceMockForClass:[NSDate class]];
+    [mock setRetainArguments:YES];
+
+    XCTestExpectation *expectation = [self expectationWithDescription:@"invoke method on mock in some other universe"];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // The `date` object will go out of scope. If `NSInvocation` won't retain it, the matcher won't have a chance to access it later.
+        NSDate *date = [NSDate date];
+        [mock timeIntervalSinceDate:date];
+        [expectation fulfill];
+    });
+    [self waitForExpectationsWithTimeout:1.0f handler:nil];
+
+    id matcher = [OCMArg checkWithBlock:^BOOL(id obj) {
+        XCTAssertTrue([obj isKindOfClass:[NSDate class]]);
+        return YES;
+    }];
+
+    OCMVerify([mock timeIntervalSinceDate:matcher]);
+}
 
 @end
 
