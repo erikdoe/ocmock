@@ -103,7 +103,7 @@ static BOOL OCMEqualTypesAllowingOpaqueStructsInternal(const char *type1, const 
             BOOL type1Opaque = (type1Equals == NULL || (type1End < type1Equals) || type1Equals[1] == endChar);
             BOOL type2Opaque = (type2Equals == NULL || (type2End < type2Equals) || type2Equals[1] == endChar);
             const char *type1NameEnd = (type1Equals == NULL || (type1End < type1Equals)) ? type1End : type1Equals;
-            const char *type2NameEnd = (type1Equals == NULL || (type2End < type2Equals)) ? type2End : type2Equals;
+            const char *type2NameEnd = (type2Equals == NULL || (type2End < type2Equals)) ? type2End : type2Equals;
             intptr_t type1NameLen = type1NameEnd - type1;
             intptr_t type2NameLen = type2NameEnd - type2;
 
