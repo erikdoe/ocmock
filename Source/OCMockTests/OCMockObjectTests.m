@@ -833,6 +833,18 @@ static NSString *TestNotification = @"TestNotification";
 }
 
 
+- (void)testExpectationOrderMattersThrowsNoException
+{
+    [mock setExpectationOrderMatters:YES];
+    [mock setExpectationOrderMattersThrowsException:NO];
+
+    [[mock expect] lowercaseString];
+    [[mock expect] uppercaseString];
+
+    XCTAssertNoThrow([mock uppercaseString], @"Should not have complained about wrong sequence yet.");
+    XCTAssertThrows([mock verify], @"Should have complained about wrong sequence.");
+}
+
 
 // --------------------------------------------------------------------------------------
 //	nice mocks don't complain about unknown methods, unless told to

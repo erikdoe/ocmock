@@ -27,6 +27,7 @@
 {
 	BOOL			isNice;
 	BOOL			expectationOrderMatters;
+	BOOL			expectationOrderMattersThrowsException;
 	NSMutableArray	*stubs;
 	NSMutableArray	*expectations;
 	NSMutableArray	*exceptions;
@@ -45,6 +46,7 @@
 - (instancetype)init;
 
 - (void)setExpectationOrderMatters:(BOOL)flag;
+- (void)setExpectationOrderMattersThrowsException:(BOOL)flag;
 
 - (id)stub;
 - (id)expect;
