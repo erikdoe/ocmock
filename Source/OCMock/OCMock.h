@@ -78,7 +78,7 @@
 #define _OCMSilenceWarnings(macro) \
 ({ \
     _Pragma("clang diagnostic push") \
-    _Pragma("clang diagnostic ignored \"-Wunused-value\"") \
+    _Pragma("clang diagnostic ignored \"-Wunused-getter-return-value\"") \
     macro \
     _Pragma("clang diagnostic pop") \
 })
