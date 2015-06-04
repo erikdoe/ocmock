@@ -31,6 +31,13 @@
 
 @implementation OCMInvocationMatcher
 
+- (void)dealloc
+{
+    [recordedInvocation release];
+    recordedInvocation = nil;
+    [super dealloc];
+}
+
 - (void)setInvocation:(NSInvocation *)anInvocation
 {
     [recordedInvocation release];
