@@ -26,9 +26,12 @@
 
 - (id)init
 {
-	self = [super init];
-	recorders = [[NSMutableArray alloc] init];
-	centers = [[NSMutableArray alloc] init];
+    if ((self = [super init]))
+    {
+        recorders = [[NSMutableArray alloc] init];
+        centers = [[NSMutableArray alloc] init];
+    }
+	
 	return self;
 }
 

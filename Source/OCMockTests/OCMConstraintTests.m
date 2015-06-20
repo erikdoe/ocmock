@@ -143,5 +143,11 @@
 	XCTAssertEqualObjects(@"bar", captured, @"Should have captured value from last invocation.");
 }
 
+- (void)testEvaluateNilBlockReturnsNo
+{
+    OCMBlockConstraint *constraint = [[OCMBlockConstraint alloc] initWithConstraintBlock:nil];
+    
+    XCTAssertFalse([constraint evaluate:@"foo"]);
+}
 
 @end
