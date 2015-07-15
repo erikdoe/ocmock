@@ -21,8 +21,11 @@
 
 - (id)initWithValue:(id)aValue
 {
-	self = [super init];
-	value = [aValue retain];
+    if ((self = [super init]))
+    {
+        value = [aValue retain];
+    }
+	
 	return self;
 }
 

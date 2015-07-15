@@ -134,8 +134,11 @@
 
 - (instancetype)initWithConstraintBlock:(BOOL (^)(id))aBlock
 {
-	self = [super init];
-	block = [aBlock copy];
+    if ((self = [super init]))
+    {
+        block = [aBlock copy];
+    }
+	
 	return self;
 }
 
@@ -146,7 +149,7 @@
 
 - (BOOL)evaluate:(id)value 
 {
-	return block(value);
+    return block ? block(value) : NO;
 }
 
 

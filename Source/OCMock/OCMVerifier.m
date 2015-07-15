@@ -25,8 +25,11 @@
 
 - (id)init
 {
-    self = [super init];
-    invocationMatcher = [[OCMInvocationMatcher alloc] init];
+    if ((self = [super init]))
+    {
+        invocationMatcher = [[OCMInvocationMatcher alloc] init];
+    }
+    
     return self;
 }
 
