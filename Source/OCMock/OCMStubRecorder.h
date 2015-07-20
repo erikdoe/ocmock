@@ -32,14 +32,13 @@
 
 @interface OCMStubRecorder (Properties)
 
-#define andReturn(aValue) _andReturn(({                                                                       \
-  __typeof__(aValue) _v = (aValue);                                                                           \
-  NSValue *__v = [NSValue value:&_v withObjCType:@encode(__typeof__(_v))];                                    \
-  if (__builtin_types_compatible_p(__typeof__(aValue), id)) {                                                 \
-      objc_setAssociatedObject(__v, &_v, *(__unsafe_unretained id *) (void *) &_v, OBJC_ASSOCIATION_RETAIN);  \
-  }                                                                                                           \
-                                                                                                              \
-  __v;                                                                                                        \
+#define andReturn(aValue) _andReturn(({                                             \
+  __typeof__(aValue) _val = (aValue);                                               \
+  NSValue *_nsval = [NSValue value:&_val withObjCType:@encode(__typeof__(_val))];   \
+  if (__builtin_types_compatible_p(__typeof__(_val), id)) {                         \
+      objc_setAssociatedObject(_nsval, "OCMAssociatedBoxedValue", *(__unsafe_unretained id *) (void *) &_val, OBJC_ASSOCIATION_RETAIN); \
+  }                                                                                 \
+  _nsval;                                                                           \
 }))
 @property (nonatomic, readonly) OCMStubRecorder *(^ _andReturn)(NSValue *);
 
