@@ -4,6 +4,8 @@ commit messages and/or the pull requests.
 OCMock 3.1.3 (unreleased)
 
 * Now throwing exception when trying to create mocks for nil (Nick Gravelyn)
+* Fixed ARC related bug when boxing macro args (Richard Ross)
+* Added target for dynamic iOS framework (Piet Brauer)
 
 
 OCMock 3.1.2 (2015-01-08)

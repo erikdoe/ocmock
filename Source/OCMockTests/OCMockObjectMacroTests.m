@@ -36,6 +36,21 @@
 @end
 
 
+@interface TestClassWithDecimalReturnMethod : NSObject
+
+- (NSDecimalNumber*)method;
+
+@end
+
+@implementation TestClassWithDecimalReturnMethod
+
+- (NSDecimalNumber*)method {
+    return nil;
+}
+
+@end
+
+
 // implemented in OCMockObjectClassMethodMockingTests
 
 @interface TestClassWithClassMethods : NSObject
@@ -351,5 +366,12 @@
     OCMVerify([mock foo]);
 }
 
+
+- (void)testCanStubMethodsWithDecimalNumberReturnValues
+{
+    id mock = OCMClassMock([TestClassWithDecimalReturnMethod class]);
+    OCMStub([mock method]).andReturn([NSDecimalNumber decimalNumberWithDecimal:[@0 decimalValue]]);
+    XCTAssertEqualObjects([mock method], [NSDecimalNumber decimalNumberWithDecimal:[@0 decimalValue]]);
+}
 
 @end
