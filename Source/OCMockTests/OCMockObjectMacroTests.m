@@ -367,7 +367,7 @@
 }
 
 
-- (void)testCanStubMethodsWithDecimalNumberReturnValues
+- (void)testCanUseMacroToStubMethodWithDecimalReturnValue
 {
     id mock = OCMClassMock([TestClassWithDecimalReturnMethod class]);
     OCMStub([mock method]).andReturn([NSDecimalNumber decimalNumberWithDecimal:[@0 decimalValue]]);
