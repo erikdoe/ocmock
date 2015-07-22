@@ -1,0 +1,132 @@
+---
+layout: minimal
+title: Front Page
+---
+
+<section id="welcome" class="group">
+  <div id="welcomebox">
+      <img id="logo" src="{{ site.baseurl }}/images/ocmock-lg.png" width="252" height="81" alt="OCMock"><br>
+      <div id="welcomebox-text">
+      <ul>
+        <li><b>Mock objects for Objective-C</b>
+        <li>Stubs - return values for specific method invocations
+        <li>Dynamic Mocks - verify interaction patterns
+	      <li>Partial Mocks - overwrite methods of existing objects
+      </ul>
+
+      <div id="welcomebox-buttons">
+        <span class="welcomebox-btn"><a href="{{ site.baseurl }}/download">Download</a></span>
+      </div>
+
+      {% for post in site.posts limit: 2 %}
+      <article>
+		    <h3>{{ post.title }} <span class="postdate">({{ post.date | date:"%d %b %Y" }})</span></h3>
+        {{ post.content }}
+      </article>
+		  {% endfor %}
+		  <p class="morenews"><a href="{{ site.baseurl }}/news">more news &rarr;</a>
+    </div>
+  </div>
+</section>
+
+  
+<section id="content" class="group">
+  <div id="contentbox">
+
+<h2>Adding OCMock to your project</h2>
+<ul>
+	<li>Download a release from the <a href="{{ site.baseurl }}/download">downloads page</a>. Alternatively you can use CocoaPods.
+	<li>For iOS development add the static library</a> to your test target. This is described in detail on the <a href="{{ site.baseurl }}/ios">iOS page</a>.
+	<li>For OS X development simply add <code>OCMock.framework</code> to your test target.
+	<li>Add an import to your unit tests.
+</ul>
+{% highlight objc %}
+#import <OCMock/OCMock.h>
+{% endhighlight objc %}
+
+
+<h2>Using OCMock &ndash; the short version</h2>
+
+<h3>Creating stubs for instance and class methods</h3>
+
+<p>A mock object stands in for a real object. With stubs we can specify what to return when a method is invoked:
+
+{% highlight objc %}
+// create a mock for the user defaults
+id userDefaultsMock = OCMClassMock([NSUserDefaults class]);
+
+// set it up to return a specific value when stringForKey: is called
+OCMStub([userDefaultsMock stringForKey:@"MyAppURLKey"]).andReturn(@"http://testurl");
+
+// set it up to return the specified value no matter how the method is invoked
+OCMStub([userDefaultsMock stringForKey:[OCMArg any]]).andReturn(@"http://testurl");
+{% endhighlight objc %}
+
+<p>How do we get the code that we want to test to use the mock? A pattern that is often implemented together with mocks is <a href="http://en.wikipedia.org/wiki/Dependency_injection">dependency injection</a>. With cases like <code>NSUserDefaults</code> we can take an even simpler approach. Our code under test is likely to use the standard shared instance, which is returned by the <code>standardUserDefaults</code> factory class method. We can simply stub that class method:
+
+{% highlight objc %}
+// stub a class method to return our mock, and not the standard shared instance
+OCMStub([userDefaultsMock standardUserDefaults]).andReturn(userDefaultsMock);
+{% endhighlight objc %}
+
+<p>Class methods can be stubbed like instance methods. If a class has a class method and an instance method with the same name, OCMock provides a way to specify which one to target. This is described on the <a href="{{ site.baseurl }}/reference#mocking-class-methods">reference page</a>.
+
+
+<h3>Verifying behaviour with a mock</h3>
+
+<p>Sometimes we not only want to stub a method but we want to ensure (verify) that a given method has been called by the code under test.
+
+{% highlight objc %}
+// create a mock for the user defaults and make sure it's used
+id userDefaultsMock = OCMClassMock([NSUserDefaults class]);
+OCMStub([userDefaultsMock standardUserDefaults]).andReturn(userDefaultsMock);
+
+// call the code under test
+[myController updateUserDefaults];
+
+// verify it has called the expected method
+OCMVerify([userDefaultsMock setObject:@"http://someurl" forKey:@"MyAppURLKey"]);
+{% endhighlight objc %}
+
+<p>When verifying method invocations matchers can be used for the arguments in the same way as described above.
+
+
+<h3>Mocking methods on an existing object: partial mocks</h3>
+
+<p>Sometimes we only want to stub or verify a couple of methods, but use the real implementation for all other methods. This is where partial mocks come in:
+
+{% highlight objc %}
+// create an object and a partial mock for it
+Foo *myObject = [[Foo alloc] init];
+id myObjectMock = OCMPartialMock(myObject);
+
+// replace (stub) one method on the object
+OCMStub([myObjectMock writeToDatabase]).andReturn(@YES);
+
+// call the code under test
+[myController updateDatabase]
+
+// verify that the method has been called
+OCMVerify([[myObjectMock writeToDatabase]);
+{% endhighlight objc %}
+
+<p>It is not even necessary to stub a method in order to verify it. If we omit the stub from the code above the actual implementation of <code>writeToDatabase</code> in the object is used. We can still verify that it has been called.
+
+
+<h2>Further reading</h2>
+<p>With the examples on this page we've barely scratched the surface. OCMock has a rich feature set for many different use cases. The following pages provide good next steps to continue learning about OCMock.
+<ul>
+	<li><a href="{{ site.baseurl }}/introduction">Introduction to mocking with OCMock</a>
+	<li><a href="{{ site.baseurl }}/reference">Reference documentation</a>
+	<li><a href="{{ site.baseurl }}/tutorials">List of tutorials</a> written by OCMock users
+	<li><a href="http://martinfowler.com/articles/mocksArentStubs.html">Mocks aren't stubs</a>, an article by Martin Fowler
+</ul>
+
+<h2>Need help?</h2>
+<ul>
+	<li>For feedback and questions please use the <a href="http://www.mulle-kybernetik.com/forum/viewforum.php?f=4">OCMock forum</a> on this site or...
+	<li>...post a question on StackOverflow with the <a href="http://stackoverflow.com/questions/tagged/ocmock"><span class="tag">ocmock</span></a> tag.
+</ul>
+
+  </div>
+</section>

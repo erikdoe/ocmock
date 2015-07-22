@@ -1,0 +1,18 @@
+---
+layout: minimal
+---
+<section id="content" class="group">
+
+	<div id="contentbox">
+		{{ content }}
+
+		{% if page.comments %}
+		<h2>Comments</h2>
+
+		<div id="comments">
+				<p class="loading">Starting commenting system. This can take a moment.
+		</div>
+		{% endif %}
+
+  </div>
+</section>

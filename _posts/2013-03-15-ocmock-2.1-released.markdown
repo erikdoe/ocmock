@@ -1,0 +1,10 @@
+---
+layout: post
+title: OCMock 2.1 released
+tags:
+- Release
+status: publish
+type: post
+published: true
+---
+New release (2.1) which adds support for stubbing class methods and includes many contributed bug fixes. This release is compatible with Xcode 4.5/4.6.

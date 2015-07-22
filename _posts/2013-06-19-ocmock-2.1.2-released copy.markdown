@@ -1,0 +1,10 @@
+---
+layout: post
+title: OCMock 2.1.2 released
+tags:
+- Release
+status: publish
+type: post
+published: true
+---
+New minor release (2.1.2) that includes fixes for compatibility with Xcode 5 Preview.

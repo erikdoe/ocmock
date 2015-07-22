@@ -1,0 +1,11 @@
+---
+layout: post
+title: OCMock 2.2.3 released
+tags:
+- Release
+status: publish
+type: post
+published: true
+---
+New minor release (2.2.3) that actually includes ARM 64-bit build. No functional changes compared to previous version.
+

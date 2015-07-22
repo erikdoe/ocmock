@@ -1,0 +1,60 @@
+---
+layout: default
+title: iOS Project Setup
+tags: []
+status: publish
+type: page
+published: true
+nosidebar: true
+---
+<h1>{{ page.title }}</h1>
+<p>This section was originally written for Xcode 5.1.1 / iOS 7.1. 
+  
+<p>It applies to newer versions of Xcode, too. The latest confirmed version is Xcode 6.1.1 / iOS 8.1.
+
+<h2>OCMock static library</h2>
+<p>OCMock comes in two flavours, a framework and a static library. Please use the static library for iOS development. The framework is for developing OS X applications and tools.
+
+<p>When a test project links against the static library, the OCMock classes are included in the binary of the test project, which can be run in the simulator or an iOS device. The library included in the binary releases of OCMock is built <i>fat</i>, containing binary code for Intel CPUs (for the simulator) and ARM CPUs (for running on the device). 
+
+<h2>Adding the OCMock static library to an iOS project</h2>
+	
+<h3>Project layout</h3>  
+  
+<p>To use the library in an iOS project, you have to make the actual library, ie. <code>libOCMock.a</code>, as well as the header files available to the target containing the tests. In the <a href="https://github.com/erikdoe/ocmock/tree/master/Examples/iOS7Example">iOS7 example project</a> we're using this directory structure:
+	
+<p><img src="{{ site.baseurl }}/images/ios7ex-step1-directories.png" with="341" height="376">
+	
+<h3>Adding the library itself</h3>  
+
+<p>The library must be added to the the test target in the &ldquo;Link Binaries With Libraries&rdquo; build phase. Make sure you have selected the test target. Then click on the plus (+) icon, choose &ldquo;Add other...&rdquo;, and then find the library in the filesystem. Afterwards, the OCMock library should be visible in the list as shown below.
+                                              
+<p><img src="{{ site.baseurl }}/images/ios7ex-step2-adding-lib.png" width="906" height="380">
+
+
+<h3>Setting the linker flags</h3>  
+  
+<p>For static libraries the linker tries to be clever and only includes those symbols that it thinks are used. It gets this wrong with Objective-C categories, so we need to tell it that we're dealing with Objective-C by adding the <code>-ObjC</code> linker flag as shown below.
+	     
+<p><img src="{{ site.baseurl }}/images/ios7ex-step4-setting-ldflags.png" width="906" height="239">
+
+<p>If you forget this step you will get an appropriate warning (in the form of an exception) the first time you try to use a mock object in your tests. 
+
+
+<h3>Making the headers available</h3>  
+
+<p>Adding the library as described above automatically adds a library search path to the project so that the linker can find the library. Unfortunately, it does not add a header search path, which is needed for the compiler to resolve includes/imports. This must be done manually in the build settings. 
+  
+<p>Search for &ldquo;header search&rdquo; which should bring up the &ldquo;Header Search Paths&rdquo; setting. The best way to point to the header directory is by adding a reference relative to the project's source directory. For the layout described above this would be <code>$(PROJECT_DIR)/usr/include</code>.                                         
+<p><img src="{{ site.baseurl }}/images/ios7ex-step3-setting-headers.png" width="906" height="239">
+		 									
+<p>If you have copied the library or headers to a different place these settings must be adjusted accordingly.
+	
+  
+<h2>The iOS7Example project</h2>
+
+<p>OCMock contains several example projects, including an <a href="https://github.com/erikdoe/ocmock/tree/master/Examples/iOS7Example">iOS7 example project</a> that shows how to use OCMock in iOS unit tests. The project is set up following Apple's guidelines and the linker flags are set as described above. Note that in the Xcode table view the path variables are expanded and the full paths are shown. This can be confusing.
+           
+<p>The project contains one unit test that shows how to use mocks to replace a UITableView when testing a controller. It should build and the test should pass. If it doesn't something is very wrong.
+	
+		

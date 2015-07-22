@@ -1,0 +1,94 @@
+---
+layout: default
+title: Download
+tags: []
+status: publish
+type: page
+published: true
+---
+<h1>{{ page.title }}</h1>
+
+<h2>Stable Releases</h2>
+
+<p>The disk images countain source code and binaries. Usually the releases can be used on newer systems, too. For example, OCMock 3.0 does work on iOS 8.
+  
+<p>Please see <a href="https://github.com/erikdoe/ocmock/blob/master/Source/Changes.txt">Changes.txt</a> for a description of the changes in each release.
+  
+<table>
+	<tr>
+		<th>Release</th>
+		<th>Build SDK</th>
+		<th>Requires</th>
+		<th>Date</th>
+		<th>File</th>
+	</tr>
+	<tr>
+		<td>OCMock 3.1.2</td>
+		<td>Xcode 6.1, OS X 10.10, iOS 8.1</td>
+		<td>OS X 10.6, iOS 5</td>
+		<td>8-Jan-2015</td>
+		<td><a href="{{ site.baseurl }}/downloads/ocmock-3.1.2.dmg">ocmock-3.1.2.dmg</a></td>
+	</tr>
+	<tr>
+		<td>OCMock 3.0.2</td>
+		<td>Xcode 5.1, OS X 10.9, iOS 7.1</td>
+		<td>OS X 10.6, iOS 5</td>
+		<td>7-Jul-2014</td>
+		<td><a href="{{ site.baseurl }}/downloads/ocmock-3.0.2.dmg">ocmock-3.0.2.dmg</a></td>
+	</tr>
+	<tr>
+		<td>OCMock 2.2.4</td>
+		<td>Xcode 5.1, OS X 10.9, iOS 7.1</td>
+		<td>OS X 10.6, iOS 5</td>
+		<td>4-Apr-2014</td>
+		<td><a href="{{ site.baseurl }}/downloads/ocmock-2.2.4.dmg">ocmock-2.2.4.dmg</a></td>
+	</tr>
+</table>
+
+
+<h2>Source code</h2>
+
+<p>The source code for OCMock is available on GitHub 
+	<span id="cistatus"><a href="https://travis-ci.org/erikdoe/ocmock"><img src="https://travis-ci.org/erikdoe/ocmock.svg?branch=master"></a></span>
+  
+<p>&nbsp;&nbsp;&nbsp;<a href="https://github.com/erikdoe/ocmock">https://github.com/erikdoe/ocmock</a>
+
+<p>It is built and tests are run by Travis CI. The current status is shown above on the right. If this isn't showing <i>passing</i>, chances are the code is currently not building correctly and we're busy trying to fix it. In all other cases, a local build from source should work.
+  
+<p>The easiest way to build OCMock from source is to use the supplied build script.
+  
+<pre><code>cd Tools
+ruby build.rb
+</code></pre>	
+
+<p>Running this script should create binary versions of the OCMock framework and library in a directory under <code>/tmp</code>. When the build is complete a Finder window for the directory should open up automatically.
+  
+<p>If you pass the <code>-r</code> flag to the script it creates a disk image with all the artefacts in it. This is what we use to create the binary releases. 
+  
+<p>If you have switched compilers using the <code>CC</code> enviromnent variable the build might fail. In such cases, please reset the variable before running the script.
+  
+
+<h2>License for OCMock 3.x</h2>
+
+<p>Copyright (c) 2004-2014 Erik Doernenburg and contributors
+
+<p>Licensed under the Apache License, Version 2.0 (the "License"); you may
+  not use these files except in compliance with the License. You may obtain
+  a copy of the License at
+
+<p>&nbsp;&nbsp;&nbsp;<a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a>
+
+<p>Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+  License for the specific language governing permissions and limitations
+  under the License.
+
+
+<h2>License for OCMock 1.x and 2.x</h2>
+
+<p>Copyright (c) 2004 - 2014 by Mulle Kybernetik. All rights reserved.
+  
+<p>Permission to use, copy, modify and distribute this software and its documentation is hereby granted, provided that both the copyright notice and this permission notice appear in all copies of the software, derivative works or modified versions, and any portions thereof, and that both notices appear in supporting documentation, and that credit is given to Mulle Kybernetik in all documents and publicity pertaining to direct or indirect use of this code or its derivatives.
+  
+<p>THIS IS EXPERIMENTAL SOFTWARE AND IT IS KNOWN TO HAVE BUGS, SOME OF WHICH MAY HAVE SERIOUS CONSEQUENCES. THE COPYRIGHT HOLDER ALLOWS FREE USE OF THIS SOFTWARE IN ITS "AS IS" CONDITION. THE COPYRIGHT HOLDER DISCLAIMS ANY LIABILITY OF ANY KIND FOR ANY DAMAGES WHATSOEVER RESULTING DIRECTLY OR INDIRECTLY FROM THE USE OF THIS SOFTWARE OR OF ANY DERIVATIVE WORK.

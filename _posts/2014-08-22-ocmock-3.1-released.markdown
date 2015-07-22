@@ -1,0 +1,12 @@
+---
+layout: post
+title: OCMock 3.1 released
+tags:
+- Release
+status: publish
+type: post
+published: true
+---
+This release focuses on performance and stability following the major changes
+implemented in OCMock 3. It also adds a couple of convenience features. Details
+can be found in the [change log](https://github.com/erikdoe/ocmock/blob/master/Source/Changes.txt).

@@ -1,0 +1,10 @@
+---
+layout: post
+title: OCMock 1.17 released
+tags:
+- Release
+status: publish
+type: post
+published: true
+---
+New release which combines several contributions. Added nice mocks, which ignore unexpected invocations, and exceptions meant to cause the test to fail fast are now rethrown in verify. 

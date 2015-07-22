@@ -1,0 +1,10 @@
+---
+layout: post
+title: OCMock 1.70 released
+tags:
+- Release
+status: publish
+type: post
+published: true
+---
+New release which adds the following features: support for blocks, static library for iOS development, forwarding of methods from a partial mock to the real object, and rejecting methods when using nice mocks. All new features are highlighted on the "Features" tab on this page, and the static library is described in detail on the "iPhone/iOS" tab.

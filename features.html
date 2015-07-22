@@ -1,0 +1,164 @@
+---
+layout: default
+title: Features (OCMock 2)
+tags: []
+status: publish
+type: page
+published: true
+nosidebar: true
+---
+<h1>{{ page.title }}</h1>
+<p>This page describes the features present in OCMock 2.x, using the traditional syntax. All these features, including the selector-based syntax, are available in OCMock 3, too. However, starting with OCMock 3 the default is the modern syntax, described on the new <a href="{{ site.baseurl }}/reference">reference page</a>.								
+
+
+<h2>Class mocks</h2>
+<pre><code>id mock = [OCMockObject mockForClass:[SomeClass class]]</code></pre>
+<p>Creates a mock object that can be used as if it were an instance of <i>SomeClass</i>.</p>
+
+<h2>Expectations and verification</h2>
+<pre><code>[[mock expect] someMethod:someArgument]</code></pre>
+<p>Tells the mock object that <b>someMethod:</b> should be called with an argument that is equal to <i>someArgument</i>. After this setup the functionality under test should be invoked followed by</p>
+<pre><code>[mock verify]</code></pre>
+<p>The <b>verify</b> method will raise an exception if the expected method has not been invoked.</p>
+<div>
+<p>In some cases the expected method will only be called when the run loop is active. For these cases it is possible to delay the verification for a while.
+<pre><code>[mock verifyWithDelay:aDelay]</code></pre>
+<p>Note that <i>aDelay</i> is the maximum the mock will wait. It normally returns as soon as the expectation has been met.</p>
+</div>
+
+<h2>Stubs</h2>
+<pre><code>[[[mock stub] andReturn:aValue] someMethod:someArgument]</code></pre>
+<p>Tells the mock object that when <b>someMethod:</b> is called with <i>someArgument</i> it should return <i>aValue</i>.</p>
+<p>If the method returns a primitive type then <b>andReturnValue:</b> must be used with a value argument. It is not possible to pass primitive types directly.</p> 
+<pre><code>[[[mock stub] andReturnValue:@YES] aMethodReturnABoolean:someArgument]</code></pre>
+
+<p>Values can also be returned in pass-by-reference arguments:</p>
+<pre><code>[[mock stub] someMethodWithReferenceArgument:[OCMArg setTo:anObject]]</code></pre>
+<div>
+<pre><code>[[mock stub] someMethodWithReferenceArgument:[OCMArg setToValue:OCMOCK_VALUE((int){aValue})]]</code></pre>
+</div>
+<p>In this case the mock object will set the reference that is passed to the method to <i>anObject</i> and <i>aValue</i>.</p>
+
+<p>The mock object can also throw an exception or post a notification when a method is called:</p> 
+<pre><code>[[[mock stub] andThrow:anException] someMethod:someArgument]</code></pre>
+<pre><code>[[[mock stub] andPost:aNotification] someMethod:someArgument]</code></pre>
+
+<p>In fact, the notification can be posted in addition to returning a value:</p>
+<pre><code>[[[[mock stub] andPost:aNotification] andReturn:aValue] someMethod:someArgument]</code></pre>
+
+<p>The mock can delegate the handling of an invocation to a completely different method:</p>
+<pre><code>[[[mock stub] andCall:@selector(aMethod:) onObject:anObject] someMethod:someArgument]</code></pre>
+<p>In this case the mock object will call <i>aMethod:</i> on <i>anObject</i> when <i>someMethod:</i> is called. The signature of the replacement method must be the same as that of the method that is replaced. Arguments will be passed and the return value of the replacement method is returned from the stubbed method.</p>
+
+<p>
+If Objective-C blocks are available a block can be used to handle the invocation and set up a return value:</p>
+<pre><code>void (^theBlock)(NSInvocation *) = ^(NSInvocation *invocation) {
+    /* code that reads and modifies the invocation object */
+};
+[[[mock stub] andDo:theBlock] someMethod:[OCMArg any]];</code></pre>
+
+<p>If using a partial mock (see below) it is possible to forward the method to the implementation in the real object, which can be useful to simply check that a method was called:</p>
+
+<pre><code>[[[mock expect] andForwardToRealObject] someMethod]</code></pre>
+
+<p>Note that it is possible to use <b>andReturn:</b>, <b>andThrow:</b>, etc with <b>expect</b>, too. This will then return the given return value and, on verify, ensure that the method has been called.</p>
+
+
+<h2>Class methods</h2>
+<div>
+<pre><code>[[[mock stub] andReturn:aValue] someClassMethod]</code></pre>
+<p>Tells the mock object that when <b>someClassMethod</b> is called on the class for which the mock object was created it should return <i>aValue</i>. This is the same syntax that is used to stub instance methods.</p>
+<div>
+<p>As with partial mocks it is possible to use <b>andForwardToRealObject</b> to invoke the actual class method implementation.</p>
+<pre><code>[[[mock expect] andForwardToRealObject] someClassMethod]</code></pre>
+</div>
+<p>In cases where a class method should be stubbed but the class also has an instance method with the same name as the class method, the intent to mock the class method must be made explicit:
+<pre><code>[[[[mock stub] classMethod] andReturn:aValue] aMethod]</code></pre>
+<p>The class can be returned to its original state, i.e. all stubs will be removed:
+<pre><code>[mock stopMocking]</code></pre>
+<p>This is only necessary if the original state must be restored before the end of the test. The  mock automatically calls <b>stopMocking</b> during its own deallocation.
+<p>Note: If the mock object that added a stubbed class method is not deallocated the stubbed method will persist across tests. If multiple mock objects manipulate the same class at the same time the behaviour is undefined.</p> 
+</div>
+
+
+<h2>Argument constraints</h2>
+<pre><code>[[mock expect] someMethod:[OCMArg any]]</code></pre>
+<p>Tells the mock object that <b>someMethod:</b> should be called and it does not matter what the argument is. This only works for object arguments.</p> 
+<p>Pointers and selectors require special treatment:</p>
+<pre><code>[[mock expect] someMethodWithPointerArgument:[OCMArg anyPointer]]</code></pre>
+<div>
+<pre><code>[[mock expect] someMethodWithSelectorArgument:[OCMArg anySelector]]</code></pre>
+</div>
+<div>
+<p>Arguments that are neither objects nor pointers or selectors cannot be ignored using an <i>any</i> placeholder (for details see this <a href="http://www.mulle-kybernetik.com/forum/viewtopic.php?f=4&t=72">forum thread</a>). It is possible, though, to tell the mock to ignore all non-object arguments in an invocation:
+<pre><code>[[[mock expect] ignoringNonObjectArgs] someMethodWithIntArgument:0]</code></pre>
+<p>In this case the mock will accept any invocation of <b>someMethodWithIntArgument:</b> no matter what argument is actually passed. If the method has object arguments as well as non-object arguments, the object arguments can still be constrained as usual using the methods on <b>OCMArg</b>.</p>
+</div>
+   
+	                  
+<p>Other constraints available for object arguments are:</p>
+<pre><code>[[mock expect] someMethod:[OCMArg isNil]]</code></pre>
+<pre><code>[[mock expect] someMethod:[OCMArg isNotNil]]</code></pre>
+<pre><code>[[mock expect] someMethod:[OCMArg isNotEqual:aValue]]</code></pre>
+<pre><code>[[mock expect] someMethod:[OCMArg checkWithSelector:aSelector onObject:anObject]]</code></pre>
+          
+<p>The last constraint will, when the mock object receives <b>someMethod:</b>, send <i>aSelector</i> to <i>anObject</i> and if <i>aSelector</i> takes an argument will pass the argument that was passed to <b>someMethod:</b>. The method should return a boolean indicating whether the argument matched the expectation or not.</p>
+
+<p>If Objective-C blocks are available it is possible to check the argument with a block as follows:
+	
+<pre><code>[[mock expect] someMethod:[OCMArg checkWithBlock:^BOOL(id value) { /* return YES if value is ok */ }]];</code></pre>
+
+<p>Last but not least it is also possible to use <a href="http://code.google.com/p/hamcrest/wiki/TutorialObjectiveC">Hamcrest matchers</a> like this:</p>
+<pre><code>[[mock expect] someMethod:startsWith(@"foo")]</code></pre>
+	<p>Note that this will only work when the Hamcrest framework is explicitly linked by the unit test bundle.</p>
+
+
+<h2>Nice mocks / failing fast</h2>
+<p>When a method is called on a mock object that has not been set up with either <b>expect</b> or <b>stub</b> the mock object will raise an exception. This fail-fast mode can be turned off by creating a "nice" mock:</p>
+<pre><code>id mock = [OCMockObject niceMockForClass:[SomeClass class]]</code></pre>
+
+<p>While nice mocks will simply ignore all unexpected methods it is possible to disallow specific methods:
+<pre><code>[[mock reject] someMethod]</code></pre>
+                                           
+<p>Note that in fail-fast mode, if the exception is ignored, it will be rethrown when verify is called. This makes it possible to ensure that unwanted invocations from notifications etc. can be detected.</p>
+
+
+<h2>Protocol mocks</h2>
+<pre><code>id aMock = [OCMockObject mockForProtocol:@protocol(SomeProtocol)]</code></pre>
+<p>Creates a mock object that can be used as if it were an instance of an object that implements <i>SomeProtocol</i>.</p>
+                                     
+
+<h2>Partial mocks</h2>
+<pre><code>id aMock = [OCMockObject partialMockForObject:anObject]</code></pre>
+<p>Creates a mock object that can be used in the same way as <i>anObject</i>. When a method that is not stubbed is invoked it will be forwarded to <i>anObject</i>. When a stubbed method is invoked using a reference to <i>anObject</i>, rather than the mock, it will still be handled by the mock.</p>
+
+<p>The real object can be returned to its original state, i.e. all stubs will be removed:
+<pre><code>[aMock stopMocking]</code></pre>
+<p>This is only necessary if the original state must be restored before the end of the test. The partial mock automatically calls <b>stopMocking</b> during its own deallocation.
+
+<p>Note that currently partial mocks cannot be created for instances of toll-free bridged classes, e.g. NSString.</p>
+
+
+<h2>Observer mocks</h2>
+<pre><code>id aMock = [OCMockObject observerMock]</code></pre>
+<p>Creates a mock object that can be used to observe notifications. The mock must be registered in order to receive notifications:</p>
+<pre><code>[notificatonCenter addMockObserver:aMock name:SomeNotification object:nil]</code></pre>
+<p>Expectations can then be set up as follows:</p>
+<pre><code>[[mock expect] notificationWithName:SomeNotification object:[OCMArg any]]</code></pre>
+<p>Note that currently there is no "nice" mode for observer mocks, they will always raise an exception when an unexpected notification is received.</p>
+
+
+<h2>Instance-based method swizzling</h2>
+<p>In a nutshell, <a href="http://www.cocoadev.com/index.pl?MethodSwizzling">Method Swizzling</a> describes the replacement of a method implementation with a different implementation at runtime. Using partial mocks and the <b>andCall:</b> stub OCMock allows such replacements on a per-instance basis.</a>
+<pre><code>id mock = [OCMockObject partialMockForObject:anObject]
+[[[mock stub] andCall:@selector(differentMethod:) onObject:differentObject] someMethod:[OCMArg any]]</code></pre>
+<p>After these two lines, when <b>someMethod:</b> is sent to <i>anObject</i> the implementation of that method is not invoked. Instead, <b>differentMethod:</b> is called on <i>differentObject</i>. Other instances of the same class are not affected; for these the original implementation of <b>someMethod:</b> is still invoked. The methods can have different names but their signatures should be the same.</p>
+
+
+<h2>More detail</h2>
+<p>	
+	The test cases in <a href="https://github.com/erikdoe/ocmock/blob/master/Source/OCMockTests/OCMockObjectTests.m">OCMockObjectTests</a> and <a href="https://github.com/erikdoe/ocmock/blob/master/Source/OCMockTests/OCMockObjectHamcrestTests.mm">OCMockObjectHamcrestTests</a> show all uses of OCMock.
+</p>
+<p><a href="https://github.com/erikdoe/ocmock/blob/master/Source/Changes.txt">Changes.txt</a> contains a chronological list of all changes.
+</p>
+

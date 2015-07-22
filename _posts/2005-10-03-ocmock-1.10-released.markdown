@@ -1,0 +1,10 @@
+---
+layout: post
+title: OCMock 1.10 released
+tags:
+- Release
+status: publish
+type: post
+published: true
+---
+New release which has support for mocking protocols. Also added XCode 2.1 compliant project files and moved to built-in OCUnit.
