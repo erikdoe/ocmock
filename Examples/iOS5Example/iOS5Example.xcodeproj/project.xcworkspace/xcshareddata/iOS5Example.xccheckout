@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>B172C9C3-A777-4279-BE05-BF85A3789410</string>
+	<key>IDESourceControlProjectName</key>
+	<string>iOS5Example</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>E6E3AADB-C457-4E60-98F9-57711C98B546</key>
+		<string>ssh://github.com/erikdoe/ocmock.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Examples/iOS5Example/iOS5Example.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>E6E3AADB-C457-4E60-98F9-57711C98B546</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/erikdoe/ocmock.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>E6E3AADB-C457-4E60-98F9-57711C98B546</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>E6E3AADB-C457-4E60-98F9-57711C98B546</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ocmock</string>
+		</dict>
+	</array>
+</dict>
+</plist>
