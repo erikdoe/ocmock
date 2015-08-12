@@ -9,23 +9,16 @@ title: Front Page
       <div id="welcomebox-text">
       <ul>
         <li><b>Mock objects for Objective-C</b>
-        <li>Stubs - return values for specific method invocations
-        <li>Dynamic Mocks - verify interaction patterns
-	      <li>Partial Mocks - overwrite methods of existing objects
+        <li>Stubs &ndash; return values for specific method invocations
+        <li>Dynamic Mocks &ndash; verify interaction patterns
+	      <li>Partial Mocks &ndash; overwrite methods of existing objects
       </ul>
+    	</div>
 
       <div id="welcomebox-buttons">
-        <span class="welcomebox-btn"><a href="{{ site.baseurl }}/download">Download</a></span>
+        <a href="{{ site.baseurl }}/download" class="button"><span class="welcomebox-btn-main">Download</span></a>
+        <a href="{{ site.baseurl }}/news" class="button"><span class="welcomebox-btn">News</span></a>
       </div>
-
-      {% for post in site.posts limit: 2 %}
-      <article>
-		    <h3>{{ post.title }} <span class="postdate">({{ post.date | date:"%d %b %Y" }})</span></h3>
-        {{ post.content }}
-      </article>
-		  {% endfor %}
-		  <p class="morenews"><a href="{{ site.baseurl }}/news">more news &rarr;</a>
-    </div>
   </div>
 </section>
 

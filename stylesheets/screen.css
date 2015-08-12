@@ -227,13 +227,12 @@ section#welcome {
 }
 
 #welcomebox #logo {
-    float:left;
-    margin: 5.0em 3em 0 0;
+    margin: 4.0em 3em 0 0;
 }
 
 #welcomebox-text {
-    float:left;
-    margin: 1.6em 0;
+    margin: 4em 0 3.5em 0;
+	padding-left: 0.1em;
     width: 60%;
 }
 
@@ -276,17 +275,29 @@ section#welcome {
     margin: 3em 0;
 }
 
-.welcomebox-btn {
+.welcomebox-btn-main {
     border-radius: 3px;
+	border: 2px solid #f1a227;
     background: #f1a227;
     padding: 0.6em 1.2em;
     margin-right: 1em;
 	font-family: "Helvetica Neue", Helvetica, arial, sans-serif;
-}
-
-.welcomebox-btn a {
     color: white;
     text-decoration: none;
+}
+
+.welcomebox-btn {
+    border-radius: 3px;
+	border: 2px solid #f1a227;
+    padding: 0.6em 1.2em;
+    margin-right: 1em;
+	font-family: "Helvetica Neue", Helvetica, arial, sans-serif;
+    color: #ea901e;
+    text-decoration: none;
+}
+
+a.button {
+   	text-decoration: none;
 }
 
 
