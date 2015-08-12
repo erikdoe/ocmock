@@ -160,10 +160,10 @@ span#cistatus {
 /* hightlighted code boxes, etc */
 
 pre {
-  	margin: .3em 0;
-  	padding: .5em .7em;
-  	background-color: #FAFAFA;
-  	border: 1px solid #CCC;
+	margin: .3em 0;
+	padding: .5em .7em;
+	background-color: #FAFAFA;
+	border: 1px solid #CCC;
 	border-radius: 3px 3px 3px 3px;
  	overflow-x: auto;
 	font-size: 0.875em;
@@ -192,11 +192,11 @@ header nav, #welcomebox, #contentbox, footer nav, footer div#footercopy {
 }
 
 html, body {
-    height: 100%;
+  	height: 100%;
 }
 
 #contentbox {
-    min-height: 60%;
+  	min-height: 60%;
 }
 
 #contentbox {
@@ -278,8 +278,8 @@ section#welcome {
 
 .welcomebox-btn {
     border-radius: 3px;
-    background: #F69923;
-    padding: 0.6em;
+    background: #f1a227;
+    padding: 0.6em 1.2em;
     margin-right: 1em;
 	font-family: "Helvetica Neue", Helvetica, arial, sans-serif;
 }
@@ -293,8 +293,8 @@ section#welcome {
 /* header */
 
 header {
-    background: #FFC249;
-    border-top: 4px solid #F69923;
+    background: #fdc43f;
+    border-top: 4px solid #f1a227;
 }
 
 header nav {
