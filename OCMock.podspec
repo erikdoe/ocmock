@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
                         DESC
   
   s.homepage     = "http://ocmock.org"
-  s.license      = { :type => "Apache 2.0", :file => "Source/License.txt" }
+  s.license      = { :type => "Apache 2.0", :file => "License.txt" }
 
   s.author             = { "Erik Doernenburg" => "erik@doernenburg.com" }
   s.social_media_url   = "http://twitter.com/erikdoe"
