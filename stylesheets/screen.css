@@ -9,6 +9,7 @@ h1, h2, h3 {
 
 h1 {
 	font-size: 2em;
+	margin-top: 1em;
 	margin-bottom: 1em;
 }
 
@@ -27,23 +28,23 @@ h3 {
 }
 
 h3 + div.highlight {
-    margin-top: 0.5em;
+	margin-top: 0.5em;
 }
 
-p, li, th, td { 
+p, li, th, td {
 	font-family: "Helvetica Neue", Helvetica, arial, sans-serif;
-	font-size: 0.9375em; 
+	font-size: 0.9375em;
 	line-height: 1.5em;
 	color: #444;
-}   
+}
 
 p {
 	margin-top: 0.715em;
 }
-	
+
 code {
 	font-family: "Menlo", monospace;
-	font-size: 0.857em; 
+	font-size: 0.857em;
 	line-height: 1.5em;
 	color: #444;
 }
@@ -79,7 +80,7 @@ p.postdate {
 	margin-top: 0em;
 	margin-bottom: 0.2em;
 }
-	
+
 .tag {
 	border: 1px solid #AAA;
 	background: #DDD;
@@ -93,10 +94,6 @@ p.postdate {
 section#content h2 {
 	padding-bottom: 3px;
 	border-bottom: 1px solid #CCC;
-}
-
-#contentbox p:first-child {
-	margin-top: 0;
 }
 
 section#content p {
@@ -120,6 +117,27 @@ section#content li:first-child {
 	margin-top: .8em;
 }
 
+section#content table {
+	margin-top: 1em;
+	width: 100%;
+}
+
+section#content th {
+	font-weight: bold;
+}
+
+section#content th, section#content td {
+	background: #EEE;
+	text-align: left;
+	padding: 5px 10px 2px 8px;
+	border-right: 2px solid white;
+	border-bottom: 2px solid white;
+}
+
+span#cistatus {
+	float: right;
+}
+
 h2.toc {
 	counter-reset: h2-counter;
 }
@@ -135,29 +153,6 @@ h3.numbered:before {
 	content: counter(h2-counter) "." counter(h3-counter) " ";
 	counter-increment: h3-counter;
 }
-
-section#content table {
-	margin-top: 1em;    
-	width: 100%;
-}
-
-section#content th {
-	font-weight: bold;
-}
-
-section#content th, section#content td {
-	background: #EEE;
-	text-align: left;
-	padding: 5px 10px 2px 8px;
-	border-right: 2px solid white;
-	border-bottom: 2px solid white;
-}
-   
-span#cistatus {
-	float: right;
-}
-
-/* hightlighted code boxes, etc */
 
 pre {
 	margin: .3em 0;
@@ -188,15 +183,15 @@ header nav, #welcomebox, #contentbox, footer nav, footer div#footercopy {
 	max-width: 850px;
 	min-width: 300px;
 	margin: 0 auto 0 auto;
-	padding: 1em 2em;
+	padding: 1em 1em;
 }
 
-html, body {
-  	height: 100%;
+header nav {
+	padding: 0.6em 1em;
 }
 
-#contentbox {
-  	min-height: 60%;
+footer div#footercopy {
+	padding-top: 0;
 }
 
 #contentbox {
@@ -219,107 +214,71 @@ article {
 /* front-page special layout / formatting */
 
 section#welcome {
-    background: #FFC249;
-    background: url('../images/background.jpg');
-    background-repeat: no-repeat;
-    background-size: 100% 100%; 
-    margin-bottom: 1em;
+	background: #FFC249;
+	background: url('../images/background.jpg');
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	margin-bottom: 2em;
 }
 
 #welcomebox #logo {
-    margin: 4.0em 3em 0 0;
+	margin-top: 6em;
 }
 
 #welcomebox-text {
-    margin: 4em 0 3.5em 0;
+	margin: 3em 0;
 	padding-left: 0.1em;
-    width: 60%;
-}
-
-#welcomebox h2 {
-    margin: 1.2em 0 0.2em 0;
-}
-
-#welcomebox h3 {
-    margin: 0.875em 0 0.2em 0;
-}
-
-#welcomebox ul {
-    margin-bottom: 2em;
 }
 
 #welcomebox li {
-    margin-top: 0.3em;
-    font-size: 1.3em;
-}
-
-#welcomebox-text .postdate {
-    font-size: 0.777em;
-}
-
-#welcomebox article {
-    margin-top: 0.75em;
-    margin-bottom: 0;
-}
-
-#welcomebox article p {
-    margin-top: 0.2em;
-}
-
-#welcomebox .morenews {
-    margin: 0;
-    float: right;
+	margin-top: 0.3em;
+	font-size: 1.3em;
 }
 
 #welcomebox-buttons {
-    margin: 3em 0;
+	margin-bottom: 2.5em;
 }
 
 .welcomebox-btn-main {
-    border-radius: 3px;
+	border-radius: 3px;
 	border: 2px solid #f1a227;
-    background: #f1a227;
-    padding: 0.6em 1.2em;
-    margin-right: 1em;
+	background: #f1a227;
+	padding: 0.6em 1.2em;
+	margin-right: 1em;
 	font-family: "Helvetica Neue", Helvetica, arial, sans-serif;
-    color: white;
-    text-decoration: none;
+	color: white;
+	text-decoration: none;
 }
 
 .welcomebox-btn {
-    border-radius: 3px;
+	border-radius: 3px;
 	border: 2px solid #f1a227;
-    padding: 0.6em 1.2em;
-    margin-right: 1em;
+	padding: 0.6em 1.2em;
+	margin-right: 1em;
 	font-family: "Helvetica Neue", Helvetica, arial, sans-serif;
-    color: #ea901e;
-    text-decoration: none;
+	color: #ea901e;
+	text-decoration: none;
 }
 
 a.button {
-   	text-decoration: none;
+	text-decoration: none;
 }
 
 
 /* header */
 
 header {
-    background: #fdc43f;
-    border-top: 4px solid #f1a227;
+	background: #fdc43f;
+	border-top: 4px solid #f1a227;
 }
 
 header nav {
-	margin-bottom: 0.5em;
-}
-
-header #logo {
-/*    margin: 1em 0.5em 0 0;*/
+	height: 41px;
 }
 
 header nav ul {
-    float: right;
-    padding-bottom: 0.7em;
-/*    border-bottom: 1px solid #CCC;*/
+	float: right;
+	margin-top: 8px;
 }
 
 header nav li {
@@ -329,7 +288,7 @@ header nav li {
 	vertical-align: text-bottom;
 }
 
-div#navmenu-btn {
+div#navmenu-btn, li#home {
 	display: none;
 }
 
@@ -344,12 +303,11 @@ footer nav div.navblock {
 	float: left;
 	min-width: 234px;
 	margin-bottom: 1em;
-    margin-left: 0;
+	margin-left: 0;
 }
 
 footer div#footercopy {
-    border-top: 1px solid #AAA;
-    clear: both;
+	clear: both;
 }
 
 footer h2 {
@@ -366,60 +324,60 @@ footer p {
 /* responsive top nav for small (presumably touch) screens */
 
 @media screen and (max-width: 840px) {
-    section#welcome {
-        background: #FFC249;
-    }
-    #welcomebox {
-        margin: 0 auto;
-        padding: 0 0.5em 1em 0.5em;
-    }
-    #welcomebox-text {
-        margin: 1em auto;
-        width: 100%;
-    }
-    #welcomebox-buttons {
-        display: none;
-    }
-    #contentbox, footer nav, footer div#footercopy {
-        margin: 0 auto 0 auto;
-        padding: 1em 0.5em;
-    }
-    header {
-        border-top: 0;
-    }
-    div#navmenu-btn {
-        display: block;
-    	background-color: #333;
-    	color: #CCC;
-    	font-size: 1.75em;
-    	text-align: right;
-    	vertical-align: text-bottom;
-    	padding: 4px 4px 0 0;
-    }
-    nav {
-        font-size: 1.5em;
-    }
-    header nav {
-        padding: 0 0 0 0.5em;
-    }
-    header nav ul {
-        position: relative;
-        padding: 0 0 5px 0;
-        min-height: 100px;
-        border-bottom: none;
-    }
-    header nav li.textnav {
-        padding-left: 10px;
-        padding-right: 10px;
-        display: none;
-        text-align: right;
-        background-color: #333;
-    }
-    header nav li.textnav a {
-        color: #CCC;
-    }
-    footer nav div.navblock {
-        float: none;
-    }
+	#welcomebox #logo {
+		margin-top: 1.5em;
+	}
+	#welcomebox-text {
+		margin: 2.5em 0 1em 0;
+	}
+	#welcomebox-buttons {
+		display: none;
+	}
+	#contentbox, footer nav, footer div#footercopy {
+		padding-left: 0.5em;
+		padding-right: 0.5em;
+	}
+	div#navmenu-btn {
+		display: block;
+		background-color: #333;
+		color: #CCC;
+		font-size: 2em;
+		text-align: right;
+		vertical-align: text-bottom;
+		padding: 4px 4px 4px 0;
+	}
+	nav img#logo {
+		display: none;
+	}
+	nav p, nav li {
+		line-height: 2em;
+	}
+	header {
+		border-top: 0;
+	}
+	header nav {
+		padding: 0 0 0 0;
+		height: auto;
+	}
+	header nav ul {
+		float: right;
+		position: relative;
+		margin-top: 0;
+		padding: 0 0 5px 0;
+		border-bottom: none;
+	}
+	header nav li.textnav {
+		padding-left: 10px;
+		padding-right: 10px;
+		display: none;
+		text-align: right;
+		background-color: #333;
+	}
+	header nav li.textnav a {
+		color: #CCC;
+	}
+	footer nav div.navblock {
+		float: none;
+	}
 }
 
