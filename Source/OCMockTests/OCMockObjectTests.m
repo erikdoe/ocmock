@@ -492,8 +492,16 @@ static NSString *TestNotification = @"TestNotification";
     "::DefaultDeleter<GURL> >={scoped_ptr_impl<GURL, base::DefaultDeleter<GURL"
     "> >={Data=^{GURL}}}}}";
 
+    const char *type3 =
+    "r^{GURL}";
+
     OCMBoxedReturnValueProvider *boxed = [OCMBoxedReturnValueProvider new];
     XCTAssertTrue([boxed isMethodReturnType:type1 compatibleWithValueType:type2]);
+    XCTAssertTrue([boxed isMethodReturnType:type1 compatibleWithValueType:type3]);
+    XCTAssertTrue([boxed isMethodReturnType:type2 compatibleWithValueType:type1]);
+    XCTAssertTrue([boxed isMethodReturnType:type2 compatibleWithValueType:type3]);
+    XCTAssertTrue([boxed isMethodReturnType:type3 compatibleWithValueType:type1]);
+    XCTAssertTrue([boxed isMethodReturnType:type3 compatibleWithValueType:type2]);
 }
 
 - (void)testReturnsStubbedNilReturnValue
@@ -911,6 +919,19 @@ static NSString *TestNotification = @"TestNotification";
 	[[mock expect] lowercaseString];
 	[mock lowercaseString];
 	[mock expect];
+}
+
+
+- (void)testArgumentConstraintsAreOnlyCalledAsOftenAsTheMethodIsCalled
+{
+    __block int count = 0;
+
+    [[mock stub] hasSuffix:[OCMArg checkWithBlock:^(id value) { count++; return YES; }]];
+
+    [mock hasSuffix:@"foo"];
+    [mock hasSuffix:@"bar"];
+
+    XCTAssertEqual(2, count, @"Should have evaluated constraint only twice");
 }
 
 

@@ -40,6 +40,7 @@
 - (void)dealloc
 {
 	[self stopMocking];
+	[realObject release];
 	[super dealloc];
 }
 

@@ -226,6 +226,7 @@ static NSUInteger initializeCallCount = 0;
     XCTAssertEqual(countBefore, countAfter, @"Creating a mock should not have resulted in call to +initialize");
 }
 
+
 - (void)testRefusesToCreateTwoPartialMocksForTheSameObject
 {
     id object = [[TestClassThatCallsSelf alloc] init];
@@ -243,15 +244,6 @@ static NSUInteger initializeCallCount = 0;
                                  NSException,
                                  NSInvalidArgumentException,
                                  @"should throw NSInvalidArgumentException exception");
-}
-
-- (void)testExpectedMethodCallsExpectedMethodWithExpectationOrdering {
-    TestClassThatCallsSelf *object = [[TestClassThatCallsSelf alloc] init];
-    id mock = OCMPartialMock(object);
-    [mock setExpectationOrderMatters:YES];
-    [[[mock expect] andForwardToRealObject] method1];
-    [[[mock expect] andForwardToRealObject] method2];
-    XCTAssertNoThrow([object method1], @"Calling an expected method that internally calls another expected method should not make expectations appear to be out of order.");
 }
 
 #if TARGET_RT_64_BIT
@@ -395,6 +387,29 @@ static NSUInteger initializeCallCount = 0;
 	XCTAssertEqual(@"Foo", [realObject foo], @"Should have called method on real object.");
 	
 	[mock verify];
+}
+
+- (void)testReturnValueFromRealObjectShouldBeReturnedEvenWithPrecedingAndCall
+{
+  TestClassThatCallsSelf *object = [[TestClassThatCallsSelf alloc] init];
+  OCMockObject *mock = OCMPartialMock(object);
+  [[[[mock stub] andCall:@selector(firstReturnValueMethod) onObject:self] andForwardToRealObject] method2];
+  XCTAssertEqualObjects([object method2], @"Foo", @"Should have returned value from real object.");
+}
+
+- (NSString *)firstReturnValueMethod
+{
+    return @"Bar";
+}
+
+- (void)testExpectedMethodCallsExpectedMethodWithExpectationOrdering
+{
+    TestClassThatCallsSelf *object = [[TestClassThatCallsSelf alloc] init];
+    id mock = OCMPartialMock(object);
+    [mock setExpectationOrderMatters:YES];
+    [[[mock expect] andForwardToRealObject] method1];
+    [[[mock expect] andForwardToRealObject] method2];
+    XCTAssertNoThrow([object method1], @"Calling an expected method that internally calls another expected method should not make expectations appear to be out of order.");
 }
 
 

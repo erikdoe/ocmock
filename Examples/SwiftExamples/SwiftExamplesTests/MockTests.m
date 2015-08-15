@@ -28,7 +28,7 @@
 
 - (void)testMockingAnObject
 {
-    id mock = OCMClassMock([Connection class]);
+    id mock = OCMClassMock([ServerConnection class]);
     OCMStub([mock fetchData]).andReturn(@"stubbed!");
     
     Controller *controller = [Controller newController];
@@ -42,7 +42,7 @@
 
 - (void)testPartiallyMockingAnObject
 {
-    Connection *testConnection = [Connection new];
+    ServerConnection *testConnection = [ServerConnection new];
     id mock = OCMPartialMock(testConnection);
     OCMStub([mock fetchData]).andReturn(@"stubbed!");
     
@@ -59,7 +59,7 @@
 {
     Controller *controller = [Controller newController];
 
-    id mock = OCMPartialMock(controller.connection);
+    id mock = OCMPartialMock((NSObject *)controller.connection); // we know connection is derived from NSObject...
     OCMStub([mock fetchData]).andReturn(@"stubbed!");
     
     [controller redisplay];

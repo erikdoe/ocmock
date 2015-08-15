@@ -18,7 +18,7 @@ class Controller {
     }
     
     init() {
-        self.connection = Connection();
+        self.connection = ServerConnection();
         self.data = "";
     }
     

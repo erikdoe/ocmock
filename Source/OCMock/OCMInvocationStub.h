@@ -24,6 +24,6 @@
 - (void)addInvocationAction:(id)anAction;
 - (NSArray *)invocationActions;
 
-- (BOOL)handleInvocation:(NSInvocation *)anInvocation;
+- (void)handleInvocation:(NSInvocation *)anInvocation;
 
 @end

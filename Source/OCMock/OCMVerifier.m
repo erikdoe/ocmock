@@ -25,8 +25,11 @@
 
 - (id)init
 {
-    self = [super init];
-    invocationMatcher = [[OCMInvocationMatcher alloc] init];
+    if ((self = [super init]))
+    {
+        invocationMatcher = [[OCMInvocationMatcher alloc] init];
+    }
+    
     return self;
 }
 
@@ -36,5 +39,10 @@
     [mockObject verifyInvocation:invocationMatcher atLocation:self.location];
 }
 
+- (void)dealloc
+{
+	[_location release];
+	[super dealloc];
+}
 
 @end

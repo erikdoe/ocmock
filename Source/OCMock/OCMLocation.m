@@ -25,10 +25,13 @@
 
 - (instancetype)initWithTestCase:(id)aTestCase file:(NSString *)aFile line:(NSUInteger)aLine
 {
-    self = [super init];
-    testCase = aTestCase;
-    file = [aFile retain];
-    line = aLine;
+    if ((self = [super init]))
+    {
+        testCase = aTestCase;
+        file = [aFile retain];
+        line = aLine;
+    }
+    
     return self;
 }
 

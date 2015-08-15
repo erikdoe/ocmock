@@ -15,7 +15,7 @@
  */
 
 #import "OCMRecorder.h"
-
+#import <objc/runtime.h>
 
 @interface OCMStubRecorder : OCMRecorder
 
@@ -32,7 +32,14 @@
 
 @interface OCMStubRecorder (Properties)
 
-#define andReturn(aValue) _andReturn(({ __typeof__(aValue) _v = (aValue); [NSValue value:&_v withObjCType:@encode(__typeof__(_v))]; }))
+#define andReturn(aValue) _andReturn(({                                             \
+  __typeof__(aValue) _val = (aValue);                                               \
+  NSValue *_nsval = [NSValue value:&_val withObjCType:@encode(__typeof__(_val))];   \
+  if (__builtin_types_compatible_p(__typeof__(_val), id)) {                         \
+      objc_setAssociatedObject(_nsval, "OCMAssociatedBoxedValue", *(__unsafe_unretained id *) (void *) &_val, OBJC_ASSOCIATION_RETAIN); \
+  }                                                                                 \
+  _nsval;                                                                           \
+}))
 @property (nonatomic, readonly) OCMStubRecorder *(^ _andReturn)(NSValue *);
 
 #define andThrow(anException) _andThrow(anException)

@@ -21,8 +21,11 @@
 
 - (id)initWithNotification:(id)aNotification
 {
-	self = [super init];
-	notification = [aNotification retain];
+    if ((self = [super init]))
+    {
+        notification = [aNotification retain];
+    }
+	
 	return self;
 }
 

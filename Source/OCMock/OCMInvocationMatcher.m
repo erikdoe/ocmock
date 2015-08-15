@@ -31,6 +31,12 @@
 
 @implementation OCMInvocationMatcher
 
+- (void)dealloc
+{
+    [recordedInvocation release];
+    [super dealloc];
+}
+
 - (void)setInvocation:(NSInvocation *)anInvocation
 {
     [recordedInvocation release];
@@ -89,8 +95,8 @@
         return NO;
 
     NSMethodSignature *signature = [recordedInvocation methodSignature];
-    int n = (int)[signature numberOfArguments];
-    for(int i = 2; i < n; i++)
+    NSUInteger n = [signature numberOfArguments];
+    for(NSUInteger i = 2; i < n; i++)
     {
         if(ignoreNonObjectArgs && strcmp([signature getArgumentTypeAtIndex:i], @encode(id)))
         {
@@ -141,4 +147,5 @@
     }
     return YES;
 }
+
 @end

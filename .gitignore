@@ -3,3 +3,4 @@ xcuserdata
 *.xcworkspace
 .idea
 build
+Carthage

@@ -24,7 +24,7 @@
 
 @implementation OCMMacroState
 
-OCMMacroState *globalState;
+static OCMMacroState *globalState;
 
 #pragma mark  Methods to begin/end macros
 
@@ -79,8 +79,11 @@ OCMMacroState *globalState;
 
 - (id)initWithRecorder:(OCMRecorder *)aRecorder
 {
-    self = [super init];
-    recorder = [aRecorder retain];
+    if ((self = [super init]))
+    {
+        recorder = [aRecorder retain];
+    }
+    
     return self;
 }
 

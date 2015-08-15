@@ -23,8 +23,11 @@
 
 - (instancetype)initWithValue:(id)aValue
 {
-	self = [super init];
-	returnValue = [aValue retain];
+    if ((self = [super init]))
+    {
+        returnValue = [aValue retain];
+    }
+	
 	return self;
 }
 
