@@ -14,34 +14,32 @@
  *  under the License.
  */
 
-#import "OCMStubMacroState.h"
-#import "OCMockObject.h"
-#import "OCMockRecorder.h"
+#import <Foundation/Foundation.h>
 
-@implementation OCMStubMacroState
+@class OCMLocation;
+@class OCMRecorder;
+@class OCMStubRecorder;
+@class OCMockObject;
 
-- (void)setShouldRecordExpectation:(BOOL)flag
+
+@interface OCMMacroState : NSObject
 {
-    shouldRecordExpectation = flag;
+    OCMRecorder *recorder;
 }
 
-- (void)setShouldRecordAsClassMethod:(BOOL)flag
-{
-    shouldRecordAsClassMethod = flag;
-}
++ (void)beginStubMacro;
++ (OCMStubRecorder *)endStubMacro;
 
-- (OCMockRecorder *)recorder
-{
-    return recorder;
-}
++ (void)beginExpectMacro;
++ (OCMStubRecorder *)endExpectMacro;
 
-- (void)handleInvocation:(NSInvocation *)anInvocation
-{
-    OCMockObject *mock = [anInvocation target];
-    recorder = shouldRecordExpectation ? [mock expect] : [mock stub];
-    if(shouldRecordAsClassMethod)
-        [recorder classMethod];
-    [recorder forwardInvocation:anInvocation];
-}
++ (void)beginVerifyMacroAtLocation:(OCMLocation *)aLocation;
++ (void)endVerifyMacro;
+
++ (OCMMacroState *)globalState;
+
+- (OCMRecorder *)recorder;
+
+- (void)switchToClassMethod;
 
 @end

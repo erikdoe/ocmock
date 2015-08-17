@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2013-2014 Erik Doernenburg and contributors
+ *  Copyright (c) 2013-2015 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -16,6 +16,8 @@
 
 #import <XCTest/XCTest.h>
 #import "OCMArg.h"
+#import "OCMConstraint.h"
+#import "OCMPassByRefSetter.h"
 
 #if TARGET_OS_IPHONE
 #define NSRect CGRect
@@ -44,6 +46,59 @@
     XCTAssertEqualObjects(OCMOCK_VALUE(NSZeroRect), [NSValue valueWithRect:NSZeroRect]);
 #endif
     XCTAssertEqualObjects(OCMOCK_VALUE([@"0123456789" rangeOfString:@"56789"]), [NSValue valueWithRange:range]);
+}
+
+- (void)testIsKindOfClassCheck
+{
+    OCMBlockConstraint *constraint = [OCMArg isKindOfClass:[NSString class]];
+    
+	XCTAssertTrue([constraint evaluate:@"foo"], @"Should have accepted \"foo\".");
+	XCTAssertFalse([constraint evaluate:[NSArray array]], @"Should not have accepted other value.");
+	XCTAssertFalse([constraint evaluate:nil], @"Should not have accepted nil.");
+}
+
+-(void)testResolvesSpecialAnySelectorToAnyConstraint
+{
+    SEL anySelector = [OCMArg anySelector];
+    NSValue *anySelectorValue = [NSValue valueWithBytes:&anySelector objCType:@encode(SEL)];
+    
+    XCTAssertTrue([[OCMArg resolveSpecialValues:anySelectorValue] isKindOfClass:[OCMAnyConstraint class]]);
+}
+
+-(void)testDoesNotTreatOtherSelectorsAsSpecialValue
+{
+    NSValue *arbitrary = [NSValue value:NSSelectorFromString(@"someSelector") withObjCType:@encode(SEL)];
+    XCTAssertEqual([OCMArg resolveSpecialValues:arbitrary], arbitrary, @"Should have returned selector as is.");
+}
+
+-(void)testResolvesSpecialAnyPointerToAnyConstraint
+{
+    void *anyPointer = [OCMArg anyPointer];
+    NSValue *anyPointerValue = [NSValue valueWithPointer:anyPointer];
+    
+    XCTAssertTrue([[OCMArg resolveSpecialValues:anyPointerValue] isKindOfClass:[OCMAnyConstraint class]]);
+}
+
+-(void)testResolvesPassByRefSetterValueToSetterInstance
+{
+    NSNumber *value = @1;
+    OCMPassByRefSetter *setter = [[OCMPassByRefSetter alloc] initWithValue:value];
+    NSValue *passByRefSetterValue = [NSValue value:&setter withObjCType:@encode(void *)];
+    XCTAssertEqual([OCMArg resolveSpecialValues:passByRefSetterValue], setter, @"Should have unwrapped setter instance.");
+}
+
+- (void)testDoesNotModifyOtherPointersToObjects
+{
+    NSValue *objectPointer = [NSValue value:&self withObjCType:@encode(void *)];
+    XCTAssertEqual([OCMArg resolveSpecialValues:objectPointer], objectPointer, @"Should have returned value as is.");
+}
+
+- (void)testHandlesNonObjectPointersGracefully
+{
+    long numberThatRepresentsInValidClassPointer = 0x08;
+    long *pointer = &numberThatRepresentsInValidClassPointer;
+    NSValue *nonObjectPointerValue = [NSValue value:&pointer withObjCType:@encode(void *)];
+    XCTAssertEqual([OCMArg resolveSpecialValues:nonObjectPointerValue], nonObjectPointerValue, @"Should have returned value as is.");
 }
 
 @end

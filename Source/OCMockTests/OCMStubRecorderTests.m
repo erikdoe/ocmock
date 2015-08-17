@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2004-2014 Erik Doernenburg and contributors
+ *  Copyright (c) 2004-2015 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -15,32 +15,31 @@
  */
 
 #import <XCTest/XCTest.h>
-#import <OCMock/OCMockRecorder.h>
+#import "OCMStubRecorder.h"
 #import <OCMock/OCMockObject.h>
 #import "OCMReturnValueProvider.h"
 #import "OCMExceptionReturnValueProvider.h"
-#import "OCMArg.h"
 #import "OCMInvocationMatcher.h"
+#import "OCMInvocationStub.h"
 
-
-@interface OCMockRecorderTests : XCTestCase
+@interface OCMStubRecorderTests : XCTestCase
 
 @end
 
 
-@implementation OCMockRecorderTests
+@implementation OCMStubRecorderTests
 
 - (void)testCreatesInvocationMatcher
 {
     NSString *arg = @"I love mocks.";
 
     id mock = [OCMockObject mockForClass:[NSString class]];
-    OCMockRecorder *recorder = [[[OCMockRecorder alloc] initWithMockObject:mock] autorelease];
-    [(id)recorder initWithString:arg];
+    OCMStubRecorder *recorder = [[OCMStubRecorder alloc] initWithMockObject:mock];
+    [(id)recorder stringByAppendingString:arg];
 
-    NSMethodSignature *signature = [NSString instanceMethodSignatureForSelector:@selector(initWithString:)];
+    NSMethodSignature *signature = [NSString instanceMethodSignatureForSelector:@selector(stringByAppendingString:)];
     NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-    [invocation setSelector:@selector(initWithString:)];
+    [invocation setSelector:@selector(stringByAppendingString:)];
     [invocation setArgument:&arg atIndex:2];
     XCTAssertTrue([[recorder invocationMatcher] matchesInvocation:invocation], @"Should match.");
 }
@@ -48,23 +47,23 @@
 - (void)testAddsReturnValueProvider
 {
     id mock = [OCMockObject mockForClass:[NSString class]];
-    OCMockRecorder *recorder = [[[OCMockRecorder alloc] initWithMockObject:mock] autorelease];
+    OCMStubRecorder *recorder = [[OCMStubRecorder alloc] initWithMockObject:mock];
     [recorder andReturn:@"foo"];
-    NSArray *handlerList = [recorder invocationHandlers];
+    NSArray *actionList = [(OCMInvocationStub *)[recorder invocationMatcher] invocationActions];
 
-    XCTAssertEqual((NSUInteger)1, [handlerList count], @"Should have added one handler.");
-    XCTAssertEqualObjects([OCMReturnValueProvider class], [[handlerList objectAtIndex:0] class], @"Should have added correct handler.");
+    XCTAssertEqual((NSUInteger)1, [actionList count], @"Should have added one action.");
+    XCTAssertEqualObjects([OCMReturnValueProvider class], [[actionList objectAtIndex:0] class], @"Should have added correct action.");
 }
 
 - (void)testAddsExceptionReturnValueProvider
 {
     id mock = [OCMockObject mockForClass:[NSString class]];
-    OCMockRecorder *recorder = [[[OCMockRecorder alloc] initWithMockObject:mock] autorelease];
+    OCMStubRecorder *recorder = [[OCMStubRecorder alloc] initWithMockObject:mock];
     [recorder andThrow:[NSException exceptionWithName:@"TestException" reason:@"A reason" userInfo:nil]];
-    NSArray *handlerList = [recorder invocationHandlers];
+    NSArray *actionList = [(OCMInvocationStub *)[recorder invocationMatcher] invocationActions];
 
-    XCTAssertEqual((NSUInteger)1, [handlerList count], @"Should have added one handler.");
-    XCTAssertEqualObjects([OCMExceptionReturnValueProvider class], [[handlerList objectAtIndex:0] class], @"Should have added correct handler.");
+    XCTAssertEqual((NSUInteger)1, [actionList count], @"Should have added one action.");
+    XCTAssertEqualObjects([OCMExceptionReturnValueProvider class], [[actionList objectAtIndex:0] class], @"Should have added correct action.");
 
 }
 

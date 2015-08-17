@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2013-2014 Erik Doernenburg and contributors
+ *  Copyright (c) 2013-2015 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -19,6 +19,6 @@
 @interface NSObject(OCMAdditions)
 
 + (IMP)instanceMethodForwarderForSelector:(SEL)aSelector;
-+ (void)enumerateMethodsInClass:(Class)aClass usingBlock:(void (^)(SEL selector))aBlock;
++ (void)enumerateMethodsInClass:(Class)aClass usingBlock:(void (^)(Class cls, SEL sel))aBlock;
 
 @end

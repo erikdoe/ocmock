@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2014 Erik Doernenburg and contributors
+ *  Copyright (c) 2014-2015 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -16,7 +16,7 @@
 
 #import <XCTest/XCTest.h>
 #import "OCMockObject.h"
-#import "OCMockRecorder.h"
+#import "OCMStubRecorder.h"
 
 @interface TestBaseClassForVerifyAfterRun : NSObject
 
@@ -82,7 +82,7 @@
 
 - (void)testDoesNotThrowWhenMethodWasInvokedOnPartialMock
 {
-    TestClassForVerifyAfterRun *testObject = [[[TestClassForVerifyAfterRun alloc] init] autorelease];
+    TestClassForVerifyAfterRun *testObject = [[TestClassForVerifyAfterRun alloc] init];
     id mock = [OCMockObject partialMockForObject:testObject];
 
     [mock method2];
@@ -92,7 +92,7 @@
 
 - (void)testDoesNotThrowWhenMethodWasInvokedOnRealObjectEvenInSuperclass
 {
-    TestClassForVerifyAfterRun *testObject = [[[TestClassForVerifyAfterRun alloc] init] autorelease];
+    TestClassForVerifyAfterRun *testObject = [[TestClassForVerifyAfterRun alloc] init];
     id mock = [OCMockObject partialMockForObject:testObject];
 
     NSString *string =  [testObject method1];

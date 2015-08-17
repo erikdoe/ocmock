@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2013-2014 Erik Doernenburg and contributors
+ *  Copyright (c) 2013-2015 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -38,12 +38,6 @@
 
 @synthesize name = _name;
 
-- (void)dealloc
-{
-    [_name release];
-    [super dealloc];
-}
-
 @end
 
 
@@ -64,12 +58,6 @@
 - (instancetype)init
 {
     return [self initWithInternal:[[InternalObject alloc] init]];
-}
-
-- (void)dealloc
-{
-    [_internal release];
-    [super dealloc];
 }
 
 - (id)forwardingTargetForSelector:(SEL)selector

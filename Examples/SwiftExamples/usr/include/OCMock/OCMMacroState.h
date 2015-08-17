@@ -14,28 +14,30 @@
  *  under the License.
  */
 
-#import "OCMVerifyMacroState.h"
-#import "OCMInvocationMatcher.h"
-#import "OCMLocation.h"
-#import "OCMockObject.h"
+#import <Foundation/Foundation.h>
+
+@class OCMLocation;
+@class OCMockRecorder;
 
 
-@implementation OCMVerifyMacroState
-
-- (id)initWithLocation:(OCMLocation *)aLocation
+@interface OCMMacroState : NSObject
 {
-    self = [super init];
-    location = aLocation;
-    return self;
 }
 
-- (void)handleInvocation:(NSInvocation *)anInvocation
-{
-    OCMockObject *mock = [anInvocation target];
-    [anInvocation setTarget:nil];
-    OCMInvocationMatcher *matcher = [[[OCMInvocationMatcher alloc] init] autorelease];
-    [matcher setInvocation:anInvocation];
-    [mock verifyInvocation:matcher atLocation:location];
-}
++ (void)beginStubMacro;
++ (OCMockRecorder *)endStubMacro;
+
++ (void)beginExpectMacro;
++ (OCMockRecorder *)endExpectMacro;
+
++ (void)beginVerifyMacroAtLocation:(OCMLocation *)aLocation;
++ (void)endVerifyMacro;
+
++ (OCMMacroState *)globalState;
+
+- (void)switchToClassMethod;
+- (BOOL)hasSwitchedToClassMethod;
+
+- (void)handleInvocation:(NSInvocation *)anInvocation;
 
 @end

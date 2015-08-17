@@ -14,17 +14,23 @@
  *  under the License.
  */
 
-#import "OCMMacroState.h"
+#import <Foundation/Foundation.h>
 
-@class OCMLocation;
-
-
-@interface OCMVerifyMacroState : OCMMacroState
+@interface OCMLocation : NSObject
 {
-    OCMLocation    *location;
+    id          testCase;
+    NSString    *file;
+    NSUInteger  line;
 }
 
-- (id)initWithLocation:(OCMLocation *)aLocation;
++ (id)locationWithTestCase:(id)aTestCase file:(NSString *)aFile line:(NSUInteger)aLine;
 
+- (id)initWithTestCase:(id)aTestCase file:(NSString *)aFile line:(NSUInteger)aLine;
+
+- (id)testCase;
+- (NSString *)file;
+- (NSUInteger)line;
 
 @end
+
+extern OCMLocation *OCMMakeLocation(id testCase, const char *file, int line);

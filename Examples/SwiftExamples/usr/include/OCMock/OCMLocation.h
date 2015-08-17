@@ -14,20 +14,23 @@
  *  under the License.
  */
 
-#import "OCMMacroState.h"
+#import <Foundation/Foundation.h>
 
-@class OCMockRecorder;
-
-
-@interface OCMStubMacroState : OCMMacroState
+@interface OCMLocation : NSObject
 {
-    BOOL           shouldRecordExpectation;
-    BOOL           shouldRecordAsClassMethod;
-    OCMockRecorder *recorder;
+    id          testCase;
+    NSString    *file;
+    NSUInteger  line;
 }
 
-- (void)setShouldRecordExpectation:(BOOL)flag;
-- (void)setShouldRecordAsClassMethod:(BOOL)flag;
-- (OCMockRecorder *)recorder;
++ (id)locationWithTestCase:(id)aTestCase file:(NSString *)aFile line:(NSUInteger)aLine;
+
+- (id)initWithTestCase:(id)aTestCase file:(NSString *)aFile line:(NSUInteger)aLine;
+
+- (id)testCase;
+- (NSString *)file;
+- (NSUInteger)line;
 
 @end
+
+extern OCMLocation *OCMMakeLocation(id testCase, const char *file, int line);

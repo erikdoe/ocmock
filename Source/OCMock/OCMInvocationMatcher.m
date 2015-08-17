@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2014 Erik Doernenburg and contributors
+ *  Copyright (c) 2014-2015 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -31,10 +31,20 @@
 
 @implementation OCMInvocationMatcher
 
-- (void)setInvocation:(NSInvocation *)anInvocation;
+- (void)dealloc
 {
     [recordedInvocation release];
-    [anInvocation retainArguments];
+    [super dealloc];
+}
+
+- (void)setInvocation:(NSInvocation *)anInvocation
+{
+    [recordedInvocation release];
+    // When the method has a char* argument we do not retain the arguments. This makes it possible
+    // to match char* args literally and with anyPointer. Not retaining the argument means that
+    // in these cases tests that use their own autorelease pools may fail unexpectedly.
+    if(![anInvocation hasCharPointerArgument])
+        [anInvocation retainArguments];
     recordedInvocation = [anInvocation retain];
 }
 
@@ -58,6 +68,11 @@
     return [recordedInvocation invocationDescription];
 }
 
+- (NSInvocation *)recordedInvocation
+{
+    return recordedInvocation;
+}
+
 - (BOOL)matchesSelector:(SEL)sel
 {
     if(sel == [recordedInvocation selector])
@@ -65,6 +80,7 @@
     if(OCMIsAliasSelector(sel) &&
        OCMOriginalSelectorForAlias(sel) == [recordedInvocation selector])
         return YES;
+
     return NO;
 }
 
@@ -79,8 +95,8 @@
         return NO;
 
     NSMethodSignature *signature = [recordedInvocation methodSignature];
-    int n = (int)[signature numberOfArguments];
-    for(int i = 2; i < n; i++)
+    NSUInteger n = [signature numberOfArguments];
+    for(NSUInteger i = 2; i < n; i++)
     {
         if(ignoreNonObjectArgs && strcmp([signature getArgumentTypeAtIndex:i], @encode(id)))
         {
@@ -131,4 +147,5 @@
     }
     return YES;
 }
+
 @end

@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2014 Erik Doernenburg and contributors
+ *  Copyright (c) 2014-2015 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -15,25 +15,28 @@
  */
 
 #import "OCMMacroState.h"
-#import "OCMockRecorder.h"
-#import "OCMVerifyMacroState.h"
-#import "OCMStubMacroState.h"
+#import "OCMStubRecorder.h"
+#import "OCMockObject.h"
+#import "OCMExpectationRecorder.h"
+#import "OCMVerifier.h"
+#import "OCMInvocationMatcher.h"
 
 
 @implementation OCMMacroState
 
-OCMMacroState *globalState;
+static OCMMacroState *globalState;
 
+#pragma mark  Methods to begin/end macros
 
 + (void)beginStubMacro
 {
-    globalState = [[OCMStubMacroState alloc] init];
+    OCMStubRecorder *recorder = [[[OCMStubRecorder alloc] init] autorelease];
+    globalState = [[[OCMMacroState alloc] initWithRecorder:recorder] autorelease];
 }
 
-+ (OCMockRecorder *)endStubMacro
++ (OCMStubRecorder *)endStubMacro
 {
-    OCMockRecorder *recorder = [((OCMStubMacroState *)globalState) recorder];
-    [globalState autorelease];
+    OCMStubRecorder *recorder = (OCMStubRecorder *)[globalState recorder];
     globalState = nil;
     return recorder;
 }
@@ -41,11 +44,11 @@ OCMMacroState *globalState;
 
 + (void)beginExpectMacro
 {
-    [self beginStubMacro];
-    [(OCMStubMacroState *)globalState setShouldRecordExpectation:YES];
+    OCMExpectationRecorder *recorder = [[[OCMExpectationRecorder alloc] init] autorelease];
+    globalState = [[[OCMMacroState alloc] initWithRecorder:recorder] autorelease];
 }
 
-+ (OCMockRecorder *)endExpectMacro
++ (OCMStubRecorder *)endExpectMacro
 {
     return [self endStubMacro];
 }
@@ -53,15 +56,18 @@ OCMMacroState *globalState;
 
 + (void)beginVerifyMacroAtLocation:(OCMLocation *)aLocation
 {
-    globalState = [[OCMVerifyMacroState alloc] initWithLocation:aLocation];
+    OCMVerifier *recorder = [[[OCMVerifier alloc] init] autorelease];
+    [recorder setLocation:aLocation];
+    globalState = [[[OCMMacroState alloc] initWithRecorder:recorder] autorelease];
 }
 
 + (void)endVerifyMacro
 {
-    [globalState autorelease];
     globalState = nil;
 }
 
+
+#pragma mark  Accessing global state
 
 + (OCMMacroState *)globalState
 {
@@ -69,9 +75,37 @@ OCMMacroState *globalState;
 }
 
 
-- (void)handleInvocation:(NSInvocation *)anInvocation
+#pragma mark  Init, dealloc, accessors
+
+- (id)initWithRecorder:(OCMRecorder *)aRecorder
 {
-    // to be implemented by subclasses
+    if ((self = [super init]))
+    {
+        recorder = [aRecorder retain];
+    }
+    
+    return self;
+}
+
+- (void)dealloc
+{
+    [recorder release];
+    if(globalState == self)
+        globalState = nil;
+    [super dealloc];
+}
+
+- (OCMRecorder *)recorder
+{
+    return recorder;
+}
+
+
+#pragma mark  Changing the recorder
+
+- (void)switchToClassMethod
+{
+    [recorder classMethod];
 }
 
 

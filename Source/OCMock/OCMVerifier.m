@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2014 Erik Doernenburg and contributors
+ *  Copyright (c) 2014-2015 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -17,59 +17,32 @@
 #import <objc/runtime.h>
 #import "OCMVerifier.h"
 #import "OCMockObject.h"
+#import "OCMLocation.h"
 #import "OCMInvocationMatcher.h"
-#import "OCClassMockObject.h"
 
 
 @implementation OCMVerifier
 
-- (id)initWithMockObject:(OCMockObject *)aMockObject
+- (id)init
 {
-    // no super, we're inheriting from NSProxy
-    mockObject = aMockObject;
-    return self;
-}
-
-- (id)classMethod
-{
-    // should we handle the case where this is called with a mock that isn't a class mock?
-    verifyAsClassMethod = YES;
-    return self;
-}
-
-- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
-{
-    if(verifyAsClassMethod)
-        return [[(OCClassMockObject *)mockObject mockedClass] methodSignatureForSelector:aSelector];
-
-    NSMethodSignature *signature = [mockObject methodSignatureForSelector:aSelector];
-    if(signature == nil)
+    if ((self = [super init]))
     {
-        // if we're a working with a class mock and there is a class method, auto-switch
-        if(([object_getClass(mockObject) isSubclassOfClass:[OCClassMockObject class]]) &&
-           ([[(OCClassMockObject *)mockObject mockedClass] respondsToSelector:aSelector]))
-        {
-            [self classMethod];
-            signature = [self methodSignatureForSelector:aSelector];
-        }
+        invocationMatcher = [[OCMInvocationMatcher alloc] init];
     }
-    return signature;
+    
+    return self;
 }
 
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
-    [anInvocation setTarget:nil];
-    OCMInvocationMatcher *matcher = [[[OCMInvocationMatcher alloc] init] autorelease];
-    [matcher setInvocation:anInvocation];
-    [matcher setRecordedAsClassMethod:verifyAsClassMethod];
-    [mockObject verifyInvocation:matcher];
+    [super forwardInvocation:anInvocation];
+    [mockObject verifyInvocation:invocationMatcher atLocation:self.location];
 }
 
-- (void)doesNotRecognizeSelector:(SEL)aSelector
+- (void)dealloc
 {
-    [NSException raise:NSInvalidArgumentException format:@"%@: cannot stub or expect method '%@' because no such method exists in the mocked class.", mockObject, NSStringFromSelector(aSelector)];
+	[_location release];
+	[super dealloc];
 }
-
-
 
 @end

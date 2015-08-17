@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2014 Erik Doernenburg and contributors
+ *  Copyright (c) 2014-2015 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -23,6 +23,7 @@
 
 BOOL OCMIsObjectType(const char *objCType);
 const char *OCMTypeWithoutQualifiers(const char *objCType);
+BOOL OCMEqualTypesAllowingOpaqueStructs(const char *type1, const char *type2);
 
 Class OCMCreateSubclass(Class class, void *ref);
 
@@ -34,7 +35,7 @@ SEL OCMAliasForOriginalSelector(SEL selector);
 SEL OCMOriginalSelectorForAlias(SEL selector);
 
 void OCMSetAssociatedMockForClass(OCClassMockObject *mock, Class aClass);
-OCClassMockObject *OCMGetAssociatedMockForClass(Class aClass);
+OCClassMockObject *OCMGetAssociatedMockForClass(Class aClass, BOOL includeSuperclasses);
 
 void OCMSetAssociatedMockForObject(OCClassMockObject *mock, id anObject);
 OCPartialMockObject *OCMGetAssociatedMockForObject(id anObject);

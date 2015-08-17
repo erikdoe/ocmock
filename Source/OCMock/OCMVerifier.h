@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2014 Erik Doernenburg and contributors
+ *  Copyright (c) 2014-2015 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -14,17 +14,12 @@
  *  under the License.
  */
 
-#import <Foundation/Foundation.h>
+#import "OCMRecorder.h"
+#import "OCMLocation.h"
 
-@class OCMockObject;
 
+@interface OCMVerifier : OCMRecorder
 
-@interface OCMVerifier : NSProxy
-{
-    OCMockObject    *mockObject;
-    BOOL            verifyAsClassMethod;
-}
-
-- (id)initWithMockObject:(OCMockObject *)aMockObject;
+@property(retain) OCMLocation *location;
 
 @end

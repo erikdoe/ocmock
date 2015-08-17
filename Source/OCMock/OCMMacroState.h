@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2014 Erik Doernenburg and contributors
+ *  Copyright (c) 2014-2015 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -17,24 +17,29 @@
 #import <Foundation/Foundation.h>
 
 @class OCMLocation;
-@class OCMockRecorder;
+@class OCMRecorder;
+@class OCMStubRecorder;
+@class OCMockObject;
 
 
 @interface OCMMacroState : NSObject
 {
+    OCMRecorder *recorder;
 }
 
 + (void)beginStubMacro;
-+ (OCMockRecorder *)endStubMacro;
++ (OCMStubRecorder *)endStubMacro;
 
 + (void)beginExpectMacro;
-+ (OCMockRecorder *)endExpectMacro;
++ (OCMStubRecorder *)endExpectMacro;
 
 + (void)beginVerifyMacroAtLocation:(OCMLocation *)aLocation;
 + (void)endVerifyMacro;
 
 + (OCMMacroState *)globalState;
 
-- (void)handleInvocation:(NSInvocation *)anInvocation;
+- (OCMRecorder *)recorder;
+
+- (void)switchToClassMethod;
 
 @end

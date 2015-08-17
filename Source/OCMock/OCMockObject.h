@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2004-2014 Erik Doernenburg and contributors
+ *  Copyright (c) 2004-2015 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -17,17 +17,18 @@
 #import <Foundation/Foundation.h>
 
 @class OCMLocation;
-@class OCMockRecorder;
+@class OCMInvocationStub;
+@class OCMStubRecorder;
 @class OCMInvocationMatcher;
+@class OCMInvocationExpectation;
 
 
 @interface OCMockObject : NSProxy
 {
 	BOOL			isNice;
 	BOOL			expectationOrderMatters;
-	NSMutableArray	*recorders;
+	NSMutableArray	*stubs;
 	NSMutableArray	*expectations;
-	NSMutableArray	*rejections;
 	NSMutableArray	*exceptions;
     NSMutableArray  *invocations;
 }
@@ -41,7 +42,7 @@
 
 + (id)observerMock;
 
-- (id)init;
+- (instancetype)init;
 
 - (void)setExpectationOrderMatters:(BOOL)flag;
 
@@ -53,13 +54,14 @@
 - (id)verifyAtLocation:(OCMLocation *)location;
 
 - (void)verifyWithDelay:(NSTimeInterval)delay;
+- (void)verifyWithDelay:(NSTimeInterval)delay atLocation:(OCMLocation *)location;
 
 - (void)stopMocking;
 
 // internal use only
 
-- (void)prepareForMockingMethod:(SEL)aSelector;
-- (void)prepareForMockingClassMethod:(SEL)aSelector;
+- (void)addStub:(OCMInvocationStub *)aStub;
+- (void)addExpectation:(OCMInvocationExpectation *)anExpectation;
 
 - (BOOL)handleInvocation:(NSInvocation *)anInvocation;
 - (void)handleUnRecordedInvocation:(NSInvocation *)anInvocation;

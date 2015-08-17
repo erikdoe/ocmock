@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2006-2014 Erik Doernenburg and contributors
+ *  Copyright (c) 2006-2015 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -22,7 +22,7 @@
 
 - (id)ocmtest_initWithLongDouble:(long double)ldbl
 {
-    return [self initWithBytes:&ldbl objCType:@encode(typeof(ldbl))];
+    return [self initWithBytes:&ldbl objCType:@encode(__typeof__(ldbl))];
 }
 
 @end
@@ -52,7 +52,7 @@
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it one argument (starts at index 2)
-	NSNumber *argument = [NSNumber numberWithInt:1];
+	NSNumber *argument = @1;
 	[invocation setArgument:&argument atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"isEqualToNumber:%d", 1];
@@ -80,7 +80,7 @@
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it two arguments
-	NSNumber *argumentOne = [NSNumber numberWithInt:1];
+	NSNumber *argumentOne = @1;
 	NSString *argumentTwo = @"TEST_STRING";
 	[invocation setArgument:&argumentOne atIndex:2];
 	[invocation setArgument:&argumentTwo atIndex:3];
@@ -96,7 +96,7 @@
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it one argument (starts at index 2)
-	NSArray *argument = [NSArray arrayWithObject:@"TEST_STRING"];
+	NSArray *argument = @[@"TEST_STRING"];
 	[invocation setArgument:&argument atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"addObjectsFromArray:%@", [argument description]];

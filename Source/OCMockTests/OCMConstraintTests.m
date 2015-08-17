@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2004-2014 Erik Doernenburg and contributors
+ *  Copyright (c) 2004-2015 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -36,10 +36,9 @@
 - (void)testAnyAcceptsAnything
 {
 	OCMConstraint *constraint = [OCMAnyConstraint constraint];
-
 	XCTAssertTrue([constraint evaluate:@"foo"], @"Should have accepted a value.");
-	XCTAssertTrue([constraint evaluate:@"foo"], @"Should have accepted another value.");
-	XCTAssertTrue([constraint evaluate:@"foo"], @"Should have accepted nil.");
+	XCTAssertTrue([constraint evaluate:@"bar"], @"Should have accepted another value.");
+	XCTAssertTrue([constraint evaluate:nil], @"Should have accepted nil.");
 }
 
 - (void)testIsNilAcceptsOnlyNil
@@ -144,5 +143,11 @@
 	XCTAssertEqualObjects(@"bar", captured, @"Should have captured value from last invocation.");
 }
 
+- (void)testEvaluateNilBlockReturnsNo
+{
+    OCMBlockConstraint *constraint = [[OCMBlockConstraint alloc] initWithConstraintBlock:nil];
+    
+    XCTAssertFalse([constraint evaluate:@"foo"]);
+}
 
 @end
