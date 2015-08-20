@@ -18,6 +18,8 @@ Pod::Spec.new do |s|
   
   s.source       = { :git => "https://github.com/erikdoe/ocmock.git", :tag => "v3.1.3" }
   s.source_files  = "Source/OCMock/*.{h,m}"
+
+  s.platform     = :ios
   
   s.public_header_files = ["OCMock.h", "OCMockObject.h", "OCMArg.h", "OCMConstraint.h", "OCMLocation.h", "OCMMacroState.h", "OCMRecorder.h", "OCMStubRecorder.h", "NSNotificationCenter+OCMAdditions.h"].map { |file|
     "Source/OCMock/" + file
