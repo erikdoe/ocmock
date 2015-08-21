@@ -796,17 +796,6 @@ static NSString *TestNotification = @"TestNotification";
 	XCTAssertThrows([mock verifyWithDelay:0.1], @"Should have raised an exception because method was not called.");
 }
 
-- (void)testAcceptsAndVerifiesExpectedMethodsWithDelayBlockTimeout
-{
-    dispatch_async(dispatch_queue_create("mockqueue", nil), ^{
-        [NSThread sleepForTimeInterval:1];
-        [mock lowercaseString];
-    });
-    
-	[[mock expect] lowercaseString];
-	XCTAssertThrows([mock verifyWithDelay:0.1], @"Should have raised an exception because method was not called.");
-}
-
 // --------------------------------------------------------------------------------------
 //	ordered expectations
 // --------------------------------------------------------------------------------------
