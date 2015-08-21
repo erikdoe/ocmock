@@ -325,7 +325,6 @@
 		03B316271463350E0052CD09 /* OCMStubRecorderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMStubRecorderTests.m; sourceTree = "<group>"; };
 		03B316291463350E0052CD09 /* OCObserverMockObjectTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCObserverMockObjectTests.m; sourceTree = "<group>"; };
 		03B3168F14633FAB0052CD09 /* Changes.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Changes.txt; sourceTree = "<group>"; };
-		03B3169014633FAB0052CD09 /* License.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = License.txt; sourceTree = "<group>"; };
 		03C7BF08195DA2F200A545DD /* OCMInvocationStub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMInvocationStub.h; sourceTree = "<group>"; };
 		03C7BF09195DA2F200A545DD /* OCMInvocationStub.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMInvocationStub.m; sourceTree = "<group>"; };
 		03C7BF0E195DAB5300A545DD /* OCMExpectationRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMExpectationRecorder.h; sourceTree = "<group>"; };
@@ -408,7 +407,6 @@
 			isa = PBXGroup;
 			children = (
 				03B3168F14633FAB0052CD09 /* Changes.txt */,
-				03B3169014633FAB0052CD09 /* License.txt */,
 				030EF0B114632FD000B04273 /* OCMock */,
 				03565A3318F0566F003AE91E /* OCMockTests */,
 				030EF0DF14632FF700B04273 /* OCMockLib */,
