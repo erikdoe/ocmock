@@ -172,7 +172,13 @@
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
-    return [mockedClass instanceMethodSignatureForSelector:aSelector];
+    NSMethodSignature *signature = [mockedClass instanceMethodSignatureForSelector:aSelector];
+    if(signature == nil)
+    {
+        NSString *property = NSStringFromSelector(aSelector);
+        signature = [mockedClass methodSignatureForDynamicProperty:property];
+    }
+    return signature;
 }
 
 - (Class)mockObjectClass

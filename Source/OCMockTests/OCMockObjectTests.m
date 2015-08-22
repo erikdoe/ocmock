@@ -116,6 +116,7 @@ TestOpaque myOpaque;
 
 @end
 
+
 static NSString *TestNotification = @"TestNotification";
 
 
@@ -922,7 +923,6 @@ static NSString *TestNotification = @"TestNotification";
 
     XCTAssertEqual(2, count, @"Should have evaluated constraint only twice");
 }
-
 
 @end
 
