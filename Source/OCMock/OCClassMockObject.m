@@ -172,37 +172,13 @@
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
-  NSMethodSignature *signature = [mockedClass instanceMethodSignatureForSelector:aSelector];
-  if (signature == nil) {
-    objc_property_t property = class_getProperty(mockedClass, [NSStringFromSelector(aSelector) cStringUsingEncoding:NSASCIIStringEncoding]);
-    if (property) {
-      const char *attrsStr = property_getAttributes(property);
-      if (attrsStr) {
-        NSArray *components = [[NSString stringWithCString:attrsStr
-                                                  encoding:NSASCIIStringEncoding] componentsSeparatedByString:@","];
-        BOOL isDynamic = NO;
-        NSString *typeStr = nil;
-        for (NSString *component in components) {
-          if ([component isEqualToString:@"D"]) {
-            //property is @dynamic, but we can synthesize the signature
-            isDynamic = YES;
-          } else if ([component hasPrefix:@"T"]) {
-            typeStr = [component substringFromIndex:1];
-          }
-        }
-        
-        if (isDynamic) {
-          NSRange r = [typeStr rangeOfString:@"\""];
-          if (r.location != NSNotFound) {
-            typeStr = [typeStr substringToIndex:r.location];
-          }
-          const char *str = [[NSString stringWithFormat:@"%@@:", typeStr] cStringUsingEncoding:NSASCIIStringEncoding];
-          signature = [NSMethodSignature signatureWithObjCTypes:str];
-        }
-      }
+    NSMethodSignature *signature = [mockedClass instanceMethodSignatureForSelector:aSelector];
+    if(signature == nil)
+    {
+        NSString *property = NSStringFromSelector(aSelector);
+        signature = [mockedClass methodSignatureForDynamicProperty:property];
     }
-  }
-  return signature;
+    return signature;
 }
 
 - (Class)mockObjectClass
