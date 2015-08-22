@@ -116,6 +116,22 @@ TestOpaque myOpaque;
 
 @end
 
+
+@interface TestClassWithDynamicProperties : NSObject
+@property(nonatomic, readonly) NSDictionary *anObject;
+@property(nonatomic, readonly) NSUInteger aUInt;
+@property(nonatomic, readonly) NSInteger aInt;
+
+@end
+
+@implementation TestClassWithDynamicProperties
+@dynamic anObject;
+@dynamic aUInt;
+@dynamic aInt;
+
+@end
+
+
 static NSString *TestNotification = @"TestNotification";
 
 
@@ -921,6 +937,38 @@ static NSString *TestNotification = @"TestNotification";
     [mock hasSuffix:@"bar"];
 
     XCTAssertEqual(2, count, @"Should have evaluated constraint only twice");
+}
+
+
+- (void)testCanMockDynamicProperty {
+  mock = [OCMockObject mockForClass:[TestClassWithDynamicProperties class]];
+  NSDictionary *testDict = @{ @"test-key": @"test-value" };
+  [[[mock expect] andReturn:testDict] anObject];
+  
+  NSUInteger someUInt = 5;
+  [[[mock expect] andReturnValue:OCMOCK_VALUE(someUInt)] aUInt];
+  
+  NSInteger someInt = -10;
+  [[[mock expect] andReturnValue:OCMOCK_VALUE(someInt)] aInt];
+  
+  NSDictionary *result = [mock anObject];
+  XCTAssertEqualObjects(testDict, result);
+  
+  XCTAssertEqual(-10, [mock aInt]);
+  XCTAssertEqual(5, [mock aUInt]);
+  
+  [mock verify];
+}
+
+
+- (void)testNSURLSessionMock {
+  mock = [OCMockObject mockForClass:[NSURLSessionTask class]];
+  NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.google.com"]];
+  
+  [[[mock expect] andReturn:request] originalRequest];
+  
+  XCTAssertEqualObjects(request, [mock originalRequest]);
+  [mock verify];
 }
 
 
