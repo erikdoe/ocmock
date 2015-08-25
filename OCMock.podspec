@@ -21,9 +21,9 @@ Pod::Spec.new do |s|
   s.source_files          = "Source/OCMock/*.{h,m}"
 
   s.requires_arc          = false
-  s.platform              = :ios
-  s.platform              = :osx
-  
+  s.ios.deployment_target = '5.0'
+  s.osx.deployment_target = '10.6'
+   
   s.public_header_files   = ["OCMock.h", "OCMockObject.h", "OCMArg.h", "OCMConstraint.h", "OCMLocation.h", "OCMMacroState.h", "OCMRecorder.h", "OCMStubRecorder.h", "NSNotificationCenter+OCMAdditions.h"].map { |file|
     "Source/OCMock/" + file
   }
