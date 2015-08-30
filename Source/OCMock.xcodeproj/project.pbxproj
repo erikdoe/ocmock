@@ -131,6 +131,8 @@
 		03C9CA1F18F05A8E006DF94D /* NSMethodSignatureOCMAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28DEDB9163597B7C49F3D /* NSMethodSignatureOCMAdditionsTests.m */; };
 		03DCED6D183406BC0059089E /* NSObject+OCMAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28991BEFD67DEF2CCF7D2 /* NSObject+OCMAdditions.m */; };
 		03DCED6F183406DA0059089E /* NSObject+OCMAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA28C5F4A475BEC0C28BDC3 /* NSObject+OCMAdditions.h */; };
+		03E0FAD81B93C00B000C5096 /* OCMBlockArgCaller.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA2891034E7B73AA3511D17 /* OCMBlockArgCaller.h */; };
+		03E0FAD91B93C01A000C5096 /* OCMBlockArgCaller.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA283D58AA7569D8A5B0C57 /* OCMBlockArgCaller.m */; };
 		03E98D4B18F308B400522D42 /* OCMLocation.h in Headers */ = {isa = PBXBuildFile; fileRef = 03E98D4918F308B400522D42 /* OCMLocation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03E98D4C18F308B400522D42 /* OCMLocation.h in Headers */ = {isa = PBXBuildFile; fileRef = 03E98D4918F308B400522D42 /* OCMLocation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03E98D4D18F308B400522D42 /* OCMLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E98D4A18F308B400522D42 /* OCMLocation.m */; };
@@ -146,6 +148,7 @@
 		2FA282F0C0A4CABE4E2C7646 /* OCMInvocationMatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28CB1EB14C6B2BE9A20C6 /* OCMInvocationMatcher.m */; };
 		2FA2839F33289795284C32FB /* OCMockObjectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA2822E19948FC997965267 /* OCMockObjectTests.m */; };
 		2FA283C39309951ED4DA2969 /* NSValue+OCMAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA286EAC1682979C696D4D6 /* NSValue+OCMAdditions.h */; };
+		2FA28405211B752287972F42 /* OCMBlockArgCaller.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA283D58AA7569D8A5B0C57 /* OCMBlockArgCaller.m */; };
 		2FA284EBCD82935B4F8A5A2C /* OCMInvocationExpectation.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA288509D545BDBE094BCC8 /* OCMInvocationExpectation.h */; };
 		2FA28598D23EC190EE19F3AE /* OCMFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA28EC49F6C59B940AE6D00 /* OCMFunctions.h */; };
 		2FA28641AAD0AC2F876C9E48 /* OCMInvocationMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA28CCC33B99D6B658E7AF8 /* OCMInvocationMatcher.h */; };
@@ -156,12 +159,15 @@
 		2FA288B20FB3A42BA0B7BAB8 /* OCMInvocationMatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28CB1EB14C6B2BE9A20C6 /* OCMInvocationMatcher.m */; };
 		2FA28AB33F01A7D980F2C705 /* OCMockObjectDynamicPropertyMockingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28EE3142412BD601026EF /* OCMockObjectDynamicPropertyMockingTests.m */; };
 		2FA28B6CEF4CC6FD5E7D09B5 /* OCMMacroState.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA28006D043CBDBBAEF6E3F /* OCMMacroState.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2FA28B7BDB3319A499E90525 /* OCMBlockArgCaller.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA2891034E7B73AA3511D17 /* OCMBlockArgCaller.h */; };
 		2FA28BA90F0D55E4CF6787F0 /* OCMFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28C8717BE4B7A89119BA2 /* OCMFunctions.m */; };
 		2FA28D38ED9D83A3E0A620B3 /* NSObject+OCMAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28991BEFD67DEF2CCF7D2 /* NSObject+OCMAdditions.m */; };
+		2FA28DC9A2D732666124D640 /* OCMBlockArgCaller.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA2891034E7B73AA3511D17 /* OCMBlockArgCaller.h */; };
 		2FA28E1EB6B8536785258DF5 /* OCMInvocationMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA28CCC33B99D6B658E7AF8 /* OCMInvocationMatcher.h */; };
 		2FA28E506BE0D91A95A20243 /* OCMInvocationExpectation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA2875564A6AD0510A847A6 /* OCMInvocationExpectation.m */; };
 		2FA28F090622C9DF868CCA8C /* NSValue+OCMAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA286EAC1682979C696D4D6 /* NSValue+OCMAdditions.h */; };
 		2FA28F12AAD384A8CB16094B /* OCMockObjectDynamicPropertyMockingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28EE3142412BD601026EF /* OCMockObjectDynamicPropertyMockingTests.m */; };
+		2FA28F1FA69D313B4040896E /* OCMBlockArgCaller.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA283D58AA7569D8A5B0C57 /* OCMBlockArgCaller.m */; };
 		2FA28FA53C57236B6DD64E82 /* OCMockObjectRuntimeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA2813F93050582D83E1499 /* OCMockObjectRuntimeTests.m */; };
 		2FA28FE116284C3E4A7FF179 /* OCMInvocationExpectation.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA288509D545BDBE094BCC8 /* OCMInvocationExpectation.h */; };
 		2FA28FEAEF9333D2C214DF53 /* NSValue+OCMAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28896E5EEFD7C2F12C2F8 /* NSValue+OCMAdditions.m */; };
@@ -338,11 +344,13 @@
 		2FA280987F4EA8A4D79000D0 /* OCMMacroState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMMacroState.m; sourceTree = "<group>"; };
 		2FA2813F93050582D83E1499 /* OCMockObjectRuntimeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMockObjectRuntimeTests.m; sourceTree = "<group>"; };
 		2FA2822E19948FC997965267 /* OCMockObjectTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMockObjectTests.m; sourceTree = "<group>"; };
+		2FA283D58AA7569D8A5B0C57 /* OCMBlockArgCaller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMBlockArgCaller.m; sourceTree = "<group>"; };
 		2FA286BFBD8B9D068B41E7EF /* OCMockObjectProtocolMocksTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMockObjectProtocolMocksTests.m; sourceTree = "<group>"; };
 		2FA286EAC1682979C696D4D6 /* NSValue+OCMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValue+OCMAdditions.h"; sourceTree = "<group>"; };
 		2FA2875564A6AD0510A847A6 /* OCMInvocationExpectation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMInvocationExpectation.m; sourceTree = "<group>"; };
 		2FA288509D545BDBE094BCC8 /* OCMInvocationExpectation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMInvocationExpectation.h; sourceTree = "<group>"; };
 		2FA28896E5EEFD7C2F12C2F8 /* NSValue+OCMAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSValue+OCMAdditions.m"; sourceTree = "<group>"; };
+		2FA2891034E7B73AA3511D17 /* OCMBlockArgCaller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMBlockArgCaller.h; sourceTree = "<group>"; };
 		2FA28991BEFD67DEF2CCF7D2 /* NSObject+OCMAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+OCMAdditions.m"; sourceTree = "<group>"; };
 		2FA28C5F4A475BEC0C28BDC3 /* NSObject+OCMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+OCMAdditions.h"; sourceTree = "<group>"; };
 		2FA28C8717BE4B7A89119BA2 /* OCMFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMFunctions.m; sourceTree = "<group>"; };
@@ -604,6 +612,8 @@
 				03B31594146333BF0052CD09 /* OCMConstraint.m */,
 				03B315A1146333BF0052CD09 /* OCMPassByRefSetter.h */,
 				03B315A2146333BF0052CD09 /* OCMPassByRefSetter.m */,
+				2FA2891034E7B73AA3511D17 /* OCMBlockArgCaller.h */,
+				2FA283D58AA7569D8A5B0C57 /* OCMBlockArgCaller.m */,
 			);
 			name = "Argument Handling";
 			sourceTree = "<group>";
@@ -704,6 +714,7 @@
 				2FA28FE116284C3E4A7FF179 /* OCMInvocationExpectation.h in Headers */,
 				2FA2821C9066C5E439288C76 /* OCMMacroState.h in Headers */,
 				2FA28F090622C9DF868CCA8C /* NSValue+OCMAdditions.h in Headers */,
+				2FA28DC9A2D732666124D640 /* OCMBlockArgCaller.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -723,6 +734,7 @@
 				03C7BF0B195DA2F200A545DD /* OCMInvocationStub.h in Headers */,
 				03B315BF146333BF0052CD09 /* OCClassMockObject.h in Headers */,
 				03B315C9146333BF0052CD09 /* OCMBlockCaller.h in Headers */,
+				03E0FAD81B93C00B000C5096 /* OCMBlockArgCaller.h in Headers */,
 				03C7BF11195DAB5300A545DD /* OCMExpectationRecorder.h in Headers */,
 				03B315CE146333BF0052CD09 /* OCMBoxedReturnValueProvider.h in Headers */,
 				03B315D8146333BF0052CD09 /* OCMExceptionReturnValueProvider.h in Headers */,
@@ -782,6 +794,7 @@
 				F0B951481B00810C00942C38 /* NSObject+OCMAdditions.h in Headers */,
 				F0B951491B00810C00942C38 /* NSValue+OCMAdditions.h in Headers */,
 				F0B9514A1B00810C00942C38 /* OCMFunctions.h in Headers */,
+				2FA28B7BDB3319A499E90525 /* OCMBlockArgCaller.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1006,6 +1019,7 @@
 				2FA286C7B8862280E6C1A585 /* OCMInvocationExpectation.m in Sources */,
 				2FA2800D12E95D5ABC965753 /* OCMMacroState.m in Sources */,
 				2FA2805AB1944A206EEE383B /* NSValue+OCMAdditions.m in Sources */,
+				2FA28F1FA69D313B4040896E /* OCMBlockArgCaller.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1044,6 +1058,7 @@
 				2FA28E506BE0D91A95A20243 /* OCMInvocationExpectation.m in Sources */,
 				2FA28209EB1F41964DF3031A /* OCMMacroState.m in Sources */,
 				2FA28FEAEF9333D2C214DF53 /* NSValue+OCMAdditions.m in Sources */,
+				2FA28405211B752287972F42 /* OCMBlockArgCaller.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1118,6 +1133,7 @@
 				F0B9511D1B0080EC00942C38 /* OCMReturnValueProvider.m in Sources */,
 				F0B9511E1B0080EC00942C38 /* OCMLocation.m in Sources */,
 				F0B9511F1B0080EC00942C38 /* OCMMacroState.m in Sources */,
+				03E0FAD91B93C01A000C5096 /* OCMBlockArgCaller.m in Sources */,
 				F0B951201B0080EC00942C38 /* OCObserverMockObject.m in Sources */,
 				F0B951211B0080EC00942C38 /* OCMObserverRecorder.m in Sources */,
 				F0B951221B0080EC00942C38 /* OCMArg.m in Sources */,

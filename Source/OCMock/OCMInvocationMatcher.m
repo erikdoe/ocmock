@@ -22,6 +22,7 @@
 #import "OCMInvocationMatcher.h"
 #import "OCClassMockObject.h"
 #import "OCMFunctions.h"
+#import "OCMBlockArgCaller.h"
 
 
 @interface NSObject(HCMatcherDummy)
@@ -129,6 +130,10 @@
                 *(id *)[passedArg pointerValue] = valueToSet;
             else
                 [(NSValue *)valueToSet getValue:[passedArg pointerValue]];
+        }
+        else if([recordedArg isKindOfClass:[OCMBlockArgCaller class]])
+        {
+            [recordedArg handleArgument:passedArg];
         }
         else if([recordedArg conformsToProtocol:objc_getProtocol("HCMatcher")])
         {

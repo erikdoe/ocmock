@@ -646,6 +646,24 @@ static NSString *TestNotification = @"TestNotification";
 
 
 // --------------------------------------------------------------------------------------
+//	invokes block arguments
+// --------------------------------------------------------------------------------------
+
+- (void)testInvokesBlockArgument
+{
+    [[mock stub] enumerateLinesUsingBlock:[OCMArg invokeBlock]];
+
+    __block BOOL wasCalled = NO;
+    void (^block)(NSString *, BOOL *) = ^(NSString *line, BOOL *stop) {
+        wasCalled = YES;    
+    };
+    [mock enumerateLinesUsingBlock:block];
+
+    XCTAssertTrue(wasCalled, @"Should have invoked block.");
+}
+
+
+// --------------------------------------------------------------------------------------
 //	accepting expected methods
 // --------------------------------------------------------------------------------------
 

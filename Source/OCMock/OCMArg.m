@@ -18,6 +18,7 @@
 #import <OCMock/OCMArg.h>
 #import <OCMock/OCMConstraint.h>
 #import "OCMPassByRefSetter.h"
+#import "OCMBlockArgCaller.h"
 
 @implementation OCMArg
 
@@ -90,6 +91,11 @@
 	return (id *)[[[OCMPassByRefSetter alloc] initWithValue:value] autorelease];
 }
 
++ (id)invokeBlock
+{
+	return [[[OCMBlockArgCaller alloc] init] autorelease];
+}
+
 + (id)resolveSpecialValues:(NSValue *)value
 {
 	const char *type = [value objCType];
@@ -110,6 +116,5 @@
     }
 	return value;
 }
-
 
 @end
