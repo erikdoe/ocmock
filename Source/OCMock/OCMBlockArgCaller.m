@@ -27,7 +27,7 @@
 - (void)handleArgument:(id)arg
 {
     void (^argAsBlock)() = arg;
-    argAsBlock();
+    argAsBlock(nil, NULL);
 }
 
 @end
