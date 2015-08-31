@@ -73,44 +73,4 @@
 }
 
 
-+ (NSMethodSignature *)methodSignatureForDynamicProperty:(NSString *)propertyName
-{
-    objc_property_t property = class_getProperty(self, [propertyName cStringUsingEncoding:NSASCIIStringEncoding]);
-    if(property == NULL)
-        return nil;
-
-    const char *propertyAttributesString = property_getAttributes(property);
-    if(propertyAttributesString == NULL)
-        return nil;
-
-    NSArray *propertyAttributes = [[NSString stringWithCString:propertyAttributesString
-                                              encoding:NSASCIIStringEncoding] componentsSeparatedByString:@","];
-    BOOL isDynamic = NO;
-    NSString *typeStr = nil;
-    for(NSString *attribute in propertyAttributes)
-    {
-        if([attribute isEqualToString:@"D"])
-        {
-            //property is @dynamic, but we can synthesize the signature
-            isDynamic = YES;
-        }
-        else if([attribute hasPrefix:@"T"])
-        {
-            typeStr = [attribute substringFromIndex:1];
-        }
-    }
-
-    if(!isDynamic)
-        return nil;
-
-    NSRange r = [typeStr rangeOfString:@"\""];
-    if(r.location != NSNotFound)
-    {
-        typeStr = [typeStr substringToIndex:r.location];
-    }
-    const char *str = [[NSString stringWithFormat:@"%@@:", typeStr] cStringUsingEncoding:NSASCIIStringEncoding];
-    return [NSMethodSignature signatureWithObjCTypes:str];
-}
-
-
 @end
