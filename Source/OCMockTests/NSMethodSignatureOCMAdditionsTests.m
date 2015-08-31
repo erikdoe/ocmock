@@ -136,8 +136,7 @@
     actual = [NSString stringWithCString:[sig getArgumentTypeAtIndex:1] encoding:NSASCIIStringEncoding];
     // seems to add the name of the class in quotes after the type
     XCTAssertEqualObjects(@"@", [actual substringToIndex:1], @"Should have created signature with correct type of second argument");
-    actual = [NSString stringWithCString:[sig getArgumentTypeAtIndex:2] encoding:NSASCIIStringEncoding];
-    XCTAssertEqualObjects(@"^c", actual, @"Should have created signature with correct type of second argument");
+    XCTAssertTrue(strcmp(@encode(BOOL *), [sig getArgumentTypeAtIndex:2]) == 0, @"Should have created signature with correct type of second argument");
 }
 
 - (void)testCreatesCorrectSignatureForBlockWithBoolReturn
@@ -149,7 +148,7 @@
     NSMethodSignature *sig = [NSMethodSignature signatureForBlock:block];
     XCTAssertNotNil(sig, @"Should have created signature");
 
-    XCTAssertEqual('c', *[sig methodReturnType], @"Should have created signature with correct return type");
+    XCTAssertTrue(strcmp(@encode(BOOL), [sig methodReturnType]) == 0, @"Should have created signature with correct return type");
 }
 
 @end
