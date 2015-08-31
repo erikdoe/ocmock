@@ -23,6 +23,4 @@
 
 - (id)initWithValue:(id)value;
 
-- (id)value;
-
 @end

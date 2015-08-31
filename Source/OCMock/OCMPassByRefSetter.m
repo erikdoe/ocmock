@@ -35,11 +35,6 @@
 	[super dealloc];
 }
 
-- (id)value
-{
-	return value;
-}
-
 - (void)handleArgument:(id)arg
 {
     if([value isKindOfClass:[NSValue class]])

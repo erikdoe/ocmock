@@ -522,10 +522,10 @@
 				03B3161F1463350E0052CD09 /* NSInvocationOCMAdditionsTests.m */,
 				2FA28DEDB9163597B7C49F3D /* NSMethodSignatureOCMAdditionsTests.m */,
 				037ECD5318FAD84100AF0E4C /* OCMInvocationMatcherTests.m */,
-				03565A3418F0566F003AE91E /* Supporting Files */,
 				2FA2813F93050582D83E1499 /* OCMockObjectRuntimeTests.m */,
 				2FA2822E19948FC997965267 /* OCMockObjectTests.m */,
 				2FA28EE3142412BD601026EF /* OCMockObjectDynamicPropertyMockingTests.m */,
+				03565A3418F0566F003AE91E /* Supporting Files */,
 			);
 			path = OCMockTests;
 			sourceTree = "<group>";
