@@ -19,8 +19,10 @@
 @interface NSMethodSignature(OCMAdditions)
 
 + (NSMethodSignature *)signatureOfGetterForDynamicProperty:(NSString *)propertyName inClass:(Class)aClass;
++ (NSMethodSignature *)signatureForBlock:(id)block;
 
 - (BOOL)usesSpecialStructureReturn;
+
 - (NSString *)fullTypeString;
 - (const char *)fullObjCTypes;
 

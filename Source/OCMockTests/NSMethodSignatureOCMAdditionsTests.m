@@ -107,5 +107,49 @@
 	XCTAssertTrue(stretYESRange.length > 0 || stretNORange.length > 0, @"NSMethodSignature debugDescription has changed; need to change OCPartialMockObject impl");
 }
 
+- (void)testCreatesCorrectSignatureForBlockWithNoArgsAndVoidReturn
+{
+    void (^block)() = ^() {
+    };
+
+    NSMethodSignature *sig = [NSMethodSignature signatureForBlock:block];
+    XCTAssertNotNil(sig, @"Should have created signature");
+
+    NSString *actual = [NSString stringWithCString:[sig methodReturnType] encoding:NSASCIIStringEncoding];
+    XCTAssertEqualObjects(@"v", actual, @"Should have created signature with correct return type");
+    // i am not completely sure why this has one argument; the actual type string is "v8@?0"
+    XCTAssertEqual(1, [sig numberOfArguments], @"Should have created signature with correct number of arguments");
+}
+
+- (void)testCreatesCorrectSignatureForBlockWithSomeArgsAndVoidReturn
+{
+    void (^block)(NSString *, BOOL *) = ^(NSString *line, BOOL *stop) {
+    };
+
+    NSMethodSignature *sig = [NSMethodSignature signatureForBlock:block];
+    XCTAssertNotNil(sig, @"Should have created signature");
+
+    NSString *actual = [NSString stringWithCString:[sig methodReturnType] encoding:NSASCIIStringEncoding];
+    XCTAssertEqualObjects(@"v", actual, @"Should have created signature with correct return type");
+    // see comment in testCreatesCorrectSignatureForBlockWithNoArgsAndVoidReturn for discussion of extra argument
+    XCTAssertEqual(3, [sig numberOfArguments], @"Should have created signature with correct number of arguments");
+    actual = [NSString stringWithCString:[sig getArgumentTypeAtIndex:1] encoding:NSASCIIStringEncoding];
+    // seems to add the name of the class in quotes after the type
+    XCTAssertEqualObjects(@"@", [actual substringToIndex:1], @"Should have created signature with correct type of second argument");
+    actual = [NSString stringWithCString:[sig getArgumentTypeAtIndex:2] encoding:NSASCIIStringEncoding];
+    XCTAssertEqualObjects(@"^c", actual, @"Should have created signature with correct type of second argument");
+}
+
+- (void)testCreatesCorrectSignatureForBlockWithBoolReturn
+{
+    BOOL (^block)() = ^() {
+        return NO;
+    };
+
+    NSMethodSignature *sig = [NSMethodSignature signatureForBlock:block];
+    XCTAssertNotNil(sig, @"Should have created signature");
+
+    XCTAssertEqual('c', *[sig methodReturnType], @"Should have created signature with correct return type");
+}
 
 @end
