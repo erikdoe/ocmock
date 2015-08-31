@@ -14,12 +14,8 @@
  *  under the License.
  */
 
-#import <Foundation/Foundation.h>
+#import "OCMArgAction.h"
 
-@interface OCMBlockArgCaller : NSObject <NSCopying>
-{
-}
-
-- (void)handleArgument:(id)arg;
+@interface OCMBlockArgCaller : OCMArgAction <NSCopying>
 
 @end

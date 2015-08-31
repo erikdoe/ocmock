@@ -40,4 +40,12 @@
 	return value;
 }
 
+- (void)handleArgument:(id)arg
+{
+    if([value isKindOfClass:[NSValue class]])
+        [(NSValue *)value getValue:[arg pointerValue]];
+    else
+        *(id *)[arg pointerValue] = value;
+}
+
 @end
