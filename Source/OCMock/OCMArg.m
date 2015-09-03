@@ -91,9 +91,20 @@
 	return (id *)[[[OCMPassByRefSetter alloc] initWithValue:value] autorelease];
 }
 
-+ (id)invokeBlock
-{
-	return [[[OCMBlockArgCaller alloc] init] autorelease];
++ (id)invokeBlockWithArgs:(id)first,...{
+    
+    NSMutableArray *params = [[NSMutableArray alloc] init];
+    va_list args;
+    if (first) {
+        [params addObject:first];
+        va_start(args, first);
+        id obj;
+        while ((obj = va_arg(args, id))) {
+            [params addObject:obj];
+        }
+    }
+	return [[[OCMBlockArgCaller alloc] initWithBlockParams:params] autorelease];
+    
 }
 
 + (id)resolveSpecialValues:(NSValue *)value

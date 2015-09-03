@@ -15,19 +15,55 @@
  */
 
 #import "OCMBlockArgCaller.h"
+#import "NSMethodSignature+OCMAdditions.h"
 
 
-@implementation OCMBlockArgCaller
+@implementation OCMBlockArgCaller {
+    NSMethodSignature *_sig;
+    NSInvocation *_inv;
+}
 
-- (id)copyWithZone:(NSZone *)zone
-{
+- (instancetype)initWithBlockParams:(NSArray *)params {
+    self = [super init];
+    if (self) {
+        _params = params;
+    }
+    return self;
+}
+
+- (id)copyWithZone:(NSZone *)zone {
     return [self retain];
 }
 
-- (void)handleArgument:(id)arg
-{
-    void (^argAsBlock)() = arg;
-    argAsBlock(nil, NULL);
+- (void)buildInvocationFromBlock:(id)block {
+    
+    NSParameterAssert(block != nil);
+    _sig = [NSMethodSignature signatureForBlock:block];
+    NSAssert(_params.count == _sig.numberOfArguments, @"Params specified don't match ");
+    _inv = [NSInvocation invocationWithMethodSignature:_sig];
+    
+    for (NSUInteger i = 0; i < _sig.numberOfArguments; i++) {
+        id param = _params[i];
+        if ([param isMemberOfClass:[NSValue class]]) {
+            char const *typeEncoding = [_sig getArgumentTypeAtIndex:i];
+            NSUInteger argSize;
+            NSGetSizeAndAlignment(typeEncoding, &argSize, NULL);
+            void *buf = malloc(argSize);
+            if (!buf) {
+                NSAssert(@"Allocation failed for arg of type %@", [NSString stringWithUTF8String:typeEncoding]);
+            }
+            [_inv setArgument:buf atIndex:0];
+            free(buf);
+        } else {
+            [_inv setArgument:&param atIndex:0];
+        }
+    }
+    
+}
+
+- (void)handleArgument:(id)arg {
+    [self buildInvocationFromBlock:arg];
+    [_inv invokeWithTarget:arg];
 }
 
 @end
