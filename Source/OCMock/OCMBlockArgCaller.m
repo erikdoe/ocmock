@@ -39,23 +39,42 @@
     
     NSParameterAssert(block != nil);
     _sig = [NSMethodSignature signatureForBlock:block];
-    NSAssert(_params.count == _sig.numberOfArguments, @"Params specified don't match ");
+    
+    NSLog(@"Block signature: %@", _sig.fullTypeString);
+
+    /// @todo
+    /// - Handle blocks that take an NSNumber param. At the moment, this will
+    ///   be interprated as a boxed number and extracted (I think)
+    /// - Compare parameters with type signatures correctly while building the
+    ///   invocation. That way, if a user passes an array of args that don't
+    ///   match the block's, then we can tell them upfront
+    /// - Handle NULL, nil and 0 passed by the user. At the moment, our handling
+    ///   of va_list treats them as terminal.
+    
+    /// @note Why + 1?
+    ///
+    //NSAssert(_params.count + 1 == _sig.numberOfArguments, @"Params specified don't match: %lu, %lu", (unsigned long)_params.count, (unsigned long)_sig.numberOfArguments);
     _inv = [NSInvocation invocationWithMethodSignature:_sig];
     
-    for (NSUInteger i = 0; i < _sig.numberOfArguments; i++) {
+    for (NSUInteger i = 0, j = 1; i < _params.count; ++i, ++j) {
         id param = _params[i];
-        if ([param isMemberOfClass:[NSValue class]]) {
-            char const *typeEncoding = [_sig getArgumentTypeAtIndex:i];
+        if ([param isKindOfClass:[NSValue class]]) {
+            char const *typeEncoding = [_sig getArgumentTypeAtIndex:j];
+            NSLog(@"Found NSValue of type %@", [NSString stringWithUTF8String:typeEncoding]);
             NSUInteger argSize;
             NSGetSizeAndAlignment(typeEncoding, &argSize, NULL);
+            /// @todo Use reallocf
             void *buf = malloc(argSize);
+            [param getValue:buf];
             if (!buf) {
                 NSAssert(@"Allocation failed for arg of type %@", [NSString stringWithUTF8String:typeEncoding]);
             }
-            [_inv setArgument:buf atIndex:0];
+            [_inv setArgument:buf atIndex:j];
+            NSLog(@"Setting value at %lu", (unsigned long)j);
             free(buf);
         } else {
-            [_inv setArgument:&param atIndex:0];
+            [_inv setArgument:&param atIndex:j];
+            NSLog(@"Found other");
         }
     }
     
