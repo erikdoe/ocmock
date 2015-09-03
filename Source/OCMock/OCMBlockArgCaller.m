@@ -40,13 +40,11 @@
     NSParameterAssert(block != nil);
 
     _sig = [NSMethodSignature signatureForBlock:block];
+    _inv = [NSInvocation invocationWithMethodSignature:_sig];
 
-    /// @todo
-    /// - Handle blocks that take an NSNumber param. At the moment, this will
-    ///   be interprated as a boxed number and extracted (I think)
-    /// - Compare parameters with type signatures correctly while building the
-    ///   invocation. That way, if a user passes an array of args that don't
-    ///   match the block's, then we can tell them upfront
+    if (!_params) {
+        return;
+    }
     
     /// @note Unlike normal method signatures, args at index 0 and 1 aren't
     /// reserved for `self` and `_cmd`. The arg at index 0 is reserved for the
@@ -56,8 +54,6 @@
         @"All block arguments are require (%lu). Pass NSNull for default.",
         (unsigned long)_sig.numberOfArguments - 1
     );
-    
-    _inv = [NSInvocation invocationWithMethodSignature:_sig];
     void *buf;
     
     for (NSUInteger i = 0, j = 1; i < _params.count; ++i, ++j) {
@@ -70,6 +66,8 @@
             [_inv setArgument:&param atIndex:j];
         } else {
             char const *valEncoding = [param objCType];
+            /// @note Allow void pointers to be passed as pointers to concrete
+            /// primitives
             BOOL isVoidPtr = typeEncoding[0] == '^' && !strcmp(valEncoding, "^v");
             BOOL typesEq = isVoidPtr || !strcmp(typeEncoding, valEncoding);
             NSAssert(typesEq, @"Param type mismatch! You gave %@, block requires %@",

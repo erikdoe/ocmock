@@ -38,6 +38,7 @@
 
 + (id *)setTo:(id)value;
 + (void *)setToValue:(NSValue *)value;
++ (id)invokeBlock;
 + (id)invokeBlockWithArgs:(id)first,...;
 
 // internal use only
