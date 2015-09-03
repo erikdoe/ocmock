@@ -16,6 +16,8 @@
 
 #import <Foundation/Foundation.h>
 
+#define OCMArgsPtr(p) [NSValue valueWithPointer:p]
+
 @interface OCMArg : NSObject 
 
 // constraining arguments

@@ -617,21 +617,21 @@ static NSString *TestNotification = @"TestNotification";
 - (void)testInvokesBlockArgument
 {
     BOOL bVal = YES;
-    [[mock stub] enumerateLinesUsingBlock:[OCMArg invokeBlockWithArgs:@"First param", [NSValue valueWithPointer:&bVal]]];
+    [[mock stub] enumerateLinesUsingBlock:[OCMArg invokeBlockWithArgs:@"First param", OCMArgsPtr(&bVal)]];
 
     __block BOOL wasCalled = NO;
     __block NSString *firstParam;
-    __block BOOL secondParam;
+    __block BOOL *secondParam;
     void (^block)(NSString *, BOOL *) = ^(NSString *line, BOOL *stop) {
         wasCalled = YES;
         firstParam = line;
-        secondParam = *stop;
+        secondParam = stop;
     };
     [mock enumerateLinesUsingBlock:block];
 
     XCTAssertTrue(wasCalled, @"Should have invoked block.");
     XCTAssertEqualObjects(firstParam, @"First param", @"First param not passed to the block");
-    XCTAssertTrue(secondParam, @"Second params don't match");
+    XCTAssertEqual(secondParam, &bVal, @"Second params don't match");
 
 }
 

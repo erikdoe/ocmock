@@ -38,9 +38,8 @@
 - (void)buildInvocationFromBlock:(id)block {
     
     NSParameterAssert(block != nil);
+
     _sig = [NSMethodSignature signatureForBlock:block];
-    
-    NSLog(@"Block signature: %@", _sig.fullTypeString);
 
     /// @todo
     /// - Handle blocks that take an NSNumber param. At the moment, this will
@@ -48,36 +47,47 @@
     /// - Compare parameters with type signatures correctly while building the
     ///   invocation. That way, if a user passes an array of args that don't
     ///   match the block's, then we can tell them upfront
-    /// - Handle NULL, nil and 0 passed by the user. At the moment, our handling
-    ///   of va_list treats them as terminal.
     
-    /// @note Why + 1?
-    ///
-    //NSAssert(_params.count + 1 == _sig.numberOfArguments, @"Params specified don't match: %lu, %lu", (unsigned long)_params.count, (unsigned long)_sig.numberOfArguments);
+    /// @note Unlike normal method signatures, args at index 0 and 1 aren't
+    /// reserved for `self` and `_cmd`. The arg at index 0 is reserved for the
+    /// block itself, though: (`'@?'`).
+    NSAssert(
+        _params.count + 1 == _sig.numberOfArguments,
+        @"All block arguments are require (%lu). Pass NSNull for default.",
+        (unsigned long)_sig.numberOfArguments - 1
+    );
+    
     _inv = [NSInvocation invocationWithMethodSignature:_sig];
+    void *buf;
     
     for (NSUInteger i = 0, j = 1; i < _params.count; ++i, ++j) {
         id param = _params[i];
-        if ([param isKindOfClass:[NSValue class]]) {
-            char const *typeEncoding = [_sig getArgumentTypeAtIndex:j];
-            NSLog(@"Found NSValue of type %@", [NSString stringWithUTF8String:typeEncoding]);
+        if ([param isKindOfClass:[NSNull class]]) {
+            continue;
+        }
+        char const *typeEncoding = [_sig getArgumentTypeAtIndex:j];
+        if (typeEncoding[0] == '@') {
+            [_inv setArgument:&param atIndex:j];
+        } else {
+            char const *valEncoding = [param objCType];
+            BOOL isVoidPtr = typeEncoding[0] == '^' && !strcmp(valEncoding, "^v");
+            BOOL typesEq = isVoidPtr || !strcmp(typeEncoding, valEncoding);
+            NSAssert(typesEq, @"Param type mismatch! You gave %@, block requires %@",
+                [NSString stringWithUTF8String:valEncoding],
+                [NSString stringWithUTF8String:typeEncoding]
+            );
             NSUInteger argSize;
             NSGetSizeAndAlignment(typeEncoding, &argSize, NULL);
-            /// @todo Use reallocf
-            void *buf = malloc(argSize);
+            buf = reallocf(buf, argSize);
+            NSAssert(buf, @"Allocation failed arg at %lu", (long unsigned)i);
             [param getValue:buf];
-            if (!buf) {
-                NSAssert(@"Allocation failed for arg of type %@", [NSString stringWithUTF8String:typeEncoding]);
-            }
             [_inv setArgument:buf atIndex:j];
-            NSLog(@"Setting value at %lu", (unsigned long)j);
-            free(buf);
-        } else {
-            [_inv setArgument:&param atIndex:j];
-            NSLog(@"Found other");
         }
     }
     
+    if (buf) {
+        free(buf);
+    }
 }
 
 - (void)handleArgument:(id)arg {
