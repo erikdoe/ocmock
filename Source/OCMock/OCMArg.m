@@ -97,7 +97,7 @@
 
 + (id)invokeBlockWithArgs:(id)first,... {
     
-    NSMutableArray *params = [[NSMutableArray alloc] init];
+    NSMutableArray *params = [NSMutableArray array];
     va_list args;
     if (first) {
         [params addObject:first];

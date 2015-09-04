@@ -617,7 +617,7 @@ static NSString *TestNotification = @"TestNotification";
 - (void)testInvokesBlockArgument
 {
     BOOL bVal = YES;
-    [[mock stub] enumerateLinesUsingBlock:[OCMArg invokeBlockWithArgs:[NSNull null], [NSNull null]]];
+    [[mock stub] enumerateLinesUsingBlock:[OCMArg invokeBlockWithArgs:@"First param", OCMArgsPtr(&bVal)]];
 
     __block BOOL wasCalled = NO;
     __block NSString *firstParam;

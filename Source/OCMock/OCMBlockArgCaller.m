@@ -16,19 +16,25 @@
 
 #import "OCMBlockArgCaller.h"
 #import "NSMethodSignature+OCMAdditions.h"
-
+#import "OCMFunctions.h"
 
 @implementation OCMBlockArgCaller {
-    NSMethodSignature *_sig;
     NSInvocation *_inv;
+    NSArray *_params;
 }
 
 - (instancetype)initWithBlockParams:(NSArray *)params {
     self = [super init];
     if (self) {
-        _params = params;
+        _params = [params copy];
     }
     return self;
+}
+
+- (void)dealloc {
+    [_inv release];
+    [_params release];
+    [super dealloc];
 }
 
 - (id)copyWithZone:(NSZone *)zone {
@@ -39,8 +45,8 @@
     
     NSParameterAssert(block != nil);
 
-    _sig = [NSMethodSignature signatureForBlock:block];
-    _inv = [NSInvocation invocationWithMethodSignature:_sig];
+    NSMethodSignature *sig = [NSMethodSignature signatureForBlock:block];
+    _inv = [NSInvocation invocationWithMethodSignature:sig];
 
     if (!_params) {
         return;
@@ -50,18 +56,20 @@
     /// reserved for `self` and `_cmd`. The arg at index 0 is reserved for the
     /// block itself, though: (`'@?'`).
     NSAssert(
-        _params.count + 1 == _sig.numberOfArguments,
+        _params.count + 1 == sig.numberOfArguments,
         @"All block arguments are require (%lu). Pass NSNull for default.",
-        (unsigned long)_sig.numberOfArguments - 1
+        (unsigned long)sig.numberOfArguments - 1
     );
-    void *buf;
+    void *buf = NULL;
     
     for (NSUInteger i = 0, j = 1; i < _params.count; ++i, ++j) {
         id param = _params[i];
         if ([param isKindOfClass:[NSNull class]]) {
             continue;
         }
-        char const *typeEncoding = [_sig getArgumentTypeAtIndex:j];
+        char const *typeEncoding = [sig getArgumentTypeAtIndex:j];
+        /// @note OCMIsObjectType returns false for some reason, reverted to
+        /// comparing first char to '@'.
         if (typeEncoding[0] == '@') {
             [_inv setArgument:&param atIndex:j];
         } else {
@@ -70,10 +78,7 @@
             /// primitives
             BOOL isVoidPtr = typeEncoding[0] == '^' && !strcmp(valEncoding, "^v");
             BOOL typesEq = isVoidPtr || !strcmp(typeEncoding, valEncoding);
-            NSAssert(typesEq, @"Param type mismatch! You gave %@, block requires %@",
-                [NSString stringWithUTF8String:valEncoding],
-                [NSString stringWithUTF8String:typeEncoding]
-            );
+            NSAssert(typesEq, @"Param type mismatch! You gave %s, block requires %s", valEncoding, typeEncoding);
             NSUInteger argSize;
             NSGetSizeAndAlignment(typeEncoding, &argSize, NULL);
             buf = reallocf(buf, argSize);
