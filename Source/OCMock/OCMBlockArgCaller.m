@@ -23,6 +23,16 @@
     NSArray *_params;
 }
 
+/// @note Q: Why don't we pass the va_list to this class and extract the vargs
+/// of various types based on the NSMethodSignature specification?
+/// A: On the surface, it looks like that solution might allow us to avoid boxing
+/// the block args, however in reality its a bit trickier.
+/// We would be relying on the method signature in determining what type to pass
+/// to va_arg. There would be no way of telling what type we're extracting and thus
+/// no way of asserting whether the user has passed the correct type in the
+/// va_list. Its a ultimately a bit safer to box them up and pass them around in
+/// an NSArray.
+
 - (instancetype)initWithBlockParams:(NSArray *)params {
     self = [super init];
     if (self) {
@@ -43,8 +53,6 @@
 
 - (void)buildInvocationFromBlock:(id)block {
     
-    NSParameterAssert(block != nil);
-
     NSMethodSignature *sig = [NSMethodSignature signatureForBlock:block];
     _inv = [NSInvocation invocationWithMethodSignature:sig];
 
@@ -94,8 +102,10 @@
 }
 
 - (void)handleArgument:(id)arg {
-    [self buildInvocationFromBlock:arg];
-    [_inv invokeWithTarget:arg];
+    if (arg) {
+        [self buildInvocationFromBlock:arg];
+        [_inv invokeWithTarget:arg];
+    }
 }
 
 @end

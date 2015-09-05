@@ -95,7 +95,7 @@
     return [[[OCMBlockArgCaller alloc] init] autorelease];
 }
 
-+ (id)invokeBlockWithArgs:(id)first,... {
++ (id)invokeBlockWithArgs:(id)first,... NS_REQUIRES_NIL_TERMINATION {
     
     NSMutableArray *params = [NSMutableArray array];
     va_list args;
@@ -106,6 +106,7 @@
         while ((obj = va_arg(args, id))) {
             [params addObject:obj];
         }
+        va_end(args);
     }
     return [[[OCMBlockArgCaller alloc] initWithBlockParams:params] autorelease];
     

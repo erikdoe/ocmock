@@ -614,11 +614,11 @@ static NSString *TestNotification = @"TestNotification";
 //	invokes block arguments
 // --------------------------------------------------------------------------------------
 
-- (void)testInvokesBlockArgument
-{
-    BOOL bVal = YES;
-    [[mock stub] enumerateLinesUsingBlock:[OCMArg invokeBlockWithArgs:@"First param", OCMArgsPtr(&bVal)]];
-
+- (void)testInvokesBlockWithArgs {
+    
+    BOOL bVal = YES, *bPtr = &bVal;
+    [[mock stub] enumerateLinesUsingBlock:[OCMArg invokeBlockWithArgs:@"First param", OCMOCK_VALUE(bPtr), nil]];
+    
     __block BOOL wasCalled = NO;
     __block NSString *firstParam;
     __block BOOL *secondParam;
@@ -631,10 +631,59 @@ static NSString *TestNotification = @"TestNotification";
 
     XCTAssertTrue(wasCalled, @"Should have invoked block.");
     XCTAssertEqualObjects(firstParam, @"First param", @"First param not passed to the block");
-    XCTAssertEqual(secondParam, &bVal, @"Second params don't match");
+    XCTAssertEqual(secondParam, bPtr, @"Second params don't match");
 
 }
 
+- (void)testThrowsIfArgTypesMismatch {
+
+    [[mock stub] enumerateLinesUsingBlock:[OCMArg invokeBlockWithArgs:@123, OCMOCK_VALUE(YES), nil]];
+
+    XCTAssertThrowsSpecificNamed([mock enumerateLinesUsingBlock:^(NSString *line, BOOL *stop) {}], NSException, NSInternalInconsistencyException, @"No exception occurred");
+    
+}
+
+- (void)testThrowsIfArgsLengthMismatch {
+    
+    [[mock stub] enumerateLinesUsingBlock:[OCMArg invokeBlockWithArgs:@"First but no second", nil]];
+    
+    XCTAssertThrowsSpecificNamed([mock enumerateLinesUsingBlock:^(NSString *line, BOOL *stop) {}], NSException, NSInternalInconsistencyException, @"No exception occurred");
+
+}
+
+- (void)testInvokesBlockWithDefaultArgs {
+    
+    [[mock stub] enumerateLinesUsingBlock:[OCMArg invokeBlockWithArgs:OCMDefault, OCMDefault, nil]];
+    
+    __block NSString *firstParam;
+    __block BOOL *secondParam;
+    void (^block)(NSString *, BOOL *) = ^(NSString *line, BOOL *stop) {
+        firstParam = line;
+        secondParam = stop;
+    };
+    [mock enumerateLinesUsingBlock:block];
+    
+    XCTAssertNil(firstParam, @"First param does not default to nil");
+    XCTAssertEqual(secondParam, NULL, @"Second param does not default to NULL");
+
+}
+
+- (void)testInvokesBlockWithAllDefaultArgs {
+
+    [[mock stub] enumerateLinesUsingBlock:[OCMArg invokeBlock]];
+    
+    __block NSString *firstParam;
+    __block BOOL *secondParam;
+    void (^block)(NSString *, BOOL *) = ^(NSString *line, BOOL *stop) {
+        firstParam = line;
+        secondParam = stop;
+    };
+    [mock enumerateLinesUsingBlock:block];
+    
+    XCTAssertNil(firstParam, @"First param does not default to nil");
+    XCTAssertEqual(secondParam, NULL, @"Second param does not default to NULL");
+    
+}
 
 // --------------------------------------------------------------------------------------
 //	accepting expected methods
