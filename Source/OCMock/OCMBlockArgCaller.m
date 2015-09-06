@@ -82,11 +82,12 @@
             [_inv setArgument:&param atIndex:j];
         } else {
             char const *valEncoding = [param objCType];
-            /// @note Allow void pointers to be passed as pointers to concrete
-            /// primitives
-            BOOL isVoidPtr = typeEncoding[0] == '^' && !strcmp(valEncoding, "^v");
-            BOOL typesEq = isVoidPtr || !strcmp(typeEncoding, valEncoding);
-            NSAssert(typesEq, @"Param type mismatch! You gave %s, block requires %s", valEncoding, typeEncoding);
+            BOOL takesVoidPtr = !strcmp(typeEncoding, "^v") && valEncoding[0] == '^';
+            NSAssert(
+                takesVoidPtr || OCMEqualTypesAllowingOpaqueStructs(typeEncoding, valEncoding),
+                @"Param type mismatch! You gave %s, block requires %s",
+                valEncoding, typeEncoding
+            );
             NSUInteger argSize;
             NSGetSizeAndAlignment(typeEncoding, &argSize, NULL);
             buf = reallocf(buf, argSize);
