@@ -35,9 +35,12 @@
 	[super dealloc];
 }
 
-- (id)value
+- (void)handleArgument:(id)arg
 {
-	return value;
+    if([value isKindOfClass:[NSValue class]])
+        [(NSValue *)value getValue:[arg pointerValue]];
+    else
+        *(id *)[arg pointerValue] = value;
 }
 
 @end
