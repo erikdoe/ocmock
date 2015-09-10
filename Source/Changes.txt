@@ -1,9 +1,10 @@
 Listing of notable changes by release. More detail is usually found in the Git 
 commit messages and/or the pull requests.
 
-OCMock 3.2 (unreleased)
+(unreleased)
 
 * Can stub dynamic properties (imhuntingwabbits)
+* Fixed C++ compilation issue (Jonathan Crooke)
 
 
 OCMock 3.1.4 / 3.1.5 (2015-08-26)
