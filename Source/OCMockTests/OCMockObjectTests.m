@@ -116,6 +116,7 @@ TestOpaque myOpaque;
 
 @end
 
+
 static NSString *TestNotification = @"TestNotification";
 
 
@@ -645,6 +646,24 @@ static NSString *TestNotification = @"TestNotification";
 
 
 // --------------------------------------------------------------------------------------
+//	invokes block arguments
+// --------------------------------------------------------------------------------------
+
+- (void)testInvokesBlockArgument
+{
+    [[mock stub] enumerateLinesUsingBlock:[OCMArg invokeBlock]];
+
+    __block BOOL wasCalled = NO;
+    void (^block)(NSString *, BOOL *) = ^(NSString *line, BOOL *stop) {
+        wasCalled = YES;    
+    };
+    [mock enumerateLinesUsingBlock:block];
+
+    XCTAssertTrue(wasCalled, @"Should have invoked block.");
+}
+
+
+// --------------------------------------------------------------------------------------
 //	accepting expected methods
 // --------------------------------------------------------------------------------------
 
@@ -796,17 +815,6 @@ static NSString *TestNotification = @"TestNotification";
 	XCTAssertThrows([mock verifyWithDelay:0.1], @"Should have raised an exception because method was not called.");
 }
 
-- (void)testAcceptsAndVerifiesExpectedMethodsWithDelayBlockTimeout
-{
-    dispatch_async(dispatch_queue_create("mockqueue", nil), ^{
-        [NSThread sleepForTimeInterval:1];
-        [mock lowercaseString];
-    });
-    
-	[[mock expect] lowercaseString];
-	XCTAssertThrows([mock verifyWithDelay:0.1], @"Should have raised an exception because method was not called.");
-}
-
 // --------------------------------------------------------------------------------------
 //	ordered expectations
 // --------------------------------------------------------------------------------------
@@ -933,7 +941,6 @@ static NSString *TestNotification = @"TestNotification";
 
     XCTAssertEqual(2, count, @"Should have evaluated constraint only twice");
 }
-
 
 @end
 

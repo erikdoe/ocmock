@@ -36,6 +36,7 @@
 
 + (id *)setTo:(id)value;
 + (void *)setToValue:(NSValue *)value;
++ (id)invokeBlock;
 
 // internal use only
 

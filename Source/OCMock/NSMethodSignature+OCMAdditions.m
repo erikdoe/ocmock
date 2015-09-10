@@ -21,6 +21,96 @@
 
 @implementation NSMethodSignature(OCMAdditions)
 
++ (NSMethodSignature *)signatureOfGetterForDynamicProperty:(NSString *)propertyName inClass:(Class)aClass
+{
+    objc_property_t property = class_getProperty(aClass, [propertyName cStringUsingEncoding:NSASCIIStringEncoding]);
+    if(property == NULL)
+        return nil;
+
+    const char *propertyAttributesString = property_getAttributes(property);
+    if(propertyAttributesString == NULL)
+        return nil;
+
+    NSArray *propertyAttributes = [[NSString stringWithCString:propertyAttributesString
+                                                      encoding:NSASCIIStringEncoding] componentsSeparatedByString:@","];
+    BOOL isDynamic = NO;
+    NSString *typeStr = nil;
+    for(NSString *attribute in propertyAttributes)
+    {
+        if([attribute isEqualToString:@"D"])
+        {
+            //property is @dynamic, but we can synthesize the signature
+            isDynamic = YES;
+        }
+        else if([attribute hasPrefix:@"T"])
+        {
+            typeStr = [attribute substringFromIndex:1];
+        }
+    }
+
+    if(!isDynamic)
+        return nil;
+
+    NSRange r = [typeStr rangeOfString:@"\""];
+    if(r.location != NSNotFound)
+    {
+        typeStr = [typeStr substringToIndex:r.location];
+    }
+    const char *str = [[NSString stringWithFormat:@"%@@:", typeStr] cStringUsingEncoding:NSASCIIStringEncoding];
+    return [NSMethodSignature signatureWithObjCTypes:str];
+}
+
+
+struct OCMBlockDef
+{
+    void *isa; // initialized to &_NSConcreteStackBlock or &_NSConcreteGlobalBlock
+    int flags;
+    int reserved;
+    void (*invoke)(void *, ...);
+    struct block_descriptor {
+        unsigned long int reserved;                 // NULL
+        unsigned long int size;                     // sizeof(struct Block_literal_1)
+        // optional helper functions
+        void (*copy_helper)(void *dst, void *src);  // IFF (1<<25)
+        void (*dispose_helper)(void *src);          // IFF (1<<25)
+        // required ABI.2010.3.16
+        const char *signature;                      // IFF (1<<30)
+    } *descriptor;
+};
+
+enum
+{
+    OCMBlockDescriptionFlagsHasCopyDispose = (1 << 25),
+    OCMBlockDescriptionFlagsHasSignature   = (1 << 30)
+};
+
+
++ (NSMethodSignature *)signatureForBlock:(id)block
+{
+    /* For a more complete implementation of parsing the block data structure see:
+     *
+     * https://github.com/ebf/CTObjectiveCRuntimeAdditions/tree/master/CTObjectiveCRuntimeAdditions/CTObjectiveCRuntimeAdditions
+     */
+
+    struct OCMBlockDef *blockRef = (__bridge struct OCMBlockDef *)block;
+
+    if(!(blockRef->flags & OCMBlockDescriptionFlagsHasSignature))
+        return nil;
+
+    void *signatureLocation = blockRef->descriptor;
+    signatureLocation += sizeof(unsigned long int);
+    signatureLocation += sizeof(unsigned long int);
+    if(blockRef->flags & OCMBlockDescriptionFlagsHasCopyDispose)
+    {
+        signatureLocation += sizeof(void(*)(void *dst, void *src));
+        signatureLocation += sizeof(void (*)(void *src));
+    }
+
+    const char *signature = (*(const char **)signatureLocation);
+    return [NSMethodSignature signatureWithObjCTypes:signature];
+}
+
+
 - (BOOL)usesSpecialStructureReturn
 {
     const char *types = OCMTypeWithoutQualifiers([self methodReturnType]);
@@ -44,6 +134,7 @@
     return range.length > 0;
 }
 
+
 - (NSString *)fullTypeString
 {
     NSMutableString *typeString = [NSMutableString string];
@@ -52,6 +143,7 @@
         [typeString appendFormat:@"%s", [self getArgumentTypeAtIndex:i]];
     return typeString;
 }
+
 
 - (const char *)fullObjCTypes
 {
