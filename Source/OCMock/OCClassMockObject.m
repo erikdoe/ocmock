@@ -19,6 +19,7 @@
 #import "NSObject+OCMAdditions.h"
 #import "OCMFunctions.h"
 #import "OCMInvocationStub.h"
+#import "NSMethodSignature+OCMAdditions.h"
 
 @implementation OCClassMockObject
 
@@ -172,7 +173,13 @@
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
-    return [mockedClass instanceMethodSignatureForSelector:aSelector];
+    NSMethodSignature *signature = [mockedClass instanceMethodSignatureForSelector:aSelector];
+    if(signature == nil)
+    {
+        NSString *property = NSStringFromSelector(aSelector);
+        signature = [NSMethodSignature signatureOfGetterForDynamicProperty:property inClass:mockedClass];
+    }
+    return signature;
 }
 
 - (Class)mockObjectClass

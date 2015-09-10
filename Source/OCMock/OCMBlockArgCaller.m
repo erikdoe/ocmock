@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2009-2015 Erik Doernenburg and contributors
+ *  Copyright (c) 2015 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -14,16 +14,20 @@
  *  under the License.
  */
 
-#import <Foundation/Foundation.h>
+#import "OCMBlockArgCaller.h"
 
-@interface NSMethodSignature(OCMAdditions)
 
-+ (NSMethodSignature *)signatureOfGetterForDynamicProperty:(NSString *)propertyName inClass:(Class)aClass;
-+ (NSMethodSignature *)signatureForBlock:(id)block;
+@implementation OCMBlockArgCaller
 
-- (BOOL)usesSpecialStructureReturn;
+- (id)copyWithZone:(NSZone *)zone
+{
+    return [self retain];
+}
 
-- (NSString *)fullTypeString;
-- (const char *)fullObjCTypes;
+- (void)handleArgument:(id)arg
+{
+    void (^argAsBlock)() = arg;
+    argAsBlock(nil, NULL);
+}
 
 @end

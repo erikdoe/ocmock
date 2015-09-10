@@ -284,7 +284,7 @@
 
      if([expectations containsObject:stub])
      {
-          OCMInvocationExpectation *expectation = [self _nextExptectedInvocation];
+          OCMInvocationExpectation *expectation = [self _nextExpectedInvocation];
           if(expectationOrderMatters && (expectation != stub))
           {
                [NSException raise:NSInternalInconsistencyException format:@"%@: unexpected method invoked: %@\n\texpected:\t%@",
@@ -305,7 +305,7 @@
 }
 
 
-- (OCMInvocationExpectation *)_nextExptectedInvocation
+- (OCMInvocationExpectation *)_nextExpectedInvocation
 {
     for(OCMInvocationExpectation *expectation in expectations)
         if(![expectation isMatchAndReject])

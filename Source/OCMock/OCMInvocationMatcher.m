@@ -22,6 +22,7 @@
 #import "OCMInvocationMatcher.h"
 #import "OCClassMockObject.h"
 #import "OCMFunctions.h"
+#import "OCMBlockArgCaller.h"
 
 
 @interface NSObject(HCMatcherDummy)
@@ -121,14 +122,10 @@
             if([recordedArg evaluate:passedArg] == NO)
                 return NO;
         }
-        else if([recordedArg isKindOfClass:[OCMPassByRefSetter class]])
+        else if([recordedArg isKindOfClass:[OCMArgAction class]])
         {
-            id valueToSet = [(OCMPassByRefSetter *)recordedArg value];
             // side effect but easier to do here than in handleInvocation
-            if(![valueToSet isKindOfClass:[NSValue class]])
-                *(id *)[passedArg pointerValue] = valueToSet;
-            else
-                [(NSValue *)valueToSet getValue:[passedArg pointerValue]];
+            [recordedArg handleArgument:passedArg];
         }
         else if([recordedArg conformsToProtocol:objc_getProtocol("HCMatcher")])
         {
