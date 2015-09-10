@@ -15,6 +15,7 @@
  */
 
 #import "OCMRecorder.h"
+#import "OCMFunctions.h"
 #import <objc/runtime.h>
 
 @interface OCMStubRecorder : OCMRecorder
