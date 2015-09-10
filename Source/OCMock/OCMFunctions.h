@@ -25,9 +25,9 @@ BOOL OCMIsObjectType(const char *objCType);
 const char *OCMTypeWithoutQualifiers(const char *objCType);
 BOOL OCMEqualTypesAllowingOpaqueStructs(const char *type1, const char *type2);
 
-Class OCMCreateSubclass(Class kl, void *ref);
+Class OCMCreateSubclass(Class cls, void *ref);
 
-void OCMSetIsa(id object, Class kl);
+void OCMSetIsa(id object, Class cls);
 Class OCMGetIsa(id object);
 
 BOOL OCMIsAliasSelector(SEL selector);
