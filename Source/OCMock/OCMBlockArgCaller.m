@@ -79,6 +79,7 @@
         if (typeEncoding[0] == '@') {
             [_inv setArgument:&param atIndex:j];
         } else {
+            NSAssert([param isKindOfClass:[NSValue class]], @"Param at %lu should be boxed in NSValue", (long unsigned)i);
             char const *valEncoding = [param objCType];
             /// @note Here we allow any data pointer to be passed as a void pointer and
             /// any numberical types to be passed as arguments to the block.

@@ -635,9 +635,17 @@ static NSString *TestNotification = @"TestNotification";
 
 }
 
+- (void)testThrowsIfBoxedValueNotFound {
+
+    [[mock stub] enumerateLinesUsingBlock:[OCMArg invokeBlockWithArgs:@"123", @"Not an NSValue", nil]];
+
+    XCTAssertThrowsSpecificNamed([mock enumerateLinesUsingBlock:^(NSString *line, BOOL *stop) {}], NSException, NSInternalInconsistencyException, @"No exception occurred");
+
+}
+
 - (void)testThrowsIfArgTypesMismatch {
 
-    [[mock stub] enumerateLinesUsingBlock:[OCMArg invokeBlockWithArgs:@123, OCMOCK_VALUE(YES), nil]];
+    [[mock stub] enumerateLinesUsingBlock:[OCMArg invokeBlockWithArgs:@"123", OCMOCK_VALUE(YES), nil]];
 
     XCTAssertThrowsSpecificNamed([mock enumerateLinesUsingBlock:^(NSString *line, BOOL *stop) {}], NSException, NSInternalInconsistencyException, @"No exception occurred");
     
