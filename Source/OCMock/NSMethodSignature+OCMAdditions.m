@@ -45,23 +45,26 @@
             objc_property_t *allProperties = class_copyPropertyList(aClass, &propertiesCount);
             NSString *currentPropertyName = nil;
             NSArray *propertyAttributes = nil;
-            for (unsigned int i=0 ; i < propertiesCount; i++) {
-                currentPropertyName = [NSString stringWithCString:property_getName(allProperties[i]) encoding:NSASCIIStringEncoding];
-                propertyAttributes = [[NSString stringWithCString:property_getAttributes(allProperties[i])
-                                                         encoding:NSASCIIStringEncoding] componentsSeparatedByString:@","];
-                for (NSString *attribute in propertyAttributes) {
-                    if ([attribute hasSuffix:propertyName]) {
-                        if ([attribute hasPrefix:@"S"]) {
-                            isGetter = NO;
+            if (allProperties != NULL) {
+                for (unsigned int i=0 ; i < propertiesCount; i++) {
+                    currentPropertyName = [NSString stringWithCString:property_getName(allProperties[i]) encoding:NSASCIIStringEncoding];
+                    propertyAttributes = [[NSString stringWithCString:property_getAttributes(allProperties[i])
+                                                             encoding:NSASCIIStringEncoding] componentsSeparatedByString:@","];
+                    for (NSString *attribute in propertyAttributes) {
+                        if ([attribute hasSuffix:propertyName]) {
+                            if ([attribute hasPrefix:@"S"]) {
+                                isGetter = NO;
+                            }
+                            propertyName = currentPropertyName;
+                            property = allProperties[i];
+                            i = propertiesCount;
                         }
-                        propertyName = currentPropertyName;
-                        property = allProperties[i];
-                        i = propertiesCount;
                     }
                 }
+                
+                free(allProperties);
             }
             
-            free(allProperties);
             if (property == NULL) {
                 return nil;
             }
