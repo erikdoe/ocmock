@@ -21,11 +21,53 @@
 
 @implementation NSMethodSignature(OCMAdditions)
 
-+ (NSMethodSignature *)signatureOfGetterForDynamicProperty:(NSString *)propertyName inClass:(Class)aClass
++ (NSMethodSignature *)signatureForDynamicPropertyMatchingSelector:(SEL)selector inClass:(Class)aClass
 {
+    BOOL isGetter = YES;
+    BOOL isDynamic = NO;
+    NSString *propertyName = NSStringFromSelector(selector);
     objc_property_t property = class_getProperty(aClass, [propertyName cStringUsingEncoding:NSASCIIStringEncoding]);
-    if(property == NULL)
-        return nil;
+    if(property == NULL) {
+        if ([propertyName hasPrefix:@"set"])
+        {
+            propertyName = [propertyName substringFromIndex:@"set".length];
+            propertyName = [propertyName stringByReplacingCharactersInRange:NSMakeRange(0, 1) withString:[[propertyName substringToIndex:1] lowercaseString]];
+            NSRange colonRange = [propertyName rangeOfString:@":"];
+            if (colonRange.location != NSNotFound) {
+                propertyName = [propertyName stringByReplacingCharactersInRange:colonRange withString:@""];
+            }
+            property = class_getProperty(aClass, [propertyName cStringUsingEncoding:NSASCIIStringEncoding]);
+            isGetter = NO;
+        }
+        
+        if (property == NULL) {
+            unsigned int propertiesCount = 0;
+            objc_property_t *allProperties = class_copyPropertyList(aClass, &propertiesCount);
+            NSString *currentPropertyName = nil;
+            NSArray *propertyAttributes = nil;
+            for (unsigned int i=0 ; i < propertiesCount; i++) {
+                currentPropertyName = [NSString stringWithCString:property_getName(allProperties[i]) encoding:NSASCIIStringEncoding];
+                propertyAttributes = [[NSString stringWithCString:property_getAttributes(allProperties[i])
+                                                         encoding:NSASCIIStringEncoding] componentsSeparatedByString:@","];
+                for (NSString *attribute in propertyAttributes) {
+                    if ([attribute hasSuffix:propertyName]) {
+                        if ([attribute hasPrefix:@"S"]) {
+                            isGetter = NO;
+                        }
+                        propertyName = currentPropertyName;
+                        property = allProperties[i];
+                        i = propertiesCount;
+                    }
+                }
+            }
+            
+            free(allProperties);
+            if (property == NULL) {
+                return nil;
+            }
+        }
+    }
+
 
     const char *propertyAttributesString = property_getAttributes(property);
     if(propertyAttributesString == NULL)
@@ -33,7 +75,6 @@
 
     NSArray *propertyAttributes = [[NSString stringWithCString:propertyAttributesString
                                                       encoding:NSASCIIStringEncoding] componentsSeparatedByString:@","];
-    BOOL isDynamic = NO;
     NSString *typeStr = nil;
     for(NSString *attribute in propertyAttributes)
     {
@@ -56,7 +97,15 @@
     {
         typeStr = [typeStr substringToIndex:r.location];
     }
-    const char *str = [[NSString stringWithFormat:@"%@@:", typeStr] cStringUsingEncoding:NSASCIIStringEncoding];
+    
+    const char *str;
+    if (isGetter)
+    {
+        str = [[NSString stringWithFormat:@"%@@:", typeStr] cStringUsingEncoding:NSASCIIStringEncoding];
+    } else
+    {
+        str = [[NSString stringWithFormat:@"v@:%@", typeStr] cStringUsingEncoding:NSASCIIStringEncoding];
+    }
     return [NSMethodSignature signatureWithObjCTypes:str];
 }
 
