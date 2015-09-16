@@ -24,6 +24,13 @@
 #import <OCMock/NSNotificationCenter+OCMAdditions.h>
 
 
+#if defined(__cplusplus)
+#define OCMOCK_EXTERN extern "C"
+#else
+#define OCMOCK_EXTERN extern
+#endif
+
+
 #define OCMClassMock(cls) [OCMockObject niceMockForClass:cls]
 
 #define OCMStrictClassMock(cls) [OCMockObject mockForClass:cls]
