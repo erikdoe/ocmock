@@ -33,9 +33,4 @@
 
 @end
 
-#if defined(__cplusplus)
-extern "C"
-#else
-extern
-#endif
-OCMLocation *OCMMakeLocation(id testCase, const char *file, int line);
+OCMOCK_EXTERN OCMLocation *OCMMakeLocation(id testCase, const char *file, int line);
