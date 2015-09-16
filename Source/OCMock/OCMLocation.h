@@ -15,6 +15,8 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "OCMFunctions.h"
+
 
 @interface OCMLocation : NSObject
 {

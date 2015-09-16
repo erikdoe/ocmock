@@ -15,7 +15,7 @@
  */
 
 #import "NSMethodSignature+OCMAdditions.h"
-#import "OCMFunctions.h"
+#import "OCMFunctionsPrivate.h"
 #import <objc/runtime.h>
 
 

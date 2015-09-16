@@ -22,13 +22,7 @@
 #import <OCMock/OCMLocation.h>
 #import <OCMock/OCMMacroState.h>
 #import <OCMock/NSNotificationCenter+OCMAdditions.h>
-
-
-#if defined(__cplusplus)
-#define OCMOCK_EXTERN extern "C"
-#else
-#define OCMOCK_EXTERN extern
-#endif
+#import <OCMock/OCMFunctions.h>
 
 
 #define OCMClassMock(cls) [OCMockObject niceMockForClass:cls]

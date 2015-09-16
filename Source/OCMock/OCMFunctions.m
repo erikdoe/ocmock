@@ -15,7 +15,7 @@
  */
 
 #import <objc/runtime.h>
-#import "OCMFunctions.h"
+#import "OCMFunctionsPrivate.h"
 #import "OCMLocation.h"
 #import "OCClassMockObject.h"
 #import "OCPartialMockObject.h"

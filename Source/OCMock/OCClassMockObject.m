@@ -17,7 +17,7 @@
 #import <objc/runtime.h>
 #import "OCClassMockObject.h"
 #import "NSObject+OCMAdditions.h"
-#import "OCMFunctions.h"
+#import "OCMFunctionsPrivate.h"
 #import "OCMInvocationStub.h"
 #import "NSMethodSignature+OCMAdditions.h"
 
