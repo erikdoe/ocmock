@@ -24,7 +24,6 @@
 + (NSMethodSignature *)signatureForDynamicPropertyMatchingSelector:(SEL)selector inClass:(Class)aClass
 {
     BOOL isGetter = YES;
-    BOOL isDynamic = NO;
     NSString *propertyName = NSStringFromSelector(selector);
     objc_property_t property = class_getProperty(aClass, [propertyName cStringUsingEncoding:NSASCIIStringEncoding]);
     if(property == NULL) {
@@ -79,6 +78,7 @@
     NSArray *propertyAttributes = [[NSString stringWithCString:propertyAttributesString
                                                       encoding:NSASCIIStringEncoding] componentsSeparatedByString:@","];
     NSString *typeStr = nil;
+    BOOL isDynamic = NO;
     for(NSString *attribute in propertyAttributes)
     {
         if([attribute isEqualToString:@"D"])
