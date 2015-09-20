@@ -24,7 +24,7 @@
 #import "NSInvocation+OCMAdditions.h"
 #import "OCMInvocationMatcher.h"
 #import "OCMMacroState.h"
-#import "OCMFunctions.h"
+#import "OCMFunctionsPrivate.h"
 #import "OCMVerifier.h"
 #import "OCMInvocationExpectation.h"
 #import "OCMExpectationRecorder.h"

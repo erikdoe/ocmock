@@ -15,7 +15,7 @@
  */
 
 #import "NSInvocation+OCMAdditions.h"
-#import "OCMFunctions.h"
+#import "OCMFunctionsPrivate.h"
 
 
 @implementation NSInvocation(OCMAdditions)

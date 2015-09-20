@@ -302,7 +302,7 @@
 
     // have not found a way to report the error; it seems we must throw an
     // exception to get out of the forwarding machinery
-    XCTAssertThrowsSpecificNamed(OCMVerify([mock arrayByAddingObject:nil]),
+    XCTAssertThrowsSpecificNamed(OCMVerify([mock arrayByAddingObject:@"foo"]),
                     NSException,
                     NSInvalidArgumentException,
                     @"should throw NSInvalidArgumentException exception");

@@ -4,7 +4,7 @@ commit messages and/or the pull requests.
 (unreleased)
 
 * Can stub dynamic properties (imhuntingwabbits)
-* Fixed C++ compilation issue (Jonathan Crooke)
+* Fixed C++ compilation issues (Jonathan Crooke, Daniel Demiss)
 
 
 OCMock 3.1.4 / 3.1.5 (2015-08-26)

@@ -21,7 +21,7 @@
 #import "NSInvocation+OCMAdditions.h"
 #import "OCMInvocationMatcher.h"
 #import "OCClassMockObject.h"
-#import "OCMFunctions.h"
+#import "OCMFunctionsPrivate.h"
 #import "OCMBlockArgCaller.h"
 
 

@@ -18,7 +18,7 @@
 #import <OCMock/OCMArg.h>
 #import "OCMInvocationMatcher.h"
 #import "OCClassMockObject.h"
-#import "OCMFunctions.h"
+#import "OCMFunctionsPrivate.h"
 
 
 @interface TestClassForRecorder : NSObject
