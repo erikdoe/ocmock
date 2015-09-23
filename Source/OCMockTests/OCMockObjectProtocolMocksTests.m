@@ -152,4 +152,26 @@ typedef InterfaceForTypedef* PointerTypedefInterface;
     XCTAssertThrows(OCMProtocolMock(nil));
 }
 
+- (void)testRespondingMockProtocol
+{
+    id mock = [OCMockObject respondingMockForProtocol:@protocol(TestProtocol)];
+    XCTAssertTrue([mock respondsToSelector:@selector(primitiveValue)]);
+    XCTAssertFalse([mock respondsToSelector:@selector(objectValue)]);
+    [[mock expect] objectValue];
+    XCTAssertTrue([mock respondsToSelector:@selector(objectValue)]);
+    [mock objectValue];
+    XCTAssertFalse([mock respondsToSelector:@selector(objectValue)]);
+
+    [[mock expect] objectValue];
+    XCTAssertTrue([mock respondsToSelector:@selector(objectValue)]);
+    [mock stopMocking];
+    XCTAssertFalse([mock respondsToSelector:@selector(objectValue)]);
+
+    [[mock expect] objectValue];
+    [[mock reject] objectValue];
+    XCTAssertTrue([mock respondsToSelector:@selector(objectValue)]);
+    [mock objectValue];
+    XCTAssertTrue([mock respondsToSelector:@selector(objectValue)]);
+}
+
 @end
