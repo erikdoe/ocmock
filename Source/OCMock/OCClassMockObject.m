@@ -62,7 +62,7 @@
 - (void)restoreMetaClass
 {
     OCMSetAssociatedMockForClass(nil, mockedClass);
-    OCMSetIsa(mockedClass, originalMetaClass);
+    object_setClass(mockedClass, originalMetaClass);
     originalMetaClass = nil;
 }
 
@@ -94,18 +94,20 @@
     Class subclass = OCMCreateSubclass(mockedClass, mockedClass);
     originalMetaClass = object_getClass(mockedClass);
     id newMetaClass = object_getClass(subclass);
-    OCMSetIsa(mockedClass, OCMGetIsa(subclass));
-
-    /* point forwardInvocation: of the object to the implementation in the mock */
-    Method myForwardMethod = class_getInstanceMethod([self mockObjectClass], @selector(forwardInvocationForClassObject:));
-    IMP myForwardIMP = method_getImplementation(myForwardMethod);
-    class_addMethod(newMetaClass, @selector(forwardInvocation:), myForwardIMP, method_getTypeEncoding(myForwardMethod));
 
     /* create a dummy initialize method */
     Method myDummyInitializeMethod = class_getInstanceMethod([self mockObjectClass], @selector(initializeForClassObject));
     const char *initializeTypes = method_getTypeEncoding(myDummyInitializeMethod);
     IMP myDummyInitializeIMP = method_getImplementation(myDummyInitializeMethod);
     class_addMethod(newMetaClass, @selector(initialize), myDummyInitializeIMP, initializeTypes);
+
+    object_setClass(mockedClass, newMetaClass); // only after dummy initialize is installed (iOS9)
+
+    /* point forwardInvocation: of the object to the implementation in the mock */
+    Method myForwardMethod = class_getInstanceMethod([self mockObjectClass], @selector(forwardInvocationForClassObject:));
+    IMP myForwardIMP = method_getImplementation(myForwardMethod);
+    class_addMethod(newMetaClass, @selector(forwardInvocation:), myForwardIMP, method_getTypeEncoding(myForwardMethod));
+
 
     /* adding forwarder for most class methods (instance methods on meta class) to allow for verify after run */
     NSArray *methodBlackList = @[@"class", @"forwardingTargetForSelector:", @"methodSignatureForSelector:", @"forwardInvocation:", @"isBlock",
