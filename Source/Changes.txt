@@ -5,6 +5,7 @@ commit messages and/or the pull requests.
 
 * Can stub dynamic properties (imhuntingwabbits)
 * Fixed C++ compilation issues (Jonathan Crooke, Daniel Demiss)
+* Add module support for the OS X framework (Ian Anderson)
 
 
 OCMock 3.1.4 / 3.1.5 (2015-08-26)
