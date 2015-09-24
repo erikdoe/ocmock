@@ -906,6 +906,22 @@ static NSString *TestNotification = @"TestNotification";
 	XCTAssertThrows([mock verify], @"Should have reraised the exception.");
 }
 
+
+- (void)testDoesNotReRaiseStubbedExceptions
+{
+	[[[mock expect] andThrow:[NSException exceptionWithName:@"ExceptionForTest" reason:@"test" userInfo:nil]] lowercaseString];
+	@try
+	{
+		[mock lowercaseString];
+	}
+	@catch(NSException *exception)
+	{
+		// expected
+	}
+	XCTAssertNoThrow([mock verify], @"Should not have reraised stubbed exception.");
+
+}
+
 - (void)testReRaisesRejectExceptionsOnVerify
 {
 	mock = [OCMockObject niceMockForClass:[NSString class]];

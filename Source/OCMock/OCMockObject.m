@@ -27,6 +27,7 @@
 #import "OCMFunctionsPrivate.h"
 #import "OCMVerifier.h"
 #import "OCMInvocationExpectation.h"
+#import "OCMExceptionReturnValueProvider.h"
 #import "OCMExpectationRecorder.h"
 
 
@@ -261,7 +262,15 @@
     }
     @catch(NSException *e)
     {
-        [exceptions addObject:e];
+        if([[e name] isEqualToString:OCMStubbedException])
+        {
+            e = [[e userInfo] objectForKey:@"exception"];
+        }
+        else
+        {
+            // add non-stubbed method to list of exceptions to be re-raised in verify
+            [exceptions addObject:e];
+        }
         [e raise];
     }
 }
