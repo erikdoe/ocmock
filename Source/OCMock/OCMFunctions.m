@@ -133,6 +133,9 @@ static BOOL OCMEqualTypesAllowingOpaqueStructsInternal(const char *type1, const 
                 return NO;
             return OCMEqualTypesAllowingOpaqueStructs(type1 + 1, type2 + 1);
 
+        case '?':
+            return type2[0] == '?';
+
         case '\0':
             return type2[0] == '\0';
 
