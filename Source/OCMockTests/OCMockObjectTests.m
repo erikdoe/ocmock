@@ -614,7 +614,8 @@ static NSString *TestNotification = @"TestNotification";
 //	invokes block arguments
 // --------------------------------------------------------------------------------------
 
-- (void)testInvokesBlockWithArgs {
+- (void)testInvokesBlockWithArgs
+{
     
     BOOL bVal = YES, *bPtr = &bVal;
     [[mock stub] enumerateLinesUsingBlock:[OCMArg invokeBlockWithArgs:@"First param", OCMOCK_VALUE(bPtr), nil]];
@@ -622,7 +623,8 @@ static NSString *TestNotification = @"TestNotification";
     __block BOOL wasCalled = NO;
     __block NSString *firstParam;
     __block BOOL *secondParam;
-    void (^block)(NSString *, BOOL *) = ^(NSString *line, BOOL *stop) {
+    void (^block)(NSString *, BOOL *) = ^(NSString *line, BOOL *stop)
+    {
         wasCalled = YES;
         firstParam = line;
         secondParam = stop;
@@ -635,7 +637,8 @@ static NSString *TestNotification = @"TestNotification";
 
 }
 
-- (void)testThrowsIfBoxedValueNotFound {
+- (void)testThrowsIfBoxedValueNotFound
+{
 
     [[mock stub] enumerateLinesUsingBlock:[OCMArg invokeBlockWithArgs:@"123", @"Not an NSValue", nil]];
 
@@ -643,7 +646,8 @@ static NSString *TestNotification = @"TestNotification";
 
 }
 
-- (void)testThrowsIfArgTypesMismatch {
+- (void)testThrowsIfArgTypesMismatch
+{
 
     [[mock stub] enumerateLinesUsingBlock:[OCMArg invokeBlockWithArgs:@"123", OCMOCK_VALUE(YES), nil]];
 
@@ -651,7 +655,8 @@ static NSString *TestNotification = @"TestNotification";
     
 }
 
-- (void)testThrowsIfArgsLengthMismatch {
+- (void)testThrowsIfArgsLengthMismatch
+{
     
     [[mock stub] enumerateLinesUsingBlock:[OCMArg invokeBlockWithArgs:@"First but no second", nil]];
     
@@ -659,13 +664,15 @@ static NSString *TestNotification = @"TestNotification";
 
 }
 
-- (void)testInvokesBlockWithDefaultArgs {
+- (void)testInvokesBlockWithDefaultArgs
+{
     
     [[mock stub] enumerateLinesUsingBlock:[OCMArg invokeBlockWithArgs:OCMDefault, OCMDefault, nil]];
     
     __block NSString *firstParam;
     __block BOOL *secondParam;
-    void (^block)(NSString *, BOOL *) = ^(NSString *line, BOOL *stop) {
+    void (^block)(NSString *, BOOL *) = ^(NSString *line, BOOL *stop)
+    {
         firstParam = line;
         secondParam = stop;
     };
@@ -676,13 +683,15 @@ static NSString *TestNotification = @"TestNotification";
 
 }
 
-- (void)testInvokesBlockWithAllDefaultArgs {
+- (void)testInvokesBlockWithAllDefaultArgs
+{
 
     [[mock stub] enumerateLinesUsingBlock:[OCMArg invokeBlock]];
     
     __block NSString *firstParam;
     __block BOOL *secondParam;
-    void (^block)(NSString *, BOOL *) = ^(NSString *line, BOOL *stop) {
+    void (^block)(NSString *, BOOL *) = ^(NSString *line, BOOL *stop)
+    {
         firstParam = line;
         secondParam = stop;
     };

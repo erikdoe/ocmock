@@ -91,19 +91,23 @@
 	return (id *)[[[OCMPassByRefSetter alloc] initWithValue:value] autorelease];
 }
 
-+ (id)invokeBlock {
++ (id)invokeBlock
+{
     return [[[OCMBlockArgCaller alloc] init] autorelease];
 }
 
-+ (id)invokeBlockWithArgs:(id)first,... NS_REQUIRES_NIL_TERMINATION {
++ (id)invokeBlockWithArgs:(id)first,... NS_REQUIRES_NIL_TERMINATION
+{
     
     NSMutableArray *params = [NSMutableArray array];
     va_list args;
-    if (first) {
+    if(first)
+    {
         [params addObject:first];
         va_start(args, first);
         id obj;
-        while ((obj = va_arg(args, id))) {
+        while((obj = va_arg(args, id)))
+        {
             [params addObject:obj];
         }
         va_end(args);

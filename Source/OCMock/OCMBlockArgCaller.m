@@ -18,67 +18,67 @@
 #import "NSMethodSignature+OCMAdditions.h"
 #import "OCMFunctions.h"
 
-@implementation OCMBlockArgCaller {
-    NSInvocation *_inv;
-    NSArray *_params;
+@implementation OCMBlockArgCaller
+{
+    NSArray *params;
 }
 
-/// @note Q: Why don't we pass the va_list to this class and extract the vargs
-/// of various types based on the NSMethodSignature specification?
-/// A: On the surface, it looks like that solution might allow us to avoid boxing
-/// the block args, however in reality its a bit trickier.
-/// We would be relying on the method signature in determining what type to pass
-/// to va_arg. There would be no way of telling what type we're extracting and thus
-/// no way of asserting whether the user has passed the correct type in the
-/// va_list. Its a ultimately a bit safer to box them up and pass them around in
-/// an NSArray.
-
-- (instancetype)initWithBlockParams:(NSArray *)params {
+- (instancetype)initWithBlockParams:(NSArray *)blockParams
+{
     self = [super init];
-    if (self) {
-        _params = [params copy];
+    if(self)
+    {
+        params = [blockParams copy];
     }
     return self;
 }
 
-- (void)dealloc {
-    [_inv release];
-    [_params release];
+- (void)dealloc
+{
+    [params release];
     [super dealloc];
 }
 
-- (id)copyWithZone:(NSZone *)zone {
+- (id)copyWithZone:(NSZone *)zone
+{
     return [self retain];
 }
 
-- (void)buildInvocationFromBlock:(id)block {
+- (NSInvocation *)buildInvocationFromBlock:(id)block
+{
     
     NSMethodSignature *sig = [NSMethodSignature signatureForBlock:block];
-    _inv = [NSInvocation invocationWithMethodSignature:sig];
+    NSInvocation *inv = [NSInvocation invocationWithMethodSignature:sig];
 
-    if (!_params) {
-        return;
+    if(!params)
+    {
+        return inv;
     }
     
     /// @note Unlike normal method signatures, args at index 0 and 1 aren't
-    /// reserved for `self` and `_cmd`. The arg at index 0 is reserved for the
+    /// reserved for `self` and `cmd`. The arg at index 0 is reserved for the
     /// block itself, though: (`'@?'`).
     NSAssert(
-        _params.count + 1 == sig.numberOfArguments,
+        params.count + 1 == sig.numberOfArguments,
         @"All block arguments are require (%lu). Pass NSNull for default.",
         (unsigned long)sig.numberOfArguments - 1
     );
     void *buf = NULL;
     
-    for (NSUInteger i = 0, j = 1; i < _params.count; ++i, ++j) {
-        id param = _params[i];
-        if ([param isKindOfClass:[NSNull class]]) {
+    for(NSUInteger i = 0, j = 1; i < params.count; ++i, ++j)
+    {
+        id param = params[i];
+        if([param isKindOfClass:[NSNull class]])
+        {
             continue;
         }
         char const *typeEncoding = [sig getArgumentTypeAtIndex:j];
-        if (typeEncoding[0] == '@') {
-            [_inv setArgument:&param atIndex:j];
-        } else {
+        if(typeEncoding[0] == '@')
+        {
+            [inv setArgument:&param atIndex:j];
+        }
+        else
+        {
             NSAssert([param isKindOfClass:[NSValue class]], @"Param at %lu should be boxed in NSValue", (long unsigned)i);
             char const *valEncoding = [param objCType];
             /// @note Here we allow any data pointer to be passed as a void pointer and
@@ -86,7 +86,7 @@
             BOOL takesVoidPtr = !strcmp(typeEncoding, "^v") && valEncoding[0] == '^';
             BOOL takesNumber = OCMNumberTypeForObjCType(typeEncoding) && OCMNumberTypeForObjCType(valEncoding);
             NSAssert(
-                takesVoidPtr || OCMEqualTypesAllowingOpaqueStructs(typeEncoding, valEncoding) || takesNumber,
+                takesVoidPtr || takesNumber || OCMEqualTypesAllowingOpaqueStructs(typeEncoding, valEncoding),
                 @"Param type mismatch! You gave %s, block requires %s",
                 valEncoding, typeEncoding
             );
@@ -95,19 +95,23 @@
             buf = reallocf(buf, argSize);
             NSAssert(buf, @"Allocation failed arg at %lu", (long unsigned)i);
             [param getValue:buf];
-            [_inv setArgument:buf atIndex:j];
+            [inv setArgument:buf atIndex:j];
         }
     }
     
-    if (buf) {
+    if(buf)
+    {
         free(buf);
     }
+    return inv;
 }
 
-- (void)handleArgument:(id)arg {
-    if (arg) {
-        [self buildInvocationFromBlock:arg];
-        [_inv invokeWithTarget:arg];
+- (void)handleArgument:(id)arg
+{
+    if(arg)
+    {
+        NSInvocation *inv = [self buildInvocationFromBlock:arg];
+        [inv invokeWithTarget:arg];
     }
 }
 
