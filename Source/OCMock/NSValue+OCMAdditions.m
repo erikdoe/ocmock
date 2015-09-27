@@ -15,7 +15,7 @@
  */
 
 #import "NSValue+OCMAdditions.h"
-#import "OCMFunctions.h"
+#import "OCMFunctionsPrivate.h"
 
 @implementation NSValue(OCMAdditions)
 

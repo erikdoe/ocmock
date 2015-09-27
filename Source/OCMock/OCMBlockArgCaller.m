@@ -16,7 +16,7 @@
 
 #import "OCMBlockArgCaller.h"
 #import "NSMethodSignature+OCMAdditions.h"
-#import "OCMFunctions.h"
+#import "OCMFunctionsPrivate.h"
 
 @implementation OCMBlockArgCaller
 {
