@@ -181,7 +181,6 @@
 		2FA28FEAEF9333D2C214DF53 /* NSValue+OCMAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28896E5EEFD7C2F12C2F8 /* NSValue+OCMAdditions.m */; };
 		3C0FF06A1BAA3FD10021AD20 /* OCMFunctionsPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 03F370CA1BAA1DE800CAD3E8 /* OCMFunctionsPrivate.h */; };
 		3C0FF06B1BAA3FD20021AD20 /* OCMFunctionsPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 03F370CA1BAA1DE800CAD3E8 /* OCMFunctionsPrivate.h */; };
-		4671998B1B9CD0C600D57D84 /* OCMBlockArgCallerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4671998A1B9CD0C600D57D84 /* OCMBlockArgCallerTests.m */; };
 		D31108BA1828DB8700737925 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D31108B81828DB8700737925 /* InfoPlist.strings */; };
 		D31108C41828DBD600737925 /* OCMockObjectPartialMocksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AC5C1416DF9FA500D82ECD /* OCMockObjectPartialMocksTests.m */; };
 		D31108C51828DBD600737925 /* OCMockObjectClassMethodMockingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F91C516EFB493006C3D70 /* OCMockObjectClassMethodMockingTests.m */; };
