@@ -49,51 +49,82 @@
     
     NSMethodSignature *sig = [NSMethodSignature signatureForBlock:block];
     NSInvocation *inv = [NSInvocation invocationWithMethodSignature:sig];
-
-    if(!params)
-    {
-        return inv;
-    }
+    
+    NSUInteger argsLen = sig.numberOfArguments - 1;
+    void *buf = NULL;
     
     /// @note Unlike normal method signatures, args at index 0 and 1 aren't
     /// reserved for `self` and `cmd`. The arg at index 0 is reserved for the
     /// block itself, though: (`'@?'`).
+    /// @note Either allow all args or no args (all default) to avoid users
+    /// passing mismatching arguments.
     NSAssert(
-        params.count + 1 == sig.numberOfArguments,
-        @"All block arguments are require (%lu). Pass NSNull for default.",
-        (unsigned long)sig.numberOfArguments - 1
-    );
-    void *buf = NULL;
-    
-    for(NSUInteger i = 0, j = 1; i < params.count; ++i, ++j)
+             params.count == argsLen || !params,
+             @"All block arguments are require (%lu). Pass OCMDefault for default.",
+             (unsigned long)argsLen
+             );
+
+    for(NSUInteger i = 0, j = 1; i < argsLen; ++i, ++j)
     {
-        id param = params[i];
-        if([param isKindOfClass:[NSNull class]])
-        {
-            continue;
-        }
+        id param = [params objectAtIndex:i];
         char const *typeEncoding = [sig getArgumentTypeAtIndex:j];
-        if(typeEncoding[0] == '@')
+        
+        if(!param || [param isKindOfClass:[NSNull class]])
+        {
+            void *pDef;
+        
+            /// @note Provider nil, NULL and 0 as defaults where possible. Any other
+            /// types raise an exception and its up to the user to provider their own
+            /// default.
+            if(typeEncoding[0] == '^')
+            {
+                void *nullPtr = NULL;
+                pDef = &nullPtr;
+            }
+            else if(typeEncoding[0] == '@')
+            {
+                id nilObj =  nil;
+                pDef = &nilObj;
+            }
+            else if(OCMNumberTypeForObjCType(typeEncoding))
+            {
+                NSUInteger zero = 0;
+                pDef = &zero;
+            }
+            else
+            {
+                [NSException raise:NSInvalidArgumentException format:@"Could not default type %s", typeEncoding];
+            }
+
+            [inv setArgument:pDef atIndex:j];
+            
+        }
+        else if (typeEncoding[0] == '@')
         {
             [inv setArgument:&param atIndex:j];
         }
         else
         {
             NSAssert([param isKindOfClass:[NSValue class]], @"Param at %lu should be boxed in NSValue", (long unsigned)i);
+            
             char const *valEncoding = [param objCType];
+            
             /// @note Here we allow any data pointer to be passed as a void pointer and
             /// any numberical types to be passed as arguments to the block.
             BOOL takesVoidPtr = !strcmp(typeEncoding, "^v") && valEncoding[0] == '^';
             BOOL takesNumber = OCMNumberTypeForObjCType(typeEncoding) && OCMNumberTypeForObjCType(valEncoding);
+            
             NSAssert(
-                takesVoidPtr || takesNumber || OCMEqualTypesAllowingOpaqueStructs(typeEncoding, valEncoding),
-                @"Param type mismatch! You gave %s, block requires %s",
-                valEncoding, typeEncoding
-            );
+                     takesVoidPtr || takesNumber || OCMEqualTypesAllowingOpaqueStructs(typeEncoding, valEncoding),
+                     @"Param type mismatch! You gave %s, block requires %s",
+                     valEncoding, typeEncoding
+                     );
+            
             NSUInteger argSize;
             NSGetSizeAndAlignment(typeEncoding, &argSize, NULL);
             buf = reallocf(buf, argSize);
-            NSAssert(buf, @"Allocation failed arg at %lu", (long unsigned)i);
+            NSAssert(buf, @"Allocation failed for arg at %lu", (long unsigned)i);
+            
             [param getValue:buf];
             [inv setArgument:buf atIndex:j];
         }
