@@ -18,4 +18,6 @@
 
 @interface OCMBlockArgCaller : OCMArgAction <NSCopying>
 
+- (instancetype)initWithBlockParams:(NSArray *)params;
+
 @end
