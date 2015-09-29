@@ -48,7 +48,6 @@
     NSInvocation *inv = [NSInvocation invocationWithMethodSignature:sig];
     
     NSUInteger argsLen = sig.numberOfArguments - 1;
-    void *buf = NULL;
     
     /// @note Either allow all args or no args (all default) to avoid users
     /// passing mismatching arguments.
@@ -65,33 +64,25 @@
         
         if(!param || [param isKindOfClass:[NSNull class]])
         {
-            void *pDef;
-        
-            /// @note Provide nil, NULL and 0 as defaults where possible. Any other
-            /// types raise an exception and its up to the user to provider their own
-            /// default.
             if(typeEncoding[0] == '^')
             {
                 void *nullPtr = NULL;
-                pDef = &nullPtr;
+                [inv setArgument:&nullPtr atIndex:j];
             }
             else if(typeEncoding[0] == '@')
             {
                 id nilObj =  nil;
-                pDef = &nilObj;
+                [inv setArgument:&nilObj atIndex:j];
             }
             else if(OCMNumberTypeForObjCType(typeEncoding))
             {
                 NSUInteger zero = 0;
-                pDef = &zero;
+                [inv setArgument:&zero atIndex:j];
             }
             else
             {
                 [NSException raise:NSInvalidArgumentException format:@"Could not default type %s", typeEncoding];
             }
-
-            [inv setArgument:pDef atIndex:j];
-            
         }
         else if (typeEncoding[0] == '@')
         {
@@ -116,18 +107,13 @@
             
             NSUInteger argSize;
             NSGetSizeAndAlignment(typeEncoding, &argSize, NULL);
-            buf = reallocf(buf, argSize);
-            NSAssert(buf, @"Allocation failed for arg at %lu", (long unsigned)i);
-            
-            [param getValue:buf];
-            [inv setArgument:buf atIndex:j];
+            void *argBuffer = malloc(argSize);
+            [param getValue:argBuffer];
+            [inv setArgument:argBuffer atIndex:j];
+            free(argBuffer);
         }
     }
     
-    if(buf)
-    {
-        free(buf);
-    }
     return inv;
 }
 
