@@ -35,9 +35,6 @@ CFNumberType OCMNumberTypeForObjCType(const char *objcType);
 
 Class OCMCreateSubclass(Class cls, void *ref);
 
-void OCMSetIsa(id object, Class cls);
-Class OCMGetIsa(id object);
-
 BOOL OCMIsAliasSelector(SEL selector);
 SEL OCMAliasForOriginalSelector(SEL selector);
 SEL OCMOriginalSelectorForAlias(SEL selector);

@@ -197,19 +197,6 @@ Class OCMCreateSubclass(Class class, void *ref)
 }
 
 
-#pragma mark  Directly manipulating the isa pointer (look away)
-
-void OCMSetIsa(id object, Class class)
-{
-    *((Class *)object) = class;
-}
-
-Class OCMGetIsa(id object)
-{
-    return *((Class *)object);
-}
-
-
 #pragma mark  Alias for renaming real methods
 
 static NSString *const OCMRealMethodAliasPrefix = @"ocmock_replaced_";
