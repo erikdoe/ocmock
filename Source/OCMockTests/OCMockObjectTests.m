@@ -649,7 +649,7 @@ static NSString *TestNotification = @"TestNotification";
 - (void)testThrowsIfArgTypesMismatch
 {
 
-    [[mock stub] enumerateLinesUsingBlock:[OCMArg invokeBlockWithArgs:@"123", OCMOCK_VALUE(YES), nil]];
+    [[mock stub] enumerateLinesUsingBlock:[OCMArg invokeBlockWithArgs:@"123", @YES, nil]];
 
     XCTAssertThrowsSpecificNamed([mock enumerateLinesUsingBlock:^(NSString *line, BOOL *stop) {}], NSException, NSInvalidArgumentException, @"Should have raised an exception.");
     
