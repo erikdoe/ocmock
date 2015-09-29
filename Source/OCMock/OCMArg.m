@@ -116,6 +116,12 @@
     
 }
 
++ (id)defaultValue
+{
+    return [NSNull null];
+}
+
+
 + (id)resolveSpecialValues:(NSValue *)value
 {
 	const char *type = [value objCType];

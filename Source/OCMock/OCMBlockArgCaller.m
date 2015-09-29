@@ -19,9 +19,6 @@
 #import "OCMFunctionsPrivate.h"
 
 @implementation OCMBlockArgCaller
-{
-    NSArray *params;
-}
 
 - (instancetype)initWithBlockParams:(NSArray *)blockParams
 {
@@ -53,14 +50,11 @@
     NSUInteger argsLen = sig.numberOfArguments - 1;
     void *buf = NULL;
     
-    /// @note Unlike normal method signatures, args at index 0 and 1 aren't
-    /// reserved for `self` and `cmd`. The arg at index 0 is reserved for the
-    /// block itself, though: (`'@?'`).
     /// @note Either allow all args or no args (all default) to avoid users
     /// passing mismatching arguments.
     NSAssert(
-             params.count == argsLen || !params,
-             @"All block arguments are require (%lu). Pass OCMDefault for default.",
+             params.count == argsLen || params == nil,
+             @"All block arguments are required (%lu). Pass [OCMArg defaultValue] for default value.",
              (unsigned long)argsLen
              );
 
@@ -73,7 +67,7 @@
         {
             void *pDef;
         
-            /// @note Provider nil, NULL and 0 as defaults where possible. Any other
+            /// @note Provide nil, NULL and 0 as defaults where possible. Any other
             /// types raise an exception and its up to the user to provider their own
             /// default.
             if(typeEncoding[0] == '^')
@@ -105,7 +99,7 @@
         }
         else
         {
-            NSAssert([param isKindOfClass:[NSValue class]], @"Param at %lu should be boxed in NSValue", (long unsigned)i);
+            NSAssert([param isKindOfClass:[NSValue class]], @"Argument at %lu should be boxed in NSValue", (long unsigned)i);
             
             char const *valEncoding = [param objCType];
             

@@ -39,6 +39,8 @@
 + (id)invokeBlock;
 + (id)invokeBlockWithArgs:(id)first,... NS_REQUIRES_NIL_TERMINATION;
 
++ (id)defaultValue;
+
 // internal use only
 
 + (id)resolveSpecialValues:(NSValue *)value;

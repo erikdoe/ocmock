@@ -17,6 +17,9 @@
 #import "OCMArgAction.h"
 
 @interface OCMBlockArgCaller : OCMArgAction <NSCopying>
+{
+    NSArray *params;
+}
 
 - (instancetype)initWithBlockParams:(NSArray *)params;
 
