@@ -3,7 +3,7 @@
 //  iOS9Example
 //
 //  Created by Erik Doernenburg on 29/09/2015.
-//  Copyright © 2015 Mulle Kybernetik. All rights reserved.
+//  Copyright © 2015 Erik Doernenburg. All rights reserved.
 //
 
 #import "AppDelegate.h"
