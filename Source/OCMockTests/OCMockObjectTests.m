@@ -642,7 +642,7 @@ static NSString *TestNotification = @"TestNotification";
 
     [[mock stub] enumerateLinesUsingBlock:[OCMArg invokeBlockWithArgs:@"123", @"Not an NSValue", nil]];
 
-    XCTAssertThrowsSpecificNamed([mock enumerateLinesUsingBlock:^(NSString *line, BOOL *stop) {}], NSException, NSInternalInconsistencyException, @"No exception occurred");
+    XCTAssertThrowsSpecificNamed([mock enumerateLinesUsingBlock:^(NSString *line, BOOL *stop) {}], NSException, NSInvalidArgumentException, @"Should have raised an exception.");
 
 }
 
@@ -651,7 +651,7 @@ static NSString *TestNotification = @"TestNotification";
 
     [[mock stub] enumerateLinesUsingBlock:[OCMArg invokeBlockWithArgs:@"123", OCMOCK_VALUE(YES), nil]];
 
-    XCTAssertThrowsSpecificNamed([mock enumerateLinesUsingBlock:^(NSString *line, BOOL *stop) {}], NSException, NSInternalInconsistencyException, @"No exception occurred");
+    XCTAssertThrowsSpecificNamed([mock enumerateLinesUsingBlock:^(NSString *line, BOOL *stop) {}], NSException, NSInvalidArgumentException, @"Should have raised an exception.");
     
 }
 
@@ -660,7 +660,7 @@ static NSString *TestNotification = @"TestNotification";
     
     [[mock stub] enumerateLinesUsingBlock:[OCMArg invokeBlockWithArgs:@"First but no second", nil]];
     
-    XCTAssertThrowsSpecificNamed([mock enumerateLinesUsingBlock:^(NSString *line, BOOL *stop) {}], NSException, NSInternalInconsistencyException, @"No exception occurred");
+    XCTAssertThrowsSpecificNamed([mock enumerateLinesUsingBlock:^(NSString *line, BOOL *stop) {}], NSException, NSInvalidArgumentException, @"Should have raised an exception.");
     
 }
 

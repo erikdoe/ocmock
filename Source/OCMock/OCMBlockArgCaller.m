@@ -48,14 +48,8 @@
     NSInvocation *inv = [NSInvocation invocationWithMethodSignature:sig];
     
     NSUInteger argsLen = sig.numberOfArguments - 1;
-    
-    /// @note Either allow all args or no args (all default) to avoid users
-    /// passing mismatching arguments.
-    NSAssert(
-             params.count == argsLen || params == nil,
-             @"All block arguments are required (%lu). Pass [OCMArg defaultValue] for default value.",
-             (unsigned long)argsLen
-             );
+    if((params != nil) && ([params count] != argsLen))
+        [NSException raise:NSInvalidArgumentException format:@"Specified too few arguments for block; expected (%lu) arguments.", (unsigned long)argsLen];
 
     for(NSUInteger i = 0, j = 1; i < argsLen; ++i, ++j)
     {
@@ -81,7 +75,7 @@
             }
             else
             {
-                [NSException raise:NSInvalidArgumentException format:@"Could not default type %s", typeEncoding];
+                [NSException raise:NSInvalidArgumentException format:@"Could not default type %s. Must specify arguments for this block.", typeEncoding];
             }
         }
         else if (typeEncoding[0] == '@')
@@ -90,7 +84,8 @@
         }
         else
         {
-            NSAssert([param isKindOfClass:[NSValue class]], @"Argument at %lu should be boxed in NSValue", (long unsigned)i);
+            if(![param isKindOfClass:[NSValue class]])
+                [NSException raise:NSInvalidArgumentException format:@"Argument at index %lu should be boxed in NSValue.", (long unsigned)i];
             
             char const *valEncoding = [param objCType];
             
@@ -99,11 +94,8 @@
             BOOL takesVoidPtr = !strcmp(typeEncoding, "^v") && valEncoding[0] == '^';
             BOOL takesNumber = OCMNumberTypeForObjCType(typeEncoding) && OCMNumberTypeForObjCType(valEncoding);
             
-            NSAssert(
-                     takesVoidPtr || takesNumber || OCMEqualTypesAllowingOpaqueStructs(typeEncoding, valEncoding),
-                     @"Param type mismatch! You gave %s, block requires %s",
-                     valEncoding, typeEncoding
-                     );
+            if(!takesVoidPtr && !takesNumber && !OCMEqualTypesAllowingOpaqueStructs(typeEncoding, valEncoding))
+                 [NSException raise:NSInvalidArgumentException format:@"Argument type mismatch; Block requires %s but argument provided is %s", typeEncoding, valEncoding];
             
             NSUInteger argSize;
             NSGetSizeAndAlignment(typeEncoding, &argSize, NULL);
