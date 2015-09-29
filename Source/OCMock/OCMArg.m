@@ -112,7 +112,7 @@
         }
         va_end(args);
     }
-    return [[[OCMBlockArgCaller alloc] initWithBlockParams:params] autorelease];
+    return [[[OCMBlockArgCaller alloc] initWithBlockArguments:params] autorelease];
     
 }
 

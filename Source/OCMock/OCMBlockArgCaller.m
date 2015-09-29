@@ -20,19 +20,19 @@
 
 @implementation OCMBlockArgCaller
 
-- (instancetype)initWithBlockParams:(NSArray *)blockParams
+- (instancetype)initWithBlockArguments:(NSArray *)someArgs
 {
     self = [super init];
     if(self)
     {
-        params = [blockParams copy];
+        arguments = [someArgs copy];
     }
     return self;
 }
 
 - (void)dealloc
 {
-    [params release];
+    [arguments release];
     [super dealloc];
 }
 
@@ -41,22 +41,22 @@
     return [self retain];
 }
 
-- (NSInvocation *)buildInvocationFromBlock:(id)block
+- (NSInvocation *)buildInvocationForBlock:(id)block
 {
     
     NSMethodSignature *sig = [NSMethodSignature signatureForBlock:block];
     NSInvocation *inv = [NSInvocation invocationWithMethodSignature:sig];
     
-    NSUInteger argsLen = sig.numberOfArguments - 1;
-    if((params != nil) && ([params count] != argsLen))
-        [NSException raise:NSInvalidArgumentException format:@"Specified too few arguments for block; expected (%lu) arguments.", (unsigned long)argsLen];
+    NSUInteger numArgsRequired = sig.numberOfArguments - 1;
+    if((arguments != nil) && ([arguments count] != numArgsRequired))
+        [NSException raise:NSInvalidArgumentException format:@"Specified too few arguments for block; expected %lu arguments.", (unsigned long) numArgsRequired];
 
-    for(NSUInteger i = 0, j = 1; i < argsLen; ++i, ++j)
+    for(NSUInteger i = 0, j = 1; i < numArgsRequired; ++i, ++j)
     {
-        id param = [params objectAtIndex:i];
+        id arg = [arguments objectAtIndex:i];
         char const *typeEncoding = [sig getArgumentTypeAtIndex:j];
         
-        if(!param || [param isKindOfClass:[NSNull class]])
+        if((arg == nil) || [arg isKindOfClass:[NSNull class]])
         {
             if(typeEncoding[0] == '^')
             {
@@ -75,19 +75,19 @@
             }
             else
             {
-                [NSException raise:NSInvalidArgumentException format:@"Could not default type %s. Must specify arguments for this block.", typeEncoding];
+                [NSException raise:NSInvalidArgumentException format:@"Unable to create default value for type %s. All arguments must be specified for this block.", typeEncoding];
             }
         }
         else if (typeEncoding[0] == '@')
         {
-            [inv setArgument:&param atIndex:j];
+            [inv setArgument:&arg atIndex:j];
         }
         else
         {
-            if(![param isKindOfClass:[NSValue class]])
+            if(![arg isKindOfClass:[NSValue class]])
                 [NSException raise:NSInvalidArgumentException format:@"Argument at index %lu should be boxed in NSValue.", (long unsigned)i];
             
-            char const *valEncoding = [param objCType];
+            char const *valEncoding = [arg objCType];
             
             /// @note Here we allow any data pointer to be passed as a void pointer and
             /// any numberical types to be passed as arguments to the block.
@@ -100,7 +100,7 @@
             NSUInteger argSize;
             NSGetSizeAndAlignment(typeEncoding, &argSize, NULL);
             void *argBuffer = malloc(argSize);
-            [param getValue:argBuffer];
+            [arg getValue:argBuffer];
             [inv setArgument:argBuffer atIndex:j];
             free(argBuffer);
         }
@@ -113,7 +113,7 @@
 {
     if(arg)
     {
-        NSInvocation *inv = [self buildInvocationFromBlock:arg];
+        NSInvocation *inv = [self buildInvocationForBlock:arg];
         [inv invokeWithTarget:arg];
     }
 }
