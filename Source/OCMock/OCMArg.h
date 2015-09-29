@@ -56,5 +56,3 @@
   #define OCMOCK_VALUE(variable) [NSValue value:&variable withObjCType:@encode(__typeof__(variable))]
 #endif
 
-#define OCMDefault [NSNull null]
-
