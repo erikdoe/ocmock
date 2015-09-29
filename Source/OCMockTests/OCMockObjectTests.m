@@ -22,10 +22,6 @@
 //	Helper classes and protocols for testing
 // --------------------------------------------------------------------------------------
 
-@interface OCMBoxedReturnValueProvider (Private)
-- (BOOL)isMethodReturnType:(const char *)returnType compatibleWithValueType:(const char *)valueType;
-@end
-
 @interface TestClassWithSelectorMethod : NSObject
 
 - (void)doWithSelector:(SEL)aSelector;
@@ -472,37 +468,6 @@ static NSString *TestNotification = @"TestNotification";
     [[[mockVal stub] andReturnValue:OCMOCK_VALUE(val)] opaquePtrValue];
     OpaquePtr val2 = [obj opaquePtrValue];
     XCTAssertEqual(val, val2);
-
-    // from https://github.com/erikdoe/ocmock/pull/97
-    const char *type1 =
-    "r^{GURL={basic_string<char, std::__1::char_traits<char>, std::__1::alloca"
-    "tor<char> >={__compressed_pair<std::__1::basic_string<char, std::__1::cha"
-    "r_traits<char>, std::__1::allocator<char> >::__rep, std::__1::allocator<c"
-    "har> >={__rep}}}B{Parsed={Component=ii}{Component=ii}{Component=ii}{Compo"
-    "nent=ii}{Component=ii}{Component=ii}{Component=ii}{Component=ii}^{Parsed}"
-    "}{scoped_ptr<GURL, base::DefaultDeleter<GURL> >={scoped_ptr_impl<GURL, ba"
-    "se::DefaultDeleter<GURL> >={Data=^{GURL}}}}}";
-
-    const char *type2 =
-    "r^{GURL={basic_string<char, std::__1::char_traits<char>, std::__1::alloca"
-    "tor<char> >={__compressed_pair<std::__1::basic_string<char, std::__1::cha"
-    "r_traits<char>, std::__1::allocator<char> >::__rep, std::__1::allocator<c"
-    "har> >={__rep=(?={__long=II*}{__short=(?=Cc)[11c]}{__raw=[3L]})}}}B{Parse"
-    "d={Component=ii}{Component=ii}{Component=ii}{Component=ii}{Component=ii}{"
-    "Component=ii}{Component=ii}{Component=ii}^{Parsed}}{scoped_ptr<GURL, base"
-    "::DefaultDeleter<GURL> >={scoped_ptr_impl<GURL, base::DefaultDeleter<GURL"
-    "> >={Data=^{GURL}}}}}";
-
-    const char *type3 =
-    "r^{GURL}";
-
-    OCMBoxedReturnValueProvider *boxed = [OCMBoxedReturnValueProvider new];
-    XCTAssertTrue([boxed isMethodReturnType:type1 compatibleWithValueType:type2]);
-    XCTAssertTrue([boxed isMethodReturnType:type1 compatibleWithValueType:type3]);
-    XCTAssertTrue([boxed isMethodReturnType:type2 compatibleWithValueType:type1]);
-    XCTAssertTrue([boxed isMethodReturnType:type2 compatibleWithValueType:type3]);
-    XCTAssertTrue([boxed isMethodReturnType:type3 compatibleWithValueType:type1]);
-    XCTAssertTrue([boxed isMethodReturnType:type3 compatibleWithValueType:type2]);
 }
 
 - (void)testReturnsStubbedNilReturnValue
@@ -904,6 +869,22 @@ static NSString *TestNotification = @"TestNotification";
 		// expected
 	}
 	XCTAssertThrows([mock verify], @"Should have reraised the exception.");
+}
+
+
+- (void)testDoesNotReRaiseStubbedExceptions
+{
+	[[[mock expect] andThrow:[NSException exceptionWithName:@"ExceptionForTest" reason:@"test" userInfo:nil]] lowercaseString];
+	@try
+	{
+		[mock lowercaseString];
+	}
+	@catch(NSException *exception)
+	{
+		// expected
+	}
+	XCTAssertNoThrow([mock verify], @"Should not have reraised stubbed exception.");
+
 }
 
 - (void)testReRaisesRejectExceptionsOnVerify

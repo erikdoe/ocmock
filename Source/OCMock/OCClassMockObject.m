@@ -79,8 +79,7 @@
 - (void)prepareClassForClassMethodMocking
 {
     /* haven't figured out how to work around runtime dependencies on NSString, so exclude it for now */
-    /* also weird: [[NSString class] isKindOfClass:[NSString class]] is false, hence the additional clause */
-    if([[mockedClass class] isKindOfClass:[NSString class]] || (mockedClass == [NSString class]))
+    if([[mockedClass class] isSubclassOfClass:[NSString class]])
         return;
 
     /* if there is another mock for this exact class, stop it */
@@ -233,52 +232,52 @@
 
 - (BOOL)isNSValue__
 {
-    return [mockedClass isKindOfClass:[NSValue class]];
+    return [mockedClass isSubclassOfClass:[NSValue class]];
 }
 
 - (BOOL)isNSTimeZone__
 {
-    return [mockedClass isKindOfClass:[NSTimeZone class]];
+    return [mockedClass isSubclassOfClass:[NSTimeZone class]];
 }
 
 - (BOOL)isNSSet__
 {
-    return [mockedClass isKindOfClass:[NSSet class]];
+    return [mockedClass isSubclassOfClass:[NSSet class]];
 }
 
 - (BOOL)isNSOrderedSet__
 {
-    return [mockedClass isKindOfClass:[NSOrderedSet class]];
+    return [mockedClass isSubclassOfClass:[NSOrderedSet class]];
 }
 
 - (BOOL)isNSNumber__
 {
-    return [mockedClass isKindOfClass:[NSNumber class]];
+    return [mockedClass isSubclassOfClass:[NSNumber class]];
 }
 
 - (BOOL)isNSDate__
 {
-    return [mockedClass isKindOfClass:[NSDate class]];
+    return [mockedClass isSubclassOfClass:[NSDate class]];
 }
 
 - (BOOL)isNSString__
 {
-    return [mockedClass isKindOfClass:[NSString class]];
+    return [mockedClass isSubclassOfClass:[NSString class]];
 }
 
 - (BOOL)isNSDictionary__
 {
-    return [mockedClass isKindOfClass:[NSDictionary class]];
+    return [mockedClass isSubclassOfClass:[NSDictionary class]];
 }
 
 - (BOOL)isNSData__
 {
-    return [mockedClass isKindOfClass:[NSData class]];
+    return [mockedClass isSubclassOfClass:[NSData class]];
 }
 
 - (BOOL)isNSArray__
 {
-    return [mockedClass isKindOfClass:[NSArray class]];
+    return [mockedClass isSubclassOfClass:[NSArray class]];
 }
 
 @end
