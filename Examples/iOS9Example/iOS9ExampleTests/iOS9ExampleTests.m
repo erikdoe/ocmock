@@ -34,8 +34,9 @@
     [controller tableView:tableViewMock commitEditingStyle:UITableViewCellEditingStyleDelete forRowAtIndexPath:dummyIndexPath];
     
     // Verify that expected methods were called
-    
-    OCMVerify([tableViewMock deleteRowsAtIndexPaths:@[dummyIndexPath] withRowAnimation:UITableViewRowAnimationFade]);
+
+    id expectedArg = @[dummyIndexPath];
+    OCMVerify([tableViewMock deleteRowsAtIndexPaths:expectedArg withRowAnimation:UITableViewRowAnimationFade]);
 }
 
 @end
