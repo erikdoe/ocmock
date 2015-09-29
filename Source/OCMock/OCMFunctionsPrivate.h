@@ -31,6 +31,7 @@
 OCMOCK_EXTERN BOOL OCMIsObjectType(const char *objCType);
 const char *OCMTypeWithoutQualifiers(const char *objCType);
 BOOL OCMEqualTypesAllowingOpaqueStructs(const char *type1, const char *type2);
+CFNumberType OCMNumberTypeForObjCType(const char *objcType);
 
 Class OCMCreateSubclass(Class cls, void *ref);
 

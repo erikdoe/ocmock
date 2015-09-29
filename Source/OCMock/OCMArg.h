@@ -37,6 +37,9 @@
 + (id *)setTo:(id)value;
 + (void *)setToValue:(NSValue *)value;
 + (id)invokeBlock;
++ (id)invokeBlockWithArgs:(id)first,... NS_REQUIRES_NIL_TERMINATION;
+
++ (id)defaultValue;
 
 // internal use only
 
@@ -52,3 +55,6 @@
 #else
   #define OCMOCK_VALUE(variable) [NSValue value:&variable withObjCType:@encode(__typeof__(variable))]
 #endif
+
+#define OCMDefault [NSNull null]
+
