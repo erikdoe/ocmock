@@ -50,8 +50,6 @@
     NSDictionary *testDict = @{@"test-key" : @"test-value"};
     [[[mock stub] andReturn:testDict] anObject];
     XCTAssertEqualObjects(testDict, [mock anObject]);
-  
-    [[mock stub] setAnObject:testDict];
 }
 
 - (void)testCanStubDynamicPropertiesWithUIntType
@@ -60,8 +58,6 @@
     NSUInteger someUInt = 5;
     [[[mock stub] andReturnValue:OCMOCK_VALUE(someUInt)] aUInt];
     XCTAssertEqual(5, [mock aUInt]);
-    
-    [[mock stub] setAUInt:5];
 }
 
 - (void)testCanStubDynamicPropertiesWithIntType
@@ -70,17 +66,35 @@
     NSInteger someInt = -10;
     [[[mock stub] andReturnValue:OCMOCK_VALUE(someInt)] __aPrivateInt];
     XCTAssertEqual(-10, [mock __aPrivateInt]);
-    
-    [[mock stub] set__aPrivateInt:10];
 }
 
-- (void)testCanStubDynamicPropertiesWithCustomGetterAndSetter {
+- (void)testCanStubDynamicPropertiesWithCustomGetter
+{
     id mock = [OCMockObject mockForClass:[TestClassWithDynamicProperties class]];
     NSDictionary *testDict = @{@"test-key" : @"test-value"};
     [[[mock stub] andReturn:testDict] customGetter];
     XCTAssertEqualObjects(testDict, [mock customGetter]);
-    
-    [[mock stub] customSetter:testDict];
+}
+
+- (void)testCanMockSetterForDynamicProperty
+{
+    id mock = [OCMockObject mockForClass:[TestClassWithDynamicProperties class]];
+    NSDictionary *dummyObject = @{@"test-key" : @"test-value"};
+
+    [[mock expect] setAnObject:dummyObject];
+    [mock setAnObject:dummyObject];
+    [mock verify];
+}
+
+- (void)testCanMockSetterForDynamicPropertyWithCustomSetter
+{
+    id mock = [OCMockObject mockForClass:[TestClassWithDynamicProperties class]];
+    NSDictionary *dummyObject = @{@"test-key" : @"test-value"};
+
+    [[mock expect] customSetter:dummyObject];
+    [mock customSetter:dummyObject];
+    [mock verify];
+
 }
 
 @end
