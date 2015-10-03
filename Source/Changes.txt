@@ -3,7 +3,7 @@ commit messages and/or the pull requests.
 
 (unreleased)
 
-* Can stub dynamic properties (imhuntingwabbits)
+* Can mock dynamic properties (imhuntingwabbits)
 * Can invoke blocks passed as arguments to stubs (Stephen Fortune)
 * Stubbed exceptions are no longer re-raised in verify
 * Fixed C++ compilation issues (Jonathan Crooke, Daniel Demiss)
