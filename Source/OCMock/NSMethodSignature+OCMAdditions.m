@@ -73,9 +73,9 @@
     {
         propertyName = [propertyName substringFromIndex:@"set".length];
         propertyName = [propertyName stringByReplacingCharactersInRange:NSMakeRange(0, 1) withString:[[propertyName substringToIndex:1] lowercaseString]];
-        NSRange colonRange = [propertyName rangeOfString:@":"];
-        if(colonRange.location != NSNotFound)
-            propertyName = [propertyName stringByReplacingCharactersInRange:colonRange withString:@""];
+        if([propertyName hasSuffix:@":"])
+            propertyName = [propertyName substringToIndex:[propertyName length] - 1];
+
         property = class_getProperty(aClass, [propertyName cStringUsingEncoding:NSASCIIStringEncoding]);
         if(property != NULL)
         {
@@ -84,7 +84,7 @@
         }
     }
     
-    // search through properties with custom name that ends with selector
+    // search through properties with custom getter/setter that corresponds to selector
     unsigned int propertiesCount = 0;
     objc_property_t *allProperties = class_copyPropertyList(aClass, &propertiesCount);
     for(unsigned int i = 0 ; i < propertiesCount; i++)
@@ -93,10 +93,12 @@
                                                  encoding:NSASCIIStringEncoding] componentsSeparatedByString:@","];
         for(NSString *attribute in propertyAttributes)
         {
-            if([attribute hasSuffix:propertyName])
+            if(([attribute hasPrefix:@"G"] || [attribute hasPrefix:@"S"]) &&
+                    [[attribute substringFromIndex:1] isEqualToString:propertyName])
             {
                 *isGetterPtr = ![attribute hasPrefix:@"S"];
                 property = allProperties[i];
+                i = propertiesCount;
                 break;
             }
         }
@@ -105,7 +107,6 @@
 
     return property;
 }
-
 
 
 #pragma mark    Signatures for blocks
