@@ -21,60 +21,16 @@
 
 @implementation NSMethodSignature(OCMAdditions)
 
-+ (NSMethodSignature *)signatureForDynamicPropertyMatchingSelector:(SEL)selector inClass:(Class)aClass
+#pragma mark    Signatures for dynamic properties
+
++ (NSMethodSignature *)signatureForDynamicPropertyAccessedWithSelector:(SEL)selector inClass:(Class)aClass
 {
     BOOL isGetter = YES;
-    NSString *propertyName = NSStringFromSelector(selector);
-    objc_property_t property = class_getProperty(aClass, [propertyName cStringUsingEncoding:NSASCIIStringEncoding]);
-    if(property == NULL) {
-        if ([propertyName hasPrefix:@"set"])
-        {
-            propertyName = [propertyName substringFromIndex:@"set".length];
-            propertyName = [propertyName stringByReplacingCharactersInRange:NSMakeRange(0, 1) withString:[[propertyName substringToIndex:1] lowercaseString]];
-            NSRange colonRange = [propertyName rangeOfString:@":"];
-            if (colonRange.location != NSNotFound) {
-                propertyName = [propertyName stringByReplacingCharactersInRange:colonRange withString:@""];
-            }
-            property = class_getProperty(aClass, [propertyName cStringUsingEncoding:NSASCIIStringEncoding]);
-            isGetter = NO;
-        }
-        
-        if (property == NULL) {
-            unsigned int propertiesCount = 0;
-            objc_property_t *allProperties = class_copyPropertyList(aClass, &propertiesCount);
-            NSString *currentPropertyName = nil;
-            NSArray *propertyAttributes = nil;
-            if (allProperties != NULL) {
-                for (unsigned int i=0 ; i < propertiesCount; i++) {
-                    currentPropertyName = [NSString stringWithCString:property_getName(allProperties[i]) encoding:NSASCIIStringEncoding];
-                    propertyAttributes = [[NSString stringWithCString:property_getAttributes(allProperties[i])
-                                                             encoding:NSASCIIStringEncoding] componentsSeparatedByString:@","];
-                    for (NSString *attribute in propertyAttributes) {
-                        if ([attribute hasSuffix:propertyName]) {
-                            if ([attribute hasPrefix:@"S"]) {
-                                isGetter = NO;
-                            }
-                            propertyName = currentPropertyName;
-                            property = allProperties[i];
-                            i = propertiesCount;
-                        }
-                    }
-                }
-                
-                free(allProperties);
-            }
-            
-            if (property == NULL) {
-                return nil;
-            }
-        }
-    }
-
-
-    const char *propertyAttributesString = property_getAttributes(property);
-    if(propertyAttributesString == NULL)
+    objc_property_t property = [self propertyMatchingSelector:selector inClass:aClass isGetter:&isGetter];
+    if(property == NULL)
         return nil;
-
+    
+    const char *propertyAttributesString = property_getAttributes(property);
     NSArray *propertyAttributes = [[NSString stringWithCString:propertyAttributesString
                                                       encoding:NSASCIIStringEncoding] componentsSeparatedByString:@","];
     NSString *typeStr = nil;
@@ -82,36 +38,77 @@
     for(NSString *attribute in propertyAttributes)
     {
         if([attribute isEqualToString:@"D"])
-        {
-            //property is @dynamic, but we can synthesize the signature
             isDynamic = YES;
-        }
         else if([attribute hasPrefix:@"T"])
-        {
             typeStr = [attribute substringFromIndex:1];
-        }
     }
 
     if(!isDynamic)
         return nil;
 
-    NSRange r = [typeStr rangeOfString:@"\""];
+    NSRange r = [typeStr rangeOfString:@"\""]; // incomplete workaround to deal with structs
     if(r.location != NSNotFound)
-    {
         typeStr = [typeStr substringToIndex:r.location];
-    }
     
-    const char *str;
-    if (isGetter)
-    {
-        str = [[NSString stringWithFormat:@"%@@:", typeStr] cStringUsingEncoding:NSASCIIStringEncoding];
-    } else
-    {
-        str = [[NSString stringWithFormat:@"v@:%@", typeStr] cStringUsingEncoding:NSASCIIStringEncoding];
-    }
-    return [NSMethodSignature signatureWithObjCTypes:str];
+    NSString *sigStringFormat = isGetter ? @"%@@:" : @"v@:%@";
+    const char *sigCString = [[NSString stringWithFormat:sigStringFormat, typeStr] cStringUsingEncoding:NSASCIIStringEncoding];
+    return [NSMethodSignature signatureWithObjCTypes:sigCString];
 }
 
+
++ (objc_property_t)propertyMatchingSelector:(SEL)selector inClass:(Class)aClass isGetter:(BOOL *)isGetterPtr
+{
+    NSString *propertyName = NSStringFromSelector(selector);
+    
+    // first try selector as is aassuming it's a getter
+    objc_property_t property = class_getProperty(aClass, [propertyName cStringUsingEncoding:NSASCIIStringEncoding]);
+    if(property != NULL)
+    {
+        *isGetterPtr = YES;
+        return property;
+    }
+
+    // try setter next if selector starts with "set"
+    if([propertyName hasPrefix:@"set"])
+    {
+        propertyName = [propertyName substringFromIndex:@"set".length];
+        propertyName = [propertyName stringByReplacingCharactersInRange:NSMakeRange(0, 1) withString:[[propertyName substringToIndex:1] lowercaseString]];
+        NSRange colonRange = [propertyName rangeOfString:@":"];
+        if(colonRange.location != NSNotFound)
+            propertyName = [propertyName stringByReplacingCharactersInRange:colonRange withString:@""];
+        property = class_getProperty(aClass, [propertyName cStringUsingEncoding:NSASCIIStringEncoding]);
+        if(property != NULL)
+        {
+            *isGetterPtr = NO;
+            return property;
+        }
+    }
+    
+    // search through properties with custom name that ends with selector
+    unsigned int propertiesCount = 0;
+    objc_property_t *allProperties = class_copyPropertyList(aClass, &propertiesCount);
+    for(unsigned int i = 0 ; i < propertiesCount; i++)
+    {
+        NSArray *propertyAttributes = [[NSString stringWithCString:property_getAttributes(allProperties[i])
+                                                 encoding:NSASCIIStringEncoding] componentsSeparatedByString:@","];
+        for(NSString *attribute in propertyAttributes)
+        {
+            if([attribute hasSuffix:propertyName])
+            {
+                *isGetterPtr = ![attribute hasPrefix:@"S"];
+                property = allProperties[i];
+                break;
+            }
+        }
+    }
+    free(allProperties);
+
+    return property;
+}
+
+
+
+#pragma mark    Signatures for blocks
 
 struct OCMBlockDef
 {
@@ -162,6 +159,8 @@ enum
     return [NSMethodSignature signatureWithObjCTypes:signature];
 }
 
+
+#pragma mark    Extended attributes
 
 - (BOOL)usesSpecialStructureReturn
 {
