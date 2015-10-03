@@ -18,7 +18,7 @@
 
 @interface NSMethodSignature(OCMAdditions)
 
-+ (NSMethodSignature *)signatureOfGetterForDynamicProperty:(NSString *)propertyName inClass:(Class)aClass;
++ (NSMethodSignature *)signatureForDynamicPropertyAccessedWithSelector:(SEL)selector inClass:(Class)aClass;
 + (NSMethodSignature *)signatureForBlock:(id)block;
 
 - (BOOL)usesSpecialStructureReturn;

@@ -20,16 +20,18 @@
 #pragma mark   Helper classes
 
 @interface TestClassWithDynamicProperties : NSObject
-@property(nonatomic, readonly) NSDictionary *anObject;
-@property(nonatomic, readonly) NSUInteger aUInt;
-@property(nonatomic, readonly) NSInteger aInt;
+@property(nonatomic, retain) NSDictionary *anObject;
+@property(nonatomic, assign) NSUInteger aUInt;
+@property(nonatomic, assign) NSInteger __aPrivateInt;
+@property(getter=customGetter, setter=customSetter:) NSDictionary *aCustomProperty;
 
 @end
 
 @implementation TestClassWithDynamicProperties
 @dynamic anObject;
 @dynamic aUInt;
-@dynamic aInt;
+@dynamic __aPrivateInt;
+@dynamic aCustomProperty;
 
 @end
 
@@ -62,8 +64,37 @@
 {
     id mock = [OCMockObject mockForClass:[TestClassWithDynamicProperties class]];
     NSInteger someInt = -10;
-    [[[mock stub] andReturnValue:OCMOCK_VALUE(someInt)] aInt];
-    XCTAssertEqual(-10, [mock aInt]);
+    [[[mock stub] andReturnValue:OCMOCK_VALUE(someInt)] __aPrivateInt];
+    XCTAssertEqual(-10, [mock __aPrivateInt]);
+}
+
+- (void)testCanStubDynamicPropertiesWithCustomGetter
+{
+    id mock = [OCMockObject mockForClass:[TestClassWithDynamicProperties class]];
+    NSDictionary *testDict = @{@"test-key" : @"test-value"};
+    [[[mock stub] andReturn:testDict] customGetter];
+    XCTAssertEqualObjects(testDict, [mock customGetter]);
+}
+
+- (void)testCanMockSetterForDynamicProperty
+{
+    id mock = [OCMockObject mockForClass:[TestClassWithDynamicProperties class]];
+    NSDictionary *dummyObject = @{@"test-key" : @"test-value"};
+
+    [[mock expect] setAnObject:dummyObject];
+    [mock setAnObject:dummyObject];
+    [mock verify];
+}
+
+- (void)testCanMockSetterForDynamicPropertyWithCustomSetter
+{
+    id mock = [OCMockObject mockForClass:[TestClassWithDynamicProperties class]];
+    NSDictionary *dummyObject = @{@"test-key" : @"test-value"};
+
+    [[mock expect] customSetter:dummyObject];
+    [mock customSetter:dummyObject];
+    [mock verify];
+
 }
 
 @end
