@@ -29,14 +29,14 @@ nosidebar: true
 
 <p>The library must be added to the the test target in the &ldquo;Link Binaries With Libraries&rdquo; build phase. Make sure you have selected the test target. Then click on the plus (+) icon, choose &ldquo;Add other...&rdquo;, and then find the library in the filesystem. Afterwards, the OCMock library should be visible in the list as shown below.
                                               
-<p><img src="{{ site.baseurl }}/images/ios7ex-step2-adding-lib.png" width="906" height="380">
+<p><img src="{{ site.baseurl }}/images/ios9ex-step2-adding-lib.png" width="906" height="335">
 
 
 <h3>Setting the linker flags</h3>  
   
 <p>For static libraries the linker tries to be clever and only includes those symbols that it thinks are used. It gets this wrong with Objective-C categories, so we need to tell it that we're dealing with Objective-C by adding the <code>-ObjC</code> linker flag as shown below.
 	     
-<p><img src="{{ site.baseurl }}/images/ios7ex-step4-setting-ldflags.png" width="906" height="239">
+<p><img src="{{ site.baseurl }}/images/ios9ex-step4-setting-ldflags.png" width="906" height="430">
 
 <p>If you forget this step you will get an appropriate warning (in the form of an exception) the first time you try to use a mock object in your tests. 
 
@@ -46,7 +46,7 @@ nosidebar: true
 <p>Adding the library as described above automatically adds a library search path to the project so that the linker can find the library. Unfortunately, it does not add a header search path, which is needed for the compiler to resolve includes/imports. This must be done manually in the build settings. 
   
 <p>Search for &ldquo;header search&rdquo; which should bring up the &ldquo;Header Search Paths&rdquo; setting. The best way to point to the header directory is by adding a reference relative to the project's source directory. For the layout described above this would be <code>$(PROJECT_DIR)/usr/include</code>.                                         
-<p><img src="{{ site.baseurl }}/images/ios7ex-step3-setting-headers.png" width="906" height="239">
+<p><img src="{{ site.baseurl }}/images/ios9ex-step3-setting-headers.png" width="906" height="441">
 		 									
 <p>If you have copied the library or headers to a different place these settings must be adjusted accordingly.
 	
