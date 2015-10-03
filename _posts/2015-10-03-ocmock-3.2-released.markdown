@@ -7,6 +7,4 @@ status: publish
 type: post
 published: true
 ---
-This release brings a couple of new features and bugfixes for C++ users.  Details can be found in the [change log](https://github.com/erikdoe/ocmock/blob/master/Source/Changes.txt).
-
-We are aware of a perfomance degradation caused by the iOS 9 runtime (see [#253](https://github.com/erikdoe/ocmock/issues/253)) but this release, even though it is built for iOS 9, does not contain a workaround. Moving to an older version of OCMock does not help. Building with iOS 8.x does.
+This release brings a couple of new features and bugfixes for C++ users.  Details can be found in the [change log](https://github.com/erikdoe/ocmock/blob/master/Source/Changes.txt). Even though it is built with iOS 9, this release does not yet address the known performance issue with iOS 9 (see [#253](https://github.com/erikdoe/ocmock/issues/253)).
