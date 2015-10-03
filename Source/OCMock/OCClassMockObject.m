@@ -177,8 +177,7 @@
     NSMethodSignature *signature = [mockedClass instanceMethodSignatureForSelector:aSelector];
     if(signature == nil)
     {
-        NSString *property = NSStringFromSelector(aSelector);
-        signature = [NSMethodSignature signatureOfGetterForDynamicProperty:property inClass:mockedClass];
+        signature = [NSMethodSignature signatureForDynamicPropertyMatchingSelector:aSelector inClass:mockedClass]; 
     }
     return signature;
 }
