@@ -1,7 +1,7 @@
 Listing of notable changes by release. More detail is usually found in the Git 
 commit messages and/or the pull requests.
 
-(unreleased)
+OCMock 3.2 (2015-10-03)
 
 * Can mock dynamic properties (imhuntingwabbits)
 * Can invoke blocks passed as arguments to stubs (Stephen Fortune)
