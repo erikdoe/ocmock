@@ -134,6 +134,10 @@ section#content th, section#content td {
 	border-bottom: 2px solid white;
 }
 
+section#content td li:first-child {
+	margin-top: 0;
+}
+
 span#cistatus {
 	float: right;
 }
