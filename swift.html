@@ -10,25 +10,27 @@ comments: true
 ---
 <h1>{{ page.title }}</h1>
 
-<p>This page decribes my current understanding of using OCMock with Swift. It will be updated as more information becomes available. 
+<p>This page decribes my current understanding of using OCMock with Swift. It is updated as Swift evolves. 
 	
-<p>Last updated for Xcode 6.2.
+<p>Last updated for Xcode 7.
 
 
 <h2>General FAQ</h2>
 
 <h3>Will there be a mock framework for Swift written in Swift?</h3>
 
-<p>Maybe. As of now it doesn't look too likely, though, because mock frameworks depend heavily on access to the language runtime, and Swift does not seem to provide any.
+<p>Maybe. As of now it doesn't look too likely, though, because mock frameworks depend heavily on access to the language runtime, and Swift only offers extremely limited access.
 
 
 <h3>Do I even need a mock framework for Swift?</h3>
 
-<p>Yes and no. Swift has many useful language features that allow for more compact code. This should make creating mocks, stubs, and spies in Swift much less tedious than in Objective-C. That said, mock frameworks have proven convenient in many languages...
-  
+<p>Yes and no. Swift has many useful language features that allow for more compact code, which should make creating mocks, stubs, and spies in Swift much less tedious than in Objective-C. A <a href="http://blog.eliperkins.me/mocks-in-swift-via-protocols">blog post by Eli Perkins</a> describes an approach to testing without a mock framework, which, interestingly, is quite aligned with the thinking of the people who pioneered mock frameworks and dependency injection over 10 years ago; see "Don't mock third-party libraries" in this <a href="http://www.mockobjects.com/2007/04/test-smell-everything-is-mocked.html">post by Steve Freeman</a>.
+	
+<p>	That said, mock frameworks have proven convenient in many languages. It's not that they are essential, but they do add convenience. Stubbing a factory method to return a mock is quick and easy. Creating a protocol and a wrapper, and using dependency injection is probably more sustainable, but it is also more work and looks more complex. As ever, having options and making the right choice seems key.
+	  
 
 <h3>Can I use OCMock using the language bridge functionality?</h3>  
-<p>Yes, but with limitations. If you are brave. As of now this is highly experimental. There's no guarantee that OCMock will ever fully support Swift. 
+<p>Yes, but with limitations. If you are brave. It's unlikely that OCMock will ever fully support Swift. 
   
    
 <h2>Using Swift with OCMock</h2>
@@ -62,8 +64,7 @@ class ServerConnection : NSObject {
 <h3>Using the mock with another Swift object</h3>
   
 <pre><code>// another class in Swift
-@objc
-class Controller {
+class Controller: NSObject {
     var connection: Connection;
     var data: String;
     
@@ -71,7 +72,7 @@ class Controller {
         return Controller()
     }
     
-    init() {
+    override init() {
         self.connection = ServerConnection();
         self.data = "";
     }
@@ -98,9 +99,9 @@ class Controller {
 }
 {% endhighlight objc %}
 
-<p>It is possible to use the mock with a Swift object. That Swift object does not even have to inherit from <code>NSObject</code>. It must be made visible to Objective-C, though.
+<p>It is possible to use the mock with a Swift object. Starting with Swift 2 it <a href="https://github.com/erikdoe/ocmock/commit/a46478f8dd0aee60517868f3964f95103a2a3f18">seems</a> that the Swift object must inherit from <code>NSObject</code>.
 	
-<p>However, note the declaration of the <code>connection</code> variable in the controller class. Unfortunately, it is necessary at the moment to use a protocol. Changing the type from <code>Connection</code> to <code>ServerConnection</code> will make the test crash.
+<p>However, note the declaration of the <code>connection</code> variable in the controller class. Unfortunately, it is necessary to use a protocol. Changing the type from <code>Connection</code> to <code>ServerConnection</code> will make the test crash.
 
 <pre><code>// protocol needed to make above example work
 @objc
