@@ -42,6 +42,10 @@ BOOL OCMIsObjectType(const char *objCType)
     if(strcmp(objCType, @encode(id)) == 0 || strcmp(objCType, @encode(Class)) == 0)
         return YES;
 
+    // sometimes the name of an object's class is tacked onto the type, in double quotes
+    if(strncmp(objCType, @encode(id), 1) == 0 && objCType[1] == '\"')
+        return YES;
+
     // if the returnType is a typedef to an object, it has the form ^{OriginClass=#}
     NSString *regexString = @"^\\^\\{(.*)=#.*\\}";
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:regexString options:0 error:NULL];
