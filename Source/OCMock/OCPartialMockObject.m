@@ -105,6 +105,7 @@
 
     /* dynamically create a subclass and set it as the class of the object */
     Class subclass = OCMCreateSubclass(mockedClass, realObject);
+    registeredSubclass = subclass;
 	object_setClass(realObject, subclass);
 
     /* point forwardInvocation: of the object to the implementation in the mock */

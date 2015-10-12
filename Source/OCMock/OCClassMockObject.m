@@ -56,6 +56,8 @@
 {
     if(originalMetaClass != nil)
         [self restoreMetaClass];
+    if (registeredSubclass != nil)
+        [self removeDynamicSubclass];
     [super stopMocking];
 }
 
@@ -64,6 +66,12 @@
     OCMSetAssociatedMockForClass(nil, mockedClass);
     object_setClass(mockedClass, originalMetaClass);
     originalMetaClass = nil;
+}
+
+- (void)removeDynamicSubclass
+{
+    objc_disposeClassPair(registeredSubclass);
+    registeredSubclass = nil;
 }
 
 - (void)addStub:(OCMInvocationStub *)aStub
@@ -91,6 +99,7 @@
 
     /* dynamically create a subclass and use its meta class as the meta class for the mocked class */
     Class subclass = OCMCreateSubclass(mockedClass, mockedClass);
+    registeredSubclass = subclass;
     originalMetaClass = object_getClass(mockedClass);
     id newMetaClass = object_getClass(subclass);
 
@@ -190,6 +199,11 @@
 - (Class)class
 {
     return mockedClass;
+}
+
+- (Class)registeredSubclass
+{
+    return registeredSubclass;
 }
 
 - (BOOL)respondsToSelector:(SEL)selector

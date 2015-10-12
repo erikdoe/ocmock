@@ -107,6 +107,18 @@ static NSUInteger initializeCallCount = 0;
     XCTAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo], @"Should not have stubbed class method.");
 }
 
+- (void)testClassNoLongerRegisteredAfterStopWasCalled
+{
+    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    
+    [[[[mock stub] classMethod] andReturn:@"mocked"] foo];
+    Class registeredSubclass = [mock registeredSubclass];
+    [mock stopMocking];
+    registeredSubclass = objc_getClass(class_getName(registeredSubclass));
+    
+    XCTAssertNil(registeredSubclass, @"Mock subclass should no longer be regstered with runtime.");
+}
+
 - (void)testClassReceivesMethodAgainWhenExpectedCallOccurred
 {
     id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];

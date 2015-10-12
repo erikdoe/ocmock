@@ -20,11 +20,13 @@
 {
 	Class               mockedClass;
     Class               originalMetaClass;
+    Class               registeredSubclass;
 }
 
 - (id)initWithClass:(Class)aClass;
 
 - (Class)mockedClass;
+- (Class)registeredSubclass;
 - (Class)mockObjectClass;  // since -class returns the mockedClass
 
 @end
