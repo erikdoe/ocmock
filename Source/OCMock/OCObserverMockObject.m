@@ -98,9 +98,9 @@
 
 #pragma mark  Receiving recording requests via macro
 
-- (void)notificationWithName:(NSString *)name object:(id)sender
+- (NSNotification *)notificationWithName:(NSString *)name object:(id)sender
 {
-    [[self expect] notificationWithName:name object:sender];
+    return [[self expect] notificationWithName:name object:sender];
 }
 
 

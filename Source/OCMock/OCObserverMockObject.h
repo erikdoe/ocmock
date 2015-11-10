@@ -38,6 +38,6 @@
 // internal use
 
 - (void)autoRemoveFromCenter:(NSNotificationCenter *)aCenter;
-- (void)notificationWithName:(NSString *)name object:(id)sender;
+- (NSNotification *)notificationWithName:(NSString *)name object:(id)sender;
 
 @end
