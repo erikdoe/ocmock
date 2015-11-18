@@ -137,6 +137,16 @@ OCMStub([mock someMethodWithReferenceArgument:[OCMArg setToValue:OCMOCK_VALUE((i
 <p>The mock object will set the reference that is passed to the method to <code>anObject</code> and <code>aValue</code>. Use <code>setTo:</code> for pass-by-reference arguments that return objects and <code>setToValue:</code> and <code>OCMOCK_VALUE()</code> for arguments that return primitives.
 
 
+<h3 class="numbered">Invoking block arguments</h3>
+
+{% highlight objc %}
+OCMStub([mock someMethodWithBlock:[OCMArg invokeBlock]]);
+OCMStub([mock someMethodWithBlock:[OCMArg invokeBlockWithArgs:@"First arg", nil]]);
+{% endhighlight objc %}
+	
+<p>The mock object will invoke the block passed as an argument to the stubbed method. If the block takes arguments and <code>invokeBlock</code> is used, the default values for the argument types are used, e.g. zero for a numerical type. Using <code>invokeBlockWithArgs:</code> it is possible to specify which arguments to invoke the block with; non-object arguments must be wrapped in value objects.
+		
+	
 <h3 class="numbered">Throwing exceptions</h3>
 
 {% highlight objc %}
