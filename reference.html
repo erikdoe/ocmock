@@ -141,10 +141,10 @@ OCMStub([mock someMethodWithReferenceArgument:[OCMArg setToValue:OCMOCK_VALUE((i
 
 {% highlight objc %}
 OCMStub([mock someMethodWithBlock:[OCMArg invokeBlock]]);
-OCMStub([mock someMethodWithBlock:[OCMArg invokeBlockWithArgs:@"First arg", nil]]);
+OCMStub([mock someMethodWithBlock:([OCMArg invokeBlockWithArgs:@"First arg", nil])]);
 {% endhighlight objc %}
 	
-<p>The mock object will invoke the block passed as an argument to the stubbed method. If the block takes arguments and <code>invokeBlock</code> is used, the default values for the argument types are used, e.g. zero for a numerical type. Using <code>invokeBlockWithArgs:</code> it is possible to specify which arguments to invoke the block with; non-object arguments must be wrapped in value objects.
+<p>The mock object will invoke the block passed as an argument to the stubbed method. If the block takes arguments and <code>invokeBlock</code> is used, the default values for the argument types are used, e.g. zero for a numerical type. Using <code>invokeBlockWithArgs:</code> it is possible to specify which arguments to invoke the block with; non-object arguments must be wrapped in value objects and the expression must be wrapped in round brackets.
 		
 	
 <h3 class="numbered">Throwing exceptions</h3>
