@@ -21,7 +21,9 @@
 	NSNotification *recordedNotification;
 }
 
-- (void)notificationWithName:(NSString *)name object:(id)sender;
+- (NSNotification *)notificationWithName:(NSString *)name object:(id)sender;
+
+- (NSNotification *)notificationWithName:(NSString *)name object:(id)sender userInfo:(NSDictionary *)userInfo;
 
 - (BOOL)matchesNotification:(NSNotification *)aNotification;
 

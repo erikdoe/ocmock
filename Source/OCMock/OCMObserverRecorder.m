@@ -39,14 +39,16 @@
 
 #pragma mark  Recording
 
-- (void)notificationWithName:(NSString *)name object:(id)sender
+- (NSNotification *)notificationWithName:(NSString *)name object:(id)sender
 {
 	recordedNotification = [[NSNotification notificationWithName:name object:sender] retain];
+	return nil;
 }
 
-- (void)notificationWithName:(NSString *)name object:(id)sender userInfo:(NSDictionary *)userInfo
+- (NSNotification *)notificationWithName:(NSString *)name object:(id)sender userInfo:(NSDictionary *)userInfo
 {
 	recordedNotification = [[NSNotification notificationWithName:name object:sender userInfo:userInfo] retain];
+	return nil;
 }
 
 
