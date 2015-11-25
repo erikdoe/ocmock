@@ -218,9 +218,9 @@
 
 - (void)verifyInvocation:(OCMInvocationMatcher *)matcher atLocation:(OCMLocation *)location
 {
-    for(NSInvocation *invocation in invocations)
+    for(int i = 0; i < [invocations count]; i++)
     {
-        if([matcher matchesInvocation:invocation])
+        if([matcher matchesInvocation:invocations[i]])
             return;
     }
     NSString *description = [NSString stringWithFormat:@"%@: Method %@ was not invoked.",
