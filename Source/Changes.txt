@@ -5,6 +5,8 @@ commit messages and/or the pull requests.
 (unreleased)
 
 * Added support for tvOS (Nikita Lutsenko)
+* Build script now signs frameworks in releases. The signing identity can
+  be changed in the script.
 
 
 OCMock 3.2 (2015-10-03)
