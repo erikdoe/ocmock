@@ -50,6 +50,13 @@ class Builder
         @worker.run("mkdir -p #{iosproductdir}")
         @worker.run("cp -R #{@env.symroot}/Release/libOCMock.a #{iosproductdir}")
         @worker.run("cp -R #{@env.symroot}/Release-iphoneos/OCMock #{iosproductdir}")
+        
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock tvOS' -sdk appletvos OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock tvOS' -sdk appletvsimulator OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
+        tvosproductdir = "#{@env.productdir}/tvOS"                                           
+        @worker.run("mkdir -p #{tvosproductdir}")
+        @worker.run("cp -R #{@env.symroot}/Release-appletvos/OCMock.framework #{tvosproductdir}")
+        @worker.run("lipo -create -output #{tvosproductdir}/OCMock.framework/OCMock #{@env.symroot}/Release-appletvos/OCMock.framework/OCMock #{@env.symroot}/Release-appletvsimulator/OCMock.framework/OCMock")
     end
 
     def createPackage(packagename, volumename)    
