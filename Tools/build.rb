@@ -39,17 +39,18 @@ class Builder
 
     def buildModules
         @worker.chdir("#{@env.sourcedir}/Source")
+        
         @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMock OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
         osxproductdir = "#{@env.productdir}/OSX"                                        
         @worker.run("mkdir -p #{osxproductdir}")
         @worker.run("cp -R #{@env.symroot}/Release/OCMock.framework #{osxproductdir}")
+        
         @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphoneos9.2 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
         @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphonesimulator9.2 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
-        @worker.run("lipo -create -output #{@env.symroot}/Release/libOCMock.a #{@env.symroot}/Release-*/libOCMock.a")
         iosproductdir = "#{@env.productdir}/iOS"                                           
         @worker.run("mkdir -p #{iosproductdir}")
-        @worker.run("cp -R #{@env.symroot}/Release/libOCMock.a #{iosproductdir}")
         @worker.run("cp -R #{@env.symroot}/Release-iphoneos/OCMock #{iosproductdir}")
+        @worker.run("lipo -create -output #{iosproductdir}/libOCMock.a #{@env.symroot}/Release-iphoneos/libOCMock.a #{@env.symroot}/Release-iphonesimulator/libOCMock.a")
         
         @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock tvOS' -sdk appletvos9.1 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
         @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock tvOS' -sdk appletvsimulator9.1 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
