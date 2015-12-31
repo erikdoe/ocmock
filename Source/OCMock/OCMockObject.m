@@ -203,7 +203,7 @@
             break;
         [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:step]];
         delay -= step;
-        step *= 2;
+        step = MIN(step * 2, delay);
     }
     [self verifyAtLocation:location];
 }
