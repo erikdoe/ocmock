@@ -201,9 +201,9 @@
     {
         if([expectations count] == 0)
             break;
-        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:step]];
+        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:MIN(step, delay)]];
         delay -= step;
-        step = MIN(step * 2, delay);
+        step *= 2;
     }
     [self verifyAtLocation:location];
 }

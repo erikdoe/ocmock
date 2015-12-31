@@ -863,21 +863,6 @@ static NSString *TestNotification = @"TestNotification";
 	XCTAssertThrows([mock verifyWithDelay:0.1], @"Should have raised an exception because method was not called.");
 }
 
-- (void)testFailsTestsAfterGivenDelayAccurately
-{
-  [[mock expect] lowercaseString];
-  NSTimeInterval delay = 1;
-  CGFloat toleranceRate = 0.05;
-  NSDate *startDate;
-  @try {
-    startDate = [NSDate date];
-    [mock verifyWithDelay:delay];
-  }
-  @catch (NSException *exception) {
-    NSTimeInterval interval = [[NSDate date] timeIntervalSinceDate:startDate];
-    XCTAssertEqualWithAccuracy(interval, delay, delay * toleranceRate, @"Delay interval check is not precise enough");
-  }
-}
 
 // --------------------------------------------------------------------------------------
 //	ordered expectations
