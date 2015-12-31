@@ -383,6 +383,16 @@ static NSString *TestNotification = @"TestNotification";
     XCTAssertThrows([mock rangeOfString:@"bar" options:NSRegularExpressionSearch], @"Should have raised an exception.");
 }
 
+- (void)testBlocksAreNotConsideredNonObjectArguments
+{
+    [[[mock stub] ignoringNonObjectArgs] enumerateLinesUsingBlock:[OCMArg invokeBlock]];
+    __block BOOL blockWasInvoked = NO;
+    [mock enumerateLinesUsingBlock:^(NSString * _Nonnull line, BOOL * _Nonnull stop) {
+        blockWasInvoked = YES;
+    }];
+    XCTAssertTrue(blockWasInvoked, @"Should not have ignored the block argument.");
+}
+
 
 // --------------------------------------------------------------------------------------
 //	returning values from stubbed methods

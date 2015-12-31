@@ -99,7 +99,7 @@
     NSUInteger n = [signature numberOfArguments];
     for(NSUInteger i = 2; i < n; i++)
     {
-        if(ignoreNonObjectArgs && strcmp([signature getArgumentTypeAtIndex:i], @encode(id)))
+        if(ignoreNonObjectArgs && !OCMIsObjectType([signature getArgumentTypeAtIndex:i]))
         {
             continue;
         }
