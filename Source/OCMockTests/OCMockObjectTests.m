@@ -863,6 +863,7 @@ static NSString *TestNotification = @"TestNotification";
 	XCTAssertThrows([mock verifyWithDelay:0.1], @"Should have raised an exception because method was not called.");
 }
 
+
 // --------------------------------------------------------------------------------------
 //	ordered expectations
 // --------------------------------------------------------------------------------------
