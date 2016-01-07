@@ -124,8 +124,7 @@
         }
         else if([recordedArg isKindOfClass:[OCMArgAction class]])
         {
-            // side effect but easier to do here than in handleInvocation
-            [recordedArg handleArgument:passedArg];
+            // ignore, will be dealt with in handleInvocation: where applicable
         }
         else if([recordedArg conformsToProtocol:objc_getProtocol("HCMatcher")])
         {

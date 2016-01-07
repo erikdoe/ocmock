@@ -15,6 +15,10 @@
  */
 
 #import "OCMInvocationStub.h"
+#import "OCMFunctionsPrivate.h"
+#import "OCMArg.h"
+#import "OCMArgAction.h"
+#import "NSInvocation+OCMAdditions.h"
 
 @implementation OCMInvocationStub
 
@@ -45,8 +49,25 @@
 
 - (void)handleInvocation:(NSInvocation *)anInvocation
 {
-//    if(![self matchesInvocation:anInvocation])
-//        return NO;
+    NSMethodSignature *signature = [recordedInvocation methodSignature];
+    NSUInteger n = [signature numberOfArguments];
+    for(NSUInteger i = 2; i < n; i++)
+    {
+        id recordedArg = [recordedInvocation getArgumentAtIndexAsObject:i];
+        id passedArg = [anInvocation getArgumentAtIndexAsObject:i];
+
+        if([recordedArg isProxy])
+            continue;
+
+        if([recordedArg isKindOfClass:[NSValue class]])
+            recordedArg = [OCMArg resolveSpecialValues:recordedArg];
+
+        if(![recordedArg isKindOfClass:[OCMArgAction class]])
+            continue;
+
+        [recordedArg handleArgument:passedArg];
+    }
+
     [invocationActions makeObjectsPerformSelector:@selector(handleInvocation:) withObject:anInvocation];
 }
 

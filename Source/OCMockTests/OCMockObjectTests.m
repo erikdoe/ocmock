@@ -90,6 +90,22 @@ TestOpaque myOpaque;
 @end
 
 
+@interface TestClassWithBlockArgMethod : NSObject
+
+- (void)doStuffWithBlock:(void (^)())block andString:(id)aString;
+
+@end
+
+@implementation TestClassWithBlockArgMethod
+
+- (void)doStuffWithBlock:(void (^)())block andString:(id)aString;
+{
+    // stubbed out anyway
+}
+
+@end
+
+
 @interface NotificationRecorderForTesting : NSObject
 {
 	@public
@@ -720,6 +736,15 @@ static NSString *TestNotification = @"TestNotification";
     XCTAssertEqual(secondParam, NULL, @"Second param does not default to NULL");
 }
 
+- (void)testOnlyInvokesBlockWhenInvocationMatches
+{
+    mock = [OCMockObject mockForClass:[TestClassWithBlockArgMethod class]];
+    [[mock stub] doStuffWithBlock:[OCMArg invokeBlock] andString:@"foo"];
+    [[mock stub] doStuffWithBlock:[OCMArg any] andString:@"bar"];
+    __block BOOL blockWasInvoked = NO;
+    [mock doStuffWithBlock:^() { blockWasInvoked = YES; } andString:@"bar"];
+    XCTAssertFalse(blockWasInvoked, @"Should not have invoked block.");
+}
 
 // --------------------------------------------------------------------------------------
 //	accepting expected methods
