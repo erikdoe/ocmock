@@ -215,4 +215,35 @@ typedef NSString TypedefString;
     XCTAssertNotNil(object.delegate, @"Should still have delegate");
 }
 
+
+- (void)testDynamicSubclassesShouldBeDisposed
+{
+    [self numberOfRegisteredClasses];
+    id mock = [OCMockObject mockForClass:[NSObject class]];
+    [mock stopMocking];
+    NSLog(@"*******************");
+    [self numberOfRegisteredClasses];
+}
+
+
+- (int)numberOfRegisteredClasses
+{
+    int numClasses = objc_getClassList(NULL, 0);
+    if(numClasses > 0)
+    {
+        Class *classes = (Class *)malloc(sizeof(Class) * numClasses);
+        numClasses = objc_getClassList(classes, numClasses);
+        for(int i = 0; i < numClasses; i++)
+        {
+
+            NSString *className = NSStringFromClass(classes[i]);
+            if([className hasPrefix:@"NSObject"])
+                NSLog(@"%@", className);
+        }
+        free(classes);
+    }
+    return numClasses;
+}
+
+
 @end
