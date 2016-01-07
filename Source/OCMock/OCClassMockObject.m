@@ -54,10 +54,12 @@
 
 - (void)stopMocking
 {
-    if(originalMetaClass != nil) {
-        const char *mockedSubclassName = object_getClassName([self class]);
-        if (mockedSubclassName) {
-            Class mockedSubclass = NSClassFromString([NSString stringWithUTF8String:mockedSubclassName]);
+    if(originalMetaClass != nil)
+    {
+        const char *mockedSubclassName = object_getClassName(mockedClass);
+        if(mockedSubclassName != NULL)
+        {
+            Class mockedSubclass = objc_lookUpClass(mockedSubclassName);
             objc_disposeClassPair(mockedSubclass);
         }
         
