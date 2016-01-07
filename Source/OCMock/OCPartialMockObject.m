@@ -76,10 +76,12 @@
 {
     if(realObject != nil)
     {
+        Class partialMockClass = object_getClass(realObject);
         OCMSetAssociatedMockForObject(nil, realObject);
         object_setClass(realObject, [self mockedClass]);
         [realObject release];
         realObject = nil;
+        objc_disposeClassPair(partialMockClass);
     }
     [super stopMocking];
 }
