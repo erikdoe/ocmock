@@ -218,31 +218,13 @@ typedef NSString TypedefString;
 
 - (void)testDynamicSubclassesShouldBeDisposed
 {
-    [self numberOfRegisteredClasses];
-    id mock = [OCMockObject mockForClass:[NSObject class]];
+    int numClassesBefore = objc_getClassList(NULL, 0);
+
+    id mock = [OCMockObject mockForClass:[TestDelegate class]];
     [mock stopMocking];
-    NSLog(@"*******************");
-    [self numberOfRegisteredClasses];
-}
 
-
-- (int)numberOfRegisteredClasses
-{
-    int numClasses = objc_getClassList(NULL, 0);
-    if(numClasses > 0)
-    {
-        Class *classes = (Class *)malloc(sizeof(Class) * numClasses);
-        numClasses = objc_getClassList(classes, numClasses);
-        for(int i = 0; i < numClasses; i++)
-        {
-
-            NSString *className = NSStringFromClass(classes[i]);
-            if([className hasPrefix:@"NSObject"])
-                NSLog(@"%@", className);
-        }
-        free(classes);
-    }
-    return numClasses;
+    int numClassesAfter = objc_getClassList(NULL, 0);
+    XCTAssertEqual(numClassesBefore, numClassesAfter, @"Should have disposed dynamically generated classes.");
 }
 
 
