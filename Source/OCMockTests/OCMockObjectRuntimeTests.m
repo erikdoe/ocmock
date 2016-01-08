@@ -215,4 +215,17 @@ typedef NSString TypedefString;
     XCTAssertNotNil(object.delegate, @"Should still have delegate");
 }
 
+
+- (void)testDynamicSubclassesShouldBeDisposed
+{
+    int numClassesBefore = objc_getClassList(NULL, 0);
+
+    id mock = [OCMockObject mockForClass:[TestDelegate class]];
+    [mock stopMocking];
+
+    int numClassesAfter = objc_getClassList(NULL, 0);
+    XCTAssertEqual(numClassesBefore, numClassesAfter, @"Should have disposed dynamically generated classes.");
+}
+
+
 @end
