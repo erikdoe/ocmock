@@ -74,9 +74,9 @@ class Builder
         iosproductdir = "#{@env.productdir}/iOS\\ framework"                                           
         tvosproductdir = "#{@env.productdir}/tvOS"                                           
 
-        @worker.run("codesign -s #{identity} #{osxproductdir}/OCMock.framework")
-        @worker.run("codesign -s #{identity} #{iosproductdir}/OCMock.framework")
-        @worker.run("codesign -s #{identity} #{tvosproductdir}/OCMock.framework")
+        @worker.run("codesign -s 'Mac Developer: #{identity}' #{osxproductdir}/OCMock.framework")
+        @worker.run("codesign -s 'iPhone Developer: #{identity}' #{iosproductdir}/OCMock.framework")
+        @worker.run("codesign -s 'iPhone Developer: #{identity}' #{tvosproductdir}/OCMock.framework")
     end
 
     def createPackage(packagename, volumename)    
