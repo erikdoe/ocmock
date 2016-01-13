@@ -10,47 +10,45 @@ published: true
 
 <h2>Stable Releases</h2>
 
-<p>The disk images countain source code and binaries. Usually the releases can be used on newer systems, too. For example, OCMock 3.1 does work with Xcode 7.
+<p>The disk images countain source code and binaries. Usually the releases can be used on newer systems, too. For example, OCMock 3.1, built with Xcode 6.2 using the OS X 10.10 and iOS 8.2 SDKs, can also be built with Xcode 7 its newer SDKs.
     
 <table>
 	<tr>
 		<th>Release</th>
 		<th>Build SDK</th>
-		<th>Requires</th>
+		<th>Deployment Target</th>
 		<th>Date</th>
 		<th>File</th>
 	</tr>
 	<tr>
-		<td>OCMock 3.2</td>
-		<td>Xcode 7.0, OS X 10.11, iOS 9.0</td>
-		<td>OS X 10.6, iOS 5</td>
-		<td>3-Oct-2015</td>
-		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.2/ocmock-3.2.dmg">ocmock-3.2.dmg</a></td>
+		<td>OCMock 3.2.1</td>
+		<td>OS X 10.11, iOS 9.2, tvOS 9.1</td>
+		<td>OS X 10.6, iOS 5, tvOS 9.0</td>
+		<td>13-Jan-2016</td>
+		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.2.1/ocmock-3.2.1.dmg">ocmock-3.2.1.dmg</a></td>
 	</tr>
 	<tr>
 		<td></td>
 		<td colspan="4">
 			Recent changes:
 			<ul>
-				<li>Can mock dynamic properties (imhuntingwabbits)
-				<li>Can invoke blocks passed as arguments to stubs (Stephen Fortune)
-				<li>Stubbed exceptions are no longer re-raised in verify
-				<li>Fixed C++ compilation issues (Jonathan Crooke, Daniel Demiss)
-				<li>Add module support for the OS X framework (Ian Anderson)
+				<li>Added support for tvOS (Nikita Lutsenko)
+				<li>Disposing dynamically generated subclasses after use (David Stites)
+				<li>Build script now signs frameworks in releases. The signing identity can be changed in the script.
 			</ul>
 			<a href="https://github.com/erikdoe/ocmock/blob/master/Source/Changes.txt">more...</a>
 		</td>
 	</tr>
 	<tr>
-		<td>OCMock 3.1.5</td>
-		<td>Xcode 6.2, OS X 10.10, iOS 8.2</td>
+		<td>OCMock 3.2</td>
+		<td>OS X 10.11, iOS 9.0</td>
 		<td>OS X 10.6, iOS 5</td>
-		<td>27-Aug-2015</td>
-		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.1.5/ocmock-3.1.5.dmg">ocmock-3.1.5.dmg</a></td>
+		<td>3-Oct-2015</td>
+		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.2/ocmock-3.2.dmg">ocmock-3.2.dmg</a></td>
 	</tr>
 	<tr>
 		<td>OCMock 2.2.4</td>
-		<td>Xcode 5.1, OS X 10.9, iOS 7.1</td>
+		<td>OS X 10.9, iOS 7.1</td>
 		<td>OS X 10.6, iOS 5</td>
 		<td>4-Apr-2014</td>
 		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v2.2.4/ocmock-2.2.4.dmg">ocmock-2.2.4.dmg</a></td>
