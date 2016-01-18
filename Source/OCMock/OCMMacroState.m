@@ -54,6 +54,19 @@ static OCMMacroState *globalState;
 }
 
 
++ (void)beginRejectMacro
+{
+    OCMExpectationRecorder *recorder = [[[OCMExpectationRecorder alloc] init] autorelease];
+    [recorder never];
+    globalState = [[[OCMMacroState alloc] initWithRecorder:recorder] autorelease];
+}
+
++ (OCMStubRecorder *)endRejectMacro
+{
+    return [self endStubMacro];
+}
+
+
 + (void)beginVerifyMacroAtLocation:(OCMLocation *)aLocation
 {
     OCMVerifier *recorder = [[[OCMVerifier alloc] init] autorelease];

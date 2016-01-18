@@ -8,6 +8,7 @@ OCMock 3.2.1 (2016-01-13)
 * Disposing dynamically generated subclasses after use (David Stites)
 * Build script now signs frameworks in releases. The signing identity can
   be changed in the script.
+* Added modern syntax for reject (Piotr Tobolski)
 
 
 OCMock 3.2 (2015-10-03)

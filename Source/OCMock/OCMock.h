@@ -56,6 +56,15 @@
     ); \
 })
 
+#define OCMReject(invocation) \
+({ \
+    _OCMSilenceWarnings( \
+        [OCMMacroState beginRejectMacro]; \
+        invocation; \
+        [OCMMacroState endRejectMacro]; \
+    ); \
+})
+
 #define ClassMethod(invocation) \
     _OCMSilenceWarnings( \
         [[OCMMacroState globalState] switchToClassMethod]; \
