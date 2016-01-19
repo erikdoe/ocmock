@@ -106,6 +106,25 @@ TestOpaque myOpaque;
 @end
 
 
+@interface TestClassWithByReferenceMethod : NSObject
+
+- (void)returnValuesInObjectPointer:(id *)objectPointer booleanPointer:(BOOL *)booleanPointer;
+
+@end
+
+@implementation TestClassWithByReferenceMethod
+
+- (void)returnValuesInObjectPointer:(id *)objectPointer booleanPointer:(BOOL *)booleanPointer
+{
+    if(objectPointer != NULL)
+        *objectPointer = [[NSObject alloc] init];
+    if(booleanPointer != NULL)
+        *booleanPointer = NO;
+}
+
+@end
+
+
 @interface NotificationRecorderForTesting : NSObject
 {
 	@public
@@ -634,6 +653,15 @@ static NSString *TestNotification = @"TestNotification";
 
     XCTAssertEqual(1234, actualValue, @"Should have returned value via pass by ref argument.");
 
+}
+
+
+- (void)testReturnsValuesInNullPassByReferenceArguments
+{
+    mock = OCMClassMock([TestClassWithByReferenceMethod class]);
+    OCMStub([mock returnValuesInObjectPointer:[OCMArg setTo:nil] booleanPointer:[OCMArg setToValue:@NO]]);
+    [mock returnValuesInObjectPointer:NULL booleanPointer:NULL];
+    OCMVerify([mock returnValuesInObjectPointer:NULL booleanPointer:NULL]);
 }
 
 

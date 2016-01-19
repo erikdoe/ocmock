@@ -37,10 +37,14 @@
 
 - (void)handleArgument:(id)arg
 {
-    if([value isKindOfClass:[NSValue class]])
-        [(NSValue *)value getValue:[arg pointerValue]];
-    else
-        *(id *)[arg pointerValue] = value;
+    void *pointerValue = [arg pointerValue];
+    if(pointerValue != NULL)
+    {
+        if([value isKindOfClass:[NSValue class]])
+            [(NSValue *)value getValue:pointerValue];
+        else
+            *(id *)pointerValue = value;
+    }
 }
 
 @end
