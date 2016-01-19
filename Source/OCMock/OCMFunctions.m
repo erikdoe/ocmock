@@ -35,15 +35,36 @@
 
 #pragma mark  Functions related to ObjC type system
 
+static BOOL OCMIsUnQualifiedClassType(const char *unqualifiedObjCType)
+{
+    return (strcmp(unqualifiedObjCType, @encode(Class)) == 0);
+}
+
+
+static BOOL OCMIsUnQualifiedBlockType(const char *unqualifiedObjCType)
+{
+    char blockType[] = @encode(void(^)());
+    if(strcmp(unqualifiedObjCType, blockType) == 0)
+        return YES;
+    
+    // sometimes block argument/return types are tacked onto the type, in angle brackets
+    if(strncmp(unqualifiedObjCType, blockType, sizeof(blockType) - 1) == 0 && unqualifiedObjCType[sizeof(blockType) - 1] == '<')
+        return YES;
+    
+    return NO;
+}
+
+
 BOOL OCMIsObjectType(const char *objCType)
 {
     objCType = OCMTypeWithoutQualifiers(objCType);
 
-    if(strcmp(objCType, @encode(id)) == 0 || strcmp(objCType, @encode(Class)) == 0)
+    char objectType[] = @encode(id);
+    if(strcmp(objCType, objectType) == 0 || OCMIsUnQualifiedClassType(objCType))
         return YES;
 
     // sometimes the name of an object's class is tacked onto the type, in double quotes
-    if(strncmp(objCType, @encode(id), 1) == 0 && objCType[1] == '\"')
+    if(strncmp(objCType, objectType, sizeof(objectType) - 1) == 0 && objCType[sizeof(objectType) - 1] == '"')
         return YES;
 
     // if the returnType is a typedef to an object, it has the form ^{OriginClass=#}
@@ -54,11 +75,19 @@ BOOL OCMIsObjectType(const char *objCType)
         return YES;
 
     // if the return type is a block we treat it like an object
-    // TODO: if the runtime were to encode the block's argument and/or return types, this test would not be sufficient
-    if(strcmp(objCType, @encode(void(^)())) == 0)
-        return YES;
+    return OCMIsUnQualifiedBlockType(objCType);
+}
 
-    return NO;
+
+BOOL OCMIsClassType(const char *objCType)
+{
+    return OCMIsUnQualifiedClassType(OCMTypeWithoutQualifiers(objCType));
+}
+
+
+BOOL OCMIsBlockType(const char *objCType)
+{
+    return OCMIsUnQualifiedBlockType(OCMTypeWithoutQualifiers(objCType));
 }
 
 

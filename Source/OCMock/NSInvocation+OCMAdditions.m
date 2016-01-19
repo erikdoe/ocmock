@@ -14,7 +14,9 @@
  *  under the License.
  */
 
+#import <objc/runtime.h>
 #import "NSInvocation+OCMAdditions.h"
+#import "OCMFunctions.h"
 #import "OCMFunctionsPrivate.h"
 #import "NSMethodSignature+OCMAdditions.h"
 
@@ -41,16 +43,74 @@
 }
 
 
-- (BOOL)hasCharPointerArgument
+static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgumentsKey";
+
+- (void)retainObjectArgumentsExcluding:(id)objectToExclude
 {
-    NSMethodSignature *signature = [self methodSignature];
-    for(NSUInteger i = 0; i < [signature numberOfArguments]; i++)
+    if(objc_getAssociatedObject(self, OCMRetainedObjectArgumentsKey) == nil)
     {
-        const char *argType = OCMTypeWithoutQualifiers([signature getArgumentTypeAtIndex:i]);
-        if(strcmp(argType, "*") == 0)
-            return YES;
+        NSMutableArray *retainedArguments = [[NSMutableArray alloc] init];
+        NSMethodSignature *methodSignature = self.methodSignature;
+        
+        id target = self.target;
+        if((target != nil) && (target != objectToExclude) && !object_isClass(target))
+        {
+            // Bad things will happen if the target is a block since it's not being
+            // copied. There isn't a very good way to tell if an invocation's target
+            // is a block though (the argument type at index 0 is always "@" even if
+            // the target is a Class or block), and in practice it's OK since you
+            // can't mock a block.
+            [retainedArguments addObject:target];
+        }
+        
+        NSUInteger numberOfArguments = methodSignature.numberOfArguments;
+        for(NSUInteger index = 2; index < numberOfArguments; index++)
+        {
+            const char *argumentType = [methodSignature getArgumentTypeAtIndex:index];
+            if(OCMIsObjectType(argumentType) && !OCMIsClassType(argumentType))
+            {
+                id argument;
+                [self getArgument:&argument atIndex:index];
+                if((argument != nil) && (argument != objectToExclude))
+                {
+                    if(OCMIsBlockType(argumentType))
+                    {
+                        // block types need to be copied in case they're stack blocks
+                        id blockArgument = [argument copy];
+                        [retainedArguments addObject:blockArgument];
+                        [blockArgument release];
+                    }
+                    else
+                    {
+                        [retainedArguments addObject:argument];
+                    }
+                }
+            }
+        }
+        
+        const char *returnType = methodSignature.methodReturnType;
+        if(OCMIsObjectType(returnType) && !OCMIsClassType(returnType))
+        {
+            id returnValue;
+            [self getReturnValue:&returnValue];
+            if((returnValue != nil) && (returnValue != objectToExclude))
+            {
+                if(OCMIsBlockType(returnType))
+                {
+                    id blockReturnValue = [returnValue copy];
+                    [retainedArguments addObject:blockReturnValue];
+                    [blockReturnValue release];
+                }
+                else
+                {
+                    [retainedArguments addObject:returnValue];
+                }
+            }
+        }
+        
+        objc_setAssociatedObject(self, OCMRetainedObjectArgumentsKey, retainedArguments, OBJC_ASSOCIATION_RETAIN);
+        [retainedArguments release];
     }
-    return NO;
 }
 
 
