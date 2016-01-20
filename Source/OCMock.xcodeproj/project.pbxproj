@@ -1490,10 +1490,6 @@
 				GCC_PREFIX_HEADER = "OCMock/OCMock-Prefix.pch";
 				INFOPLIST_FILE = "OCMock/OCMock-Info.plist";
 				LD_DYLIB_INSTALL_NAME = "@rpath/$(EXECUTABLE_PATH)";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Versions/C\"",
-				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mulle-kybernetik.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = framework;
@@ -1512,10 +1508,6 @@
 				GCC_PREFIX_HEADER = "OCMock/OCMock-Prefix.pch";
 				INFOPLIST_FILE = "OCMock/OCMock-Info.plist";
 				LD_DYLIB_INSTALL_NAME = "@rpath/$(EXECUTABLE_PATH)";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Versions/C\"",
-				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mulle-kybernetik.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = framework;
@@ -1530,10 +1522,6 @@
 				GCC_PREFIX_HEADER = "OCMockLib/OCMockLib-Prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				"IPHONEOS_DEPLOYMENT_TARGET[arch=arm64]" = 7.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Versions/C\"",
-				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = OCMock;
 				PUBLIC_HEADERS_FOLDER_PATH = "$(PRODUCT_NAME)";
@@ -1552,10 +1540,6 @@
 				GCC_PREFIX_HEADER = "OCMockLib/OCMockLib-Prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				"IPHONEOS_DEPLOYMENT_TARGET[arch=arm64]" = 7.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Versions/C\"",
-				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = OCMock;
 				PUBLIC_HEADERS_FOLDER_PATH = "$(PRODUCT_NAME)";
@@ -1577,10 +1561,6 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(inherited)",
-				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OCMockTests/OCMockTests-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1609,10 +1589,6 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_NS_ASSERTIONS = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(inherited)",
-				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OCMockTests/OCMockTests-Prefix.pch";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -1710,11 +1686,6 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OCMockLibTests/OCMockLibTests-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1745,11 +1716,6 @@
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				ENABLE_NS_ASSERTIONS = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OCMockLibTests/OCMockLibTests-Prefix.pch";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
