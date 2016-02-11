@@ -775,6 +775,46 @@ static NSString *TestNotification = @"TestNotification";
 }
 
 // --------------------------------------------------------------------------------------
+//	invoking blocks asynchronously
+// --------------------------------------------------------------------------------------
+
+- (void)testInvokesBlockAsynchronously
+{
+    [[[mock stub] ignoringNonObjectArgs] enumerateLinesUsingBlock:[OCMArg invokeBlockAsync]];
+    __block BOOL blockWasInvoked = NO;
+    [mock enumerateLinesUsingBlock:^(NSString * _Nonnull line, BOOL * _Nonnull stop) {
+        blockWasInvoked = YES;
+    }];
+    XCTAssertFalse(blockWasInvoked, @"Should not have invoked the block before the run loop.");
+
+    [[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.01]];
+
+    XCTAssertTrue(blockWasInvoked, @"Should have invoked the block after the run loop.");
+}
+
+- (void)testInvokesBlockAsynchronouslyWithArgs
+{
+    BOOL bVal = YES, *bPtr = &bVal;
+    [[[mock stub] ignoringNonObjectArgs] enumerateLinesUsingBlock:[OCMArg invokeBlockAsyncWithArgs:@"First param", OCMOCK_VALUE(bPtr), nil]];
+    __block BOOL blockWasInvoked;
+    __block NSString *firstParam;
+    __block BOOL *secondParam;
+
+    [mock enumerateLinesUsingBlock:^(NSString * _Nonnull line, BOOL * _Nonnull stop) {
+        blockWasInvoked = YES;
+        firstParam = line;
+        secondParam = stop;
+    }];
+    XCTAssertFalse(blockWasInvoked, @"Should not have invoked the block before the run loop.");
+
+    [[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.01]];
+
+    XCTAssertTrue(blockWasInvoked, @"Should have invoked the block after the run loop.");
+    XCTAssertEqualObjects(firstParam, @"First param", @"First param not passed to the block");
+    XCTAssertEqual(secondParam, bPtr, @"Second params don't match");
+}
+
+// --------------------------------------------------------------------------------------
 //	accepting expected methods
 // --------------------------------------------------------------------------------------
 

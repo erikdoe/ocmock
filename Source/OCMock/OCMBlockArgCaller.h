@@ -21,6 +21,8 @@
     NSArray *arguments;
 }
 
+@property (nonatomic) BOOL async;
+
 - (instancetype)initWithBlockArguments:(NSArray *)someArgs;
 
 @end

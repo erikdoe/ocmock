@@ -38,6 +38,8 @@
 + (void *)setToValue:(NSValue *)value;
 + (id)invokeBlock;
 + (id)invokeBlockWithArgs:(id)first,... NS_REQUIRES_NIL_TERMINATION;
++ (id)invokeBlockAsync;
++ (id)invokeBlockAsyncWithArgs:(id)first,... NS_REQUIRES_NIL_TERMINATION;
 
 + (id)defaultValue;
 
