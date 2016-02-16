@@ -787,7 +787,7 @@ static NSString *TestNotification = @"TestNotification";
     }];
     XCTAssertFalse(blockWasInvoked, @"Should not have invoked the block before the run loop.");
 
-    [[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.01]];
+    [[NSRunLoop mainRunLoop] runUntilDate:[NSDate new]];
 
     XCTAssertTrue(blockWasInvoked, @"Should have invoked the block after the run loop.");
 }
@@ -796,9 +796,9 @@ static NSString *TestNotification = @"TestNotification";
 {
     BOOL bVal = YES, *bPtr = &bVal;
     [[[mock stub] ignoringNonObjectArgs] enumerateLinesUsingBlock:[OCMArg invokeBlockAsyncWithArgs:@"First param", OCMOCK_VALUE(bPtr), nil]];
-    __block BOOL blockWasInvoked;
-    __block NSString *firstParam;
-    __block BOOL *secondParam;
+    __block BOOL blockWasInvoked = NO;
+    __block NSString *firstParam = nil;
+    __block BOOL *secondParam = NULL;
 
     [mock enumerateLinesUsingBlock:^(NSString * _Nonnull line, BOOL * _Nonnull stop) {
         blockWasInvoked = YES;
@@ -807,7 +807,7 @@ static NSString *TestNotification = @"TestNotification";
     }];
     XCTAssertFalse(blockWasInvoked, @"Should not have invoked the block before the run loop.");
 
-    [[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.01]];
+    [[NSRunLoop mainRunLoop] runUntilDate:[NSDate new]];
 
     XCTAssertTrue(blockWasInvoked, @"Should have invoked the block after the run loop.");
     XCTAssertEqualObjects(firstParam, @"First param", @"First param not passed to the block");
