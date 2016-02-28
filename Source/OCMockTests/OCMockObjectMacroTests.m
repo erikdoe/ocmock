@@ -14,7 +14,7 @@
  *  under the License.
  */
 
-#import <XCTest/XCTest.h>
+#import "OCMockBaseTestCase.h"
 #import <OCMock/OCMock.h>
 
 
@@ -61,7 +61,7 @@
 
 
 
-@interface OCMockObjectMacroTests : XCTestCase
+@interface OCMockObjectMacroTests : OCMockBaseTestCase
 {
     BOOL        shouldCaptureFailure;
     NSString    *reportedDescription;

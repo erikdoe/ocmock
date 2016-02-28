@@ -17,31 +17,20 @@
 #import "OCMockBaseTestCase.h"
 #import <OCMock/OCMock.h>
 
-#define HC_SHORTHAND
-#import <OCHamcrest/OCHamcrest.h>
+@implementation OCMockBaseTestCase
 
-
-@interface OCMockObjectHamcrestTests : OCMockBaseTestCase
-
-@end
-
-
-@implementation OCMockObjectHamcrestTests
-
-- (void)testAcceptsStubbedMethodWithHamcrestConstraint
-{
-	id mock = [OCMockObject mockForClass:[NSString class]];
-	[[mock stub] hasSuffix:(id)startsWith(@"foo")];
-	[mock hasSuffix:@"foobar"];
+- (void)setUp {
+    [super setUp];
+#ifdef DYNAMIC_SUBCLASS_CACHE_ON_BY_DEFAULT
+    [OCMockObject setUsingDynamicSubclassCache:YES];
+#endif
 }
 
-
-- (void)testRejectsUnstubbedMethodWithHamcrestConstraint
-{
-	id mock = [OCMockObject mockForClass:[NSString class]];
-	[[mock stub] hasSuffix:(id)anyOf(equalTo(@"foo"), equalTo(@"bar"), NULL)];
-	XCTAssertThrows([mock hasSuffix:@"foobar"], @"Should have raised an exception.");
+- (void)tearDown {
+#ifdef DYNAMIC_SUBCLASS_CACHE_ON_BY_DEFAULT
+    [OCMockObject setUsingDynamicSubclassCache:NO];
+#endif
+    [super tearDown];
 }
-
 
 @end

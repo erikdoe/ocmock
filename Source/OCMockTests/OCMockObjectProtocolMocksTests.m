@@ -14,7 +14,7 @@
  *  under the License.
  */
 
-#import <XCTest/XCTest.h>
+#import "OCMockBaseTestCase.h"
 #import <OCMock/OCMock.h>
 
 
@@ -49,7 +49,7 @@ typedef InterfaceForTypedef* PointerTypedefInterface;
 
 
 
-@interface OCMockObjectProtocolMocksTests : XCTestCase
+@interface OCMockObjectProtocolMocksTests : OCMockBaseTestCase
 
 @end
 

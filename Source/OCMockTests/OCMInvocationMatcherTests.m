@@ -14,7 +14,7 @@
  *  under the License.
  */
 
-#import <XCTest/XCTest.h>
+#import "OCMockBaseTestCase.h"
 #import <OCMock/OCMArg.h>
 #import "OCMInvocationMatcher.h"
 #import "OCClassMockObject.h"
@@ -41,7 +41,7 @@
 
 @end
 
-@interface OCMInvocationMatcherTests : XCTestCase
+@interface OCMInvocationMatcherTests : OCMockBaseTestCase
 
 @end
 

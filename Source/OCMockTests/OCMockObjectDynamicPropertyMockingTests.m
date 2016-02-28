@@ -14,7 +14,7 @@
  *  under the License.
  */
 
-#import <XCTest/XCTest.h>
+#import "OCMockBaseTestCase.h"
 #import <OCMock/OCMock.h>
 
 #pragma mark   Helper classes
@@ -36,7 +36,7 @@
 @end
 
 
-@interface OCMockObjectDynamicPropertyMockingTests : XCTestCase
+@interface OCMockObjectDynamicPropertyMockingTests : OCMockBaseTestCase
 
 @end
 

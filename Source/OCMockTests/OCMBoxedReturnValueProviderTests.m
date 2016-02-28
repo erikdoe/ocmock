@@ -14,14 +14,14 @@
  *  under the License.
  */
 
-#import <XCTest/XCTest.h>
+#import "OCMockBaseTestCase.h"
 #import "OCMBoxedReturnValueProvider.h"
 
 @interface OCMBoxedReturnValueProvider(Private)
 - (BOOL)isMethodReturnType:(const char *)returnType compatibleWithValueType:(const char *)valueType;
 @end
 
-@interface OCMBoxedReturnValueProviderTests : XCTestCase
+@interface OCMBoxedReturnValueProviderTests : OCMockBaseTestCase
 
 @end
 

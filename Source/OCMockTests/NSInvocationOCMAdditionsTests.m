@@ -14,7 +14,7 @@
  *  under the License.
  */
 
-#import <XCTest/XCTest.h>
+#import "OCMockBaseTestCase.h"
 #import "NSInvocation+OCMAdditions.h"
 
 
@@ -28,7 +28,7 @@
 @end
 
 
-@interface NSInvocationOCMAdditionsTests : XCTestCase
+@interface NSInvocationOCMAdditionsTests : OCMockBaseTestCase
 
 @end
 

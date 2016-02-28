@@ -14,7 +14,7 @@
  *  under the License.
  */
 
-#import <XCTest/XCTest.h>
+#import "OCMockBaseTestCase.h"
 #import <OCMock/OCMock.h>
 #import <objc/runtime.h>
 
@@ -128,7 +128,7 @@ static NSUInteger initializeCallCount = 0;
 
 
 
-@interface OCMockObjectPartialMocksTests : XCTestCase
+@interface OCMockObjectPartialMocksTests : OCMockBaseTestCase
 {
     int numKVOCallbacks;
 }
