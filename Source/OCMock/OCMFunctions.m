@@ -192,9 +192,15 @@ BOOL OCMEqualTypesAllowingOpaqueStructs(const char *type1, const char *type2)
 
 #pragma mark  Creating classes
 
+const char * OCMSubclassName(Class class, void *ref)
+{
+    const char *className = [[NSString stringWithFormat:@"%@-%p", NSStringFromClass(class), ref] UTF8String];
+    return className;
+}
+
 Class OCMCreateSubclass(Class class, void *ref)
 {
-    const char *className = [[NSString stringWithFormat:@"%@-%p-%u", NSStringFromClass(class), ref, arc4random()] UTF8String];
+    const char *className = OCMSubclassName(class, ref);
     Class subclass = objc_allocateClassPair(class, className, 0);
     objc_registerClassPair(subclass);
     return subclass;

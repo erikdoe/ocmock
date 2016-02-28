@@ -33,6 +33,7 @@ const char *OCMTypeWithoutQualifiers(const char *objCType);
 BOOL OCMEqualTypesAllowingOpaqueStructs(const char *type1, const char *type2);
 CFNumberType OCMNumberTypeForObjCType(const char *objcType);
 
+const char * OCMSubclassName(Class class, void *ref);
 Class OCMCreateSubclass(Class cls, void *ref);
 
 BOOL OCMIsAliasSelector(SEL selector);

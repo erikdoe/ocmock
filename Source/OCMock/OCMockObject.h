@@ -27,6 +27,7 @@
 {
 	BOOL			isNice;
 	BOOL			expectationOrderMatters;
+	BOOL            usingDynamicSubclassCache;
 	NSMutableArray	*stubs;
 	NSMutableArray	*expectations;
 	NSMutableArray	*exceptions;
@@ -41,6 +42,9 @@
 + (id)niceMockForProtocol:(Protocol *)aProtocol;
 
 + (id)observerMock;
+
++ (BOOL)isUsingDynamicSubclassCache;
++ (void)setUsingDynamicSubclassCache:(BOOL)flag;
 
 - (instancetype)init;
 
