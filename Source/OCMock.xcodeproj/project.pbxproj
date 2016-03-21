@@ -251,6 +251,8 @@
 		817EB15C1BD765130047E85A /* OCMBlockArgCaller.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA2891034E7B73AA3511D17 /* OCMBlockArgCaller.h */; };
 		817EB15D1BD765130047E85A /* OCMArgAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA2833B48908EAD36444671 /* OCMArgAction.h */; };
 		817EB1661BD7674D0047E85A /* OCMFunctionsPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 03F370CA1BAA1DE800CAD3E8 /* OCMFunctionsPrivate.h */; };
+		A02926821CA0725A00594AAF /* TestObjects.xcdatamodeld in Resources */ = {isa = PBXBuildFile; fileRef = A02926801CA0725A00594AAF /* TestObjects.xcdatamodeld */; };
+		A06930951CA1BFC900513023 /* TestObjects.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A02926801CA0725A00594AAF /* TestObjects.xcdatamodeld */; };
 		D31108BA1828DB8700737925 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D31108B81828DB8700737925 /* InfoPlist.strings */; };
 		D31108C41828DBD600737925 /* OCMockObjectPartialMocksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AC5C1416DF9FA500D82ECD /* OCMockObjectPartialMocksTests.m */; };
 		D31108C51828DBD600737925 /* OCMockObjectClassMethodMockingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F91C516EFB493006C3D70 /* OCMockObjectClassMethodMockingTests.m */; };
@@ -445,6 +447,7 @@
 		2FA28EDBF243639C57F88A1B /* OCMArgTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMArgTests.m; sourceTree = "<group>"; };
 		2FA28EE3142412BD601026EF /* OCMockObjectDynamicPropertyMockingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMockObjectDynamicPropertyMockingTests.m; sourceTree = "<group>"; };
 		817EB1621BD765130047E85A /* OCMock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OCMock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A02926811CA0725A00594AAF /* TestObjects.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TestObjects.xcdatamodel; sourceTree = "<group>"; };
 		D31108AD1828DB8700737925 /* OCMockLibTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OCMockLibTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D31108B71828DB8700737925 /* OCMockLibTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OCMockLibTests-Info.plist"; sourceTree = "<group>"; };
 		D31108B91828DB8700737925 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -620,6 +623,7 @@
 		03565A3418F0566F003AE91E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				A02926801CA0725A00594AAF /* TestObjects.xcdatamodeld */,
 				03565A3518F0566F003AE91E /* OCMockTests-Info.plist */,
 				03565A3618F0566F003AE91E /* InfoPlist.strings */,
 				03565A3B18F0566F003AE91E /* OCMockTests-Prefix.pch */,
@@ -1111,6 +1115,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A02926821CA0725A00594AAF /* TestObjects.xcdatamodeld in Resources */,
 				03565A3818F0566F003AE91E /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1319,6 +1324,7 @@
 				03C9CA1F18F05A8E006DF94D /* NSMethodSignatureOCMAdditionsTests.m in Sources */,
 				03C9CA1D18F05A75006DF94D /* OCMockObjectProtocolMocksTests.m in Sources */,
 				03E98D5118F310EE00522D42 /* OCMockObjectMacroTests.m in Sources */,
+				A06930951CA1BFC900513023 /* TestObjects.xcdatamodeld in Sources */,
 				2FA28295E1F58F40A77D7448 /* OCMockObjectRuntimeTests.m in Sources */,
 				2FA28246CD449A01717B1CEC /* OCMockObjectTests.m in Sources */,
 				2FA28F12AAD384A8CB16094B /* OCMockObjectDynamicPropertyMockingTests.m in Sources */,
@@ -1876,6 +1882,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		A02926801CA0725A00594AAF /* TestObjects.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				A02926811CA0725A00594AAF /* TestObjects.xcdatamodel */,
+			);
+			currentVersion = A02926811CA0725A00594AAF /* TestObjects.xcdatamodel */;
+			name = TestObjects.xcdatamodeld;
+			path = Resources/TestObjects.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 030EF09E14632FD000B04273 /* Project object */;
 }

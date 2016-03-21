@@ -22,6 +22,29 @@
 #import "OCMFunctionsPrivate.h"
 #import "OCMInvocationStub.h"
 
+/// Returns the class which should be used for mocking the object.
+Class OCPartialMockObjectClassForObject(NSObject *object);
+
+Class OCPartialMockObjectClassForObject(NSObject *object)
+{
+    /*
+     object_getClass() gives us the actual class backing the object, vs. [object class], 
+     which could be overridden (by KVO or CoreData, for example).
+     
+     With KVO, we would lose notifications if we replace and subclass the "true" class instead of the subclass
+     created at runtime for KVO. 
+     
+     So before dynamically subclassing the actual underlying class for mocks, check if
+     there are any observers that would miss notifications.
+     */
+    
+    if ([object observationInfo] != NULL) {
+        return [object class];
+    } else {
+        return object_getClass(object);
+    }
+}
+
 
 @implementation OCPartialMockObject
 
@@ -30,8 +53,9 @@
 - (id)initWithObject:(NSObject *)anObject
 {
     NSParameterAssert(anObject != nil);
-    [self assertClassIsSupported:[anObject class]];
-	[super initWithClass:[anObject class]];
+    Class const class = OCPartialMockObjectClassForObject(anObject);
+    [self assertClassIsSupported:class];
+	[super initWithClass:class];
 	realObject = [anObject retain];
     [self prepareObjectForInstanceMethodMocking];
 	return self;
