@@ -113,19 +113,13 @@
 
 - (void)addStub:(OCMInvocationStub *)aStub
 {
-    @synchronized(stubs)
-    {
         [stubs addObject:aStub];
     }
-}
 
 - (void)addExpectation:(OCMInvocationExpectation *)anExpectation
 {
-    @synchronized(expectations)
-    {
         [expectations addObject:anExpectation];
     }
-}
 
 
 #pragma mark  Public API
@@ -165,14 +159,11 @@
 - (id)verifyAtLocation:(OCMLocation *)location
 {
     NSMutableArray *unsatisfiedExpectations = [NSMutableArray array];
-    @synchronized(expectations)
-    {
         for(OCMInvocationExpectation *e in expectations)
         {
             if(![e isSatisfied])
                 [unsatisfiedExpectations addObject:e];
         }
-    }
 
 	if([unsatisfiedExpectations count] == 1)
 	{
@@ -187,18 +178,12 @@
         OCMReportFailure(location, description);
 	}
 
-    OCMInvocationExpectation *firstException = nil;
-    @synchronized(exceptions)
-    {
-        firstException = [exceptions.firstObject retain];
-    }
-    if(firstException)
+	if([exceptions count] > 0)
 	{
         NSString *description = [NSString stringWithFormat:@"%@: %@ (This is a strict mock failure that was ignored when it actually occured.)",
-         [self description], [firstException description]];
+         [self description], [[exceptions objectAtIndex:0] description]];
         OCMReportFailure(location, description);
 	}
-    [firstException release];
 
     return [[[OCMVerifier alloc] initWithMockObject:self] autorelease];
 }
@@ -214,11 +199,8 @@
     NSTimeInterval step = 0.01;
     while(delay > 0)
     {
-        @synchronized(expectations)
-        {
             if([expectations count] == 0)
                 break;
-        }
         [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:MIN(step, delay)]];
         delay -= step;
         step *= 2;
@@ -236,14 +218,11 @@
 
 - (void)verifyInvocation:(OCMInvocationMatcher *)matcher atLocation:(OCMLocation *)location
 {
-    @synchronized(invocations)
-    {
         for(NSInvocation *invocation in invocations)
         {
             if([matcher matchesInvocation:invocation])
                 return;
         }
-    }
     NSString *description = [NSString stringWithFormat:@"%@: Method %@ was not invoked.",
      [self description], [matcher description]];
 
