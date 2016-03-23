@@ -16,19 +16,14 @@
 
 #import <Foundation/Foundation.h>
 
-#if defined(__cplusplus)
-#define OCMOCK_EXTERN extern "C"
-#else
-#define OCMOCK_EXTERN extern
-#endif
-
-
 @class OCMLocation;
 @class OCClassMockObject;
 @class OCPartialMockObject;
 
 
-OCMOCK_EXTERN BOOL OCMIsObjectType(const char *objCType);
+BOOL OCMIsClassType(const char *objCType);
+BOOL OCMIsBlockType(const char *objCType);
+BOOL OCMIsObjectType(const char *objCType);
 const char *OCMTypeWithoutQualifiers(const char *objCType);
 BOOL OCMEqualTypesAllowingOpaqueStructs(const char *type1, const char *type2);
 CFNumberType OCMNumberTypeForObjCType(const char *objcType);

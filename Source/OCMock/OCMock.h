@@ -42,7 +42,7 @@
 ({ \
     _OCMSilenceWarnings( \
         [OCMMacroState beginStubMacro]; \
-        invocation; \
+            invocation; \
         [OCMMacroState endStubMacro]; \
     ); \
 })
@@ -51,7 +51,7 @@
 ({ \
     _OCMSilenceWarnings( \
         [OCMMacroState beginExpectMacro]; \
-        invocation; \
+            invocation; \
         [OCMMacroState endExpectMacro]; \
     ); \
 })
@@ -71,8 +71,8 @@
 ({ \
     _OCMSilenceWarnings( \
         [OCMMacroState beginVerifyMacroAtLocation:OCMMakeLocation(self, __FILE__, __LINE__)]; \
-        invocation; \
-        [OCMMacroState endVerifyMacro]; \
+            invocation; \
+            [OCMMacroState endVerifyMacro]; \
     ); \
 })
 

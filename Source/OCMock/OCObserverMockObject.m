@@ -61,8 +61,8 @@
 
 - (void)autoRemoveFromCenter:(NSNotificationCenter *)aCenter
 {
-    [centers addObject:aCenter];
-}
+        [centers addObject:aCenter];
+    }
 
 
 #pragma mark  Public API
@@ -70,7 +70,7 @@
 - (id)expect
 {
 	OCMObserverRecorder *recorder = [[[OCMObserverRecorder alloc] init] autorelease];
-	[recorders addObject:recorder];
+        [recorders addObject:recorder];
 	return recorder;
 }
 
@@ -81,19 +81,19 @@
 
 - (void)verifyAtLocation:(OCMLocation *)location
 {
-    if([recorders count] == 1)
-    {
-        NSString *description = [NSString stringWithFormat:@"%@: expected notification was not observed: %@",
-         [self description], [[recorders lastObject] description]];
-        OCMReportFailure(location, description);
+        if([recorders count] == 1)
+        {
+            NSString *description = [NSString stringWithFormat:@"%@: expected notification was not observed: %@",
+             [self description], [[recorders lastObject] description]];
+            OCMReportFailure(location, description);
+        }
+        else if([recorders count] > 0)
+        {
+            NSString *description = [NSString stringWithFormat:@"%@ : %@ expected notifications were not observed.",
+             [self description], @([recorders count])];
+            OCMReportFailure(location, description);
+        }
     }
-    else if([recorders count] > 0)
-    {
-        NSString *description = [NSString stringWithFormat:@"%@ : %@ expected notifications were not observed.",
-         [self description], @([recorders count])];
-        OCMReportFailure(location, description);
-    }
-}
 
 
 #pragma mark  Receiving recording requests via macro
@@ -108,17 +108,20 @@
 
 - (void)handleNotification:(NSNotification *)aNotification
 {
-	NSUInteger i, limit;
-	
-	limit = expectationOrderMatters ? 1 : [recorders count];
-	for(i = 0; i < limit; i++)
-	{
-		if([[recorders objectAtIndex:i] matchesNotification:aNotification])
-		{
-			[recorders removeObjectAtIndex:i];
-			return;
-		}
-	}
+    @synchronized(recorders)
+    {
+        NSUInteger i, limit;
+        
+        limit = expectationOrderMatters ? 1 : [recorders count];
+        for(i = 0; i < limit; i++)
+        {
+            if([[recorders objectAtIndex:i] matchesNotification:aNotification])
+            {
+                [recorders removeObjectAtIndex:i];
+                return;
+            }
+        }
+    }
 	[NSException raise:NSInternalInconsistencyException format:@"%@: unexpected notification observed: %@", [self description], 
 	  [aNotification description]];
 }
