@@ -309,7 +309,7 @@
         // value could be self. That would produce a retain cycle self->invocations->anInvocation->self.
         // However we need to retain everything on anInvocation that isn't self because we expect them to
         // stick around after this method returns. Use our special method to retain just what's needed.
-        [anInvocation retainObjectArgumentsExcluding:self];
+        [anInvocation retainObjectArgumentsExcludingObject:self];
         [invocations addObject:anInvocation];
     }
     

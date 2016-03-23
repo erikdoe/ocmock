@@ -21,7 +21,6 @@
 #import "NSInvocation+OCMAdditions.h"
 #import "OCMInvocationMatcher.h"
 #import "OCClassMockObject.h"
-#import "OCMFunctions.h"
 #import "OCMFunctionsPrivate.h"
 #import "OCMBlockArgCaller.h"
 
@@ -46,7 +45,7 @@
     // effectively does an strcpy on char* arguments which messes up matching them literally and blows
     // up with anyPointer (in strlen since it's not actually a C string). Also on the off-chance that
     // anInvocation contains self as an argument, -retainArguments would create a retain cycle.
-    [anInvocation retainObjectArgumentsExcluding:self];
+    [anInvocation retainObjectArgumentsExcludingObject:self];
     recordedInvocation = [anInvocation retain];
 }
 

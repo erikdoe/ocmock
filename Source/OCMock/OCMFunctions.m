@@ -35,68 +35,67 @@
 
 #pragma mark  Functions related to ObjC type system
 
-static BOOL OCMIsUnQualifiedClassType(const char *unqualifiedObjCType)
-{
-    return (strcmp(unqualifiedObjCType, @encode(Class)) == 0);
-}
-
-
-static BOOL OCMIsUnQualifiedBlockType(const char *unqualifiedObjCType)
-{
-    char blockType[] = @encode(void(^)());
-    if(strcmp(unqualifiedObjCType, blockType) == 0)
-        return YES;
-    
-    // sometimes block argument/return types are tacked onto the type, in angle brackets
-    if(strncmp(unqualifiedObjCType, blockType, sizeof(blockType) - 1) == 0 && unqualifiedObjCType[sizeof(blockType) - 1] == '<')
-        return YES;
-    
-    return NO;
-}
-
-
-BOOL OCMIsObjectType(const char *objCType)
-{
-    objCType = OCMTypeWithoutQualifiers(objCType);
-
-    char objectType[] = @encode(id);
-    if(strcmp(objCType, objectType) == 0 || OCMIsUnQualifiedClassType(objCType))
-        return YES;
-
-    // sometimes the name of an object's class is tacked onto the type, in double quotes
-    if(strncmp(objCType, objectType, sizeof(objectType) - 1) == 0 && objCType[sizeof(objectType) - 1] == '"')
-        return YES;
-
-    // if the returnType is a typedef to an object, it has the form ^{OriginClass=#}
-    NSString *regexString = @"^\\^\\{(.*)=#.*\\}";
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:regexString options:0 error:NULL];
-    NSString *type = [NSString stringWithCString:objCType encoding:NSASCIIStringEncoding];
-    if([regex numberOfMatchesInString:type options:0 range:NSMakeRange(0, type.length)] > 0)
-        return YES;
-
-    // if the return type is a block we treat it like an object
-    return OCMIsUnQualifiedBlockType(objCType);
-}
-
-
-BOOL OCMIsClassType(const char *objCType)
-{
-    return OCMIsUnQualifiedClassType(OCMTypeWithoutQualifiers(objCType));
-}
-
-
-BOOL OCMIsBlockType(const char *objCType)
-{
-    return OCMIsUnQualifiedBlockType(OCMTypeWithoutQualifiers(objCType));
-}
-
-
 const char *OCMTypeWithoutQualifiers(const char *objCType)
 {
     while(strchr("rnNoORV", objCType[0]) != NULL)
         objCType += 1;
     return objCType;
 }
+
+
+static BOOL OCMIsUnqualifiedClassType(const char *unqualifiedObjCType)
+{
+    return (strcmp(unqualifiedObjCType, @encode(Class)) == 0);
+}
+
+BOOL OCMIsClassType(const char *objCType)
+{
+    return OCMIsUnqualifiedClassType(OCMTypeWithoutQualifiers(objCType));
+}
+
+
+static BOOL OCMIsUnqualifiedBlockType(const char *unqualifiedObjCType)
+{
+    char blockType[] = @encode(void(^)());
+    if(strcmp(unqualifiedObjCType, blockType) == 0)
+        return YES;
+
+    // sometimes block argument/return types are tacked onto the type, in angle brackets
+    if(strncmp(unqualifiedObjCType, blockType, sizeof(blockType) - 1) == 0 && unqualifiedObjCType[sizeof(blockType) - 1] == '<')
+        return YES;
+
+    return NO;
+}
+
+BOOL OCMIsBlockType(const char *objCType)
+{
+    return OCMIsUnqualifiedBlockType(OCMTypeWithoutQualifiers(objCType));
+}
+
+
+BOOL OCMIsObjectType(const char *objCType)
+{
+    const char *unqualifiedObjCType = OCMTypeWithoutQualifiers(objCType);
+
+    char objectType[] = @encode(id);
+    if(strcmp(unqualifiedObjCType, objectType) == 0 || OCMIsUnqualifiedClassType(unqualifiedObjCType))
+        return YES;
+
+    // sometimes the name of an object's class is tacked onto the type, in double quotes
+    if(strncmp(unqualifiedObjCType, objectType, sizeof(objectType) - 1) == 0 && unqualifiedObjCType[sizeof(objectType) - 1] == '"')
+        return YES;
+
+    // if the returnType is a typedef to an object, it has the form ^{OriginClass=#}
+    NSString *regexString = @"^\\^\\{(.*)=#.*\\}";
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:regexString options:0 error:NULL];
+    NSString *type = [NSString stringWithCString:unqualifiedObjCType encoding:NSASCIIStringEncoding];
+    if([regex numberOfMatchesInString:type options:0 range:NSMakeRange(0, type.length)] > 0)
+        return YES;
+
+    // if the return type is a block we treat it like an object
+    return OCMIsUnqualifiedBlockType(unqualifiedObjCType);
+}
+
 
 CFNumberType OCMNumberTypeForObjCType(const char *objcType)
 {

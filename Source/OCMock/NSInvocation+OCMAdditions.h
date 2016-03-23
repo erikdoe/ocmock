@@ -20,7 +20,7 @@
 
 + (NSInvocation *)invocationForBlock:(id)block withArguments:(NSArray *)arguments;
 
-- (void)retainObjectArgumentsExcluding:(id)objectToExclude;
+- (void)retainObjectArgumentsExcludingObject:(id)objectToExclude;
 
 - (id)getArgumentAtIndexAsObject:(NSInteger)argIndex;
 
