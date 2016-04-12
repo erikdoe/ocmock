@@ -1,0 +1,12 @@
+---
+layout: post
+title: OCMock 3.3 released
+tags:
+- Release
+status: publish
+type: post
+published: true
+---
+This release brings some thread-safety to OCMock. Up until now OCMock was not thread-aware at all. Any combination of operations on a mock object from multiple threads was likely to cause issues and make the test fail. As of OCMock 3.3 it is still necessary to invoke all setup and verification operations from a single thread, preferrably the main thread of the test runner. It is possible, though, to use the mock object from multiple threads. The mock object can even be used from a different thread while its setup continues in the main thread. 
+
+Also included is a modern syntax for rejecting methods. See section 9.1 in the [documentation](http://localhost:4000/reference/#advanced-topics) for details.
