@@ -611,6 +611,13 @@ OCMVerify([mock _sendTouchesForEvent:[OCMArg any]]); // still fails
 <p>It is currently not possible to verify a method with a delay. This is currently only possible using the <i>expect-run-verify</i> approach described below in <a href="#strict-mocks-and-expectations">strict mocks and expectations</a>.  
 
 
+<h3 class="numbered">Using multiple threads in tests</h3>
+
+<p>OCMock is not fully thread-safe. Up to version 3.2.x OCMock was not thread-aware at all. Any combination of operations on a mock object from multiple threads was likely to cause issues and make the test fail. 
+	
+<p>As of OCMock 3.3 it is still necessary to invoke all setup and verification operations from a single thread, preferrably the main thread of the test runner. It is possible, though, to use the mock object from multiple threads. The mock object can even be used from a different thread while its setup continues in the main thread. See <a href="https://github.com/erikdoe/ocmock/pull/235">#235</a> for details.
+	
+	
 <h2>More detail</h2>
 
 <p>The test cases in <a href="https://github.com/erikdoe/ocmock/blob/master/Source/OCMockTests">OCMockTests</a> show all uses and most edge cases.
