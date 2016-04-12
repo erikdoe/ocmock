@@ -5,6 +5,7 @@ OCMock 3.3 (unreleased)
 
 * Made the use of mock objects thread safe. You still have to setup the mocks
   and verify them from a main thread (Ian Anderson)
+* Added modern syntax for reject (Piotr Tobolski)
 
 
 OCMock 3.2.2 (2016-01-20)

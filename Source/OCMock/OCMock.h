@@ -66,6 +66,20 @@
     ); \
 })
 
+#define OCMReject(invocation) \
+({ \
+    _OCMSilenceWarnings( \
+        [OCMMacroState beginRejectMacro]; \
+        OCMStubRecorder *recorder = nil; \
+        @try{ \
+            invocation; \
+        }@finally{ \
+            recorder = [OCMMacroState endRejectMacro]; \
+        } \
+        recorder; \
+    ); \
+})
+
 #define ClassMethod(invocation) \
     _OCMSilenceWarnings( \
         [[OCMMacroState globalState] switchToClassMethod]; \
