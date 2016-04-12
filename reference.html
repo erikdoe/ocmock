@@ -475,12 +475,10 @@ OCMVerifyAll(observerMock);
 
 {% highlight objc %}
 id mock = OCMClassMock([SomeClass class]);
-[[mock reject] someMethod];
+OCMReject([mock someMethod]);
 {% endhighlight objc %}
 
 <p>In this case the mock will accept all methods except <code>someMethod</code>; if that is invoked the mock will throw an exception.
-
-<p><b>NOTE:</b> this should have a modern syntax. It will be introduced when further quantifiers, such as &ldquo;<i>n</i> times&rdquo;, are added.
 
 
 <h3 class="numbered">Re-throwing fail fast exceptions in verify all</h3>                                        
