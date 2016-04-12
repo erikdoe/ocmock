@@ -268,6 +268,18 @@
 }
 
 
+- (void)testSetsUpReject
+{
+    id mock = OCMClassMock([TestClassForMacroTesting class]);
+
+    OCMReject([mock stringValue]);
+
+    XCTAssertNoThrow([mock verify], @"Should have accepted invocation rejected method not being invoked");
+    XCTAssertThrows([mock stringValue], @"Should have complained during rejected method being invoked");
+    XCTAssertThrows([mock verify], @"Should have complained about rejected method being invoked");
+}
+
+
 - (void)testShouldNotReportErrorWhenMethodWasInvoked
 {
     id mock = OCMClassMock([NSString class]);
