@@ -70,8 +70,13 @@
 ({ \
     _OCMSilenceWarnings( \
         [OCMMacroState beginRejectMacro]; \
-        invocation; \
-        [OCMMacroState endRejectMacro]; \
+        OCMStubRecorder *recorder = nil; \
+        @try{ \
+            invocation; \
+        }@finally{ \
+            recorder = [OCMMacroState endRejectMacro]; \
+        } \
+        recorder; \
     ); \
 })
 
