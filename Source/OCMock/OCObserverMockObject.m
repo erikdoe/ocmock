@@ -61,8 +61,11 @@
 
 - (void)autoRemoveFromCenter:(NSNotificationCenter *)aCenter
 {
+    @synchronized(centers)
+    {
         [centers addObject:aCenter];
     }
+}
 
 
 #pragma mark  Public API
@@ -70,7 +73,10 @@
 - (id)expect
 {
 	OCMObserverRecorder *recorder = [[[OCMObserverRecorder alloc] init] autorelease];
+    @synchronized(recorders)
+    {
         [recorders addObject:recorder];
+    }
 	return recorder;
 }
 
@@ -81,6 +87,8 @@
 
 - (void)verifyAtLocation:(OCMLocation *)location
 {
+    @synchronized(recorders)
+    {
         if([recorders count] == 1)
         {
             NSString *description = [NSString stringWithFormat:@"%@: expected notification was not observed: %@",
@@ -94,6 +102,7 @@
             OCMReportFailure(location, description);
         }
     }
+}
 
 
 #pragma mark  Receiving recording requests via macro

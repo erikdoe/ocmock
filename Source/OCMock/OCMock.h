@@ -42,8 +42,13 @@
 ({ \
     _OCMSilenceWarnings( \
         [OCMMacroState beginStubMacro]; \
+        OCMStubRecorder *recorder = nil; \
+        @try{ \
             invocation; \
-        [OCMMacroState endStubMacro]; \
+        }@finally{ \
+            recorder = [OCMMacroState endStubMacro]; \
+        } \
+        recorder; \
     ); \
 })
 
@@ -51,8 +56,13 @@
 ({ \
     _OCMSilenceWarnings( \
         [OCMMacroState beginExpectMacro]; \
+        OCMStubRecorder *recorder = nil; \
+        @try{ \
             invocation; \
-        [OCMMacroState endExpectMacro]; \
+        }@finally{ \
+            recorder = [OCMMacroState endExpectMacro]; \
+        } \
+        recorder; \
     ); \
 })
 
@@ -71,8 +81,11 @@
 ({ \
     _OCMSilenceWarnings( \
         [OCMMacroState beginVerifyMacroAtLocation:OCMMakeLocation(self, __FILE__, __LINE__)]; \
+        @try{ \
             invocation; \
+        }@finally{ \
             [OCMMacroState endVerifyMacro]; \
+        } \
     ); \
 })
 
