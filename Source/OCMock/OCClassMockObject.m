@@ -89,8 +89,8 @@
 
 - (void)prepareClassForClassMethodMocking
 {
-    /* haven't figured out how to work around runtime dependencies on NSString, so exclude it for now */
-    if([[mockedClass class] isSubclassOfClass:[NSString class]])
+    /* the runtime and OCMock depend on string and array; we don't intercept methods on them to avoid endless loops */
+    if([[mockedClass class] isSubclassOfClass:[NSString class]] || [[mockedClass class] isSubclassOfClass:[NSArray class]])
         return;
 
     /* if there is another mock for this exact class, stop it */

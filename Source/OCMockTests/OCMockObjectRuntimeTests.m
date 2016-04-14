@@ -118,6 +118,13 @@ typedef NSString TypedefString;
 }
 
 
+- (void)testCanMockNSMutableArray
+{
+    id mock = [OCMockObject niceMockForClass:[NSMutableArray class]];
+    id anArray = [[NSMutableArray alloc] init];
+}
+
+
 - (void)testForwardsIsKindOfClass
 {
     id mock = [OCMockObject mockForClass:[NSString class]];
