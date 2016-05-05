@@ -122,6 +122,9 @@ typedef NSString TypedefString;
 {
     id mock = [OCMockObject niceMockForClass:[NSMutableArray class]];
     id anArray = [[NSMutableArray alloc] init];
+
+    XCTAssertNotNil(mock);
+    XCTAssertNotNil(anArray);
 }
 
 
