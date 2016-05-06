@@ -58,7 +58,7 @@
 {
     va_list args;
     va_start(args, aProtocol);
-    id mock = [[[OCProtocolMockObject alloc] initWithProtocols:[self _variadicArgumentsToArray:aProtocol args:args]] autorelease];
+    id mock = [[[OCProtocolMockObject alloc] initWithProtocols:[self _variadicArgumentsToArray:aProtocol args:&args]] autorelease];
     va_end(args);
     return mock;
 }
@@ -83,7 +83,7 @@
 {
     va_list args;
     va_start(args, aProtocol);
-    id mock = [self _makeNice:[[[OCProtocolMockObject alloc] initWithProtocols:[self _variadicArgumentsToArray:aProtocol args:args]] autorelease]];
+    id mock = [self _makeNice:[[[OCProtocolMockObject alloc] initWithProtocols:[self _variadicArgumentsToArray:aProtocol args:&args]] autorelease]];
     va_end(args);
     return mock;
 }
@@ -451,25 +451,25 @@
 	return outputString;
 }
 
-+ (NSArray *)_variadicArgumentsToArray:(id)firstObject args:(va_list)args
++ (NSArray *)_variadicArgumentsToArray:(id)firstObject args:(va_list *)args
 {
     NSMutableArray *variadicObjects = nil;
 
     if(firstObject)
     {
-        variadicObjects = [[NSMutableArray alloc] init];
+        variadicObjects = [[[NSMutableArray alloc] init] autorelease];
         [variadicObjects addObject:firstObject];
 
-        if(args != nil)
+        if(args)
         {
             id eachObject;
-            while ((eachObject = va_arg(args, id)) && eachObject != nil) {
+            while ((eachObject = va_arg(*args, typeof(firstObject)))) {
                 [variadicObjects addObject:eachObject];
             }
         }
     }
 
-    return [variadicObjects copy];
+    return variadicObjects;
 }
 
 @end
