@@ -606,6 +606,19 @@ static NSString *TestNotification = @"TestNotification";
 	XCTAssertEqualObjects(@"MOCK bar", [mock stringByAppendingString:@"bar"], @"Should have called block.");
 }
 
+- (void)testCallsBlockInsteadOfMethod
+{
+    id theBlock = ^NSString* (id self, NSString* value)
+    {
+        return [NSString stringWithFormat:@"MOCK %@", value];
+    };
+    
+    [[[mock stub] andCallBlock:theBlock onObject:self] stringByAppendingString:[OCMArg any]];
+    
+    XCTAssertEqualObjects(@"MOCK foo", [mock stringByAppendingString:@"foo"], @"Should have called block.");
+    XCTAssertEqualObjects(@"MOCK bar", [mock stringByAppendingString:@"bar"], @"Should have called block.");
+}
+
 - (void)testHandlesNilPassedAsBlock
 {
     [[[mock stub] andDo:nil] stringByAppendingString:[OCMArg any]];

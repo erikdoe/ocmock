@@ -26,6 +26,7 @@
 - (id)andPost:(NSNotification *)aNotification;
 - (id)andCall:(SEL)selector onObject:(id)anObject;
 - (id)andDo:(void (^)(NSInvocation *invocation))block;
+- (id)andCallBlock:(id)block onObject:(id)anObject;
 - (id)andForwardToRealObject;
 
 @end
@@ -54,6 +55,11 @@
 
 #define andDo(aBlock) _andDo(aBlock)
 @property (nonatomic, readonly) OCMStubRecorder *(^ _andDo)(void (^)(NSInvocation *));
+
+#define andCallBlock(anObject, aBlock) _andCallBlock(anObject, aBlock)
+@property (nonatomic, readonly) OCMStubRecorder *(^ _andCallBlock)(id, id);
+
+
 
 #define andForwardToRealObject() _andForwardToRealObject()
 @property (nonatomic, readonly) OCMStubRecorder *(^ _andForwardToRealObject)(void);

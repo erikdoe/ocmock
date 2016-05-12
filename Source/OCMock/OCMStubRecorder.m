@@ -25,6 +25,7 @@
 #import "OCMRealObjectForwarder.h"
 #import "OCMFunctions.h"
 #import "OCMInvocationStub.h"
+#import "OCMBlockWithArgsCaller.h"
 
 
 @implementation OCMStubRecorder
@@ -81,6 +82,14 @@
     [[self stub] addInvocationAction:[[[OCMBlockCaller alloc] initWithCallBlock:aBlock] autorelease]];
 	return self;
 }
+
+- (id)andCallBlock:(id)aBlock onObject:(id)anObject
+{
+    [[self stub] addInvocationAction:[[[OCMBlockWithArgsCaller alloc] initWithProvider:anObject callBlock:aBlock] autorelease]];
+    return self;
+}
+
+
 
 - (id)andForwardToRealObject
 {
@@ -167,6 +176,17 @@
     id (^theBlock)(void (^)(NSInvocation *)) = ^ (void (^ blockToCall)(NSInvocation *))
     {
         return [self andDo:blockToCall];
+    };
+    return [[theBlock copy] autorelease];
+}
+
+@dynamic _andCallBlock;
+
+- (OCMStubRecorder *(^)(void (^)(id, id)))_andCallBlock
+{
+    id (^theBlock)(id, id) = ^ (id target, id blockToCall)
+    {
+        return [self andCallBlock:blockToCall onObject:target];
     };
     return [[theBlock copy] autorelease];
 }
