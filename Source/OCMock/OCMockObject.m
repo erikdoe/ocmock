@@ -194,7 +194,7 @@
     }
     if(firstException)
 	{
-        NSString *description = [NSString stringWithFormat:@"%@: %@ (This is a strict mock failure that was ignored when it actually occured.)",
+        NSString *description = [NSString stringWithFormat:@"%@: %@ (This is a strict mock failure that was ignored when it actually occurred.)",
          [self description], [firstException description]];
         OCMReportFailure(location, description);
 	}
@@ -312,7 +312,7 @@
         [anInvocation retainObjectArgumentsExcludingObject:self];
         [invocations addObject:anInvocation];
     }
-    
+
     OCMInvocationStub *stub = nil;
     @synchronized(stubs)
     {
@@ -327,7 +327,7 @@
     }
     if(stub == nil)
         return NO;
-    
+
     BOOL removeStub = NO;
     @synchronized(expectations)
     {
@@ -339,7 +339,7 @@
                 [NSException raise:NSInternalInconsistencyException format:@"%@: unexpected method invoked: %@\n\texpected:\t%@",
                              [self description], [stub description], [[expectations objectAtIndex:0] description]];
             }
-            
+
             // We can't check isSatisfied yet, since the stub won't be satisfied until we call handleInvocation:, and we don't want to call handleInvocation: yes for the reason in the comment above, since we'll still have the current expectation in the expectations array, which will cause an exception if expectationOrderMatters is YES and we're not ready for any future expected methods to be called yet
             if(![(OCMInvocationExpectation *)stub isMatchAndReject])
             {
@@ -357,7 +357,7 @@
     }
     [stub handleInvocation:anInvocation];
     [stub release];
-    
+
     return YES;
 }
 
@@ -412,9 +412,9 @@
         {
             expectationsContainStub = [expectations containsObject:stub];
         }
-        
+
 		NSString *prefix = @"";
-		
+
 		if(onlyExpectations)
 		{
 			if(expectationsContainStub == NO)
