@@ -175,6 +175,18 @@ typedef NSString TypedefString;
     XCTAssertThrowsSpecificNamed([mock performSelector:@selector(sortedArrayHint)], NSException, NSInvalidArgumentException);
 }
 
+- (void)testComplainsWhenAttemptIsMadeToStubInitMethod
+{
+    id mock = [OCMockObject mockForClass:[NSString class]];
+    XCTAssertThrows([[[mock stub] init] andReturn:nil]);
+}
+
+- (void)testComplainsWhenAttemptIsMadeToStubInitMethodViaMacro
+{
+    id mock = [OCMockObject mockForClass:[NSString class]];
+    XCTAssertThrows(OCMStub([mock init]));
+}
+
 
 - (void)testMockShouldNotRaiseWhenDescribing
 {

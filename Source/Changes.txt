@@ -1,6 +1,12 @@
 Listing of notable changes by release. More detail is usually found in the Git
 commit messages and/or the pull requests.
 
+(unreleased)
+
+* Now throwing an exception when an attempt is made to stub the init method.
+* Fixed crash when trying to mock NSArray.
+
+
 OCMock 3.3 (2016-04-12)
 
 * Made the use of mock objects thread safe. You still have to setup the mocks

@@ -88,6 +88,14 @@
 
 - (instancetype)init
 {
+    // check if we are called from inside a macro
+    OCMRecorder *recorder = [[OCMMacroState globalState] recorder];
+    if(recorder != nil)
+    {
+        [recorder setMockObject:self];
+        return (id)[recorder init];
+    }
+    
 	// no [super init], we're inheriting from NSProxy
 	expectationOrderMatters = NO;
 	stubs = [[NSMutableArray alloc] init];

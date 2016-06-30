@@ -33,6 +33,9 @@
 
 - (id)init
 {
+    if(invocationMatcher != nil)
+        [NSException raise:NSInternalInconsistencyException format:@"** Method init invoked twice on stub recorder. Are you trying to mock the init method? This is currently not supported."];
+    
     self = [super init];
     invocationMatcher = [[OCMInvocationStub alloc] init];
     return self;
