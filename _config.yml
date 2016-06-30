@@ -6,3 +6,5 @@ paginate: 50
 paginate_path: "news/page:num"
 date_format: "%d %B %Y"
 baseurl: "http://ocmock.org"
+gems: [jekyll-paginate]
+
