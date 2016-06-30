@@ -101,7 +101,7 @@ OCMStub([myObjectMock writeToDatabase]).andReturn(@YES);
 [myController updateDatabase]
 
 // verify that the method has been called
-OCMVerify([[myObjectMock writeToDatabase]);
+OCMVerify([myObjectMock writeToDatabase]);
 {% endhighlight objc %}
 
 <p>It is not even necessary to stub a method in order to verify it. If we omit the stub from the code above the actual implementation of <code>writeToDatabase</code> in the object is used. We can still verify that it has been called.

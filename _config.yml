@@ -1,5 +1,5 @@
 url: "http://ocmock.org"
-highlighter: pygments
+highlighter: rouge
 exclude: [bin, Gemfile, Gemfile.lock, Makefile]
 permalink: pretty
 paginate: 50
