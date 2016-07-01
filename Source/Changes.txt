@@ -1,7 +1,7 @@
 Listing of notable changes by release. More detail is usually found in the Git
 commit messages and/or the pull requests.
 
-(unreleased)
+OCMock 3.3.1 (2016-07-01)
 
 * Now throwing an exception when an attempt is made to stub the init method.
 * Fixed crash when trying to mock NSArray.
