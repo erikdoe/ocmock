@@ -499,7 +499,9 @@ id classMock = OCMClassMock([SomeClass class]);
 OCMStub([classMock new])).andReturn(myObject);
 {% endhighlight objc %}
 
-<p>It possible, although not advisable, to stub out <code>new</code> for a class. If you find yourself doing this a lot, please consider the <a href="http://en.wikipedia.org/wiki/Dependency_injection">dependency injection</a> pattern. It is not possible to stub the <code>init</code> method, because that is implemented by the mock itself.
+<p>It possible, although not advisable, to stub out <code>new</code> for a class. If you find yourself doing this a lot, please consider the <a href="http://en.wikipedia.org/wiki/Dependency_injection">dependency injection</a> pattern. 
+
+<p><b>IMPORTANT:</b> It is not possible to stub the <code>init</code> method, because that is implemented by the mock itself.
 	
 
 <h3 class="numbered">Instance-based method swizzling</h3>
