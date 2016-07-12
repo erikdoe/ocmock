@@ -12,8 +12,8 @@
 		031E50591BB4A56300E257C3 /* OCMBoxedReturnValueProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 031E50571BB4A56300E257C3 /* OCMBoxedReturnValueProviderTests.m */; };
 		0322DA65191188D100CACAF1 /* OCMockObjectVerifyAfterRunTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0322DA64191188D100CACAF1 /* OCMockObjectVerifyAfterRunTests.m */; };
 		0322DA66191188D100CACAF1 /* OCMockObjectVerifyAfterRunTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0322DA64191188D100CACAF1 /* OCMockObjectVerifyAfterRunTests.m */; };
-		0322DA6919118B4600CACAF1 /* OCMVerifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 0322DA6719118B4600CACAF1 /* OCMVerifier.h */; };
-		0322DA6A19118B4600CACAF1 /* OCMVerifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 0322DA6719118B4600CACAF1 /* OCMVerifier.h */; };
+		0322DA6919118B4600CACAF1 /* OCMVerifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 0322DA6719118B4600CACAF1 /* OCMVerifier.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0322DA6A19118B4600CACAF1 /* OCMVerifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 0322DA6719118B4600CACAF1 /* OCMVerifier.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0322DA6B19118B4600CACAF1 /* OCMVerifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 0322DA6819118B4600CACAF1 /* OCMVerifier.m */; };
 		0322DA6C19118B4600CACAF1 /* OCMVerifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 0322DA6819118B4600CACAF1 /* OCMVerifier.m */; };
 		033E1FF414FEF5E0004456B0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 033E1FF314FEF5E0004456B0 /* Foundation.framework */; };
@@ -34,6 +34,16 @@
 		03618D84195B553400389166 /* OCMRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 03618D81195B553400389166 /* OCMRecorder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03618D85195B553400389166 /* OCMRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 03618D82195B553400389166 /* OCMRecorder.m */; };
 		03618D86195B553400389166 /* OCMRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 03618D82195B553400389166 /* OCMRecorder.m */; };
+		036865641D3571A8005E6BEE /* OCMQuantifierTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 036865631D3571A8005E6BEE /* OCMQuantifierTests.m */; };
+		036865651D3571A8005E6BEE /* OCMQuantifierTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 036865631D3571A8005E6BEE /* OCMQuantifierTests.m */; };
+		036865681D3572ED005E6BEE /* OCMQuantifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 036865671D3572ED005E6BEE /* OCMQuantifier.m */; };
+		036865691D3572ED005E6BEE /* OCMQuantifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 036865671D3572ED005E6BEE /* OCMQuantifier.m */; };
+		0368656A1D3572ED005E6BEE /* OCMQuantifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 036865671D3572ED005E6BEE /* OCMQuantifier.m */; };
+		0368656B1D3572ED005E6BEE /* OCMQuantifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 036865671D3572ED005E6BEE /* OCMQuantifier.m */; };
+		0368656D1D357317005E6BEE /* OCMQuantifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 0368656C1D35730B005E6BEE /* OCMQuantifier.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0368656E1D357318005E6BEE /* OCMQuantifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 0368656C1D35730B005E6BEE /* OCMQuantifier.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0368656F1D357319005E6BEE /* OCMQuantifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 0368656C1D35730B005E6BEE /* OCMQuantifier.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		036865701D35731A005E6BEE /* OCMQuantifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 0368656C1D35730B005E6BEE /* OCMQuantifier.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		037ECD5418FAD84100AF0E4C /* OCMInvocationMatcherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 037ECD5318FAD84100AF0E4C /* OCMInvocationMatcherTests.m */; };
 		037ECD5518FAD84100AF0E4C /* OCMInvocationMatcherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 037ECD5318FAD84100AF0E4C /* OCMInvocationMatcherTests.m */; };
 		03B315AF146333BF0052CD09 /* NSInvocation+OCMAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 03B31585146333BF0052CD09 /* NSInvocation+OCMAdditions.h */; };
@@ -230,7 +240,7 @@
 		817EB1451BD765130047E85A /* OCPartialMockObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 03B315A9146333BF0052CD09 /* OCPartialMockObject.h */; };
 		817EB1461BD765130047E85A /* OCProtocolMockObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 03B315AD146333BF0052CD09 /* OCProtocolMockObject.h */; };
 		817EB1471BD765130047E85A /* OCMExpectationRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C7BF0E195DAB5300A545DD /* OCMExpectationRecorder.h */; };
-		817EB1481BD765130047E85A /* OCMVerifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 0322DA6719118B4600CACAF1 /* OCMVerifier.h */; };
+		817EB1481BD765130047E85A /* OCMVerifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 0322DA6719118B4600CACAF1 /* OCMVerifier.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		817EB1491BD765130047E85A /* OCMInvocationMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA28CCC33B99D6B658E7AF8 /* OCMInvocationMatcher.h */; };
 		817EB14A1BD765130047E85A /* OCMInvocationStub.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C7BF08195DA2F200A545DD /* OCMInvocationStub.h */; };
 		817EB14B1BD765130047E85A /* OCMInvocationExpectation.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA288509D545BDBE094BCC8 /* OCMInvocationExpectation.h */; };
@@ -302,7 +312,7 @@
 		F0B951301B00810C00942C38 /* OCMRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 03618D81195B553400389166 /* OCMRecorder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F0B951311B00810C00942C38 /* OCMStubRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 03B3159F146333BF0052CD09 /* OCMStubRecorder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F0B951321B00810C00942C38 /* OCMExpectationRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C7BF0E195DAB5300A545DD /* OCMExpectationRecorder.h */; };
-		F0B951331B00810C00942C38 /* OCMVerifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 0322DA6719118B4600CACAF1 /* OCMVerifier.h */; };
+		F0B951331B00810C00942C38 /* OCMVerifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 0322DA6719118B4600CACAF1 /* OCMVerifier.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F0B951341B00810C00942C38 /* OCMInvocationMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA28CCC33B99D6B658E7AF8 /* OCMInvocationMatcher.h */; };
 		F0B951351B00810C00942C38 /* OCMInvocationStub.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C7BF08195DA2F200A545DD /* OCMInvocationStub.h */; };
 		F0B951361B00810C00942C38 /* OCMInvocationExpectation.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA288509D545BDBE094BCC8 /* OCMInvocationExpectation.h */; };
@@ -367,6 +377,9 @@
 		03565A4D18F05877003AE91E /* OCHamcrest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OCHamcrest.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/OCMock-eolppnbannkelbekssbvglkcoyjl/Build/Products/Debug/Frameworks/OCHamcrest.framework"; sourceTree = "<group>"; };
 		03618D81195B553400389166 /* OCMRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMRecorder.h; sourceTree = "<group>"; };
 		03618D82195B553400389166 /* OCMRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMRecorder.m; sourceTree = "<group>"; };
+		036865631D3571A8005E6BEE /* OCMQuantifierTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMQuantifierTests.m; sourceTree = "<group>"; };
+		036865671D3572ED005E6BEE /* OCMQuantifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMQuantifier.m; sourceTree = "<group>"; };
+		0368656C1D35730B005E6BEE /* OCMQuantifier.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OCMQuantifier.h; sourceTree = "<group>"; };
 		037ECD5318FAD84100AF0E4C /* OCMInvocationMatcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMInvocationMatcherTests.m; sourceTree = "<group>"; };
 		039F91C516EFB493006C3D70 /* OCMockObjectClassMethodMockingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMockObjectClassMethodMockingTests.m; sourceTree = "<group>"; };
 		03AC5C1416DF9FA500D82ECD /* OCMockObjectPartialMocksTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMockObjectPartialMocksTests.m; sourceTree = "<group>"; };
@@ -618,6 +631,7 @@
 				2FA28DEDB9163597B7C49F3D /* NSMethodSignatureOCMAdditionsTests.m */,
 				3CFBDD751BB3DB200050D9C5 /* TestClassWithCustomReferenceCounting.h */,
 				3CFBDD761BB3DB200050D9C5 /* TestClassWithCustomReferenceCounting.m */,
+				036865631D3571A8005E6BEE /* OCMQuantifierTests.m */,
 				03565A3418F0566F003AE91E /* Supporting Files */,
 			);
 			path = OCMockTests;
@@ -631,6 +645,15 @@
 				03565A3B18F0566F003AE91E /* OCMockTests-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		036865661D3572C2005E6BEE /* Quantifier */ = {
+			isa = PBXGroup;
+			children = (
+				0368656C1D35730B005E6BEE /* OCMQuantifier.h */,
+				036865671D3572ED005E6BEE /* OCMQuantifier.m */,
+			);
+			name = Quantifier;
 			sourceTree = "<group>";
 		};
 		037ECD5618FB0D2E00AF0E4C /* Helper */ = {
@@ -659,6 +682,7 @@
 				03C7BF15195DAB8500A545DD /* Matcher */,
 				03B31619146334040052CD09 /* Invocation Actions */,
 				03B3161A146334320052CD09 /* Argument Constraints and Actions */,
+				036865661D3572C2005E6BEE /* Quantifier */,
 				037ECD5618FB0D2E00AF0E4C /* Helper */,
 			);
 			name = "Core Mocks";
@@ -810,6 +834,7 @@
 				03B315FF146333C00052CD09 /* OCMReturnValueProvider.h in Headers */,
 				03B31604146333C00052CD09 /* OCObserverMockObject.h in Headers */,
 				03B31609146333C00052CD09 /* OCPartialMockObject.h in Headers */,
+				0368656D1D357317005E6BEE /* OCMQuantifier.h in Headers */,
 				3C0FF06A1BAA3FD10021AD20 /* OCMFunctionsPrivate.h in Headers */,
 				03B31613146333C00052CD09 /* OCProtocolMockObject.h in Headers */,
 				2FA287ACE547BB41937BDEC3 /* NSObject+OCMAdditions.h in Headers */,
@@ -852,6 +877,7 @@
 				03B315FB146333C00052CD09 /* OCMRealObjectForwarder.h in Headers */,
 				03DCED6F183406DA0059089E /* NSObject+OCMAdditions.h in Headers */,
 				03B31600146333C00052CD09 /* OCMReturnValueProvider.h in Headers */,
+				0368656E1D357318005E6BEE /* OCMQuantifier.h in Headers */,
 				817EB1661BD7674D0047E85A /* OCMFunctionsPrivate.h in Headers */,
 				03B31605146333C00052CD09 /* OCObserverMockObject.h in Headers */,
 				03B3160A146333C00052CD09 /* OCPartialMockObject.h in Headers */,
@@ -894,6 +920,7 @@
 				817EB1501BD765130047E85A /* OCMIndirectReturnValueProvider.h in Headers */,
 				817EB1511BD765130047E85A /* OCMNotificationPoster.h in Headers */,
 				817EB1521BD765130047E85A /* OCMReturnValueProvider.h in Headers */,
+				036865701D35731A005E6BEE /* OCMQuantifier.h in Headers */,
 				817EB1531BD765130047E85A /* OCMFunctionsPrivate.h in Headers */,
 				817EB1541BD765130047E85A /* OCObserverMockObject.h in Headers */,
 				817EB1551BD765130047E85A /* OCMObserverRecorder.h in Headers */,
@@ -936,6 +963,7 @@
 				F0B9513B1B00810C00942C38 /* OCMIndirectReturnValueProvider.h in Headers */,
 				F0B9513C1B00810C00942C38 /* OCMNotificationPoster.h in Headers */,
 				F0B9513D1B00810C00942C38 /* OCMReturnValueProvider.h in Headers */,
+				0368656F1D357319005E6BEE /* OCMQuantifier.h in Headers */,
 				3C0FF06B1BAA3FD20021AD20 /* OCMFunctionsPrivate.h in Headers */,
 				F0B951401B00810C00942C38 /* OCObserverMockObject.h in Headers */,
 				F0B951411B00810C00942C38 /* OCMObserverRecorder.h in Headers */,
@@ -1175,6 +1203,7 @@
 				03B315C0146333BF0052CD09 /* OCClassMockObject.m in Sources */,
 				03B315C5146333BF0052CD09 /* OCMArg.m in Sources */,
 				03B315CA146333BF0052CD09 /* OCMBlockCaller.m in Sources */,
+				036865681D3572ED005E6BEE /* OCMQuantifier.m in Sources */,
 				03B315CF146333BF0052CD09 /* OCMBoxedReturnValueProvider.m in Sources */,
 				03B315D4146333BF0052CD09 /* OCMConstraint.m in Sources */,
 				03B315D9146333BF0052CD09 /* OCMExceptionReturnValueProvider.m in Sources */,
@@ -1215,6 +1244,7 @@
 				03B315C2146333BF0052CD09 /* OCClassMockObject.m in Sources */,
 				03B315C7146333BF0052CD09 /* OCMArg.m in Sources */,
 				03B315CC146333BF0052CD09 /* OCMBlockCaller.m in Sources */,
+				036865691D3572ED005E6BEE /* OCMQuantifier.m in Sources */,
 				03B315D1146333BF0052CD09 /* OCMBoxedReturnValueProvider.m in Sources */,
 				03DCED6D183406BC0059089E /* NSObject+OCMAdditions.m in Sources */,
 				03B315D6146333BF0052CD09 /* OCMConstraint.m in Sources */,
@@ -1255,6 +1285,7 @@
 				03565A4A18F05721003AE91E /* OCObserverMockObjectTests.m in Sources */,
 				03565A4318F05721003AE91E /* OCMockObjectClassMethodMockingTests.m in Sources */,
 				03565A4918F05721003AE91E /* OCMArgTests.m in Sources */,
+				036865641D3571A8005E6BEE /* OCMQuantifierTests.m in Sources */,
 				0322DA65191188D100CACAF1 /* OCMockObjectVerifyAfterRunTests.m in Sources */,
 				03565A4718F05721003AE91E /* OCMConstraintTests.m in Sources */,
 				03565A4218F05721003AE91E /* OCMockObjectPartialMocksTests.m in Sources */,
@@ -1281,6 +1312,7 @@
 				817EB11D1BD765130047E85A /* OCMExpectationRecorder.m in Sources */,
 				817EB11E1BD765130047E85A /* OCMVerifier.m in Sources */,
 				817EB11F1BD765130047E85A /* OCMInvocationMatcher.m in Sources */,
+				0368656B1D3572ED005E6BEE /* OCMQuantifier.m in Sources */,
 				817EB1201BD765130047E85A /* OCMInvocationStub.m in Sources */,
 				817EB1211BD765130047E85A /* OCMInvocationExpectation.m in Sources */,
 				817EB1221BD765130047E85A /* OCMRealObjectForwarder.m in Sources */,
@@ -1315,6 +1347,7 @@
 				3C76716C1BB3EBC500FDC9F4 /* TestClassWithCustomReferenceCounting.m in Sources */,
 				031E50591BB4A56300E257C3 /* OCMBoxedReturnValueProviderTests.m in Sources */,
 				03C9CA1E18F05A84006DF94D /* OCMArgTests.m in Sources */,
+				036865651D3571A8005E6BEE /* OCMQuantifierTests.m in Sources */,
 				0322DA66191188D100CACAF1 /* OCMockObjectVerifyAfterRunTests.m in Sources */,
 				D31108C51828DBD600737925 /* OCMockObjectClassMethodMockingTests.m in Sources */,
 				D31108C71828DBD600737925 /* OCMConstraintTests.m in Sources */,
@@ -1346,6 +1379,7 @@
 				F0B951121B0080EC00942C38 /* OCMExpectationRecorder.m in Sources */,
 				F0B951131B0080EC00942C38 /* OCMVerifier.m in Sources */,
 				F0B951141B0080EC00942C38 /* OCMInvocationMatcher.m in Sources */,
+				0368656A1D3572ED005E6BEE /* OCMQuantifier.m in Sources */,
 				F0B951151B0080EC00942C38 /* OCMInvocationStub.m in Sources */,
 				F0B951161B0080EC00942C38 /* OCMInvocationExpectation.m in Sources */,
 				F0B951171B0080EC00942C38 /* OCMRealObjectForwarder.m in Sources */,

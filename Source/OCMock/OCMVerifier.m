@@ -33,15 +33,22 @@
     return self;
 }
 
+- (instancetype)withQuantifier:(OCMQuantifier *)quantifier
+{
+    [self setQuantifier:quantifier];
+    return self;
+}
+
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
     [super forwardInvocation:anInvocation];
-    [mockObject verifyInvocation:invocationMatcher atLocation:self.location];
+    [mockObject verifyInvocation:invocationMatcher withQuantifier:self.quantifier atLocation:self.location];
 }
 
 - (void)dealloc
 {
 	[_location release];
+    [_quantifier release];
 	[super dealloc];
 }
 

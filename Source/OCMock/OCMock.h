@@ -16,10 +16,12 @@
 
 #import <OCMock/OCMockObject.h>
 #import <OCMock/OCMRecorder.h>
+#import <OCMock/OCMVerifier.h>
 #import <OCMock/OCMStubRecorder.h>
 #import <OCMock/OCMConstraint.h>
 #import <OCMock/OCMArg.h>
 #import <OCMock/OCMLocation.h>
+#import <OCMock/OCMQuantifier.h>
 #import <OCMock/OCMMacroState.h>
 #import <OCMock/NSNotificationCenter+OCMAdditions.h>
 #import <OCMock/OCMFunctions.h>

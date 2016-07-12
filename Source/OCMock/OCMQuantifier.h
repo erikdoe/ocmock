@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2014-2016 Erik Doernenburg and contributors
+ *  Copyright (c) 2016 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -14,16 +14,20 @@
  *  under the License.
  */
 
-#import "OCMRecorder.h"
-#import "OCMLocation.h"
-#import "OCMQuantifier.h"
+#import <Foundation/Foundation.h>
 
+@interface OCMQuantifier : NSObject
 
-@interface OCMVerifier : OCMRecorder
++ (instancetype)atLeastOnce;
++ (instancetype)atLeast:(NSUInteger)count;
++ (instancetype)never;
++ (instancetype)atMost:(NSUInteger)count;
 
-@property(retain) OCMLocation *location;
-@property(retain) OCMQuantifier *quantifier;
+- (BOOL)isValidCount:(NSUInteger)count;
 
-- (instancetype)withQuantifier:(OCMQuantifier *)quantifier;
+- (NSString *)description;
 
 @end
+
+
+#define OCMQ OCMQuantifier
