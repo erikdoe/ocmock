@@ -105,6 +105,19 @@
     ); \
 })
 
+#define OCMVerifyQ(quantifier, invocation) \
+({ \
+    _OCMSilenceWarnings( \
+        [OCMMacroState beginVerifyMacroAtLocation:OCMMakeLocation(self, __FILE__, __LINE__) \
+                        withQuantifier:[OCMQuantifierFactory sharedInstance]._##quantifier]; \
+        @try{ \
+            invocation; \
+        }@finally{ \
+            [OCMMacroState endVerifyMacro]; \
+        } \
+    ); \
+})
+
 #define _OCMSilenceWarnings(macro) \
 ({ \
     _Pragma("clang diagnostic push") \

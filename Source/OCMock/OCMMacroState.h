@@ -17,6 +17,7 @@
 #import <Foundation/Foundation.h>
 
 @class OCMLocation;
+@class OCMQuantifier;
 @class OCMRecorder;
 @class OCMStubRecorder;
 @class OCMockObject;
@@ -37,6 +38,7 @@
 + (OCMStubRecorder *)endRejectMacro;
 
 + (void)beginVerifyMacroAtLocation:(OCMLocation *)aLocation;
++ (void)beginVerifyMacroAtLocation:(OCMLocation *)aLocation withQuantifier:(OCMQuantifier *)quantifier;
 + (void)endVerifyMacro;
 
 + (OCMMacroState *)globalState;

@@ -97,8 +97,61 @@
 
 - (NSString *)description
 {
-    return (self.count == 0) ? @"never" : [NSString stringWithFormat:@"at most %ld times", self.count];
+    switch(self.count)
+    {
+        case 0:  return @"never";
+        case 1:  return @"at most once";
+        default: return [NSString stringWithFormat:@"at most %ld times", self.count];
+    }
 }
+
+@end
+
+
+
+@implementation OCMQuantifierFactory
+
++ (instancetype)sharedInstance
+{
+    return [[[OCMQuantifierFactory alloc] init] autorelease];
+}
+
+@dynamic _atLeastOnce;
+
+- (OCMQuantifier *)_atLeastOnce
+{
+    return [OCMQuantifier atLeastOnce];
+}
+
+@dynamic _atLeast;
+
+- (OCMQuantifier *(^)(NSUInteger))_atLeast
+{
+    id (^theBlock)(NSUInteger) = ^ (NSUInteger count)
+    {
+        return [OCMQuantifier atLeast:count];
+    };
+    return [[theBlock copy] autorelease];
+}
+
+@dynamic _never;
+
+- (OCMQuantifier *)_never
+{
+    return [OCMQuantifier never];
+}
+
+@dynamic _atMost;
+
+- (OCMQuantifier *(^)(NSUInteger))_atMost
+{
+    id (^theBlock)(NSUInteger) = ^ (NSUInteger count)
+    {
+        return [OCMQuantifier atMost:count];
+    };
+    return [[theBlock copy] autorelease];
+}
+
 
 @end
 

@@ -87,7 +87,7 @@
     [mock doStuff];
     [mock doStuff];
     
-    [[[mock verify] withQuantifier:[OCMQuantifier atMost:1]] doStuff];
+    XCTAssertThrows([[[mock verify] withQuantifier:[OCMQuantifier atMost:1]] doStuff]);
 }
 
 - (void)testNeverThrowsWhenInvocationsOccurred
@@ -96,8 +96,28 @@
     
     [mock doStuff];
 
-    [[[mock verify] withQuantifier:[OCMQuantifier never]] doStuff];
+    XCTAssertThrows([[[mock verify] withQuantifier:[OCMQuantifier never]] doStuff]);
 }
+
+- (void)testQuantifierMacro
+{
+    id mock = OCMClassMock([TestClassForQuantifiers class]);
+    
+    [mock doStuff];
+
+    OCMVerifyQ(atLeastOnce, [mock doStuff]);
+}
+
+- (void)testQuantifierMacroWithArgument
+{
+    id mock = OCMClassMock([TestClassForQuantifiers class]);
+    
+    [mock doStuff];
+    [mock doStuff];
+    
+    OCMVerifyQ(atLeast(2), [mock doStuff]);
+}
+
 
 @end
 
