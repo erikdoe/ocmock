@@ -15,6 +15,8 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "OCMMacroState.h"
+#import "OCMVerifier.h"
 #import "OCMQuantifier.h"
 
 @interface OCMAtLeastQuantifier : OCMQuantifier
@@ -56,6 +58,16 @@
     OCMAtMostQuantifier *quantifier = [[[OCMAtMostQuantifier alloc] init] autorelease];
     quantifier.count = count;
     return quantifier;
+}
+
+
+- (instancetype)init
+{
+    if((self = [super init]) != nil)
+    {
+        [(OCMVerifier *)[[OCMMacroState globalState] recorder] setQuantifier:self];
+    }
+    return self;
 }
 
 

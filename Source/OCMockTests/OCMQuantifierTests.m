@@ -99,7 +99,7 @@
     XCTAssertThrows([[[mock verify] withQuantifier:[OCMQuantifier never]] doStuff]);
 }
 
-- (void)testQuantifierMacro
+- (void)testQuantifierShorthandMacro
 {
     id mock = OCMClassMock([TestClassForQuantifiers class]);
     
@@ -108,7 +108,7 @@
     OCMVerifyQ(atLeastOnce, [mock doStuff]);
 }
 
-- (void)testQuantifierMacroWithArgument
+- (void)testQuantifierShorthandMacroWithArgument
 {
     id mock = OCMClassMock([TestClassForQuantifiers class]);
     
@@ -118,6 +118,23 @@
     OCMVerifyQ(atLeast(2), [mock doStuff]);
 }
 
+- (void)testQuantifierMacro
+{
+    id mock = OCMClassMock([TestClassForQuantifiers class]);
+
+    [mock doStuff];
+    
+    OCMVerifyQ2([OCMQnt atLeastOnce], [mock doStuff]);
+}
+
+- (void)testQuantifierWtihStandardMacro
+{
+    id mock = OCMClassMock([TestClassForQuantifiers class]);
+
+    [mock doStuff];
+
+    OCMVerify([OCMQnt atLeastOnce]; [mock doStuff]);
+}
 
 @end
 

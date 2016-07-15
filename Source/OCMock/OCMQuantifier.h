@@ -41,4 +41,4 @@
 @end
 
 
-#define OCMQ OCMQuantifier
+#define OCMQnt OCMQuantifier

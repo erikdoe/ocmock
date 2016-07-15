@@ -105,6 +105,18 @@
     ); \
 })
 
+#define OCMVerifyQ2(quantifier, invocation) \
+({ \
+    _OCMSilenceWarnings( \
+        [OCMMacroState beginVerifyMacroAtLocation:OCMMakeLocation(self, __FILE__, __LINE__) withQuantifier:quantifier]; \
+        @try{ \
+           invocation; \
+        }@finally{ \
+            [OCMMacroState endVerifyMacro]; \
+        } \
+    ); \
+})
+
 #define OCMVerifyQ(quantifier, invocation) \
 ({ \
     _OCMSilenceWarnings( \
@@ -117,6 +129,7 @@
         } \
     ); \
 })
+
 
 #define _OCMSilenceWarnings(macro) \
 ({ \
