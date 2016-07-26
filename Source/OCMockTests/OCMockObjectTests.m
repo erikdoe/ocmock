@@ -1070,20 +1070,23 @@ static NSString *TestNotification = @"TestNotification";
     XCTAssertEqual(2, count, @"Should have evaluated constraint only twice");
 }
 
-- (void)testAsynchronousVerificationWithRejectionsPerformance
+
+- (void)testVerifyWithDelayDoesNotWaitForRejections
 {
     mock = [OCMockObject niceMockForClass:[NSString class]];
 
     [[mock reject] hasSuffix:OCMOCK_ANY];
     [[mock expect] hasPrefix:OCMOCK_ANY];
 
-    [self measureBlock:^{
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [mock hasPrefix:@"hello"];
-        });
-
-        [mock verifyWithDelay:1];
-    }];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [mock hasPrefix:@"foo"];
+    });
+                   
+    NSDate *start = [NSDate date];
+    [mock verifyWithDelay:4];
+    NSDate *end = [NSDate date];
+    
+    XCTAssertTrue([end timeIntervalSinceDate:start] < 3, @"Should have returned before delay was up");
 }
 
 @end
