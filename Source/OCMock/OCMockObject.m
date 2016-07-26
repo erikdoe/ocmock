@@ -224,7 +224,15 @@
     {
         @synchronized(expectations)
         {
-            if([expectations count] == 0)
+            BOOL hasNonRejectExpectations = NO;
+            for(OCMInvocationExpectation *expectation in expectations) {
+                if(![expectation isMatchAndReject]) {
+                    hasNonRejectExpectations = YES;
+                    break;
+                }
+            }
+
+            if(!hasNonRejectExpectations)
                 break;
         }
         [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:MIN(step, delay)]];
