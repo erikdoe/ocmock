@@ -1071,7 +1071,7 @@ static NSString *TestNotification = @"TestNotification";
 }
 
 
-- (void)testVerifyWithDelayDoesNotWaitForRejections
+- (void)testVerifyWithDelayDoesNotWaitForRejects
 {
     mock = [OCMockObject niceMockForClass:[NSString class]];
 
