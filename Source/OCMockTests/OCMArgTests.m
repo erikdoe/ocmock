@@ -14,7 +14,7 @@
  *  under the License.
  */
 
-#import <XCTest/XCTest.h>
+#import "OCMockBaseTestCase.h"
 #import "OCMArg.h"
 #import "OCMConstraint.h"
 #import "OCMPassByRefSetter.h"
@@ -26,7 +26,7 @@
 #define valueWithRect valueWithCGRect
 #endif
 
-@interface OCMArgTests : XCTestCase
+@interface OCMArgTests : OCMockBaseTestCase
 
 @end
 

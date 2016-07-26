@@ -14,7 +14,7 @@
  *  under the License.
  */
 
-#import <XCTest/XCTest.h>
+#import "OCMockBaseTestCase.h"
 #import <OCMock/OCMock.h>
 #import "OCClassMockObject.h"
 #import "OCPartialMockObject.h"
@@ -69,7 +69,7 @@ static NSUInteger initializeCallCount = 0;
 @end
 
 
-@interface OCMockObjectClassMethodMockingTests : XCTestCase
+@interface OCMockObjectClassMethodMockingTests : OCMockBaseTestCase
 
 @end
 

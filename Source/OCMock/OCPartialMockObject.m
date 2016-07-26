@@ -81,7 +81,9 @@
         object_setClass(realObject, [self mockedClass]);
         [realObject release];
         realObject = nil;
-        objc_disposeClassPair(partialMockClass);
+        if (!usingDynamicSubclassCache) {
+            objc_disposeClassPair(partialMockClass);
+        }
     }
     [super stopMocking];
 }
@@ -105,9 +107,15 @@
 {
     OCMSetAssociatedMockForObject(self, realObject);
 
-    /* dynamically create a subclass and set it as the class of the object */
-    Class subclass = OCMCreateSubclass(mockedClass, realObject);
+    /* dynamically create a subclass or take cached one and set it as the class of the object */
+    const char *dynamicSubclassName = OCMSubclassName(mockedClass, realObject);
+    Class cachedSubclass = objc_lookUpClass(dynamicSubclassName);
+    Class subclass = cachedSubclass?: OCMCreateSubclass(mockedClass, realObject);
 	object_setClass(realObject, subclass);
+
+    if (cachedSubclass) {
+        return;
+    }
 
     /* point forwardInvocation: of the object to the implementation in the mock */
 	Method myForwardMethod = class_getInstanceMethod([self mockObjectClass], @selector(forwardInvocationForRealObject:));

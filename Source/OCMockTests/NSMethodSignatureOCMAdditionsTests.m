@@ -14,7 +14,7 @@
  *  under the License.
  */
 
-#import <XCTest/XCTest.h>
+#import "OCMockBaseTestCase.h"
 #import "NSMethodSignature+OCMAdditions.h"
 
 #if TARGET_OS_IPHONE
@@ -23,7 +23,7 @@
 #define NSRect  CGRect
 #endif
 
-@interface NSMethodSignatureOCMAdditionsTests : XCTestCase
+@interface NSMethodSignatureOCMAdditionsTests : OCMockBaseTestCase
 
 @end
 

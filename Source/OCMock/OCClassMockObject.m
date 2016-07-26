@@ -56,16 +56,8 @@
 {
     if(originalMetaClass != nil)
     {
-        /* The mocked class has the meta class of a dynamically created subclass as its meta class,
-           but we need a reference to the subclass to dispose it. Asking the meta class for its
-           class name returns the actual class name, which we can then use to look up the class...
-        */
-        const char *createdSubclassName = object_getClassName(mockedClass);
-        Class createdSubclass = objc_lookUpClass(createdSubclassName);
-
         [self restoreMetaClass];
-
-        objc_disposeClassPair(createdSubclass);
+        [self disposeDynamicSubclassIfNeeded];
     }
     [super stopMocking];
 }
@@ -75,6 +67,15 @@
     OCMSetAssociatedMockForClass(nil, mockedClass);
     object_setClass(mockedClass, originalMetaClass);
     originalMetaClass = nil;
+}
+
+- (void)disposeDynamicSubclassIfNeeded
+{
+    if (!usingDynamicSubclassCache) {
+        const char *createdSubclassName = OCMSubclassName(mockedClass, mockedClass);
+        Class createdSubclass = objc_lookUpClass(createdSubclassName);
+        objc_disposeClassPair(createdSubclass);
+    }
 }
 
 - (void)addStub:(OCMInvocationStub *)aStub
@@ -99,12 +100,18 @@
         [otherMock restoreMetaClass];
 
     OCMSetAssociatedMockForClass(self, mockedClass);
-
-    /* dynamically create a subclass and use its meta class as the meta class for the mocked class */
-    Class subclass = OCMCreateSubclass(mockedClass, mockedClass);
     originalMetaClass = object_getClass(mockedClass);
-    id newMetaClass = object_getClass(subclass);
 
+    /* dynamically create a subclass or take cached one and use its meta class as the meta class for the mocked class */
+    const char *dynamicSubclassName = OCMSubclassName(mockedClass, mockedClass);
+    Class cachedSubclass = objc_lookUpClass(dynamicSubclassName);
+    Class subclass = cachedSubclass ?: OCMCreateSubclass(mockedClass, mockedClass);
+
+    id newMetaClass = object_getClass(subclass);
+    if (cachedSubclass) {
+        object_setClass(mockedClass, newMetaClass);
+        return;
+    }
     /* create a dummy initialize method */
     Method myDummyInitializeMethod = class_getInstanceMethod([self mockObjectClass], @selector(initializeForClassObject));
     const char *initializeTypes = method_getTypeEncoding(myDummyInitializeMethod);

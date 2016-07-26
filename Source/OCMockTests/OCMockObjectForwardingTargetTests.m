@@ -14,7 +14,7 @@
  *  under the License.
  */
 
-#import <XCTest/XCTest.h>
+#import "OCMockBaseTestCase.h"
 #import <OCMock/OCMock.h>
 #import <objc/runtime.h>
 
@@ -118,7 +118,7 @@
 #pragma mark    Tests
 
 
-@interface OCMockForwardingTargetTests : XCTestCase
+@interface OCMockForwardingTargetTests : OCMockBaseTestCase
 
 @end
 

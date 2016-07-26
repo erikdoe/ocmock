@@ -14,13 +14,13 @@
  *  under the License.
  */
 
-#import <XCTest/XCTest.h>
+#import "OCMockBaseTestCase.h"
 #import <OCMock/OCMock.h>
 
 static NSString *TestNotificationOne = @"TestNotificationOne";
 
 
-@interface OCObserverMockObjectTest : XCTestCase
+@interface OCObserverMockObjectTest : OCMockBaseTestCase
 {
 	NSNotificationCenter *center;
 	id mock;

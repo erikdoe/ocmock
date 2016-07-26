@@ -14,7 +14,7 @@
  *  under the License.
  */
 
-#import <XCTest/XCTest.h>
+#import "OCMockBaseTestCase.h"
 #import <OCMock/OCMock.h>
 
 
@@ -86,7 +86,7 @@ typedef NSString TypedefString;
 
 #pragma mark   Tests for interaction with runtime and foundation conventions
 
-@interface OCMockObjectRuntimeTests : XCTestCase
+@interface OCMockObjectRuntimeTests : OCMockBaseTestCase
 
 @end
 
@@ -234,17 +234,19 @@ typedef NSString TypedefString;
     XCTAssertNotNil(object.delegate, @"Should still have delegate");
 }
 
-
-- (void)testDynamicSubclassesShouldBeDisposed
+- (void)testDynamicSubclassesShouldNotBeDisposedOnlyIfUsingDynamicSubclassCache
 {
     int numClassesBefore = objc_getClassList(NULL, 0);
-
     id mock = [OCMockObject mockForClass:[TestDelegate class]];
     [mock stopMocking];
 
     int numClassesAfter = objc_getClassList(NULL, 0);
-    XCTAssertEqual(numClassesBefore, numClassesAfter, @"Should have disposed dynamically generated classes.");
-}
+    if ([OCMockObject isUsingDynamicSubclassCache]) {
+        XCTAssertNotEqual(numClassesBefore, numClassesAfter, @"Should have not disposed dynamically generated classes if using dynamic subclass cache.");
+    } else {
+        XCTAssertEqual(numClassesBefore, numClassesAfter, @"Should have disposed dynamically generated classes.");
+    }
 
+}
 
 @end

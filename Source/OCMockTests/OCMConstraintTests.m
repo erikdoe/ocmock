@@ -14,11 +14,11 @@
  *  under the License.
  */
 
-#import <XCTest/XCTest.h>
+#import "OCMockBaseTestCase.h"
 #import <OCMock/OCMConstraint.h>
 
 
-@interface OCMConstraintTests : XCTestCase
+@interface OCMConstraintTests : OCMockBaseTestCase
 {
 	BOOL didCallCustomConstraint;
 }

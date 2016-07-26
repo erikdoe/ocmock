@@ -14,7 +14,7 @@
  *  under the License.
  */
 
-#import <XCTest/XCTest.h>
+#import "OCMockBaseTestCase.h"
 #import "OCMockObject.h"
 #import "OCMStubRecorder.h"
 
@@ -55,7 +55,7 @@
 
 @end
 
-@interface OCMockObjectVerifyAfterRunTests : XCTestCase
+@interface OCMockObjectVerifyAfterRunTests : OCMockBaseTestCase
 
 @end
 

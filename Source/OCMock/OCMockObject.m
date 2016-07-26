@@ -33,6 +33,8 @@
 
 @implementation OCMockObject
 
+static BOOL globalUsingDynamicSubclassCache = NO;
+
 #pragma mark  Class initialisation
 
 + (void)initialize
@@ -83,6 +85,13 @@
 	return [[[OCObserverMockObject alloc] init] autorelease];
 }
 
++ (BOOL)isUsingDynamicSubclassCache {
+    return globalUsingDynamicSubclassCache;
+}
+
++ (void)setUsingDynamicSubclassCache:(BOOL)flag {
+    globalUsingDynamicSubclassCache = flag;
+}
 
 #pragma mark  Initialisers, description, accessors, etc.
 
@@ -98,6 +107,7 @@
     
 	// no [super init], we're inheriting from NSProxy
 	expectationOrderMatters = NO;
+    usingDynamicSubclassCache = globalUsingDynamicSubclassCache;
 	stubs = [[NSMutableArray alloc] init];
 	expectations = [[NSMutableArray alloc] init];
 	exceptions = [[NSMutableArray alloc] init];

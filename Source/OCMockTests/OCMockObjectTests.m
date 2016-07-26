@@ -14,7 +14,7 @@
  *  under the License.
  */
 
-#import <XCTest/XCTest.h>
+#import "OCMockBaseTestCase.h"
 #import <OCMock/OCMock.h>
 #import "OCMBoxedReturnValueProvider.h"
 
@@ -151,7 +151,7 @@ TestOpaque myOpaque;
 static NSString *TestNotification = @"TestNotification";
 
 
-@interface OCMockObjectTests : XCTestCase
+@interface OCMockObjectTests : OCMockBaseTestCase
 {
 	id mock;
 }
