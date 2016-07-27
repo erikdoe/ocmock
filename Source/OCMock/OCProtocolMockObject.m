@@ -26,14 +26,26 @@
 {
     NSParameterAssert(aProtocol != nil);
 	[super init];
-	mockedProtocol = aProtocol;
+	mockedProtocols = @[aProtocol];
 	return self;
+}
+
+- (id)initWithProtocols:(NSArray<Protocol *> *)protocols
+{
+    NSParameterAssert(protocols != nil);
+    [super init];
+    mockedProtocols = protocols;
+    return self;
 }
 
 - (NSString *)description
 {
-    const char* name = protocol_getName(mockedProtocol);
-    return [NSString stringWithFormat:@"OCMockObject(%s)", name];
+    char* names = (char*)protocol_getName(mockedProtocols[0]);
+    for(NSUInteger ix = 1; ix < mockedProtocols.count; ix++)
+    {
+        asprintf(&names, "%s, %s", names, protocol_getName(mockedProtocols[ix]));
+    }
+    return [NSString stringWithFormat:@"OCMockObject(%s)", names];
 }
 
 #pragma mark  Proxy API
@@ -41,18 +53,28 @@
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
     struct { BOOL isRequired; BOOL isInstance; } opts[4] = { {YES, YES}, {NO, YES}, {YES, NO}, {NO, NO} };
-    for(int i = 0; i < 4; i++)
+    for(Protocol *aProtocol in mockedProtocols)
     {
-        struct objc_method_description methodDescription = protocol_getMethodDescription(mockedProtocol, aSelector, opts[i].isRequired, opts[i].isInstance);
-        if(methodDescription.name != NULL)
-            return [NSMethodSignature signatureWithObjCTypes:methodDescription.types];
+        for(int i = 0; i < 4; i++)
+        {
+            struct objc_method_description methodDescription = protocol_getMethodDescription(aProtocol, aSelector, opts[i].isRequired, opts[i].isInstance);
+            if(methodDescription.name != NULL)
+                return [NSMethodSignature signatureWithObjCTypes:methodDescription.types];
+        }
     }
     return nil;
 }
 
 - (BOOL)conformsToProtocol:(Protocol *)aProtocol
 {
-    return protocol_conformsToProtocol(mockedProtocol, aProtocol);
+    BOOL conformsToProtocol = NO;
+    for(Protocol *procotol in mockedProtocols)
+    {
+        conformsToProtocol = protocol_conformsToProtocol(procotol, aProtocol);
+        if(conformsToProtocol)
+            break;
+    }
+    return conformsToProtocol;
 }
 
 - (BOOL)respondsToSelector:(SEL)selector

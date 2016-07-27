@@ -31,7 +31,11 @@
 
 #define OCMProtocolMock(protocol) [OCMockObject niceMockForProtocol:protocol]
 
+#define OCMProtocolsMock(protocol, ...) [OCMockObject niceMockForProtocols:protocol, ## __VA_ARGS__]
+
 #define OCMStrictProtocolMock(protocol) [OCMockObject mockForProtocol:protocol]
+
+#define OCMStrictProtocolsMock(protocol, ...) [OCMockObject mockForProtocol:protocol, ## __VA_ARGS__]
 
 #define OCMPartialMock(obj) [OCMockObject partialMockForObject:obj]
 
