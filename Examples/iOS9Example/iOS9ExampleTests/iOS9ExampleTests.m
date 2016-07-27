@@ -35,8 +35,7 @@
     
     // Verify that expected methods were called
 
-    id expectedArg = @[dummyIndexPath];
-    OCMVerify([tableViewMock deleteRowsAtIndexPaths:expectedArg withRowAnimation:UITableViewRowAnimationFade]);
+    OCMVerify([tableViewMock deleteRowsAtIndexPaths:@[dummyIndexPath] withRowAnimation:UITableViewRowAnimationFade]);
 }
 
 @end
