@@ -29,9 +29,9 @@
 
 #define OCMStrictClassMock(cls) [OCMockObject mockForClass:cls]
 
-#define OCMProtocolMock(protocol) [OCMockObject niceMockForProtocol:protocol]
+#define OCMProtocolMock(protocol...) [OCMockObject niceMockForProtocols:protocol]
 
-#define OCMStrictProtocolMock(protocol) [OCMockObject mockForProtocol:protocol]
+#define OCMStrictProtocolMock(protocol...) [OCMockObject mockForProtocols:protocol]
 
 #define OCMPartialMock(obj) [OCMockObject partialMockForObject:obj]
 

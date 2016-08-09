@@ -17,42 +17,71 @@
 #import <objc/runtime.h>
 #import "NSMethodSignature+OCMAdditions.h"
 #import "OCProtocolMockObject.h"
+#import "OCProtocolProxy.h"
 
 @implementation OCProtocolMockObject
+{
+    NSArray *protocolProxies;
+}
 
 #pragma mark  Initialisers, description, accessors, etc.
 
-- (id)initWithProtocol:(Protocol *)aProtocol
+- (id)initWithProtocols:(NSArray *)protocols
 {
-    NSParameterAssert(aProtocol != nil);
 	[super init];
-	mockedProtocol = aProtocol;
+
+    NSMutableArray *proxies = [NSMutableArray new];
+
+    for(Protocol *aProtocol in protocols)
+    {
+        OCProtocolProxy *protocolProxy = [[OCProtocolProxy alloc] initWithProtocol:aProtocol];
+        [proxies addObject:protocolProxy];
+        [protocolProxy release];
+    }
+
+	protocolProxies = proxies;
+
 	return self;
+}
+
+- (void)dealloc
+{
+    [protocolProxies release];
+    [super dealloc];
 }
 
 - (NSString *)description
 {
-    const char* name = protocol_getName(mockedProtocol);
-    return [NSString stringWithFormat:@"OCMockObject(%s)", name];
+    NSArray *protocolNames = [protocolProxies valueForKey:NSStringFromSelector(@selector(protocolName))];
+    return [NSString stringWithFormat:@"OCMockObject(%@)", [protocolNames componentsJoinedByString:@", "]];
 }
 
 #pragma mark  Proxy API
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
-    struct { BOOL isRequired; BOOL isInstance; } opts[4] = { {YES, YES}, {NO, YES}, {YES, NO}, {NO, NO} };
-    for(int i = 0; i < 4; i++)
+    for(OCProtocolProxy *protocolProxy in protocolProxies)
     {
-        struct objc_method_description methodDescription = protocol_getMethodDescription(mockedProtocol, aSelector, opts[i].isRequired, opts[i].isInstance);
-        if(methodDescription.name != NULL)
-            return [NSMethodSignature signatureWithObjCTypes:methodDescription.types];
+        NSMethodSignature *signature = [protocolProxy methodSignatureForSelector:aSelector];
+
+        if(signature)
+        {
+            return signature;
+        }
     }
     return nil;
 }
 
 - (BOOL)conformsToProtocol:(Protocol *)aProtocol
 {
-    return protocol_conformsToProtocol(mockedProtocol, aProtocol);
+    for(OCProtocolProxy *protocolProxy in protocolProxies)
+    {
+        if([protocolProxy conformsToProtocol:aProtocol])
+        {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 - (BOOL)respondsToSelector:(SEL)selector

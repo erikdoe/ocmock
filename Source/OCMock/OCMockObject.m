@@ -49,9 +49,16 @@
 	return [[[OCClassMockObject alloc] initWithClass:aClass] autorelease];
 }
 
-+ (id)mockForProtocol:(Protocol *)aProtocol
++ (id)mockForProtocols:(Protocol *)aProtocol, ...
 {
-	return [[[OCProtocolMockObject alloc] initWithProtocol:aProtocol] autorelease];
+    va_list protocolsList;
+    va_start(protocolsList, aProtocol);
+
+    id mock = [self _mockForProtocol:aProtocol otherProtocols:protocolsList];
+
+    va_end(protocolsList);
+
+    return mock;
 }
 
 + (id)partialMockForObject:(NSObject *)anObject
@@ -65,11 +72,36 @@
 	return [self _makeNice:[self mockForClass:aClass]];
 }
 
-+ (id)niceMockForProtocol:(Protocol *)aProtocol
++ (id)niceMockForProtocols:(Protocol *)aProtocol, ...
 {
-	return [self _makeNice:[self mockForProtocol:aProtocol]];
+    va_list protocolsList;
+    va_start(protocolsList, aProtocol);
+
+    id mock = [self _mockForProtocol:aProtocol otherProtocols:protocolsList];
+
+    va_end(protocolsList);
+
+    return [self _makeNice:mock];
 }
 
++ (id)_mockForProtocol:(Protocol *)aProtocol otherProtocols:(va_list)protocolsList
+{
+    NSParameterAssert(aProtocol != nil);
+
+    NSMutableArray *protocols = [NSMutableArray new];
+
+    while(aProtocol)
+    {
+        [protocols addObject:aProtocol];
+        aProtocol = va_arg(protocolsList, typeof(aProtocol));
+    }
+
+    id result = [[[OCProtocolMockObject alloc] initWithProtocols:protocols] autorelease];
+
+    [protocols release];
+
+    return result;
+}
 
 + (id)_makeNice:(OCMockObject *)mock
 {

@@ -62,7 +62,7 @@ typedef InterfaceForTypedef* PointerTypedefInterface;
 
 - (void)testCanMockFormalProtocol
 {
-    id mock = [OCMockObject mockForProtocol:@protocol(NSLocking)];
+    id mock = [OCMockObject mockForProtocols:@protocol(NSLocking)];
     [[mock expect] lock];
 
     [mock lock];
@@ -70,78 +70,109 @@ typedef InterfaceForTypedef* PointerTypedefInterface;
     [mock verify];
 }
 
+- (void)testCanMockMultipleProtocols
+{
+    id mock = OCMProtocolMock(@protocol(NSLocking), @protocol(TestProtocol));
+    [[mock expect] lock];
+    [[mock expect] primitiveValue];
+
+    [mock lock];
+    [mock primitiveValue];
+
+    [mock verify];
+}
+
 - (void)testSetsCorrectNameForProtocolMockObjects
 {
-    id mock = [OCMockObject mockForProtocol:@protocol(NSLocking)];
+    id mock = [OCMockObject mockForProtocols:@protocol(NSLocking)];
     XCTAssertEqualObjects(@"OCMockObject(NSLocking)", [mock description], @"Should have returned correct description.");
 }
 
-- (void)testRaisesWhenUnknownMethodIsCalledOnProtocol
+- (void)testSetsCorrectNameForMultipleProtocolsMockObjects
 {
-    id mock = [OCMockObject mockForProtocol:@protocol(NSLocking)];
+    id mock = [OCMockObject mockForProtocols:@protocol(NSLocking), @protocol(TestProtocol)];
+    XCTAssertEqualObjects(@"OCMockObject(NSLocking, TestProtocol)", [mock description], @"Should have returned correct description.");
+}
+
+- (void)testRaisesWhenUnknownMethodIsCalledOnProtocolsMock
+{
+    id mock = [OCMockObject mockForProtocols:@protocol(NSLocking), @protocol(TestProtocol)];
     XCTAssertThrows([mock lowercaseString], @"Should have raised an exception.");
 }
 
-- (void)testConformsToMockedProtocol
+- (void)testConformsToMockedProtocols
 {
-    id mock = [OCMockObject mockForProtocol:@protocol(NSLocking)];
+    id mock = [OCMockObject mockForProtocols:@protocol(NSLocking), @protocol(TestProtocol)];
     XCTAssertTrue([mock conformsToProtocol:@protocol(NSLocking)]);
+    XCTAssertTrue([mock conformsToProtocol:@protocol(TestProtocol)]);
 }
 
 - (void)testRespondsToValidProtocolRequiredSelector
 {
-    id mock = [OCMockObject mockForProtocol:@protocol(TestProtocol)];
+    id mock = [OCMockObject mockForProtocols:@protocol(NSLocking), @protocol(TestProtocol)];
     XCTAssertTrue([mock respondsToSelector:@selector(primitiveValue)]);
 }
 
 - (void)testRespondsToValidProtocolOptionalSelector
 {
-    id mock = [OCMockObject mockForProtocol:@protocol(TestProtocol)];
+    id mock = [OCMockObject mockForProtocols:@protocol(NSLocking), @protocol(TestProtocol)];
     XCTAssertTrue([mock respondsToSelector:@selector(objectValue)]);
 }
 
 - (void)testDoesNotRespondToInvalidProtocolSelector
 {
-    id mock = [OCMockObject mockForProtocol:@protocol(TestProtocol)];
+    id mock = [OCMockObject mockForProtocols:@protocol(TestProtocol)];
     XCTAssertFalse([mock respondsToSelector:@selector(testDoesNotRespondToInvalidProtocolSelector)]);
 }
 
 - (void)testWithTypedefReturnType {
-    id mock = [OCMockObject mockForProtocol:@protocol(ProtocolWithTypedefs)];
+    id mock = [OCMockObject mockForProtocols:@protocol(ProtocolWithTypedefs)];
     XCTAssertNoThrow([[[mock stub] andReturn:[TypedefInterface new]] typedefReturnValue1], @"Should accept a typedefed return-type");
     XCTAssertNoThrow([mock typedefReturnValue1]);
 }
 
 - (void)testWithTypedefPointerReturnType {
-    id mock = [OCMockObject mockForProtocol:@protocol(ProtocolWithTypedefs)];
+    id mock = [OCMockObject mockForProtocols:@protocol(ProtocolWithTypedefs)];
     XCTAssertNoThrow([[[mock stub] andReturn:[TypedefInterface new]] typedefReturnValue2], @"Should accept a typedefed return-type");
     XCTAssertNoThrow([mock typedefReturnValue2]);
 }
 
 - (void)testWithTypedefParameter {
-    id mock = [OCMockObject mockForProtocol:@protocol(ProtocolWithTypedefs)];
+    id mock = [OCMockObject mockForProtocols:@protocol(ProtocolWithTypedefs)];
     XCTAssertNoThrow([[mock stub] typedefParameter:nil], @"Should accept a typedefed parameter-type");
     XCTAssertNoThrow([mock typedefParameter:nil]);
 }
 
 
-- (void)testReturnDefaultValueWhenUnknownMethodIsCalledOnNiceProtocolMock
+- (void)testCanMockMultipleProtocolsNicely
 {
-    id mock = [OCMockObject niceMockForProtocol:@protocol(TestProtocol)];
+    id mock = [OCMockObject niceMockForProtocols:@protocol(NSLocking), @protocol(TestProtocol)];
+    [[mock expect] lock];
+    [[mock expect] primitiveValue];
+
+    [mock lock];
+    [mock primitiveValue];
+
+    [mock verify];
+}
+
+- (void)testReturnDefaultValueWhenUnknownMethodIsCalledOnNiceProtocolsMock
+{
+    id mock = [OCMockObject niceMockForProtocols:@protocol(NSLocking), @protocol(TestProtocol)];
     XCTAssertTrue(0 == [mock primitiveValue], @"Should return 0 on unexpected method call (for nice mock).");
     [mock verify];
 }
 
-- (void)testRaisesAnExceptionWenAnExpectedMethodIsNotCalledOnNiceProtocolMock
+- (void)testRaisesAnExceptionWhenAnExpectedMethodIsNotCalledOnNiceProtocolsMock
 {
-    id mock = [OCMockObject niceMockForProtocol:@protocol(TestProtocol)];
+    id mock = [OCMockObject niceMockForProtocols:@protocol(NSLocking), @protocol(TestProtocol)];
     [[mock expect] primitiveValue];
     XCTAssertThrows([mock verify], @"Should have raised an exception because method was not called.");
 }
 
 - (void)testProtocolClassMethod
 {
-    id mock = OCMProtocolMock(@protocol(TestProtocol));
+    id mock = OCMProtocolMock(@protocol(TestProtocol), @protocol(NSLocking));
     OCMStub([mock stringValueClassMethod]).andReturn(@"stubbed");
     id result = [mock stringValueClassMethod];
     XCTAssertEqual(@"stubbed", result, @"Should have stubbed the class method.");

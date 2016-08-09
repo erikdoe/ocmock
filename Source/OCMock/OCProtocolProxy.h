@@ -14,11 +14,12 @@
  *  under the License.
  */
 
-#import <OCMock/OCMockObject.h>
+#import <Foundation/Foundation.h>
 
-@interface OCProtocolMockObject : OCMockObject 
+@interface OCProtocolProxy : NSObject
 
-- (id)initWithProtocols:(NSArray *)protocols;
+- (id)initWithProtocol:(Protocol *)aProtocol;
+
+- (NSString *)protocolName;
 
 @end
-
