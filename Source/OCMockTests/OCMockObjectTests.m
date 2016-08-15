@@ -968,21 +968,24 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testReturnsDefaultValueWhenUnknownMethodIsCalledOnNiceClassMock
 {
-	mock = [OCMockObject niceMockForClass:[NSString class]];
+	mock = [OCMockObject mockForClass:[NSString class]];
+    [mock makeNice];
 	XCTAssertNil([mock lowercaseString], @"Should return nil on unexpected method call (for nice mock).");
 	[mock verify];
 }
 
 - (void)testRaisesAnExceptionWhenAnExpectedMethodIsNotCalledOnNiceClassMock
 {
-	mock = [OCMockObject niceMockForClass:[NSString class]];
+	mock = [OCMockObject mockForClass:[NSString class]];
+    [mock makeNice];
 	[[[mock expect] andReturn:@"HELLO!"] uppercaseString];
 	XCTAssertThrows([mock verify], @"Should have raised an exception because method was not called.");
 }
 
 - (void)testThrowsWhenRejectedMethodIsCalledOnNiceMock
 {
-    mock = [OCMockObject niceMockForClass:[NSString class]];
+    mock = [OCMockObject mockForClass:[NSString class]];
+    [mock makeNice];
 
     [[mock reject] uppercaseString];
     XCTAssertThrows([mock uppercaseString], @"Should have complained about rejected method being called.");
@@ -990,7 +993,8 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testUncalledRejectStubDoesNotCountAsExpectation
 {
-    mock = [OCMockObject niceMockForClass:[NSString class]];
+    mock = [OCMockObject mockForClass:[NSString class]];
+    [mock makeNice];
 
     [[mock expect] lowercaseString];
     [[mock reject] uppercaseString];
@@ -1036,7 +1040,8 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testReRaisesRejectExceptionsOnVerify
 {
-	mock = [OCMockObject niceMockForClass:[NSString class]];
+	mock = [OCMockObject mockForClass:[NSString class]];
+    [mock makeNice];
 	[[mock reject] uppercaseString];
 	@try
 	{
@@ -1073,7 +1078,8 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testVerifyWithDelayDoesNotWaitForRejects
 {
-    mock = [OCMockObject niceMockForClass:[NSString class]];
+    mock = [OCMockObject mockForClass:[NSString class]];
+    [mock makeNice];
 
     [[mock reject] hasSuffix:OCMOCK_ANY];
     [[mock expect] hasPrefix:OCMOCK_ANY];
@@ -1087,6 +1093,13 @@ static NSString *TestNotification = @"TestNotification";
     NSDate *end = [NSDate date];
     
     XCTAssertTrue([end timeIntervalSinceDate:start] < 3, @"Should have returned before delay was up");
+}
+
+- (void)testRaisesExceptionWhenUnknownMethodIsCalledOnMockReturnedInStrictMode
+{
+    [mock makeNice];
+    [mock makeStrict];
+    XCTAssertThrows([mock uppercaseString], @"Should have raised an exception.");
 }
 
 @end
