@@ -24,14 +24,22 @@
 #import <OCMock/NSNotificationCenter+OCMAdditions.h>
 #import <OCMock/OCMFunctions.h>
 
+#define _OCMNilProtocol() nil
+#define _OCM_OCMProtocols(...) __VA_ARGS__, nil
 
-#define OCMClassMock(cls) [OCMockObject niceMockForClass:cls]
+#define _OCMConcatFirstTwoArgs(arg1, arg2, ...) arg1 ## arg2
+#define _OCMCountProtocolsArgChooser(...) _OCMConcatFirstTwoArgs(__VA_ARGS__)
 
-#define OCMStrictClassMock(cls) [OCMockObject mockForClass:cls]
+#define _OCMProtocols() NilProtocol
+#define _OCMProtocolsArgChooser(...) _OCMCountProtocolsArgChooser(_OCM, _OCMProtocols , ##__VA_ARGS__ ())
 
-#define OCMProtocolMock(protocol...) [OCMockObject niceMockForProtocols:protocol]
+#define OCMClassMock(cls, protocol...) [OCMockObject niceMockForClass:cls protocols:_OCMProtocolsArgChooser(protocol)(protocol)]
 
-#define OCMStrictProtocolMock(protocol...) [OCMockObject mockForProtocols:protocol]
+#define OCMStrictClassMock(cls, protocol...) [OCMockObject mockForClass:cls protocols:_OCMProtocolsArgChooser(protocol)(protocol)]
+
+#define OCMProtocolMock(protocol...) [OCMockObject niceMockForProtocols:protocol, nil]
+
+#define OCMStrictProtocolMock(protocol...) [OCMockObject mockForProtocols:protocol, nil]
 
 #define OCMPartialMock(obj) [OCMockObject partialMockForObject:obj]
 

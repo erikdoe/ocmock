@@ -80,7 +80,7 @@ static NSUInteger initializeCallCount = 0;
 
 - (void)testCanStubClassMethod
 {
-    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class] protocols:nil];
 
     [[[[mock stub] classMethod] andReturn:@"mocked"] foo];
 
@@ -89,7 +89,7 @@ static NSUInteger initializeCallCount = 0;
 
 - (void)testCanExpectTheSameClassMethodMoreThanOnce
 {
-    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class] protocols:nil];
     [[[[mock expect] classMethod] andReturn:@"mocked-foo"] foo];
     [[[[mock expect] classMethod] andReturn:@"mocked-foo2"] foo];
 
@@ -99,7 +99,7 @@ static NSUInteger initializeCallCount = 0;
 
 - (void)testClassReceivesMethodsAfterStopWasCalled
 {
-    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class] protocols:nil];
     
     [[[[mock stub] classMethod] andReturn:@"mocked"] foo];
     [mock stopMocking];
@@ -109,7 +109,7 @@ static NSUInteger initializeCallCount = 0;
 
 - (void)testClassReceivesMethodAgainWhenExpectedCallOccurred
 {
-    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class] protocols:nil];
 
    	[[[[mock expect] classMethod] andReturn:@"mocked"] foo];
    	
@@ -119,7 +119,7 @@ static NSUInteger initializeCallCount = 0;
 
 - (void)testCanStubClassMethodFromMockForSubclass
 {
-    id subclassMock = [OCMockObject mockForClass:[TestSubclassWithClassMethods class]];
+    id subclassMock = [OCMockObject mockForClass:[TestSubclassWithClassMethods class] protocols:nil];
 
     [[[[subclassMock stub] classMethod] andReturn:@"mocked-subclass"] foo];
     XCTAssertEqualObjects(@"mocked-subclass", [TestSubclassWithClassMethods foo], @"Should have stubbed method.");
@@ -128,7 +128,7 @@ static NSUInteger initializeCallCount = 0;
 
 - (void)testSuperclassReceivesMethodsAfterStopWasCalled
 {
-    id mock = [OCMockObject mockForClass:[TestSubclassWithClassMethods class]];
+    id mock = [OCMockObject mockForClass:[TestSubclassWithClassMethods class] protocols:nil];
 
     [[[[mock stub] classMethod] andReturn:@"mocked"] foo];
     [mock stopMocking];
@@ -138,8 +138,8 @@ static NSUInteger initializeCallCount = 0;
 
 - (void)testCanReplaceSameMethodInSubclassAfterSuperclassMockWasStopped
 {
-    id superclassMock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
-    id subclassMock = [OCMockObject mockForClass:[TestSubclassWithClassMethods class]];
+    id superclassMock = [OCMockObject mockForClass:[TestClassWithClassMethods class] protocols:nil];
+    id subclassMock = [OCMockObject mockForClass:[TestSubclassWithClassMethods class] protocols:nil];
 
     [[[[superclassMock stub] classMethod] andReturn:@"mocked-superclass"] foo];
     [superclassMock stopMocking];
@@ -150,8 +150,8 @@ static NSUInteger initializeCallCount = 0;
 
 - (void)testCanReplaceSameMethodInSuperclassAfterSubclassMockWasStopped
 {
-    id superclassMock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
-    id subclassMock = [OCMockObject mockForClass:[TestSubclassWithClassMethods class]];
+    id superclassMock = [OCMockObject mockForClass:[TestClassWithClassMethods class] protocols:nil];
+    id subclassMock = [OCMockObject mockForClass:[TestSubclassWithClassMethods class] protocols:nil];
 
     [[[[subclassMock stub] classMethod] andReturn:@"mocked-subclass"] foo];
     [subclassMock stopMocking];
@@ -163,21 +163,21 @@ static NSUInteger initializeCallCount = 0;
 - (void)testStubbingIsOnlyActiveAtTheClassItWasAdded
 {
     // stage 1: stub in superclass affects only superclass
-    id superclassMock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    id superclassMock = [OCMockObject mockForClass:[TestClassWithClassMethods class] protocols:nil];
     [[[[superclassMock stub] classMethod] andReturn:@"mocked-superclass"] foo];
     XCTAssertEqualObjects(@"mocked-superclass", [TestClassWithClassMethods foo], @"Should have stubbed method");
     XCTAssertEqualObjects(@"Foo-ClassMethod", [TestSubclassWithClassMethods foo], @"Should NOT have stubbed method");
     [superclassMock stopMocking];
 
     // stage 2: stub in subclass affects only subclass
-    id subclassMock = [OCMockObject mockForClass:[TestSubclassWithClassMethods class]];
+    id subclassMock = [OCMockObject mockForClass:[TestSubclassWithClassMethods class] protocols:nil];
     [[[[subclassMock stub] classMethod] andReturn:@"mocked-subclass"] foo];
     XCTAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo], @"Should NOT have stubbed method");
     XCTAssertEqualObjects(@"mocked-subclass", [TestSubclassWithClassMethods foo], @"Should have stubbed method");
     [subclassMock stopMocking];
 
     // stage 3: like stage 1; also demonstrates that subclass cleared all stubs
-    id superclassMock2 = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    id superclassMock2 = [OCMockObject mockForClass:[TestClassWithClassMethods class] protocols:nil];
     [[[[superclassMock2 stub] classMethod] andReturn:@"mocked-superclass"] foo];
     XCTAssertEqualObjects(@"mocked-superclass", [TestClassWithClassMethods foo], @"Should have stubbed method");
     XCTAssertEqualObjects(@"Foo-ClassMethod", [TestSubclassWithClassMethods foo], @"Should NOT have stubbed method");
@@ -185,7 +185,7 @@ static NSUInteger initializeCallCount = 0;
 
 - (void)testStubsOnlyClassMethodWhenInstanceMethodWithSameNameExists
 {
-    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class] protocols:nil];
     
     [[[[mock stub] classMethod] andReturn:@"mocked"] bar];
     
@@ -195,7 +195,7 @@ static NSUInteger initializeCallCount = 0;
 
 - (void)testStubsClassMethodWhenNoInstanceMethodExistsWithName
 {
-    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class] protocols:nil];
     
     [[[mock stub] andReturn:@"mocked"] foo];
     
@@ -204,7 +204,7 @@ static NSUInteger initializeCallCount = 0;
 
 - (void)testStubsCanDistinguishInstanceAndClassMethods
 {
-    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class] protocols:nil];
     
     [[[[mock stub] classMethod] andReturn:@"mocked-class"] bar];
     [[[mock stub] andReturn:@"mocked-instance"] bar];
@@ -215,7 +215,7 @@ static NSUInteger initializeCallCount = 0;
 
 - (void)testRevertsAllStubbedMethodsOnDealloc
 {
-    id mock = [[OCClassMockObject alloc] initWithClass:[TestClassWithClassMethods class]];
+    id mock = [[OCClassMockObject alloc] initWithClass:[TestClassWithClassMethods class] protocols:nil];
 
     [[[[mock stub] classMethod] andReturn:@"mocked-foo"] foo];
     [[[[mock stub] classMethod] andReturn:@"mocked-bar"] bar];
@@ -231,7 +231,7 @@ static NSUInteger initializeCallCount = 0;
 
 - (void)testRevertsAllStubbedMethodsOnPartialMockDealloc
 {
-    id mock = [[OCPartialMockObject alloc] initWithClass:[TestClassWithClassMethods class]];
+    id mock = [[OCPartialMockObject alloc] initWithClass:[TestClassWithClassMethods class] protocols:nil];
     
     [[[[mock stub] classMethod] andReturn:@"mocked-foo"] foo];
     [[[[mock stub] classMethod] andReturn:@"mocked-bar"] bar];
@@ -247,10 +247,10 @@ static NSUInteger initializeCallCount = 0;
 
 - (void)testSecondClassMockDeactivatesFirst
 {
-    id mock1 = [[OCClassMockObject alloc] initWithClass:[TestClassWithClassMethods class]];
+    id mock1 = [[OCClassMockObject alloc] initWithClass:[TestClassWithClassMethods class] protocols:nil];
     [[[mock1 stub] andReturn:@"mocked-foo-1"] foo];
 
-    id mock2 = [[OCClassMockObject alloc] initWithClass:[TestClassWithClassMethods class]];
+    id mock2 = [[OCClassMockObject alloc] initWithClass:[TestClassWithClassMethods class] protocols:nil];
     XCTAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo]);
 
     [mock2 stopMocking];
@@ -261,7 +261,7 @@ static NSUInteger initializeCallCount = 0;
 {
     NSString *classFooValue = [TestClassWithClassMethods foo];
     NSString *classBarValue = [TestClassWithClassMethods bar];
-    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class] protocols:nil];
 
     [[[[mock expect] classMethod] andForwardToRealObject] foo];
     NSString *result = [TestClassWithClassMethods foo];
@@ -290,14 +290,14 @@ static NSUInteger initializeCallCount = 0;
 
 - (void)testRefusesToCreateClassMockForNilClass
 {
-    XCTAssertThrows(OCMClassMock(nil));
+    XCTAssertThrows([OCMockObject mockForClass:nil protocols:nil]);
 }
 
 - (void)testInitializeIsNotCalledOnMockedClass
 {
     NSUInteger countBefore = [TestClassWithClassMethods initializeCallCount];
 
-    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class] protocols:nil];
     [TestClassWithClassMethods foo];
     [[mock verify] foo];
 
@@ -310,7 +310,7 @@ static NSUInteger initializeCallCount = 0;
 {
     TestClassWithClassMethods *dummyObject = [[TestClassWithClassMethods alloc] init];
 
-    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class] protocols:nil];
     [[[mock stub] andReturn:dummyObject] new];
 
     id newObject = [TestClassWithClassMethods new];

@@ -16,6 +16,7 @@
 
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
+#import "TestProtocol.h"
 
 
 #pragma mark   Helper classes
@@ -83,7 +84,6 @@ typedef NSString TypedefString;
 @end
 
 
-
 #pragma mark   Tests for interaction with runtime and foundation conventions
 
 @interface OCMockObjectRuntimeTests : XCTestCase
@@ -92,24 +92,53 @@ typedef NSString TypedefString;
 
 @implementation OCMockObjectRuntimeTests
 
-- (void)testRespondsToValidSelector
+- (void)testRespondsToValidSelectorForClass
 {
-    id mock = [OCMockObject mockForClass:[NSString class]];
+    id mock = [OCMockObject mockForClass:[NSString class]
+                               protocols:@protocol(NSLocking), @protocol(TestProtocol), nil];
+
     XCTAssertTrue([mock respondsToSelector:@selector(lowercaseString)]);
 }
 
+- (void)testRespondsToValidSelectorForProtocols
+{
+    id mock = [OCMockObject mockForClass:[NSString class]
+                               protocols:@protocol(NSLocking), @protocol(TestProtocol), nil];
+
+    XCTAssertTrue([mock respondsToSelector:@selector(lock)]);
+    XCTAssertTrue([mock respondsToSelector:@selector(primitiveValue)]);
+}
 
 - (void)testDoesNotRespondToInvalidSelector
 {
-    id mock = [OCMockObject mockForClass:[NSString class]];
+    id mock = [OCMockObject mockForClass:[NSString class]
+                               protocols:@protocol(NSLocking), @protocol(TestProtocol), nil];
+
     // We use a selector that's not implemented by the mock
     XCTAssertFalse([mock respondsToSelector:@selector(arrayWithArray:)]);
 }
 
+- (void)testConformsToProtocolsFromList
+{
+    id mock = [OCMockObject mockForClass:[NSString class]
+                               protocols:@protocol(NSLocking), @protocol(TestProtocol), nil];
+
+    XCTAssertTrue([mock conformsToProtocol:@protocol(NSLocking)]);
+    XCTAssertTrue([mock conformsToProtocol:@protocol(TestProtocol)]);
+}
+
+- (void)testDoesNotConformToInvalidProtocol
+{
+    id mock = [OCMockObject mockForClass:[NSString class]
+                               protocols:@protocol(TestProtocol), nil];
+
+    // We use a protocol that's not implemented by the mock
+    XCTAssertFalse([mock conformsToProtocol:@protocol(NSLocking)]);
+}
 
 - (void)testCanStubValueForKeyMethod
 {
-    id mock = [OCMockObject mockForClass:[NSObject class]];
+    id mock = [OCMockObject mockForClass:[NSObject class] protocols:nil];
     [[[mock stub] andReturn:@"SomeValue"] valueForKey:@"SomeKey"];
 
     id returnValue = [mock valueForKey:@"SomeKey"];
@@ -120,21 +149,21 @@ typedef NSString TypedefString;
 
 - (void)testCanMockNSMutableArray
 {
-    id mock = [OCMockObject niceMockForClass:[NSMutableArray class]];
+    id mock = [OCMockObject niceMockForClass:[NSMutableArray class] protocols:nil];
     id anArray = [[NSMutableArray alloc] init];
 }
 
 
 - (void)testForwardsIsKindOfClass
 {
-    id mock = [OCMockObject mockForClass:[NSString class]];
+    id mock = [OCMockObject mockForClass:[NSString class] protocols:nil];
     XCTAssertTrue([mock isKindOfClass:[NSString class]], @"Should have pretended to be the mocked class.");
 }
 
 
 - (void)testWorksWithTypeQualifiers
 {
-    id myMock = [OCMockObject mockForClass:[TestClassWithTypeQualifierMethod class]];
+    id myMock = [OCMockObject mockForClass:[TestClassWithTypeQualifierMethod class] protocols:nil];
 
     XCTAssertNoThrow([[myMock expect] aSpecialMethod:"foo"], @"Should not complain about method with type qualifiers.");
     XCTAssertNoThrow([myMock aSpecialMethod:"foo"], @"Should not complain about method with type qualifiers.");
@@ -142,7 +171,7 @@ typedef NSString TypedefString;
 
 - (void)testWorksWithTypedefsToObjects
 {
-    id myMock = [OCMockObject mockForClass:[TestClassWithTypedefObjectArgument class]];
+    id myMock = [OCMockObject mockForClass:[TestClassWithTypedefObjectArgument class] protocols:nil];
     [[[myMock stub] andReturn:@"stubbed"] stringForTypedef:[OCMArg any]];
      id actualReturn = [myMock stringForTypedef:@"Some arg that shouldn't matter"];
      XCTAssertEqualObjects(actualReturn, @"stubbed", @"Should have matched invocation.");
@@ -152,7 +181,7 @@ typedef NSString TypedefString;
 #if 0 // can't test this with ARC
 - (void)testAdjustsRetainCountWhenStubbingMethodsThatCreateObjects
 {
-    id mock = [OCMockObject mockForClass:[NSString class]];
+    id mock = [OCMockObject mockForClass:[NSString class] protocols:nil];
     NSString *objectToReturn = [NSString stringWithFormat:@"This is not a %@.", @"string constant"];
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "NotReleasedValue"
@@ -171,26 +200,26 @@ typedef NSString TypedefString;
 
 - (void)testComplainsWhenUnimplementedMethodIsCalled
 {
-    id mock = [OCMockObject mockForClass:[NSString class]];
+    id mock = [OCMockObject mockForClass:[NSString class] protocols:nil];
     XCTAssertThrowsSpecificNamed([mock performSelector:@selector(sortedArrayHint)], NSException, NSInvalidArgumentException);
 }
 
 - (void)testComplainsWhenAttemptIsMadeToStubInitMethod
 {
-    id mock = [OCMockObject mockForClass:[NSString class]];
+    id mock = [OCMockObject mockForClass:[NSString class] protocols:nil];
     XCTAssertThrows([[[mock stub] init] andReturn:nil]);
 }
 
 - (void)testComplainsWhenAttemptIsMadeToStubInitMethodViaMacro
 {
-    id mock = [OCMockObject mockForClass:[NSString class]];
+    id mock = [OCMockObject mockForClass:[NSString class] protocols:nil];
     XCTAssertThrows(OCMStub([mock init]));
 }
 
 
 - (void)testMockShouldNotRaiseWhenDescribing
 {
-    id mock = [OCMockObject mockForClass:[NSObject class]];
+    id mock = [OCMockObject mockForClass:[NSObject class] protocols:nil];
 
     XCTAssertNoThrow(NSLog(@"Testing description handling dummy methods... %@ %@ %@ %@ %@",
             @{@"foo": mock},
@@ -239,12 +268,90 @@ typedef NSString TypedefString;
 {
     int numClassesBefore = objc_getClassList(NULL, 0);
 
-    id mock = [OCMockObject mockForClass:[TestDelegate class]];
+    id mock = [OCMockObject mockForClass:[TestDelegate class] protocols:nil];
     [mock stopMocking];
 
     int numClassesAfter = objc_getClassList(NULL, 0);
     XCTAssertEqual(numClassesBefore, numClassesAfter, @"Should have disposed dynamically generated classes.");
 }
 
+- (void)testDescriptionForClassMockObjectForNoProtocols
+{
+    id mock = [OCMockObject mockForClass:[NSString class] protocols:nil];
+    XCTAssertEqualObjects(@"OCMockObject(NSString)", [mock description], @"Should have returned correct description.");
+}
+
+- (void)testDescriptionForClassMockObjectForSingleProtocol
+{
+    id mock = [OCMockObject mockForClass:[NSString class]
+                               protocols:@protocol(TestProtocol), nil];
+    XCTAssertEqualObjects(@"OCMockObject(NSString <TestProtocol>)", [mock description], @"Should have returned correct description.");
+}
+
+- (void)testDescriptionForClassMockObjectForMultipleProtocols
+{
+    id mock = [OCMockObject mockForClass:[NSString class]
+                               protocols:@protocol(NSLocking), @protocol(TestProtocol), nil];
+    XCTAssertEqualObjects(@"OCMockObject(NSString <NSLocking, TestProtocol>)", [mock description], @"Should have returned correct description.");
+}
+
+- (void)testCanMockFormalProtocol
+{
+    id mock = [OCMockObject mockForProtocols:@protocol(NSLocking), nil];
+    [[mock expect] lock];
+
+    [mock lock];
+
+    [mock verify];
+}
+
+- (void)testCanMockMultipleProtocols
+{
+    id mock = OCMProtocolMock(@protocol(NSLocking), @protocol(TestProtocol));
+    [[mock expect] lock];
+    [[mock expect] primitiveValue];
+
+    [mock lock];
+    [mock primitiveValue];
+
+    [mock verify];
+}
+
+- (void)testRaisesWhenUnknownMethodIsCalledOnProtocolsMock
+{
+    id mock = [OCMockObject mockForClass:[NSObject class]
+                               protocols:@protocol(NSLocking), @protocol(TestProtocol), nil];
+    XCTAssertThrows([mock lowercaseString], @"Should have raised an exception.");
+}
+
+- (void)testCanMockMultipleProtocolsNicely
+{
+    id mock = [OCMockObject niceMockForClass:[NSObject class]
+                                   protocols:@protocol(NSLocking), @protocol(TestProtocol), nil];
+    [[mock expect] lock];
+    [[mock expect] primitiveValue];
+
+    [mock lock];
+    [mock primitiveValue];
+
+    [mock verify];
+}
+
+- (void)testRaisesAnExceptionWhenAnExpectedMethodIsNotCalledOnNiceProtocolsMock
+{
+    id mock = [OCMockObject niceMockForClass:[NSObject class]
+                                   protocols:@protocol(NSLocking), @protocol(TestProtocol), nil];
+    [[mock expect] primitiveValue];
+    XCTAssertThrows([mock verify], @"Should have raised an exception because method was not called.");
+}
+
+- (void)testProtocolClassMethod
+{
+    id mock = [OCMockObject mockForClass:[NSObject class]
+                               protocols:@protocol(NSLocking), @protocol(TestProtocol), nil];
+    OCMStub([mock stringValueClassMethod]).andReturn(@"stubbed");
+    id result = [mock stringValueClassMethod];
+    XCTAssertEqual(@"stubbed", result, @"Should have stubbed the class method.");
+}
 
 @end

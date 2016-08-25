@@ -17,42 +17,35 @@
 #import <objc/runtime.h>
 #import "NSMethodSignature+OCMAdditions.h"
 #import "OCProtocolMockObject.h"
-#import "OCProtocolProxy.h"
+#import "OCProtocolsProxy.h"
 
 @implementation OCProtocolMockObject
 {
-    NSArray *protocolProxies;
+    OCProtocolsProxy *protocolsProxy;
 }
 
 #pragma mark  Initialisers, description, accessors, etc.
 
 - (id)initWithProtocols:(NSArray *)protocols
 {
+    NSCParameterAssert(protocols != nil);
+
 	[super init];
 
-    NSMutableArray *proxies = [NSMutableArray new];
-
-    for(Protocol *aProtocol in protocols)
-    {
-        OCProtocolProxy *protocolProxy = [[OCProtocolProxy alloc] initWithProtocol:aProtocol];
-        [proxies addObject:protocolProxy];
-        [protocolProxy release];
-    }
-
-	protocolProxies = proxies;
+	protocolsProxy = [[OCProtocolsProxy alloc] initWithProtocols:protocols];
 
 	return self;
 }
 
 - (void)dealloc
 {
-    [protocolProxies release];
+    [protocolsProxy release];
     [super dealloc];
 }
 
 - (NSString *)description
 {
-    NSArray *protocolNames = [protocolProxies valueForKey:NSStringFromSelector(@selector(protocolName))];
+    NSArray *protocolNames = [protocolsProxy protocolNames];
     return [NSString stringWithFormat:@"OCMockObject(%@)", [protocolNames componentsJoinedByString:@", "]];
 }
 
@@ -60,33 +53,17 @@
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
-    for(OCProtocolProxy *protocolProxy in protocolProxies)
-    {
-        NSMethodSignature *signature = [protocolProxy methodSignatureForSelector:aSelector];
-
-        if(signature)
-        {
-            return signature;
-        }
-    }
-    return nil;
+    return [protocolsProxy methodSignatureForSelector:aSelector];
 }
 
 - (BOOL)conformsToProtocol:(Protocol *)aProtocol
 {
-    for(OCProtocolProxy *protocolProxy in protocolProxies)
-    {
-        if([protocolProxy conformsToProtocol:aProtocol])
-        {
-            return YES;
-        }
-    }
-    return NO;
+    return [protocolsProxy conformsToProtocol:aProtocol];
 }
 
 - (BOOL)respondsToSelector:(SEL)selector
 {
-    return ([self methodSignatureForSelector:selector] != nil);
+    return [protocolsProxy respondsToSelector:selector];
 }
 
 @end

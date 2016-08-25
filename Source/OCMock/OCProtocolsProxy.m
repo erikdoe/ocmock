@@ -16,7 +16,15 @@
 
 #import <objc/runtime.h>
 #import "NSMethodSignature+OCMAdditions.h"
-#import "OCProtocolProxy.h"
+#import "OCProtocolsProxy.h"
+
+@interface OCProtocolProxy : NSObject
+
+- (id)initWithProtocol:(Protocol *)aProtocol;
+
+- (NSString *)protocolName;
+
+@end
 
 @implementation OCProtocolProxy
 {
@@ -60,6 +68,79 @@
 - (BOOL)conformsToProtocol:(Protocol *)aProtocol
 {
     return protocol_conformsToProtocol(mockedProtocol, aProtocol);
+}
+
+@end
+
+
+@implementation OCProtocolsProxy
+{
+    NSArray *protocolProxies;
+}
+
+- (instancetype)initWithProtocols:(NSArray *)protocols
+{
+    self = [super init];
+
+    if (self && protocols)
+    {
+        NSMutableArray *proxies = [NSMutableArray new];
+
+        for(Protocol *aProtocol in protocols)
+        {
+            OCProtocolProxy *protocolProxy = [[OCProtocolProxy alloc] initWithProtocol:aProtocol];
+            [proxies addObject:protocolProxy];
+            [protocolProxy release];
+        }
+
+        protocolProxies = proxies;
+    }
+    return self;
+}
+
+- (void)dealloc
+{
+    [protocolProxies release];
+    [super dealloc];
+}
+
+- (NSArray *)protocolNames
+{
+    return [protocolProxies valueForKey:NSStringFromSelector(@selector(protocolName))];
+}
+
+
+#pragma mark  Proxy API
+
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
+{
+    for(OCProtocolProxy *protocolProxy in protocolProxies)
+    {
+        NSMethodSignature *signature = [protocolProxy methodSignatureForSelector:aSelector];
+
+        if(signature)
+        {
+            return signature;
+        }
+    }
+    return nil;
+}
+
+- (BOOL)conformsToProtocol:(Protocol *)aProtocol
+{
+    for(OCProtocolProxy *protocolProxy in protocolProxies)
+    {
+        if([protocolProxy conformsToProtocol:aProtocol])
+        {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (BOOL)respondsToSelector:(SEL)selector
+{
+    return ([self methodSignatureForSelector:selector] != nil);
 }
 
 @end

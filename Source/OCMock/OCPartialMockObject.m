@@ -31,7 +31,7 @@
 {
     NSParameterAssert(anObject != nil);
     [self assertClassIsSupported:[anObject class]];
-	[super initWithClass:[anObject class]];
+	[super initWithClass:[anObject class] protocols:nil];
 	realObject = [anObject retain];
     [self prepareObjectForInstanceMethodMocking];
 	return self;

@@ -20,29 +20,44 @@
 #import "OCMFunctionsPrivate.h"
 #import "OCMInvocationStub.h"
 #import "NSMethodSignature+OCMAdditions.h"
+#import "OCProtocolsProxy.h"
 
 @implementation OCClassMockObject
+{
+    OCProtocolsProxy *protocolsProxy;
+}
 
 #pragma mark  Initialisers, description, accessors, etc.
 
-- (id)initWithClass:(Class)aClass
+- (id)initWithClass:(Class)aClass protocols:(NSArray *)protocols
 {
     NSParameterAssert(aClass != nil);
-	[super init];
-	mockedClass = aClass;
+    [super init];
+    mockedClass = aClass;
+    protocolsProxy = [[OCProtocolsProxy alloc] initWithProtocols:protocols];
+
     [self prepareClassForClassMethodMocking];
-	return self;
+    return self;
 }
 
 - (void)dealloc
 {
 	[self stopMocking];
+    [protocolsProxy release];
 	[super dealloc];
 }
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"OCMockObject(%@)", NSStringFromClass(mockedClass)];
+    NSArray *protocolNames = [protocolsProxy protocolNames];
+
+    if (protocolNames) {
+        return [NSString stringWithFormat:@"OCMockObject(%@ <%@>)",
+                NSStringFromClass(mockedClass),
+                [protocolNames componentsJoinedByString:@", "]];
+    }
+
+    return [NSString stringWithFormat:@"OCMockObject(%@)", NSStringFromClass(mockedClass)];
 }
 
 - (Class)mockedClass
@@ -186,10 +201,17 @@
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
     NSMethodSignature *signature = [mockedClass instanceMethodSignatureForSelector:aSelector];
+    
     if(signature == nil)
     {
         signature = [NSMethodSignature signatureForDynamicPropertyAccessedWithSelector:aSelector inClass:mockedClass];
     }
+
+    if(signature == nil)
+    {
+        signature = [protocolsProxy methodSignatureForSelector:aSelector];
+    }
+
     return signature;
 }
 
@@ -205,7 +227,7 @@
 
 - (BOOL)respondsToSelector:(SEL)selector
 {
-    return [mockedClass instancesRespondToSelector:selector];
+    return [mockedClass instancesRespondToSelector:selector] || [protocolsProxy respondsToSelector:selector];
 }
 
 - (BOOL)isKindOfClass:(Class)aClass
@@ -215,7 +237,7 @@
 
 - (BOOL)conformsToProtocol:(Protocol *)aProtocol
 {
-    return class_conformsToProtocol(mockedClass, aProtocol);
+    return class_conformsToProtocol(mockedClass, aProtocol) || [protocolsProxy conformsToProtocol:aProtocol];
 }
 
 @end

@@ -30,7 +30,7 @@
 
 - (void)testAcceptsStubbedMethodWithHamcrestConstraint
 {
-	id mock = [OCMockObject mockForClass:[NSString class]];
+	id mock = [OCMockObject mockForClass:[NSString class] protocols:nil];
 	[[mock stub] hasSuffix:(id)startsWith(@"foo")];
 	[mock hasSuffix:@"foobar"];
 }
@@ -38,7 +38,7 @@
 
 - (void)testRejectsUnstubbedMethodWithHamcrestConstraint
 {
-	id mock = [OCMockObject mockForClass:[NSString class]];
+	id mock = [OCMockObject mockForClass:[NSString class] protocols:nil];
 	[[mock stub] hasSuffix:(id)anyOf(equalTo(@"foo"), equalTo(@"bar"), NULL)];
 	XCTAssertThrows([mock hasSuffix:@"foobar"], @"Should have raised an exception.");
 }

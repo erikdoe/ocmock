@@ -64,7 +64,7 @@
 
 - (void)testDoesNotThrowWhenMethodWasInvoked
 {
-    id mock = [OCMockObject niceMockForClass:[NSString class]];
+    id mock = [OCMockObject niceMockForClass:[NSString class] protocols:nil];
 
     [mock lowercaseString];
 
@@ -73,7 +73,7 @@
 
 - (void)testThrowsWhenMethodWasNotInvoked
 {
-    id mock = [OCMockObject niceMockForClass:[NSString class]];
+    id mock = [OCMockObject niceMockForClass:[NSString class] protocols:nil];
 
     [mock lowercaseString];
 
@@ -103,7 +103,7 @@
 
 - (void)testDoesNotThrowWhenClassMethodWasInvoked
 {
-    id mock = [OCMockObject niceMockForClass:[TestBaseClassForVerifyAfterRun class]];
+    id mock = [OCMockObject niceMockForClass:[TestBaseClassForVerifyAfterRun class] protocols:nil];
 
     [TestBaseClassForVerifyAfterRun classMethod1];
 
@@ -112,7 +112,7 @@
 
 - (void)testThrowsWhenClassMethodWasNotInvoked
 {
-    id mock = [OCMockObject niceMockForClass:[TestBaseClassForVerifyAfterRun class]];
+    id mock = [OCMockObject niceMockForClass:[TestBaseClassForVerifyAfterRun class] protocols:nil];
 
     XCTAssertThrows([[mock verify] classMethod1], @"Should not have thrown an exception for class method that was called.");
 }

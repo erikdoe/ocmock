@@ -46,7 +46,7 @@
 
 - (void)testCanStubDynamicPropertiesWithIdType
 {
-    id mock = [OCMockObject mockForClass:[TestClassWithDynamicProperties class]];
+    id mock = [OCMockObject mockForClass:[TestClassWithDynamicProperties class] protocols:nil];
     NSDictionary *testDict = @{@"test-key" : @"test-value"};
     [[[mock stub] andReturn:testDict] anObject];
     XCTAssertEqualObjects(testDict, [mock anObject]);
@@ -54,7 +54,7 @@
 
 - (void)testCanStubDynamicPropertiesWithUIntType
 {
-    id mock = [OCMockObject mockForClass:[TestClassWithDynamicProperties class]];
+    id mock = [OCMockObject mockForClass:[TestClassWithDynamicProperties class] protocols:nil];
     NSUInteger someUInt = 5;
     [[[mock stub] andReturnValue:OCMOCK_VALUE(someUInt)] aUInt];
     XCTAssertEqual(5, [mock aUInt]);
@@ -62,7 +62,7 @@
 
 - (void)testCanStubDynamicPropertiesWithIntType
 {
-    id mock = [OCMockObject mockForClass:[TestClassWithDynamicProperties class]];
+    id mock = [OCMockObject mockForClass:[TestClassWithDynamicProperties class] protocols:nil];
     NSInteger someInt = -10;
     [[[mock stub] andReturnValue:OCMOCK_VALUE(someInt)] __aPrivateInt];
     XCTAssertEqual(-10, [mock __aPrivateInt]);
@@ -70,7 +70,7 @@
 
 - (void)testCanStubDynamicPropertiesWithCustomGetter
 {
-    id mock = [OCMockObject mockForClass:[TestClassWithDynamicProperties class]];
+    id mock = [OCMockObject mockForClass:[TestClassWithDynamicProperties class] protocols:nil];
     NSDictionary *testDict = @{@"test-key" : @"test-value"};
     [[[mock stub] andReturn:testDict] customGetter];
     XCTAssertEqualObjects(testDict, [mock customGetter]);
@@ -78,7 +78,7 @@
 
 - (void)testCanMockSetterForDynamicProperty
 {
-    id mock = [OCMockObject mockForClass:[TestClassWithDynamicProperties class]];
+    id mock = [OCMockObject mockForClass:[TestClassWithDynamicProperties class] protocols:nil];
     NSDictionary *dummyObject = @{@"test-key" : @"test-value"};
 
     [[mock expect] setAnObject:dummyObject];
@@ -88,7 +88,7 @@
 
 - (void)testCanMockSetterForDynamicPropertyWithCustomSetter
 {
-    id mock = [OCMockObject mockForClass:[TestClassWithDynamicProperties class]];
+    id mock = [OCMockObject mockForClass:[TestClassWithDynamicProperties class] protocols:nil];
     NSDictionary *dummyObject = @{@"test-key" : @"test-value"};
 
     [[mock expect] customSetter:dummyObject];

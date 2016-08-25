@@ -16,10 +16,12 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OCProtocolProxy : NSObject
+@interface OCProtocolsProxy : NSObject
 
-- (id)initWithProtocol:(Protocol *)aProtocol;
+- (id)initWithProtocols:(NSArray *)protocols;
 
-- (NSString *)protocolName;
+- (NSArray *)protocolNames;
 
 @end
+
+
