@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		012412861D5A0B31003B75B8 /* OCProtocolsProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 012412851D5A0B28003B75B8 /* OCProtocolsProxy.m */; };
+		012412871D5A0B32003B75B8 /* OCProtocolsProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 012412851D5A0B28003B75B8 /* OCProtocolsProxy.m */; };
+		012412881D5A0B32003B75B8 /* OCProtocolsProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 012412851D5A0B28003B75B8 /* OCProtocolsProxy.m */; };
+		012412891D5A0B32003B75B8 /* OCProtocolsProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 012412851D5A0B28003B75B8 /* OCProtocolsProxy.m */; };
 		030EF0B614632FD000B04273 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 030EF0B414632FD000B04273 /* InfoPlist.strings */; };
 		031E50581BB4A56300E257C3 /* OCMBoxedReturnValueProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 031E50571BB4A56300E257C3 /* OCMBoxedReturnValueProviderTests.m */; };
 		031E50591BB4A56300E257C3 /* OCMBoxedReturnValueProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 031E50571BB4A56300E257C3 /* OCMBoxedReturnValueProviderTests.m */; };
@@ -346,6 +350,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		012412841D5A0B28003B75B8 /* OCProtocolsProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OCProtocolsProxy.h; sourceTree = "<group>"; };
+		012412851D5A0B28003B75B8 /* OCProtocolsProxy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OCProtocolsProxy.m; sourceTree = "<group>"; };
+		019DD2401D6F4753001055C3 /* TestProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestProtocol.h; sourceTree = "<group>"; };
 		030EF0A814632FD000B04273 /* OCMock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OCMock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		030EF0B314632FD000B04273 /* OCMock-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OCMock-Info.plist"; sourceTree = "<group>"; };
 		030EF0B514632FD000B04273 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -598,6 +605,7 @@
 		03565A3318F0566F003AE91E /* OCMockTests */ = {
 			isa = PBXGroup;
 			children = (
+				019DD2401D6F4753001055C3 /* TestProtocol.h */,
 				2FA2822E19948FC997965267 /* OCMockObjectTests.m */,
 				03AC5C1416DF9FA500D82ECD /* OCMockObjectPartialMocksTests.m */,
 				039F91C516EFB493006C3D70 /* OCMockObjectClassMethodMockingTests.m */,
@@ -660,6 +668,8 @@
 				03B31619146334040052CD09 /* Invocation Actions */,
 				03B3161A146334320052CD09 /* Argument Constraints and Actions */,
 				037ECD5618FB0D2E00AF0E4C /* Helper */,
+				012412841D5A0B28003B75B8 /* OCProtocolsProxy.h */,
+				012412851D5A0B28003B75B8 /* OCProtocolsProxy.m */,
 			);
 			name = "Core Mocks";
 			sourceTree = "<group>";
@@ -1182,6 +1192,7 @@
 				03B315E3146333BF0052CD09 /* OCMNotificationPoster.m in Sources */,
 				03B315E8146333BF0052CD09 /* OCMObserverRecorder.m in Sources */,
 				03B315ED146333C00052CD09 /* OCMockObject.m in Sources */,
+				012412861D5A0B31003B75B8 /* OCProtocolsProxy.m in Sources */,
 				03B315F2146333C00052CD09 /* OCMStubRecorder.m in Sources */,
 				03B315F7146333C00052CD09 /* OCMPassByRefSetter.m in Sources */,
 				03B315FC146333C00052CD09 /* OCMRealObjectForwarder.m in Sources */,
@@ -1222,6 +1233,7 @@
 				03B315E0146333BF0052CD09 /* OCMIndirectReturnValueProvider.m in Sources */,
 				03B315E5146333BF0052CD09 /* OCMNotificationPoster.m in Sources */,
 				03B315EA146333BF0052CD09 /* OCMObserverRecorder.m in Sources */,
+				012412871D5A0B32003B75B8 /* OCProtocolsProxy.m in Sources */,
 				03B315EF146333C00052CD09 /* OCMockObject.m in Sources */,
 				03B315F4146333C00052CD09 /* OCMStubRecorder.m in Sources */,
 				03B315F9146333C00052CD09 /* OCMPassByRefSetter.m in Sources */,
@@ -1288,6 +1300,7 @@
 				817EB1241BD765130047E85A /* OCMBoxedReturnValueProvider.m in Sources */,
 				817EB1251BD765130047E85A /* OCMExceptionReturnValueProvider.m in Sources */,
 				817EB1261BD765130047E85A /* OCMIndirectReturnValueProvider.m in Sources */,
+				012412891D5A0B32003B75B8 /* OCProtocolsProxy.m in Sources */,
 				817EB1271BD765130047E85A /* OCMNotificationPoster.m in Sources */,
 				817EB1281BD765130047E85A /* OCMReturnValueProvider.m in Sources */,
 				817EB1291BD765130047E85A /* OCMLocation.m in Sources */,
@@ -1353,6 +1366,7 @@
 				F0B951191B0080EC00942C38 /* OCMBoxedReturnValueProvider.m in Sources */,
 				F0B9511A1B0080EC00942C38 /* OCMExceptionReturnValueProvider.m in Sources */,
 				F0B9511B1B0080EC00942C38 /* OCMIndirectReturnValueProvider.m in Sources */,
+				012412881D5A0B32003B75B8 /* OCProtocolsProxy.m in Sources */,
 				F0B9511C1B0080EC00942C38 /* OCMNotificationPoster.m in Sources */,
 				F0B9511D1B0080EC00942C38 /* OCMReturnValueProvider.m in Sources */,
 				F0B9511E1B0080EC00942C38 /* OCMLocation.m in Sources */,

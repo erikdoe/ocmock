@@ -17,11 +17,8 @@
 #import <OCMock/OCMockObject.h>
 
 @interface OCProtocolMockObject : OCMockObject 
-{
-	Protocol	*mockedProtocol;
-}
 
-- (id)initWithProtocol:(Protocol *)aProtocol;
+- (id)initWithProtocols:(NSArray *)protocols;
 
 @end
 

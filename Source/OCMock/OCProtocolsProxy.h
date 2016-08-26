@@ -14,17 +14,14 @@
  *  under the License.
  */
 
-#import <OCMock/OCMockObject.h>
+#import <Foundation/Foundation.h>
 
-@interface OCClassMockObject : OCMockObject 
-{
-	Class               mockedClass;
-    Class               originalMetaClass;
-}
+@interface OCProtocolsProxy : NSObject
 
-- (id)initWithClass:(Class)aClass protocols:(NSArray *)protocols;
+- (id)initWithProtocols:(NSArray *)protocols;
 
-- (Class)mockedClass;
-- (Class)mockObjectClass;  // since -class returns the mockedClass
+- (NSArray *)protocolNames;
 
 @end
+
+

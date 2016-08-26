@@ -17,47 +17,53 @@
 #import <objc/runtime.h>
 #import "NSMethodSignature+OCMAdditions.h"
 #import "OCProtocolMockObject.h"
+#import "OCProtocolsProxy.h"
 
 @implementation OCProtocolMockObject
+{
+    OCProtocolsProxy *protocolsProxy;
+}
 
 #pragma mark  Initialisers, description, accessors, etc.
 
-- (id)initWithProtocol:(Protocol *)aProtocol
+- (id)initWithProtocols:(NSArray *)protocols
 {
-    NSParameterAssert(aProtocol != nil);
+    NSCParameterAssert(protocols != nil);
+
 	[super init];
-	mockedProtocol = aProtocol;
+
+	protocolsProxy = [[OCProtocolsProxy alloc] initWithProtocols:protocols];
+
 	return self;
+}
+
+- (void)dealloc
+{
+    [protocolsProxy release];
+    [super dealloc];
 }
 
 - (NSString *)description
 {
-    const char* name = protocol_getName(mockedProtocol);
-    return [NSString stringWithFormat:@"OCMockObject(%s)", name];
+    NSArray *protocolNames = [protocolsProxy protocolNames];
+    return [NSString stringWithFormat:@"OCMockObject(%@)", [protocolNames componentsJoinedByString:@", "]];
 }
 
 #pragma mark  Proxy API
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
-    struct { BOOL isRequired; BOOL isInstance; } opts[4] = { {YES, YES}, {NO, YES}, {YES, NO}, {NO, NO} };
-    for(int i = 0; i < 4; i++)
-    {
-        struct objc_method_description methodDescription = protocol_getMethodDescription(mockedProtocol, aSelector, opts[i].isRequired, opts[i].isInstance);
-        if(methodDescription.name != NULL)
-            return [NSMethodSignature signatureWithObjCTypes:methodDescription.types];
-    }
-    return nil;
+    return [protocolsProxy methodSignatureForSelector:aSelector];
 }
 
 - (BOOL)conformsToProtocol:(Protocol *)aProtocol
 {
-    return protocol_conformsToProtocol(mockedProtocol, aProtocol);
+    return [protocolsProxy conformsToProtocol:aProtocol];
 }
 
 - (BOOL)respondsToSelector:(SEL)selector
 {
-    return ([self methodSignatureForSelector:selector] != nil);
+    return [protocolsProxy respondsToSelector:selector];
 }
 
 @end

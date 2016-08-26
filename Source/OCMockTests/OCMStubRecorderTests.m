@@ -33,7 +33,7 @@
 {
     NSString *arg = @"I love mocks.";
 
-    id mock = [OCMockObject mockForClass:[NSString class]];
+    id mock = [OCMockObject mockForClass:[NSString class] protocols:nil];
     OCMStubRecorder *recorder = [[OCMStubRecorder alloc] initWithMockObject:mock];
     [(id)recorder stringByAppendingString:arg];
 
@@ -46,7 +46,7 @@
 
 - (void)testAddsReturnValueProvider
 {
-    id mock = [OCMockObject mockForClass:[NSString class]];
+    id mock = [OCMockObject mockForClass:[NSString class] protocols:nil];
     OCMStubRecorder *recorder = [[OCMStubRecorder alloc] initWithMockObject:mock];
     [recorder andReturn:@"foo"];
     NSArray *actionList = [(OCMInvocationStub *)[recorder invocationMatcher] invocationActions];
@@ -57,7 +57,7 @@
 
 - (void)testAddsExceptionReturnValueProvider
 {
-    id mock = [OCMockObject mockForClass:[NSString class]];
+    id mock = [OCMockObject mockForClass:[NSString class] protocols:nil];
     OCMStubRecorder *recorder = [[OCMStubRecorder alloc] initWithMockObject:mock];
     [recorder andThrow:[NSException exceptionWithName:@"TestException" reason:@"A reason" userInfo:nil]];
     NSArray *actionList = [(OCMInvocationStub *)[recorder invocationMatcher] invocationActions];
