@@ -122,6 +122,7 @@ typedef NSString TypedefString;
 {
     id mock = [OCMockObject niceMockForClass:[NSMutableArray class]];
     id anArray = [[NSMutableArray alloc] init];
+#pragma unused(mock, anArray)
 }
 
 
