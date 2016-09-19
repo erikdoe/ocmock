@@ -184,7 +184,10 @@ typedef NSString TypedefString;
 - (void)testComplainsWhenAttemptIsMadeToStubInitMethodViaMacro
 {
     id mock = [OCMockObject mockForClass:[NSString class]];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-value"
     XCTAssertThrows(OCMStub([mock init]));
+#pragma clang diagnostic pop
 }
 
 
