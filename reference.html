@@ -565,7 +565,9 @@ id partialMockForString = OCMPartialMock(anObject);
 OCMStub([partialMock class]).andReturn(someOtherClass); // will not work
 {% endhighlight objc %}
 
-<p>It is not possible to mock certain core runtime methods including <code>init</code>, <code>class</code>, <code>methodSignatureForSelector:</code>, and <code>forwardInvocation:</code>. Note that <code>class</code> is automatically stubbed to return the original class of the object, and not the dynamic subclass used by the partial mock.
+<p>It is not possible to mock a number of core runtime methods. This includes <code>init</code>, <code>class</code>, <code>methodSignatureForSelector:</code>, <code>forwardInvocation:</code>, <code>respondsToSelector:</code>, and several others. 
+
+<p>Note that <code>class</code> is automatically stubbed to return the original class of the object, and not the dynamic subclass used by the partial mock.
 
 
 <h3 class="numbered">Class methods on NSString and NSArray cannot be stubbed or verified</h3>
