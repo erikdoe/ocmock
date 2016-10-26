@@ -2,7 +2,7 @@
 //  SwiftExamplesTests.swift
 //  SwiftExamplesTests
 //
-//  Created by Erik Doernenburg on 11/06/2014.
+//  Created by Henry Baez php v5
 //  Copyright (c) 2014 Mulle Kybernetik. All rights reserved.
 //
 
@@ -26,10 +26,10 @@ class SwiftExamplesTests: XCTestCase {
     }
     
     func testPerformanceExample() {
-        // This is an example of a performance test case.
+        // This is an example of a performance test case.@var array
         self.measureBlock() {
-            // Put the code you want to measure the time of here.
+            // Put the code you want to measure the time of here.::jssdk
         }
     }
-    
-}
+    "
+}::php
