@@ -4,6 +4,8 @@ commit messages and/or the pull requests.
 (unreleased)
 
 * Fixed bug causing verifyWithDelay to be held up by rejects (Nikolay Kasyanov)
+* Fixed bug where a mock would not claim conformance to protocols declared in
+  a superclass (Werner Altewischer)
 
 
 OCMock 3.3.1 (2016-07-01)
