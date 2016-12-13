@@ -83,6 +83,15 @@ typedef NSString TypedefString;
 @end
 
 
+@interface NSValueSubclassForTesting : NSValue
+
+@end
+
+@implementation NSValueSubclassForTesting
+
+@end
+
+
 
 #pragma mark   Tests for interaction with runtime and foundation conventions
 
@@ -117,6 +126,13 @@ typedef NSString TypedefString;
     XCTAssertEqualObjects(@"SomeValue", returnValue, @"Should have returned value that was set up.");
 }
 
+
+- (void)testMockConformsToProtocolImplementedInSuperclass
+{
+    id mock = [OCMockObject mockForClass:[NSValueSubclassForTesting class]];
+    XCTAssertTrue([mock conformsToProtocol:@protocol(NSCopying)]);
+
+}
 
 - (void)testCanMockNSMutableArray
 {
