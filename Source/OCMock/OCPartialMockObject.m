@@ -22,29 +22,6 @@
 #import "OCMFunctionsPrivate.h"
 #import "OCMInvocationStub.h"
 
-/// Returns the class which should be used for mocking the object.
-Class OCPartialMockObjectClassForObject(NSObject *object);
-
-Class OCPartialMockObjectClassForObject(NSObject *object)
-{
-    /*
-     object_getClass() gives us the actual class backing the object, vs. [object class], 
-     which could be overridden (by KVO or CoreData, for example).
-     
-     With KVO, we would lose notifications if we replace and subclass the "true" class instead of the subclass
-     created at runtime for KVO. 
-     
-     So before dynamically subclassing the actual underlying class for mocks, check if
-     there are any observers that would miss notifications.
-     */
-    
-    if ([object observationInfo] != NULL) {
-        return [object class];
-    } else {
-        return object_getClass(object);
-    }
-}
-
 
 @implementation OCPartialMockObject
 
@@ -53,7 +30,7 @@ Class OCPartialMockObjectClassForObject(NSObject *object)
 - (id)initWithObject:(NSObject *)anObject
 {
     NSParameterAssert(anObject != nil);
-    Class const class = OCPartialMockObjectClassForObject(anObject);
+    Class const class = [self classToSubclassForObject:anObject];
     [self assertClassIsSupported:class];
 	[super initWithClass:class];
 	realObject = [anObject retain];
@@ -93,6 +70,21 @@ Class OCPartialMockObjectClassForObject(NSObject *object)
         [[NSException exceptionWithName:NSInvalidArgumentException reason:reason userInfo:nil] raise];
 }
 
+- (Class)classToSubclassForObject:(id)object
+{
+    /* object_getClass() gives us the actual class backing the object, whereas [object class]
+     * is sometimes overridden, by KVO or CoreData, for example, to return a subclass.
+     *
+     * With KVO, if we replace and subclass the actual class, as returned by object_getClass(),
+     * we lose notifications. So, in that case only, we return the class reported by the class 
+     * method.
+     */
+
+    if([object observationInfo] != NULL)
+        return [object class];
+
+    return object_getClass(object);
+}
 
 #pragma mark  Extending/overriding superclass behaviour
 
