@@ -81,6 +81,19 @@
 	XCTAssertTrue([boxed isMethodReturnType:type1 compatibleWithValueType:type2]);
 }
 
+
+- (void)testCorrectEqualityForStructureWithUnknownName
+{
+    // see https://github.com/erikdoe/ocmock/issues/333
+    const char *type1 = "{?=dd}";
+    const char *type2 = "{CLLocationCoordinate2D=dd}";
+
+    OCMBoxedReturnValueProvider *boxed = [OCMBoxedReturnValueProvider new];
+    XCTAssertTrue([boxed isMethodReturnType:type1 compatibleWithValueType:type2]);
+
+}
+
+
 @end
 
 

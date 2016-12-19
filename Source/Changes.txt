@@ -5,6 +5,9 @@ commit messages and/or the pull requests.
 
 * OCMock now requires iOS 8 as minimum deployment target
 * Managed objects can now be mocked (Alan Fineberg, Kyle Van Essen)
+* Now considering structs with unknown names to be the same type as a named
+  struct, as long as either the actual definition matches or one of them is
+  opaque.
 * Fixed bug causing verifyWithDelay to be held up by rejects (Nikolay Kasyanov)
 * Fixed bug where a mock would not claim conformance to protocols declared in
   a superclass (Werner Altewischer)
