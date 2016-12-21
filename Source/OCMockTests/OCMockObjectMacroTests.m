@@ -210,6 +210,18 @@
     OCMVerifyAll(observer);
 }
 
+- (void)testNotificationObservingWithUserInfo
+{
+    id observer = OCMObserverMock();
+    [[NSNotificationCenter defaultCenter] addMockObserver:observer name:@"TestNotificationWithInfo" object:nil];
+    OCMExpect([observer notificationWithName:@"TestNotificationWithInfo" object:[OCMArg any] userInfo:[OCMArg any]]);
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"TestNotificationWithInfo" object:self userInfo:@{ @"foo": @"bar" }];
+
+    OCMVerifyAll(observer);
+}
+
+
 - (void)testSetsUpSubstituteCall
 {
     id mock = OCMStrictProtocolMock(@protocol(TestProtocolForMacroTesting));

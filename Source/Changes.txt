@@ -8,6 +8,8 @@ commit messages and/or the pull requests.
 * Now considering structs with unknown names to be the same type as a named
   struct, as long as either the actual definition matches or one of them is
   opaque.
+* Now notifications with a user info dictionary can be observed and verified
+  with the macro syntax.
 * Fixed bug causing verifyWithDelay to be held up by rejects (Nikolay Kasyanov)
 * Fixed bug where a mock would not claim conformance to protocols declared in
   a superclass (Werner Altewischer)
