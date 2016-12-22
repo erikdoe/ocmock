@@ -21,29 +21,33 @@ published: true
 		<th>File</th>
 	</tr>
 	<tr>
-		<td>OCMock 3.3.1</td>
-		<td>OS X 10.11, iOS 9.2, tvOS 9.1</td>
-		<td>OS X 10.6, iOS 5, tvOS 9.0</td>
-		<td>01-Jul-2016</td>
-		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.3.1/ocmock-3.3.1.dmg">ocmock-3.3.1.dmg</a></td>
+		<td>OCMock 3.4</td>
+		<td>macOS 10.12, iOS 10.2, tvOS 10.1</td>
+		<td>OS X 10.6, <b>iOS 8.0</b>, tvOS 9.0</td>
+		<td>22-Dec-2016</td>
+		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.4/ocmock-3.4.dmg">ocmock-3.4.dmg</a></td>
 	</tr>
 	<tr>
 		<td></td>
 		<td colspan="4">
 			Recent changes:
 			<ul>
-				<li>Now throwing an exception when an attempt is made to stub the init method.
-				<li>Fixed crash when trying to mock NSArray.
+				<li>OCMock now requires iOS 8 as minimum deployment target
+				<li>Managed objects can now be mocked
+				<li>Notifications with a user info dictionary can be observed and verified with the macro syntax.
+				<li>Now considering structs with unknown names to be the same type as a named struct, as long<br>as either the actual definition matches or one of them is opaque.
+				<li>Fixed bug causing verifyWithDelay to be held up by rejects
+				<li>Fixed bug where a mock would not claim conformance to protocols declared in a superclass
 			</ul>
 			<a href="https://github.com/erikdoe/ocmock/blob/master/Source/Changes.txt">more...</a>
 		</td>
 	</tr>
 	<tr>
-		<td>OCMock 3.3</td>
+		<td>OCMock 3.3.1</td>
 		<td>OS X 10.11, iOS 9.2, tvOS 9.1</td>
 		<td>OS X 10.6, iOS 5, tvOS 9.0</td>
-		<td>12-Apr-2016</td>
-		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.3/ocmock-3.3.dmg">ocmock-3.3.dmg</a></td>
+		<td>01-Jul-2016</td>
+		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.3.1/ocmock-3.3.1.dmg">ocmock-3.3.1.dmg</a></td>
 	</tr>
 	<tr>
 		<td>OCMock 2.2.4</td>
