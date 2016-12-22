@@ -2,9 +2,6 @@ url: "http://ocmock.org"
 highlighter: rouge
 exclude: [bin, Gemfile, Gemfile.lock, Makefile]
 permalink: pretty
-paginate: 50
-paginate_path: "news/page:num"
 date_format: "%d %B %Y"
 baseurl: "http://ocmock.org"
-gems: [jekyll-paginate]
 
