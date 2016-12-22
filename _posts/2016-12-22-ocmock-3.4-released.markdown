@@ -1,0 +1,12 @@
+---
+layout: post
+title: OCMock 3.4 released
+tags:
+- Release
+status: publish
+type: post
+published: true
+---
+This release brings the ability to mock managed objects. It also includes a number of smaller improvements and bugfixes.  Details can be found in the [change log](https://github.com/erikdoe/ocmock/blob/master/Source/Changes.txt)
+
+Note: This release requires iOS 8 as a deployment target because Xcode 8 does not seem to want to build binaries with an older deployment target.
