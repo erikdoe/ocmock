@@ -13,7 +13,7 @@ class Builder
       copySource
       buildModules
       signFrameworks "erik@doernenburg.com"
-      createPackage "ocmock-3.3.1.dmg", "OCMock 3.3.1" 
+      createPackage "ocmock-3.4.dmg", "OCMock 3.4" 
       sanityCheck
       openPackageDir
     end
@@ -47,22 +47,22 @@ class Builder
         @worker.run("mkdir -p #{osxproductdir}")
         @worker.run("cp -R #{@env.symroot}/Release/OCMock.framework #{osxproductdir}")
         
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphoneos9.2 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphonesimulator9.2 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphoneos10.2 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphonesimulator10.2 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
         ioslibproductdir = "#{@env.productdir}/iOS\\ library"                                           
         @worker.run("mkdir -p #{ioslibproductdir}")
         @worker.run("cp -R #{@env.symroot}/Release-iphoneos/OCMock #{ioslibproductdir}")
         @worker.run("lipo -create -output #{ioslibproductdir}/libOCMock.a #{@env.symroot}/Release-iphoneos/libOCMock.a #{@env.symroot}/Release-iphonesimulator/libOCMock.a")
         
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock iOS' -sdk iphoneos9.2 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock iOS' -sdk iphonesimulator9.2 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock iOS' -sdk iphoneos10.2 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock iOS' -sdk iphonesimulator10.2 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
         iosproductdir = "#{@env.productdir}/iOS\\ framework"                                           
         @worker.run("mkdir -p #{iosproductdir}")
         @worker.run("cp -R #{@env.symroot}/Release-iphoneos/OCMock.framework #{iosproductdir}")
         @worker.run("lipo -create -output #{iosproductdir}/OCMock.framework/OCMock #{@env.symroot}/Release-iphoneos/OCMock.framework/OCMock #{@env.symroot}/Release-iphonesimulator/OCMock.framework/OCMock")
  
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock tvOS' -sdk appletvos9.1 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock tvOS' -sdk appletvsimulator9.1 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock tvOS' -sdk appletvos10.1 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock tvOS' -sdk appletvsimulator10.1 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
         tvosproductdir = "#{@env.productdir}/tvOS"                                           
         @worker.run("mkdir -p #{tvosproductdir}")
         @worker.run("cp -R #{@env.symroot}/Release-appletvos/OCMock.framework #{tvosproductdir}")
@@ -75,8 +75,8 @@ class Builder
         tvosproductdir = "#{@env.productdir}/tvOS"                                           
 
         @worker.run("codesign -s 'Mac Developer: #{identity}' #{osxproductdir}/OCMock.framework")
-        @worker.run("codesign -s 'iPhone Developer: #{identity}' #{iosproductdir}/OCMock.framework")
-        @worker.run("codesign -s 'iPhone Developer: #{identity}' #{tvosproductdir}/OCMock.framework")
+        @worker.run("codesign -f -s 'iPhone Developer: #{identity}' #{iosproductdir}/OCMock.framework")
+        @worker.run("codesign -f -s 'iPhone Developer: #{identity}' #{tvosproductdir}/OCMock.framework")
     end
 
     def createPackage(packagename, volumename)    
