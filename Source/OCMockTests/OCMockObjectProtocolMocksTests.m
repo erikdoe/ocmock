@@ -152,4 +152,18 @@ typedef InterfaceForTypedef* PointerTypedefInterface;
     XCTAssertThrows(OCMProtocolMock(nil));
 }
 
+- (void)testOCMVerifyAllTypedMock
+{
+    id <NSLocking> mock = OCMStrictProtocolMock(@protocol(NSLocking));
+    OCMExpect([mock lock]);
+
+    [mock lock];
+
+    // The purpose of these tests is not the actual execution, but to assure that the
+    // compiler raises no errors if the mock object has been declared with a different
+    // type than id.
+    OCMVerifyAll(mock);
+    OCMVerifyAllWithDelay(mock, 0.001);
+}
+
 @end
