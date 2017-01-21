@@ -50,7 +50,7 @@ code {
 }
 
 code:not(.language-objc) {
-	background: #EEE;
+	background: #FAFAFA;
 	padding: 1px 3px 0px 3px;
 	border-radius: 3px 3px 3px 3px;
 }

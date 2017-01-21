@@ -40,13 +40,14 @@ comments: true
 
 <h3>Creating a mock for a Swift class</h3>
 
-<pre><code>// class in Swift
+{% highlight swift %}
+// class in Swift
 class ServerConnection : NSObject {
     func fetchData() -> String {
         return "real data returned from other system"
     }
 }
-</code></pre>
+{% endhighlight swift %}
 
 {% highlight objc %}
 // test in Objective-C
@@ -63,7 +64,8 @@ class ServerConnection : NSObject {
  
 <h3>Using the mock with another Swift object</h3>
   
-<pre><code>// another class in Swift
+{% highlight swift %}
+// another class in Swift
 class Controller: NSObject {
     var connection: Connection;
     var data: String;
@@ -81,7 +83,7 @@ class Controller: NSObject {
         data = connection.fetchData();
     }
 }
-</code></pre>
+{% endhighlight swift %}
 {% highlight objc %}
 // test in Objective-C
 - (void)testMockingAnObject
@@ -103,7 +105,8 @@ class Controller: NSObject {
 	
 <p>However, note the declaration of the <code>connection</code> variable in the controller class. Unfortunately, it is necessary to use a protocol. Changing the type from <code>Connection</code> to <code>ServerConnection</code> will make the test crash.
 
-<pre><code>// protocol needed to make above example work
+{% highlight swift %}
+// protocol needed to make above example work
 @objc
 protocol Connection {
     func fetchData() -> String
@@ -114,7 +117,7 @@ class ServerConnection : NSObject, Connection {
         return "real data returned from other system"
     }
 }
-</code></pre>
+{% endhighlight swift %}
 	
 	    
 <h3>Creating a partial mock for a Swift object</h3>
