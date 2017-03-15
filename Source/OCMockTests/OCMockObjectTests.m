@@ -1034,6 +1034,28 @@ static NSString *TestNotification = @"TestNotification";
 
 }
 
+- (void)testAndThrowDoesntLeak {
+    __weak NSException *exception = nil;
+    @autoreleasepool {
+        id innerMock = [OCMockObject partialMockForObject:[NSProcessInfo processInfo]];
+        exception = [NSException exceptionWithName:NSGenericException
+                                            reason:nil
+                                          userInfo:nil];
+        [[[innerMock expect] andThrow:exception] arguments];
+
+        BOOL threw = NO;
+        @try {
+            [[NSProcessInfo processInfo] arguments];
+        } @catch (NSException *ex) {
+            threw = YES;
+        }
+        XCTAssertTrue(threw);
+        [innerMock verify]; [innerMock stopMocking]; innerMock = nil;
+    }
+
+    XCTAssertNil(exception, @"The exception should have been released by now");
+}
+
 - (void)testReRaisesRejectExceptionsOnVerify
 {
 	mock = [OCMockObject niceMockForClass:[NSString class]];

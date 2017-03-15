@@ -372,8 +372,12 @@
             [stubs removeObject:stub];
         }
     }
-    [stub handleInvocation:anInvocation];
-    [stub release];
+
+    @try {
+        [stub handleInvocation:anInvocation];
+    } @finally {
+        [stub release];
+    }
 
     return YES;
 }
