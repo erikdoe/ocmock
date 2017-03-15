@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2013-2015 Erik Doernenburg and contributors
+ *  Copyright (c) 2013-2016 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -14,9 +14,11 @@
  *  under the License.
  */
 
+#import <CoreData/CoreData.h>
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
 #import <objc/runtime.h>
+#import "TestClassWithCustomReferenceCounting.h"
 
 #if TARGET_OS_IPHONE
 #define NSRect CGRect
@@ -135,6 +137,34 @@ static NSUInteger initializeCallCount = 0;
 
 @end
 
+@interface OCTestManagedObject : NSManagedObject
+
+@property (nonatomic, copy) NSString *name;
+@property (nonatomic, assign) int32_t sortOrder;
+
+@property (nonatomic, strong) OCTestManagedObject *toOneRelationship;
+@property (nonatomic, strong) NSSet *toManyRelationship;
+
+@end
+
+@interface OCTestManagedObject (CoreDataGeneratedAccessors)
+
+- (void)addToManyRelationshipObject:(OCTestManagedObject *)value;
+- (void)removeToManyRelationshipObject:(OCTestManagedObject *)value;
+- (void)addToManyRelationship:(NSSet *)values;
+- (void)removeToManyRelationship:(NSSet *)values;
+
+@end
+
+@implementation OCTestManagedObject
+
+@dynamic name;
+@dynamic sortOrder;
+
+@dynamic toOneRelationship;
+@dynamic toManyRelationship;
+
+@end
 
 @implementation OCMockObjectPartialMocksTests
 
@@ -264,6 +294,80 @@ static NSUInteger initializeCallCount = 0;
     XCTAssertThrows(OCMPartialMock(nil));
 }
 
+- (void)testPartialMockOfCustomReferenceCountingObject
+{
+    /* The point of using an object that implements its own reference counting methods is to force
+       -retain to be called even though the test is compiled with ARC. (Normally ARC does some magic
+       that bypasses dispatching to -retain.) Issue #245 turned up a recursive crash when partial
+       mocks used a forwarder for -retain. */
+    TestClassWithCustomReferenceCounting *realObject = [TestClassWithCustomReferenceCounting new];
+    id partialMock = OCMPartialMock(realObject);
+    XCTAssertNotNil(partialMock);
+}
+
+#pragma mark   Tests for Core Data interaction with mocks
+
+- (void)testMockingManagedObject;
+{
+    // Set up the Core Data stack for the test.
+    
+    NSManagedObjectModel *const model = [NSManagedObjectModel mergedModelFromBundles:@[[NSBundle bundleForClass:self.class]]];
+    NSEntityDescription *const entity = model.entitiesByName[NSStringFromClass([OCTestManagedObject class])];
+    NSPersistentStoreCoordinator *const coordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
+    [coordinator addPersistentStoreWithType:NSInMemoryStoreType configuration:nil URL:nil options:nil error:NULL];
+    NSManagedObjectContext *const context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    
+    // Create and mock a real core data object.
+    
+    OCTestManagedObject *const realObject = [[OCTestManagedObject alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
+    OCTestManagedObject *const partialMock = [OCMockObject partialMockForObject:realObject];
+    
+    // Verify the subclassing behaviour is as we expect.
+    
+    Class const runtimeObjectClass = object_getClass(realObject);
+    Class const reportedClass = [realObject class];
+    
+    // Core Data generates a dynamic subclass at runtime to implement modeled proprerties.
+    // It will look something like "OCTestManagedObject_OCTestManagedObject_".
+    XCTAssertTrue([runtimeObjectClass isSubclassOfClass:reportedClass]);
+    XCTAssertNotEqual(runtimeObjectClass, reportedClass);
+    
+    // Verify accessors and setters for attributes work as expected.
+    
+    partialMock.name = @"OCMock";
+    partialMock.sortOrder = 120;
+    
+    XCTAssertEqualObjects(partialMock.name, @"OCMock");
+    XCTAssertEqual(partialMock.sortOrder, 120);
+    
+    partialMock.name = nil;
+    partialMock.sortOrder = 0;
+    
+    XCTAssertNil(partialMock.name);
+    XCTAssertEqual(partialMock.sortOrder, 0);
+    
+    // Verify to-many relationships work as expected.
+    
+    OCTestManagedObject *const realObject2 = [[OCTestManagedObject alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
+    OCTestManagedObject *const realObject3 = [[OCTestManagedObject alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
+    
+    [partialMock addToManyRelationshipObject:realObject2];
+    
+    XCTAssertEqualObjects(partialMock.toManyRelationship, [NSSet setWithObject:realObject2]);
+    XCTAssertEqualObjects(realObject2.toManyRelationship, [NSSet setWithObject:realObject]);
+    
+    partialMock.toOneRelationship = realObject3;
+    
+    XCTAssertEqualObjects(partialMock.toOneRelationship, realObject3);
+    XCTAssertEqualObjects(realObject3.toOneRelationship, realObject);
+    
+    // Verify saving the context works as expected.
+    
+    NSError *saveError = nil;
+    [context save:&saveError];
+    
+    XCTAssertNil(saveError);
+}
 
 #pragma mark   Tests for KVO interaction with mocks
 

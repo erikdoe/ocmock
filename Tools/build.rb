@@ -12,7 +12,9 @@ class Builder
       downloadSource
       copySource
       buildModules
-      createPackage "ocmock-3.1.5.dmg", "OCMock 3.1.5" 
+      signFrameworks "erik@doernenburg.com"
+      createPackage "ocmock-3.4.dmg", "OCMock 3.4" 
+      sanityCheck
       openPackageDir
     end
     
@@ -39,22 +41,47 @@ class Builder
 
     def buildModules
         @worker.chdir("#{@env.sourcedir}/Source")
+        
         @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMock OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
         osxproductdir = "#{@env.productdir}/OSX"                                        
         @worker.run("mkdir -p #{osxproductdir}")
         @worker.run("cp -R #{@env.symroot}/Release/OCMock.framework #{osxproductdir}")
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphoneos8.2 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphonesimulator8.2 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
-        @worker.run("lipo -create -output #{@env.symroot}/Release/libOCMock.a #{@env.symroot}/Release-*/libOCMock.a")
-        iosproductdir = "#{@env.productdir}/iOS"                                           
+        
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphoneos10.2 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphonesimulator10.2 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
+        ioslibproductdir = "#{@env.productdir}/iOS\\ library"                                           
+        @worker.run("mkdir -p #{ioslibproductdir}")
+        @worker.run("cp -R #{@env.symroot}/Release-iphoneos/OCMock #{ioslibproductdir}")
+        @worker.run("lipo -create -output #{ioslibproductdir}/libOCMock.a #{@env.symroot}/Release-iphoneos/libOCMock.a #{@env.symroot}/Release-iphonesimulator/libOCMock.a")
+        
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock iOS' -sdk iphoneos10.2 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock iOS' -sdk iphonesimulator10.2 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
+        iosproductdir = "#{@env.productdir}/iOS\\ framework"                                           
         @worker.run("mkdir -p #{iosproductdir}")
-        @worker.run("cp -R #{@env.symroot}/Release/libOCMock.a #{iosproductdir}")
-        @worker.run("cp -R #{@env.symroot}/Release-iphoneos/OCMock #{iosproductdir}")
+        @worker.run("cp -R #{@env.symroot}/Release-iphoneos/OCMock.framework #{iosproductdir}")
+        @worker.run("lipo -create -output #{iosproductdir}/OCMock.framework/OCMock #{@env.symroot}/Release-iphoneos/OCMock.framework/OCMock #{@env.symroot}/Release-iphonesimulator/OCMock.framework/OCMock")
+ 
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock tvOS' -sdk appletvos10.1 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock tvOS' -sdk appletvsimulator10.1 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
+        tvosproductdir = "#{@env.productdir}/tvOS"                                           
+        @worker.run("mkdir -p #{tvosproductdir}")
+        @worker.run("cp -R #{@env.symroot}/Release-appletvos/OCMock.framework #{tvosproductdir}")
+        @worker.run("lipo -create -output #{tvosproductdir}/OCMock.framework/OCMock #{@env.symroot}/Release-appletvos/OCMock.framework/OCMock #{@env.symroot}/Release-appletvsimulator/OCMock.framework/OCMock")
+    end
+    
+    def signFrameworks(identity)
+        osxproductdir = "#{@env.productdir}/OSX"                                        
+        iosproductdir = "#{@env.productdir}/iOS\\ framework"                                           
+        tvosproductdir = "#{@env.productdir}/tvOS"                                           
+
+        @worker.run("codesign -s 'Mac Developer: #{identity}' #{osxproductdir}/OCMock.framework")
+        @worker.run("codesign -f -s 'iPhone Developer: #{identity}' #{iosproductdir}/OCMock.framework")
+        @worker.run("codesign -f -s 'iPhone Developer: #{identity}' #{tvosproductdir}/OCMock.framework")
     end
 
     def createPackage(packagename, volumename)    
         @worker.chdir(@env.packagedir)  
-        @worker.run("hdiutil create -size 4m temp.dmg -layout NONE") 
+        @worker.run("hdiutil create -size 5m temp.dmg -layout NONE") 
         disk_id = nil
         @worker.run("hdid -nomount temp.dmg") { |hdid| disk_id = hdid.readline.split[0] }
         @worker.run("newfs_hfs -v '#{volumename}' #{disk_id}")
@@ -69,6 +96,22 @@ class Builder
     
     def openPackageDir
         @worker.run("open #{@env.packagedir}") 
+    end
+    
+    def sanityCheck
+        osxproductdir = "#{@env.productdir}/OSX"                                        
+        ioslibproductdir = "#{@env.productdir}/iOS\\ library"                                           
+        iosproductdir = "#{@env.productdir}/iOS\\ framework"                                           
+        tvosproductdir = "#{@env.productdir}/tvOS"                                           
+
+        @worker.run("lipo -info #{osxproductdir}/OCMock.framework/OCMock")
+        @worker.run("lipo -info #{ioslibproductdir}/libOCMock.a")
+        @worker.run("lipo -info #{iosproductdir}/OCMock.framework/OCMock")
+        @worker.run("lipo -info #{tvosproductdir}/OCMock.framework/OCMock")
+
+        @worker.run("codesign -dvv #{osxproductdir}/OCMock.framework")
+        @worker.run("codesign -dvv #{iosproductdir}/OCMock.framework")       
+        @worker.run("codesign -dvv #{tvosproductdir}/OCMock.framework")
     end
     
     def upload(packagename, dest)

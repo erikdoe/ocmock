@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2015 Erik Doernenburg and contributors
+ *  Copyright (c) 2015-2016 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -15,19 +15,39 @@
  */
 
 #import "OCMBlockArgCaller.h"
+#import "NSInvocation+OCMAdditions.h"
 
 
 @implementation OCMBlockArgCaller
+
+- (instancetype)initWithBlockArguments:(NSArray *)someArgs
+{
+    self = [super init];
+    if(self)
+    {
+        arguments = [someArgs copy];
+    }
+    return self;
+}
+
+- (void)dealloc
+{
+    [arguments release];
+    [super dealloc];
+}
 
 - (id)copyWithZone:(NSZone *)zone
 {
     return [self retain];
 }
 
-- (void)handleArgument:(id)arg
+- (void)handleArgument:(id)aBlock
 {
-    void (^argAsBlock)() = arg;
-    argAsBlock(nil, NULL);
+    if(aBlock)
+    {
+        NSInvocation *inv = [NSInvocation invocationForBlock:aBlock withArguments:arguments];
+        [inv invokeWithTarget:aBlock];
+    }
 }
 
 @end

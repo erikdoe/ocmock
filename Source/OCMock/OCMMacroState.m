@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2014-2015 Erik Doernenburg and contributors
+ *  Copyright (c) 2014-2016 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -24,31 +24,52 @@
 
 @implementation OCMMacroState
 
-static OCMMacroState *globalState;
+static NSString *const OCMGlobalStateKey = @"OCMGlobalStateKey";
 
 #pragma mark  Methods to begin/end macros
 
 + (void)beginStubMacro
 {
     OCMStubRecorder *recorder = [[[OCMStubRecorder alloc] init] autorelease];
-    globalState = [[[OCMMacroState alloc] initWithRecorder:recorder] autorelease];
+    OCMMacroState *macroState = [[OCMMacroState alloc] initWithRecorder:recorder];
+    [NSThread currentThread].threadDictionary[OCMGlobalStateKey] = macroState;
+    [macroState release];
 }
 
 + (OCMStubRecorder *)endStubMacro
 {
-    OCMStubRecorder *recorder = (OCMStubRecorder *)[globalState recorder];
-    globalState = nil;
-    return recorder;
+    NSMutableDictionary *threadDictionary = [NSThread currentThread].threadDictionary;
+    OCMMacroState *globalState = threadDictionary[OCMGlobalStateKey];
+    OCMStubRecorder *recorder = [(OCMStubRecorder *)[globalState recorder] retain];
+    [threadDictionary removeObjectForKey:OCMGlobalStateKey];
+    return [recorder autorelease];
 }
 
 
 + (void)beginExpectMacro
 {
     OCMExpectationRecorder *recorder = [[[OCMExpectationRecorder alloc] init] autorelease];
-    globalState = [[[OCMMacroState alloc] initWithRecorder:recorder] autorelease];
+    OCMMacroState *macroState = [[OCMMacroState alloc] initWithRecorder:recorder];
+    [NSThread currentThread].threadDictionary[OCMGlobalStateKey] = macroState;
+    [macroState release];
 }
 
 + (OCMStubRecorder *)endExpectMacro
+{
+    return [self endStubMacro];
+}
+
+
++ (void)beginRejectMacro
+{
+    OCMExpectationRecorder *recorder = [[[OCMExpectationRecorder alloc] init] autorelease];
+    [recorder never];
+    OCMMacroState *macroState = [[OCMMacroState alloc] initWithRecorder:recorder];
+    [NSThread currentThread].threadDictionary[OCMGlobalStateKey] = macroState;
+    [macroState release];
+}
+
++ (OCMStubRecorder *)endRejectMacro
 {
     return [self endStubMacro];
 }
@@ -58,12 +79,14 @@ static OCMMacroState *globalState;
 {
     OCMVerifier *recorder = [[[OCMVerifier alloc] init] autorelease];
     [recorder setLocation:aLocation];
-    globalState = [[[OCMMacroState alloc] initWithRecorder:recorder] autorelease];
+    OCMMacroState *macroState = [[OCMMacroState alloc] initWithRecorder:recorder];
+    [NSThread currentThread].threadDictionary[OCMGlobalStateKey] = macroState;
+    [macroState release];
 }
 
 + (void)endVerifyMacro
 {
-    globalState = nil;
+    [[NSThread currentThread].threadDictionary removeObjectForKey:OCMGlobalStateKey];
 }
 
 
@@ -71,7 +94,7 @@ static OCMMacroState *globalState;
 
 + (OCMMacroState *)globalState
 {
-    return globalState;
+    return [NSThread currentThread].threadDictionary[OCMGlobalStateKey];
 }
 
 
@@ -90,8 +113,7 @@ static OCMMacroState *globalState;
 - (void)dealloc
 {
     [recorder release];
-    if(globalState == self)
-        globalState = nil;
+    NSAssert([NSThread currentThread].threadDictionary[OCMGlobalStateKey] != self, @"Unexpected dealloc while set as the global state");
     [super dealloc];
 }
 

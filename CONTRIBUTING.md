@@ -36,6 +36,7 @@ This project adheres to the [Contributor Covenant 1.2](http://contributor-covena
 
 * Once you have created the pull request, an automated build is kicked off on [Travis CI](https://travis-ci.org/erikdoe/ocmock/pull_requests). Please verify after a few minutes that the build on the server succeeded. Pull requests with failing builds are ignored and will be closed within a few weeks if they are not fixed.
 
+* Please don't post comments like "Ping?" or similar on your own pull requests. I understand that it can be frustrating not to get a response quickly but, unfortunately, I often don't have time to work on OCMock and can't always look at pull requests as they come in. It's difficult for me to predict when I'll get a chance to do so, but rest assured, pull requests are definitely not ignored.
 
 
 ## Coding conventions

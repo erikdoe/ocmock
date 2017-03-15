@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2009-2015 Erik Doernenburg and contributors
+ *  Copyright (c) 2009-2016 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -37,10 +37,14 @@
 
 - (void)handleArgument:(id)arg
 {
-    if([value isKindOfClass:[NSValue class]])
-        [(NSValue *)value getValue:[arg pointerValue]];
-    else
-        *(id *)[arg pointerValue] = value;
+    void *pointerValue = [arg pointerValue];
+    if(pointerValue != NULL)
+    {
+        if([value isKindOfClass:[NSValue class]])
+            [(NSValue *)value getValue:pointerValue];
+        else
+            *(id *)pointerValue = value;
+    }
 }
 
 @end

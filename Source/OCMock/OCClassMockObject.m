@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2005-2015 Erik Doernenburg and contributors
+ *  Copyright (c) 2005-2016 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -55,14 +55,25 @@
 - (void)stopMocking
 {
     if(originalMetaClass != nil)
+    {
+        /* The mocked class has the meta class of a dynamically created subclass as its meta class,
+           but we need a reference to the subclass to dispose it. Asking the meta class for its
+           class name returns the actual class name, which we can then use to look up the class...
+        */
+        const char *createdSubclassName = object_getClassName(mockedClass);
+        Class createdSubclass = objc_lookUpClass(createdSubclassName);
+
         [self restoreMetaClass];
+
+        objc_disposeClassPair(createdSubclass);
+    }
     [super stopMocking];
 }
 
 - (void)restoreMetaClass
 {
     OCMSetAssociatedMockForClass(nil, mockedClass);
-    OCMSetIsa(mockedClass, originalMetaClass);
+    object_setClass(mockedClass, originalMetaClass);
     originalMetaClass = nil;
 }
 
@@ -78,9 +89,8 @@
 
 - (void)prepareClassForClassMethodMocking
 {
-    /* haven't figured out how to work around runtime dependencies on NSString, so exclude it for now */
-    /* also weird: [[NSString class] isKindOfClass:[NSString class]] is false, hence the additional clause */
-    if([[mockedClass class] isKindOfClass:[NSString class]] || (mockedClass == [NSString class]))
+    /* the runtime and OCMock depend on string and array; we don't intercept methods on them to avoid endless loops */
+    if([[mockedClass class] isSubclassOfClass:[NSString class]] || [[mockedClass class] isSubclassOfClass:[NSArray class]])
         return;
 
     /* if there is another mock for this exact class, stop it */
@@ -94,18 +104,20 @@
     Class subclass = OCMCreateSubclass(mockedClass, mockedClass);
     originalMetaClass = object_getClass(mockedClass);
     id newMetaClass = object_getClass(subclass);
-    OCMSetIsa(mockedClass, OCMGetIsa(subclass));
-
-    /* point forwardInvocation: of the object to the implementation in the mock */
-    Method myForwardMethod = class_getInstanceMethod([self mockObjectClass], @selector(forwardInvocationForClassObject:));
-    IMP myForwardIMP = method_getImplementation(myForwardMethod);
-    class_addMethod(newMetaClass, @selector(forwardInvocation:), myForwardIMP, method_getTypeEncoding(myForwardMethod));
 
     /* create a dummy initialize method */
     Method myDummyInitializeMethod = class_getInstanceMethod([self mockObjectClass], @selector(initializeForClassObject));
     const char *initializeTypes = method_getTypeEncoding(myDummyInitializeMethod);
     IMP myDummyInitializeIMP = method_getImplementation(myDummyInitializeMethod);
     class_addMethod(newMetaClass, @selector(initialize), myDummyInitializeIMP, initializeTypes);
+
+    object_setClass(mockedClass, newMetaClass); // only after dummy initialize is installed (iOS9)
+
+    /* point forwardInvocation: of the object to the implementation in the mock */
+    Method myForwardMethod = class_getInstanceMethod([self mockObjectClass], @selector(forwardInvocationForClassObject:));
+    IMP myForwardIMP = method_getImplementation(myForwardMethod);
+    class_addMethod(newMetaClass, @selector(forwardInvocation:), myForwardIMP, method_getTypeEncoding(myForwardMethod));
+
 
     /* adding forwarder for most class methods (instance methods on meta class) to allow for verify after run */
     NSArray *methodBlackList = @[@"class", @"forwardingTargetForSelector:", @"methodSignatureForSelector:", @"forwardInvocation:", @"isBlock",
@@ -176,8 +188,7 @@
     NSMethodSignature *signature = [mockedClass instanceMethodSignatureForSelector:aSelector];
     if(signature == nil)
     {
-        NSString *property = NSStringFromSelector(aSelector);
-        signature = [NSMethodSignature signatureOfGetterForDynamicProperty:property inClass:mockedClass];
+        signature = [NSMethodSignature signatureForDynamicPropertyAccessedWithSelector:aSelector inClass:mockedClass];
     }
     return signature;
 }
@@ -204,7 +215,14 @@
 
 - (BOOL)conformsToProtocol:(Protocol *)aProtocol
 {
-    return class_conformsToProtocol(mockedClass, aProtocol);
+    Class clazz = mockedClass;
+    while (clazz != nil) {
+        if (class_conformsToProtocol(clazz, aProtocol)) {
+            return YES;
+        }
+        clazz = class_getSuperclass(clazz);
+    }
+    return NO;
 }
 
 @end
@@ -233,52 +251,52 @@
 
 - (BOOL)isNSValue__
 {
-    return [mockedClass isKindOfClass:[NSValue class]];
+    return [mockedClass isSubclassOfClass:[NSValue class]];
 }
 
 - (BOOL)isNSTimeZone__
 {
-    return [mockedClass isKindOfClass:[NSTimeZone class]];
+    return [mockedClass isSubclassOfClass:[NSTimeZone class]];
 }
 
 - (BOOL)isNSSet__
 {
-    return [mockedClass isKindOfClass:[NSSet class]];
+    return [mockedClass isSubclassOfClass:[NSSet class]];
 }
 
 - (BOOL)isNSOrderedSet__
 {
-    return [mockedClass isKindOfClass:[NSOrderedSet class]];
+    return [mockedClass isSubclassOfClass:[NSOrderedSet class]];
 }
 
 - (BOOL)isNSNumber__
 {
-    return [mockedClass isKindOfClass:[NSNumber class]];
+    return [mockedClass isSubclassOfClass:[NSNumber class]];
 }
 
 - (BOOL)isNSDate__
 {
-    return [mockedClass isKindOfClass:[NSDate class]];
+    return [mockedClass isSubclassOfClass:[NSDate class]];
 }
 
 - (BOOL)isNSString__
 {
-    return [mockedClass isKindOfClass:[NSString class]];
+    return [mockedClass isSubclassOfClass:[NSString class]];
 }
 
 - (BOOL)isNSDictionary__
 {
-    return [mockedClass isKindOfClass:[NSDictionary class]];
+    return [mockedClass isSubclassOfClass:[NSDictionary class]];
 }
 
 - (BOOL)isNSData__
 {
-    return [mockedClass isKindOfClass:[NSData class]];
+    return [mockedClass isSubclassOfClass:[NSData class]];
 }
 
 - (BOOL)isNSArray__
 {
-    return [mockedClass isKindOfClass:[NSArray class]];
+    return [mockedClass isSubclassOfClass:[NSArray class]];
 }
 
 @end

@@ -1,10 +1,54 @@
-Listing of notable changes by release. More detail is usually found in the Git 
+Listing of notable changes by release. More detail is usually found in the Git
 commit messages and/or the pull requests.
 
-(unreleased)
+OCMock 3.4 (2016-12-22)
 
-* Can stub dynamic properties (imhuntingwabbits)
+* OCMock now requires iOS 8 as minimum deployment target
+* Managed objects can now be mocked (Alan Fineberg, Kyle Van Essen)
+* Notifications with a user info dictionary can be observed and verified
+  with the macro syntax.
+* Now considering structs with unknown names to be the same type as a named
+  struct, as long as either the actual definition matches or one of them is
+  opaque.
+* Fixed bug causing verifyWithDelay to be held up by rejects (Nikolay Kasyanov)
+* Fixed bug where a mock would not claim conformance to protocols declared in
+  a superclass (Werner Altewischer)
+
+
+OCMock 3.3.1 (2016-07-01)
+
+* Now throwing an exception when an attempt is made to stub the init method.
+* Fixed crash when trying to mock NSArray.
+
+
+OCMock 3.3 (2016-04-12)
+
+* Made the use of mock objects thread safe. You still have to setup the mocks
+  and verify them from a main thread (Ian Anderson)
+* Added modern syntax for reject (Piotr Tobolski)
+
+
+OCMock 3.2.2 (2016-01-20)
+
+* Fixed recently introduced bug that caused crashes when using NULL pointers
+  with the pass-by-ref argument setter (Ian Anderson)
+
+
+OCMock 3.2.1 (2016-01-13)
+
+* Added support for tvOS (Nikita Lutsenko)
+* Disposing dynamically generated subclasses after use (David Stites)
+* Build script now signs frameworks in releases. The signing identity can
+  be changed in the script.
+
+
+OCMock 3.2 (2015-10-03)
+
+* Can mock dynamic properties (imhuntingwabbits)
+* Can invoke blocks passed as arguments to stubs (Stephen Fortune)
+* Stubbed exceptions are no longer re-raised in verify
 * Fixed C++ compilation issues (Jonathan Crooke, Daniel Demiss)
+* Add module support for the OS X framework (Ian Anderson)
 
 
 OCMock 3.1.4 / 3.1.5 (2015-08-26)
@@ -31,7 +75,7 @@ OCMock 3.1.1 (2014-08-23)
 
 * Fixed a recently introduced bug that resulted in class arguments and return
   values not to be considered objects (Patrick Hartling, Max Shcheglov)
-	
+
 
 OCMock 3.1 (2014-08-22)
 
@@ -62,29 +106,29 @@ OCMock 3.0 (2014-06-12)
 
 * Added macro for verify with delay
 * Fixed several critical bugs
-* Allowing nil as block in stub action. With partial mocks this makes it 
-  possible to overwrite a method to do nothing (Sam Stigler) 
+* Allowing nil as block in stub action. With partial mocks this makes it
+  possible to overwrite a method to do nothing (Sam Stigler)
 * More descriptive messages when trying to verify unknown method
 
 
 OCMock 3.0.M3 (2014-05-31)
 
 * Changed license to Apache 2 license
-* Added support for verify-after-run for class methods and for methods sent 
+* Added support for verify-after-run for class methods and for methods sent
   directly to the real object covered by a partial mock.
 * Using a temporary meta class subclass for mocking class methods, enabling
-  full clean-up. As a consequence class methods mocked on a given class are no 
-  longer mocked in all subclasses. 
+  full clean-up. As a consequence class methods mocked on a given class are no
+  longer mocked in all subclasses.
 * Throwing descriptive exception when attempting to create partial mock on
-  toll-free bridged classes and tagged pointers (Mark Larsen)	
+  toll-free bridged classes and tagged pointers (Mark Larsen)
 
 
 OCMock 3.0.M2 (2014-05-07)
 
 * Added support from verify-after-run. Only works for methods that are sent
-  to a mock object. Does not work for classes and methods sent directly to 
+  to a mock object. Does not work for classes and methods sent directly to
   the real object covered by a partial mock.
-* Failures without location are now thrown as OCMockTestFailure exception, 
+* Failures without location are now thrown as OCMockTestFailure exception,
   not as NSInternalInconsistencyException
 
 
@@ -108,7 +152,7 @@ OCMock 2.2.4 (2014-04-04)
 
 OCMock 2.2.2 (2013-12-19)
 
-* Added implementation for Apple-interal NSIsKind informal protocol (Brian 
+* Added implementation for Apple-interal NSIsKind informal protocol (Brian
   Gerstle)
 * Various fixes for method with structure returns (Carl Lindberg)
 * Added a specially typed method for object references to OCMArg.
@@ -158,7 +202,7 @@ OCMock 2.0 (2012-03-02)
 
 
 
-            
+
 OCMock 1.77 (2011-02-15)
 
 * Added feature to explicitly disable a partial mock
@@ -173,7 +217,7 @@ OCMock 1.70 (2010-08-21)
   Marco Sandrini)
 * Fix to allow block arguments (thanks to Justin DeWind)
 * Now building OCMock library for simulator (i386) and device (armv7)
-* Updated example to run tests on device                    
+* Updated example to run tests on device
 * Changed OCMOCK_VALUE macro to be iOS compatible (thanks to Derek Clarkson)
 * Added a new target to build a static library for iOS use
 * Created an example showing how to use OCMock in an iOS project
@@ -187,7 +231,7 @@ OCMock 1.55 (2009-10-16)
 * Disambiguated mock table method name to avoid compiler warning
 * Renamed some variables to avoid warnings when using -Wshadow
 * Partial mocks are now deallocated as they should
-* Fixed problems that occured when using mocks as arguments
+* Fixed problems that occurred when using mocks as arguments
 * OnCall methods now have same signature as replaced ones.
 * Fixed possible retain bug (Daniel Eggert)
 * Added feature that allows to verify expectations are called in sequence.
@@ -209,7 +253,7 @@ OCMock 1.42 (2009-05-19)
 * Added pass by ref argument setters
 * Linked install name now uses @rpath (Dave Dribbin)
 * Added support for respondsToSelector (Dave Dribin)
-* Added constraint for any pointer 
+* Added constraint for any pointer
 * Now comparing selectors as strings (Dado Colussi)
 
 
@@ -241,7 +285,7 @@ OCMock 1.17 (2007-06-04)
 * Added the ability to create multiple identical expectations on the mock
   object (Jeremy Higgs)
 * Added the ability to mock out nil arguments (Jeremy Higgs)
-* Added slightly modified version of Jon Reid's contribution, which adds the 
+* Added slightly modified version of Jon Reid's contribution, which adds the
   possibility to stub primitive return values.
 * Added Jon Reid's bugfix that prevents a crash when trying to stub an unknown
   method on a protocol.

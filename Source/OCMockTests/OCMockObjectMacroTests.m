@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2014-2015 Erik Doernenburg and contributors
+ *  Copyright (c) 2014-2016 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -210,6 +210,18 @@
     OCMVerifyAll(observer);
 }
 
+- (void)testNotificationObservingWithUserInfo
+{
+    id observer = OCMObserverMock();
+    [[NSNotificationCenter defaultCenter] addMockObserver:observer name:@"TestNotificationWithInfo" object:nil];
+    OCMExpect([observer notificationWithName:@"TestNotificationWithInfo" object:[OCMArg any] userInfo:[OCMArg any]]);
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"TestNotificationWithInfo" object:self userInfo:@{ @"foo": @"bar" }];
+
+    OCMVerifyAll(observer);
+}
+
+
 - (void)testSetsUpSubstituteCall
 {
     id mock = OCMStrictProtocolMock(@protocol(TestProtocolForMacroTesting));
@@ -265,6 +277,18 @@
 
     XCTAssertEqual([mock stringValue], @"TEST_STRING", @"Should have stubbed method, too");
     XCTAssertNoThrow([mock verify], @"Should have accepted invocation as matching expectation");
+}
+
+
+- (void)testSetsUpReject
+{
+    id mock = OCMClassMock([TestClassForMacroTesting class]);
+
+    OCMReject([mock stringValue]);
+
+    XCTAssertNoThrow([mock verify], @"Should have accepted invocation rejected method not being invoked");
+    XCTAssertThrows([mock stringValue], @"Should have complained during rejected method being invoked");
+    XCTAssertThrows([mock verify], @"Should have complained about rejected method being invoked");
 }
 
 

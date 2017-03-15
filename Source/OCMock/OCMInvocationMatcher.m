@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2014-2015 Erik Doernenburg and contributors
+ *  Copyright (c) 2014-2016 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -41,11 +41,11 @@
 - (void)setInvocation:(NSInvocation *)anInvocation
 {
     [recordedInvocation release];
-    // When the method has a char* argument we do not retain the arguments. This makes it possible
-    // to match char* args literally and with anyPointer. Not retaining the argument means that
-    // in these cases tests that use their own autorelease pools may fail unexpectedly.
-    if(![anInvocation hasCharPointerArgument])
-        [anInvocation retainArguments];
+    // Don't do a regular -retainArguments on the invocation that we use for matching. NSInvocation
+    // effectively does an strcpy on char* arguments which messes up matching them literally and blows
+    // up with anyPointer (in strlen since it's not actually a C string). Also on the off-chance that
+    // anInvocation contains self as an argument, -retainArguments would create a retain cycle.
+    [anInvocation retainObjectArgumentsExcludingObject:self];
     recordedInvocation = [anInvocation retain];
 }
 
@@ -99,7 +99,7 @@
     NSUInteger n = [signature numberOfArguments];
     for(NSUInteger i = 2; i < n; i++)
     {
-        if(ignoreNonObjectArgs && strcmp([signature getArgumentTypeAtIndex:i], @encode(id)))
+        if(ignoreNonObjectArgs && !OCMIsObjectType([signature getArgumentTypeAtIndex:i]))
         {
             continue;
         }
@@ -124,8 +124,7 @@
         }
         else if([recordedArg isKindOfClass:[OCMArgAction class]])
         {
-            // side effect but easier to do here than in handleInvocation
-            [recordedArg handleArgument:passedArg];
+            // ignore, will be dealt with in handleInvocation: where applicable
         }
         else if([recordedArg conformsToProtocol:objc_getProtocol("HCMatcher")])
         {
