@@ -33,6 +33,10 @@
 - (void)verify;
 - (void)verifyAtLocation:(OCMLocation *)location;
 
+- (BOOL)verify:(BOOL)failWithException;
+- (BOOL)verifyAtLocation:(OCMLocation *)location failWithException:(BOOL)failWithException;
+
+
 - (void)handleNotification:(NSNotification *)aNotification;
 
 // internal use
