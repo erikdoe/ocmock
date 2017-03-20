@@ -37,7 +37,7 @@
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
     [super forwardInvocation:anInvocation];
-    self.success = [mockObject verifyInvocation:invocationMatcher atLocation:self.location failWithException:YES];
+    self.success = [mockObject verifyInvocation:invocationMatcher atLocation:self.location failWithException:self.failWithException];
 }
 
 - (void)dealloc
