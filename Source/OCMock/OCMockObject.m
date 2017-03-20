@@ -291,18 +291,31 @@
 
 - (void)verifyInvocation:(OCMInvocationMatcher *)matcher atLocation:(OCMLocation *)location
 {
+    [self verifyInvocation:matcher atLocation:location failWithException:YES];
+}
+
+- (BOOL)verifyInvocation:(OCMInvocationMatcher * _Nonnull)matcher failWithException:(BOOL)failWithException
+{
+    return [self verifyInvocation:matcher atLocation:nil failWithException:failWithException];
+}
+
+- (BOOL)verifyInvocation:(OCMInvocationMatcher * _Nonnull)matcher atLocation:(OCMLocation * _Nullable)location failWithException:(BOOL)failWithException
+{
     @synchronized(invocations)
     {
         for(NSInvocation *invocation in invocations)
         {
             if([matcher matchesInvocation:invocation])
-                return;
+                return YES;
         }
     }
     NSString *description = [NSString stringWithFormat:@"%@: Method %@ was not invoked.",
-     [self description], [matcher description]];
-
-    OCMReportFailure(location, description);
+                             [self description], [matcher description]];
+    
+    if (failWithException) {
+        OCMReportFailure(location, description);
+    }
+    return NO;
 }
 
 

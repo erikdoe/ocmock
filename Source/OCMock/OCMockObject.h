@@ -74,6 +74,8 @@
 
 - (void)verifyInvocation:(OCMInvocationMatcher * _Nonnull)matcher;
 - (void)verifyInvocation:(OCMInvocationMatcher * _Nonnull)matcher atLocation:(OCMLocation * _Nullable)location;
+- (BOOL)verifyInvocation:(OCMInvocationMatcher * _Nonnull)matcher failWithException:(BOOL)failWithException;
+- (BOOL)verifyInvocation:(OCMInvocationMatcher * _Nonnull)matcher atLocation:(OCMLocation * _Nullable)location failWithException:(BOOL)failWithException;
 
 @end
 
