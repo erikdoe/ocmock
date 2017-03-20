@@ -328,8 +328,6 @@
 		F0B951481B00810C00942C38 /* NSObject+OCMAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA28C5F4A475BEC0C28BDC3 /* NSObject+OCMAdditions.h */; };
 		F0B951491B00810C00942C38 /* NSValue+OCMAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA286EAC1682979C696D4D6 /* NSValue+OCMAdditions.h */; };
 		F0B9514A1B00810C00942C38 /* OCMFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA28EC49F6C59B940AE6D00 /* OCMFunctions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F7061A321E7F7CF100023CD2 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = F7061A311E7F7CF100023CD2 /* README.md */; };
-		F7061A341E7F7CF400023CD2 /* OCMock.podspec in Resources */ = {isa = PBXBuildFile; fileRef = F7061A331E7F7CF400023CD2 /* OCMock.podspec */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1119,7 +1117,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F7061A341E7F7CF400023CD2 /* OCMock.podspec in Resources */,
 				030EF0B614632FD000B04273 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1206,7 +1203,6 @@
 				2FA28D38ED9D83A3E0A620B3 /* NSObject+OCMAdditions.m in Sources */,
 				2FA282F0C0A4CABE4E2C7646 /* OCMInvocationMatcher.m in Sources */,
 				2FA28BA90F0D55E4CF6787F0 /* OCMFunctions.m in Sources */,
-				F7061A321E7F7CF100023CD2 /* README.md in Sources */,
 				2FA286C7B8862280E6C1A585 /* OCMInvocationExpectation.m in Sources */,
 				2FA2800D12E95D5ABC965753 /* OCMMacroState.m in Sources */,
 				2FA2805AB1944A206EEE383B /* NSValue+OCMAdditions.m in Sources */,
