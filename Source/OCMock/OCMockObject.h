@@ -15,6 +15,7 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "OCMVerifier.h"
 
 @class OCMLocation;
 @class OCMInvocationStub;
@@ -33,42 +34,46 @@
     NSMutableArray  *invocations;
 }
 
-+ (id)mockForClass:(Class)aClass;
-+ (id)mockForProtocol:(Protocol *)aProtocol;
-+ (id)partialMockForObject:(NSObject *)anObject;
++ (id _Nonnull)mockForClass:(Class _Nonnull)aClass;
++ (id _Nonnull)mockForProtocol:(Protocol * _Nonnull)aProtocol;
++ (id _Nonnull)partialMockForObject:(NSObject * _Nonnull)anObject;
 
-+ (id)niceMockForClass:(Class)aClass;
-+ (id)niceMockForProtocol:(Protocol *)aProtocol;
++ (id _Nonnull)niceMockForClass:(Class _Nonnull)aClass;
++ (id _Nonnull)niceMockForProtocol:(Protocol * _Nonnull)aProtocol;
 
-+ (id)observerMock;
++ (id _Nonnull)observerMock;
 
-- (instancetype)init;
+- (instancetype _Nonnull)init;
 
 - (void)setExpectationOrderMatters:(BOOL)flag;
 
-- (id)stub;
-- (id)expect;
-- (id)reject;
+- (id _Nonnull)stub;
+- (id _Nonnull)expect;
+- (id _Nonnull)reject;
 
-- (id)verify;
-- (id)verifyAtLocation:(OCMLocation *)location;
+- (id _Nonnull)verify;
+- (id _Nonnull)verify:(BOOL)failWithException;
+- (id _Nonnull)verifyAtLocation:(OCMLocation * _Nullable)location;
+- (id _Nonnull)verifyAtLocation:(OCMLocation * _Nullable)location failWithException:(BOOL)failWithException;
 
-- (void)verifyWithDelay:(NSTimeInterval)delay;
-- (void)verifyWithDelay:(NSTimeInterval)delay atLocation:(OCMLocation *)location;
+- (id _Nonnull)verifyWithDelay:(NSTimeInterval)delay;
+- (id _Nonnull)verifyWithDelay:(NSTimeInterval)delay failWithException:(BOOL)failWithException;
+- (id _Nonnull)verifyWithDelay:(NSTimeInterval)delay atLocation:(OCMLocation * _Nullable)location;
+- (id _Nonnull)verifyWithDelay:(NSTimeInterval)delay atLocation:(OCMLocation * _Nullable)location failWithException:(BOOL)failWithException;
 
 - (void)stopMocking;
 
 // internal use only
 
-- (void)addStub:(OCMInvocationStub *)aStub;
-- (void)addExpectation:(OCMInvocationExpectation *)anExpectation;
+- (void)addStub:(OCMInvocationStub * _Nonnull)aStub;
+- (void)addExpectation:(OCMInvocationExpectation * _Nonnull)anExpectation;
 
-- (BOOL)handleInvocation:(NSInvocation *)anInvocation;
-- (void)handleUnRecordedInvocation:(NSInvocation *)anInvocation;
-- (BOOL)handleSelector:(SEL)sel;
+- (BOOL)handleInvocation:(NSInvocation * _Nonnull)anInvocation;
+- (void)handleUnRecordedInvocation:(NSInvocation * _Nonnull)anInvocation;
+- (BOOL)handleSelector:(SEL _Nonnull)sel;
 
-- (void)verifyInvocation:(OCMInvocationMatcher *)matcher;
-- (void)verifyInvocation:(OCMInvocationMatcher *)matcher atLocation:(OCMLocation *)location;
+- (void)verifyInvocation:(OCMInvocationMatcher * _Nonnull)matcher;
+- (void)verifyInvocation:(OCMInvocationMatcher * _Nonnull)matcher atLocation:(OCMLocation * _Nullable)location;
 
 @end
 
