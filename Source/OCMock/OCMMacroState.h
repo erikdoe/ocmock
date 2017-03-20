@@ -37,6 +37,7 @@
 + (OCMStubRecorder *)endRejectMacro;
 
 + (void)beginVerifyMacroAtLocation:(OCMLocation *)aLocation;
++ (void)beginVerifyMacroAtLocation:(OCMLocation *)aLocation failWithException:(BOOL)failWithException;
 + (void)endVerifyMacro;
 
 + (OCMMacroState *)globalState;

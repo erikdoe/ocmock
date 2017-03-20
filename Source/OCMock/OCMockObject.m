@@ -184,7 +184,6 @@
 {
     OCMVerifier *verifier = [[[OCMVerifier alloc] initWithMockObject:self] autorelease];
     verifier.failWithException = failWithException;
-    verifier.success = YES;
     
     NSMutableArray *unsatisfiedExpectations = [NSMutableArray array];
     @synchronized(expectations)
