@@ -30,6 +30,11 @@
 #import "OCMExceptionReturnValueProvider.h"
 #import "OCMExpectationRecorder.h"
 
+@interface NSProxy ()
+
+- (void)doesNotRecognizeSelector:(SEL)aSelector;
+
+@end
 
 @implementation OCMockObject
 
