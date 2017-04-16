@@ -138,6 +138,15 @@
 
 #pragma mark  Public API
 
+- (NSString *)invocationsDescription
+{
+    NSString *description = [self description];
+    for (NSInvocation *invocation in invocations) {
+        description = [description stringByAppendingFormat:@"\n   | %@", invocation.invocationDescription];
+    }
+    return description;
+}
+
 - (void)setExpectationOrderMatters:(BOOL)flag
 {
     expectationOrderMatters = flag;
