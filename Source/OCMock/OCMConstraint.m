@@ -102,6 +102,19 @@
 
 #pragma mark  -
 
+@implementation OCMIsEqualConstraint
+
+- (BOOL)evaluate:(id)value
+{
+	return [value isEqual:testValue];
+}
+
+@end
+
+
+
+#pragma mark  -
+
 @implementation OCMIsNotEqualConstraint
 
 - (BOOL)evaluate:(id)value

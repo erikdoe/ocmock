@@ -54,7 +54,7 @@
 
 + (id)isEqual:(id)value
 {
-    return value;
+	return value;
 }
 
 + (id)isNotEqual:(id)value
