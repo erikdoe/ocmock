@@ -12,7 +12,7 @@
 		031E50591BB4A56300E257C3 /* OCMBoxedReturnValueProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 031E50571BB4A56300E257C3 /* OCMBoxedReturnValueProviderTests.m */; };
 		0322DA65191188D100CACAF1 /* OCMockObjectVerifyAfterRunTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0322DA64191188D100CACAF1 /* OCMockObjectVerifyAfterRunTests.m */; };
 		0322DA66191188D100CACAF1 /* OCMockObjectVerifyAfterRunTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0322DA64191188D100CACAF1 /* OCMockObjectVerifyAfterRunTests.m */; };
-		0322DA6919118B4600CACAF1 /* OCMVerifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 0322DA6719118B4600CACAF1 /* OCMVerifier.h */; };
+		0322DA6919118B4600CACAF1 /* OCMVerifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 0322DA6719118B4600CACAF1 /* OCMVerifier.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0322DA6A19118B4600CACAF1 /* OCMVerifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 0322DA6719118B4600CACAF1 /* OCMVerifier.h */; };
 		0322DA6B19118B4600CACAF1 /* OCMVerifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 0322DA6819118B4600CACAF1 /* OCMVerifier.m */; };
 		0322DA6C19118B4600CACAF1 /* OCMVerifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 0322DA6819118B4600CACAF1 /* OCMVerifier.m */; };
@@ -459,6 +459,8 @@
 		F0B950F11B0080BE00942C38 /* OCMock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OCMock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0B950F41B0080BE00942C38 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "OCMock iOS/Info.plist"; sourceTree = SOURCE_ROOT; };
 		F0B9510A1B0080D500942C38 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		F7061A311E7F7CF100023CD2 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		F7061A331E7F7CF400023CD2 /* OCMock.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OCMock.podspec; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -518,6 +520,8 @@
 			isa = PBXGroup;
 			children = (
 				03B3168F14633FAB0052CD09 /* Changes.txt */,
+				F7061A311E7F7CF100023CD2 /* README.md */,
+				F7061A331E7F7CF400023CD2 /* OCMock.podspec */,
 				030EF0B114632FD000B04273 /* OCMock */,
 				03565A3318F0566F003AE91E /* OCMockTests */,
 				030EF0DF14632FF700B04273 /* OCMockLib */,
@@ -797,6 +801,7 @@
 				03B315D2146333BF0052CD09 /* OCMConstraint.h in Headers */,
 				03618D83195B553400389166 /* OCMRecorder.h in Headers */,
 				03B315B9146333BF0052CD09 /* NSNotificationCenter+OCMAdditions.h in Headers */,
+				0322DA6919118B4600CACAF1 /* OCMVerifier.h in Headers */,
 				03B315AF146333BF0052CD09 /* NSInvocation+OCMAdditions.h in Headers */,
 				03B315B4146333BF0052CD09 /* NSMethodSignature+OCMAdditions.h in Headers */,
 				03C7BF0A195DA2F200A545DD /* OCMInvocationStub.h in Headers */,
@@ -818,7 +823,6 @@
 				03B31613146333C00052CD09 /* OCProtocolMockObject.h in Headers */,
 				2FA287ACE547BB41937BDEC3 /* NSObject+OCMAdditions.h in Headers */,
 				2FA28641AAD0AC2F876C9E48 /* OCMInvocationMatcher.h in Headers */,
-				0322DA6919118B4600CACAF1 /* OCMVerifier.h in Headers */,
 				2FA288447C48241BE2CAA63D /* OCMFunctions.h in Headers */,
 				2FA28FE116284C3E4A7FF179 /* OCMInvocationExpectation.h in Headers */,
 				2FA2821C9066C5E439288C76 /* OCMMacroState.h in Headers */,

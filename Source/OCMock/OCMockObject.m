@@ -165,13 +165,26 @@
 }
 
 
-- (id)verify
+- (id _Nonnull)verify
 {
-    return [self verifyAtLocation:nil];
+    return [self verifyAtLocation:nil failWithException:YES];
 }
 
-- (id)verifyAtLocation:(OCMLocation *)location
+- (id _Nonnull)verify:(BOOL)failWithException
 {
+    return [self verifyAtLocation:nil failWithException:failWithException];
+}
+
+- (id _Nonnull)verifyAtLocation:(OCMLocation *)location
+{
+    return [self verifyAtLocation:location failWithException:YES];
+}
+
+- (id _Nonnull)verifyAtLocation:(OCMLocation *)location failWithException:(BOOL)failWithException
+{
+    OCMVerifier *verifier = [[[OCMVerifier alloc] initWithMockObject:self] autorelease];
+    verifier.failWithException = failWithException;
+    
     NSMutableArray *unsatisfiedExpectations = [NSMutableArray array];
     @synchronized(expectations)
     {
@@ -186,14 +199,24 @@
 	{
         NSString *description = [NSString stringWithFormat:@"%@: expected method was not invoked: %@",
          [self description], [[unsatisfiedExpectations objectAtIndex:0] description]];
-        OCMReportFailure(location, description);
+        
+        verifier.exceptionDescription = description;
+        verifier.success = NO;
+        if (verifier.failWithException) {
+            OCMReportFailure(location, description);
+        }
 	}
 	else if([unsatisfiedExpectations count] > 0)
 	{
 		NSString *description = [NSString stringWithFormat:@"%@: %@ expected methods were not invoked: %@",
          [self description], @([unsatisfiedExpectations count]), [self _stubDescriptions:YES]];
-        OCMReportFailure(location, description);
-	}
+        
+        verifier.exceptionDescription = description;
+        verifier.success = NO;
+        if (verifier.failWithException) {
+            OCMReportFailure(location, description);
+        }
+    }
 
     OCMInvocationExpectation *firstException = nil;
     @synchronized(exceptions)
@@ -204,20 +227,34 @@
 	{
         NSString *description = [NSString stringWithFormat:@"%@: %@ (This is a strict mock failure that was ignored when it actually occurred.)",
          [self description], [firstException description]];
-        OCMReportFailure(location, description);
+        verifier.exceptionDescription = description;
+        verifier.success = NO;
+        if (verifier.failWithException) {
+            OCMReportFailure(location, description);
+        }
 	}
     [firstException release];
 
-    return [[[OCMVerifier alloc] initWithMockObject:self] autorelease];
+    return verifier;
 }
 
 
-- (void)verifyWithDelay:(NSTimeInterval)delay
+- (id)verifyWithDelay:(NSTimeInterval)delay
 {
-    [self verifyWithDelay:delay atLocation:nil];
+    return [self verifyWithDelay:delay failWithException:YES];
 }
 
-- (void)verifyWithDelay:(NSTimeInterval)delay atLocation:(OCMLocation *)location
+- (id)verifyWithDelay:(NSTimeInterval)delay failWithException:(BOOL)failWithException
+{
+    return [self verifyWithDelay:delay atLocation:nil failWithException:failWithException];
+}
+
+- (id)verifyWithDelay:(NSTimeInterval)delay atLocation:(OCMLocation *)location
+{
+    return [self verifyWithDelay:delay atLocation:location failWithException:YES];
+}
+
+- (id)verifyWithDelay:(NSTimeInterval)delay atLocation:(OCMLocation *)location failWithException:(BOOL)failWithException
 {
     NSTimeInterval step = 0.01;
     while(delay > 0)
@@ -240,7 +277,7 @@
         delay -= step;
         step *= 2;
     }
-    [self verifyAtLocation:location];
+    return [self verifyAtLocation:location failWithException:failWithException];
 }
 
 
@@ -253,18 +290,31 @@
 
 - (void)verifyInvocation:(OCMInvocationMatcher *)matcher atLocation:(OCMLocation *)location
 {
+    [self verifyInvocation:matcher atLocation:location failWithException:YES];
+}
+
+- (BOOL)verifyInvocation:(OCMInvocationMatcher * _Nonnull)matcher failWithException:(BOOL)failWithException
+{
+    return [self verifyInvocation:matcher atLocation:nil failWithException:failWithException];
+}
+
+- (BOOL)verifyInvocation:(OCMInvocationMatcher * _Nonnull)matcher atLocation:(OCMLocation * _Nullable)location failWithException:(BOOL)failWithException
+{
     @synchronized(invocations)
     {
         for(NSInvocation *invocation in invocations)
         {
             if([matcher matchesInvocation:invocation])
-                return;
+                return YES;
         }
     }
     NSString *description = [NSString stringWithFormat:@"%@: Method %@ was not invoked.",
-     [self description], [matcher description]];
-
-    OCMReportFailure(location, description);
+                             [self description], [matcher description]];
+    
+    if (failWithException) {
+        OCMReportFailure(location, description);
+    }
+    return NO;
 }
 
 

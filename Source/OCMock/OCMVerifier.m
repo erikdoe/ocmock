@@ -28,6 +28,7 @@
     if ((self = [super init]))
     {
         invocationMatcher = [[OCMInvocationMatcher alloc] init];
+        _success = YES;
     }
     
     return self;
@@ -36,7 +37,7 @@
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
     [super forwardInvocation:anInvocation];
-    [mockObject verifyInvocation:invocationMatcher atLocation:self.location];
+    self.success = [mockObject verifyInvocation:invocationMatcher atLocation:self.location failWithException:YES];
 }
 
 - (void)dealloc

@@ -22,4 +22,13 @@
 
 @property(retain) OCMLocation *location;
 
+/** whether is pass for verifier */
+@property (nonatomic, assign) BOOL success;
+
+/** test fail when verifier fail */
+@property (nonatomic, assign) BOOL failWithException;
+
+/** fail description when verifier fail */
+@property (nonatomic, copy) NSString *exceptionDescription;
+
 @end
