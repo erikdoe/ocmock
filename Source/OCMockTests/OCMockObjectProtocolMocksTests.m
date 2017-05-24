@@ -127,14 +127,16 @@ typedef InterfaceForTypedef* PointerTypedefInterface;
 
 - (void)testReturnDefaultValueWhenUnknownMethodIsCalledOnNiceProtocolMock
 {
-    id mock = [OCMockObject niceMockForProtocol:@protocol(TestProtocol)];
+    id mock = [OCMockObject mockForProtocol:@protocol(TestProtocol)];
+    [mock makeNice];
     XCTAssertTrue(0 == [mock primitiveValue], @"Should return 0 on unexpected method call (for nice mock).");
     [mock verify];
 }
 
 - (void)testRaisesAnExceptionWenAnExpectedMethodIsNotCalledOnNiceProtocolMock
 {
-    id mock = [OCMockObject niceMockForProtocol:@protocol(TestProtocol)];
+    id mock = [OCMockObject mockForProtocol:@protocol(TestProtocol)];
+    [mock makeNice];
     [[mock expect] primitiveValue];
     XCTAssertThrows([mock verify], @"Should have raised an exception because method was not called.");
 }

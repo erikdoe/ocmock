@@ -59,25 +59,6 @@
 	return [[[OCPartialMockObject alloc] initWithObject:anObject] autorelease];
 }
 
-
-+ (id)niceMockForClass:(Class)aClass
-{
-	return [self _makeNice:[self mockForClass:aClass]];
-}
-
-+ (id)niceMockForProtocol:(Protocol *)aProtocol
-{
-	return [self _makeNice:[self mockForProtocol:aProtocol]];
-}
-
-
-+ (id)_makeNice:(OCMockObject *)mock
-{
-	mock->isNice = YES;
-	return mock;
-}
-
-
 + (id)observerMock
 {
 	return [[[OCObserverMockObject alloc] init] autorelease];
@@ -137,6 +118,16 @@
 
 
 #pragma mark  Public API
+
+- (void)makeNice
+{
+    isNice = YES;
+}
+
+- (void)makeStrict
+{
+    isNice = NO;
+}
 
 - (void)setExpectationOrderMatters:(BOOL)flag
 {

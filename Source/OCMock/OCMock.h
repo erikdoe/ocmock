@@ -25,11 +25,11 @@
 #import <OCMock/OCMFunctions.h>
 
 
-#define OCMClassMock(cls) [OCMockObject niceMockForClass:cls]
+#define OCMClassMock(cls) ({ id _mock = [OCMockObject mockForClass:cls]; [_mock makeNice]; _mock; })
 
 #define OCMStrictClassMock(cls) [OCMockObject mockForClass:cls]
 
-#define OCMProtocolMock(protocol) [OCMockObject niceMockForProtocol:protocol]
+#define OCMProtocolMock(protocol) ({ id _mock = [OCMockObject mockForProtocol:protocol]; [_mock makeNice]; _mock; })
 
 #define OCMStrictProtocolMock(protocol) [OCMockObject mockForProtocol:protocol]
 

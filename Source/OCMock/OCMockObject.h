@@ -37,13 +37,12 @@
 + (id)mockForProtocol:(Protocol *)aProtocol;
 + (id)partialMockForObject:(NSObject *)anObject;
 
-+ (id)niceMockForClass:(Class)aClass;
-+ (id)niceMockForProtocol:(Protocol *)aProtocol;
-
 + (id)observerMock;
 
 - (instancetype)init;
 
+- (void)makeNice;
+- (void)makeStrict;
 - (void)setExpectationOrderMatters:(BOOL)flag;
 
 - (id)stub;
