@@ -45,8 +45,18 @@
 {
     if(aBlock)
     {
-        NSInvocation *inv = [NSInvocation invocationForBlock:aBlock withArguments:arguments];
-        [inv invokeWithTarget:aBlock];
+        if(self.async)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSInvocation *inv = [NSInvocation invocationForBlock:aBlock withArguments:arguments];
+                [inv invokeWithTarget:aBlock];
+            });
+        }
+        else
+        {
+            NSInvocation *inv = [NSInvocation invocationForBlock:aBlock withArguments:arguments];
+            [inv invokeWithTarget:aBlock];
+        }
     }
 }
 

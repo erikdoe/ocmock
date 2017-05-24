@@ -113,7 +113,34 @@
         va_end(args);
     }
     return [[[OCMBlockArgCaller alloc] initWithBlockArguments:params] autorelease];
-    
+}
+
++ (id)invokeBlockAsync
+{
+    OCMBlockArgCaller *blockArgCaller = [[[OCMBlockArgCaller alloc] init] autorelease];
+    blockArgCaller.async = YES;
+    return blockArgCaller;
+}
+
++ (id)invokeBlockAsyncWithArgs:(id)first,... NS_REQUIRES_NIL_TERMINATION
+{
+
+    NSMutableArray *params = [NSMutableArray array];
+    va_list args;
+    if(first)
+    {
+        [params addObject:first];
+        va_start(args, first);
+        id obj;
+        while((obj = va_arg(args, id)))
+        {
+            [params addObject:obj];
+        }
+        va_end(args);
+    }
+    OCMBlockArgCaller *blockArgCaller = [[[OCMBlockArgCaller alloc] initWithBlockArguments:params] autorelease];
+    blockArgCaller.async = YES;
+    return blockArgCaller;
 }
 
 + (id)defaultValue
