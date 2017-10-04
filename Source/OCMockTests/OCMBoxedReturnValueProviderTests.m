@@ -94,6 +94,31 @@
 }
 
 
+- (void)testCorrectEqualityForStructureWithoutName
+{
+    // see https://github.com/erikdoe/ocmock/issues/342
+    const char *type1 = "r^{GURL={basic_string<char, std::__1::char_traits<char"
+        ">, std::__1::allocator<char> >={__compressed_pair<std::__1::basic_stri"
+        "ng<char, std::__1::char_traits<char>, std::__1::allocator<char> >::__r"
+        "ep, std::__1::allocator<char> >={__rep}}}B{Parsed={Component=ii}{Compo"
+        "nent=ii}{Component=ii}{Component=ii}{Component=ii}{Component=ii}{Compo"
+        "nent=ii}{Component=ii}B^{}}{unique_ptr<GURL, std::__1::default_delete<"
+        "GURL> >={__compressed_pair<GURL *, std::__1::default_delete<GURL> >=^{"
+        "}}}}";
+    const char *type2 = "r^{GURL={basic_string<char, std::__1::char_traits<char"
+        ">, std::__1::allocator<char> >={__compressed_pair<std::__1::basic_stri"
+        "ng<char, std::__1::char_traits<char>, std::__1::allocator<char> >::__r"
+        "ep, std::__1::allocator<char> >={__rep=(?={__long=QQ*}{__short=(?=Cc)["
+        "23c]}{__raw=[3Q]})}}}B{Parsed={Component=ii}{Component=ii}{Component=i"
+        "i}{Component=ii}{Component=ii}{Component=ii}{Component=ii}{Component=i"
+        "i}B^{Parsed}}{unique_ptr<GURL, std::__1::default_delete<GURL> >={__com"
+        "pressed_pair<GURL *, std::__1::default_delete<GURL> >=^{GURL}}}}";
+
+    OCMBoxedReturnValueProvider *boxed = [OCMBoxedReturnValueProvider new];
+    XCTAssertTrue([boxed isMethodReturnType:type1 compatibleWithValueType:type2]);
+
+}
+
 @end
 
 
