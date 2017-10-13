@@ -126,6 +126,8 @@
         if((cls == object_getClass([NSObject class])) || (cls == [NSObject class]) || (cls == object_getClass(cls)))
             return;
         NSString *className = NSStringFromClass(cls);
+        if([className isEqualToString:@"NSManagedObject"])
+            return;
         NSString *selName = NSStringFromSelector(sel);
         if(([className hasPrefix:@"NS"] || [className hasPrefix:@"UI"]) &&
            ([selName hasPrefix:@"_"] || [selName hasSuffix:@"_"]))
