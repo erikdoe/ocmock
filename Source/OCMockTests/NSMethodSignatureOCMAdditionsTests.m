@@ -109,7 +109,7 @@
 
 - (void)testCreatesCorrectSignatureForBlockWithNoArgsAndVoidReturn
 {
-    void (^block)() = ^() {
+    void (^block)(void) = ^() {
     };
 
     NSMethodSignature *sig = [NSMethodSignature signatureForBlock:block];
@@ -141,7 +141,7 @@
 
 - (void)testCreatesCorrectSignatureForBlockWithBoolReturn
 {
-    BOOL (^block)() = ^() {
+    BOOL (^block)(void) = ^() {
         return NO;
     };
 
