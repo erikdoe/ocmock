@@ -92,13 +92,13 @@ TestOpaque myOpaque;
 
 @interface TestClassWithBlockArgMethod : NSObject
 
-- (void)doStuffWithBlock:(void (^)())block andString:(id)aString;
+- (void)doStuffWithBlock:(void (^)(void))block andString:(id)aString;
 
 @end
 
 @implementation TestClassWithBlockArgMethod
 
-- (void)doStuffWithBlock:(void (^)())block andString:(id)aString;
+- (void)doStuffWithBlock:(void (^)(void))block andString:(id)aString;
 {
     // stubbed out anyway
 }
