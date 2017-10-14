@@ -148,6 +148,29 @@ TestOpaque myOpaque;
 @end
 
 
+@protocol TestProtocol <NSObject>
++ (NSString *)stringValueClassMethod;
+- (int)primitiveValue;
+@optional
+- (id)objectValue;
+@end
+
+
+@interface TestClassWithProtocolBlockArgMethod : NSObject
+
+- (void)doStuffWithBlock:(void (^)(id<TestProtocol> arg))block;
+
+@end
+
+@implementation TestClassWithProtocolBlockArgMethod
+
+- (void)doStuffWithBlock:(void (^)(id<TestProtocol> arg))block;
+{
+    // stubbed out anyway
+}
+
+@end
+
 static NSString *TestNotification = @"TestNotification";
 
 
@@ -772,6 +795,42 @@ static NSString *TestNotification = @"TestNotification";
     __block BOOL blockWasInvoked = NO;
     [mock doStuffWithBlock:^() { blockWasInvoked = YES; } andString:@"bar"];
     XCTAssertFalse(blockWasInvoked, @"Should not have invoked block.");
+}
+
+- (void)testInvokesBlockWithClassMockArgs
+{
+    id mockString = OCMClassMock([NSString class]);
+    [[mock stub] enumerateLinesUsingBlock:[OCMArg invokeBlockWithArgs:mockString, [OCMArg defaultValue], nil]];
+
+    __block BOOL wasCalled = NO;
+    __block NSString *firstParam;
+    void (^block)(NSString *, BOOL *) = ^(NSString *line, BOOL *stop)
+    {
+        wasCalled = YES;
+        firstParam = line;
+    };
+    [mock enumerateLinesUsingBlock:block];
+
+    XCTAssertEqual(wasCalled, YES, @"Should have invoked block.");
+    XCTAssertEqual(firstParam, mockString, @"First param does not match.");
+}
+
+- (void)testInvokesBlockWithProtocolMockArgs
+{
+    id mockProtocol = OCMProtocolMock(@protocol(TestProtocol));
+    id mockObject = OCMClassMock([TestClassWithProtocolBlockArgMethod class]);
+    [[mockObject stub] doStuffWithBlock:[OCMArg invokeBlockWithArgs:mockProtocol, nil]];
+
+    __block BOOL wasCalled = NO;
+    __block id<TestProtocol> firstParam;
+    void (^block)(id<TestProtocol> arg) = ^(id<TestProtocol> arg) {
+        wasCalled = YES;
+        firstParam = arg;
+    };
+    [mockObject doStuffWithBlock:block];
+
+    XCTAssertTrue(wasCalled, @"Should have invoked block.");
+    XCTAssertEqual(firstParam, mockProtocol, @"Param does not match");
 }
 
 // --------------------------------------------------------------------------------------
