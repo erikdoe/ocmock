@@ -56,7 +56,7 @@ BOOL OCMIsClassType(const char *objCType)
 
 static BOOL OCMIsUnqualifiedBlockType(const char *unqualifiedObjCType)
 {
-    char blockType[] = @encode(void(^)());
+    char blockType[] = @encode(void(^)(void));
     if(strcmp(unqualifiedObjCType, blockType) == 0)
         return YES;
 
