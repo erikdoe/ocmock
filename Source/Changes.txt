@@ -1,6 +1,18 @@
 Listing of notable changes by release. More detail is usually found in the Git
 commit messages and/or the pull requests.
 
+OCMock 3.4.1 (2017-11-04)
+
+* Added workaround for crashes when mocking NSManagedObjects. As a side effect
+  it is no longer possible to verify the invocation of class methods on
+  NSManagedObject; see issue #338 for details.
+* Fixed a memory leak with andThrow:. (Nick Gillett)
+* Fixed bug that prevented protocol mocks from being used with
+  invokeWithBlock:. (Christopher McGrath)
+* Changed type comparison for structs to match new runtime. (Sylvain Defresne)
+* Added polyfill for compilation with 10.9 and lower SDKs. (Sylvain Defresne)
+
+
 OCMock 3.4 (2016-12-22)
 
 * OCMock now requires iOS 8 as minimum deployment target

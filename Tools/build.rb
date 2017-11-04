@@ -13,7 +13,7 @@ class Builder
       copySource
       buildModules
       signFrameworks "erik@doernenburg.com"
-      createPackage "ocmock-3.4.dmg", "OCMock 3.4" 
+      createPackage "ocmock-3.4-1.dmg", "OCMock 3.4-1" 
       sanityCheck
       openPackageDir
     end
@@ -47,22 +47,22 @@ class Builder
         @worker.run("mkdir -p #{osxproductdir}")
         @worker.run("cp -R #{@env.symroot}/Release/OCMock.framework #{osxproductdir}")
         
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphoneos10.2 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphonesimulator10.2 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphoneos11.1 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphonesimulator11.1 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
         ioslibproductdir = "#{@env.productdir}/iOS\\ library"                                           
         @worker.run("mkdir -p #{ioslibproductdir}")
         @worker.run("cp -R #{@env.symroot}/Release-iphoneos/OCMock #{ioslibproductdir}")
         @worker.run("lipo -create -output #{ioslibproductdir}/libOCMock.a #{@env.symroot}/Release-iphoneos/libOCMock.a #{@env.symroot}/Release-iphonesimulator/libOCMock.a")
         
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock iOS' -sdk iphoneos10.2 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock iOS' -sdk iphonesimulator10.2 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock iOS' -sdk iphoneos11.1 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock iOS' -sdk iphonesimulator11.1 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
         iosproductdir = "#{@env.productdir}/iOS\\ framework"                                           
         @worker.run("mkdir -p #{iosproductdir}")
         @worker.run("cp -R #{@env.symroot}/Release-iphoneos/OCMock.framework #{iosproductdir}")
         @worker.run("lipo -create -output #{iosproductdir}/OCMock.framework/OCMock #{@env.symroot}/Release-iphoneos/OCMock.framework/OCMock #{@env.symroot}/Release-iphonesimulator/OCMock.framework/OCMock")
  
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock tvOS' -sdk appletvos10.1 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock tvOS' -sdk appletvsimulator10.1 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock tvOS' -sdk appletvos11.1 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock tvOS' -sdk appletvsimulator11.1 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
         tvosproductdir = "#{@env.productdir}/tvOS"                                           
         @worker.run("mkdir -p #{tvosproductdir}")
         @worker.run("cp -R #{@env.symroot}/Release-appletvos/OCMock.framework #{tvosproductdir}")
@@ -105,13 +105,20 @@ class Builder
         tvosproductdir = "#{@env.productdir}/tvOS"                                           
 
         @worker.run("lipo -info #{osxproductdir}/OCMock.framework/OCMock")
+        puts "^^ 1/4 binaries; architectures should be x86_64\n\n"
         @worker.run("lipo -info #{ioslibproductdir}/libOCMock.a")
+        puts "^^ 2/4 binaries; architectures should be armv7 i386 x86_64 arm64\n\n"
         @worker.run("lipo -info #{iosproductdir}/OCMock.framework/OCMock")
+        puts "^^ 3/4 binaries; architectures should be i386 x86_64 armv7 arm64\n\n"
         @worker.run("lipo -info #{tvosproductdir}/OCMock.framework/OCMock")
-
+        puts "^^ 4/4 binaries; architectures should be x86_64 arm64\n\n"
+        
         @worker.run("codesign -dvv #{osxproductdir}/OCMock.framework")
+        puts "^^ 1/3 signed binaries\n\n"
         @worker.run("codesign -dvv #{iosproductdir}/OCMock.framework")       
+        puts "^^ 2/3 signed binaries\n\n"
         @worker.run("codesign -dvv #{tvosproductdir}/OCMock.framework")
+        puts "^^ 3/3 signed binaries\n\n"
     end
     
     def upload(packagename, dest)

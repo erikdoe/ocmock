@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name                  = "OCMock"
-  s.version               = "3.4"
+  s.version               = "3.4.1"
   
   s.summary               = "Mock objects for Objective-C"
   s.description           = <<-DESC
