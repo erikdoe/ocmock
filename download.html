@@ -21,23 +21,22 @@ published: true
 		<th>File</th>
 	</tr>
 	<tr>
-		<td>OCMock 3.4</td>
-		<td>macOS 10.12, iOS 10.2, tvOS 10.1</td>
+		<td>OCMock 3.4.1</td>
+		<td>macOS 10.13, iOS 11.1, tvOS 11.1</td>
 		<td>OS X 10.6, <b>iOS 8.0</b>, tvOS 9.0</td>
-		<td>22-Dec-2016</td>
-		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.4/ocmock-3.4.dmg">ocmock-3.4.dmg</a></td>
+		<td>04-Nov-2017</td>
+		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.4.1/ocmock-3.4.1.dmg">ocmock-3.4.1.dmg</a></td>
 	</tr>
 	<tr>
 		<td></td>
 		<td colspan="4">
 			Recent changes:
 			<ul>
-				<li>OCMock now requires iOS 8 as minimum deployment target
-				<li>Managed objects can now be mocked
-				<li>Notifications with a user info dictionary can be observed and verified with the macro syntax.
-				<li>Now considering structs with unknown names to be the same type as a named struct, as long<br>as either the actual definition matches or one of them is opaque.
-				<li>Fixed bug causing verifyWithDelay to be held up by rejects
-				<li>Fixed bug where a mock would not claim conformance to protocols declared in a superclass
+				<li>Added workaround for crashes when mocking NSManagedObjects. As a side effect<br>
+					it is no longer possible to verify the invocation of class methods on NSManagedObject;<br>
+					see <a href="https://github.com/erikdoe/ocmock/issues/339">#338</a> for details.
+				<li>Fixed a memory leak with andThrow:
+				<li>Fixed bug that prevented protocol mocks from being used with invokeWithBlock:.
 			</ul>
 			<a href="https://github.com/erikdoe/ocmock/blob/master/Source/Changes.txt">more...</a>
 		</td>
