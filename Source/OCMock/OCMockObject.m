@@ -98,6 +98,7 @@
     
 	// no [super init], we're inheriting from NSProxy
 	expectationOrderMatters = NO;
+	retainObjectArguments = YES;
 	stubs = [[NSMutableArray alloc] init];
 	expectations = [[NSMutableArray alloc] init];
 	exceptions = [[NSMutableArray alloc] init];
@@ -141,6 +142,11 @@
 - (void)setExpectationOrderMatters:(BOOL)flag
 {
     expectationOrderMatters = flag;
+}
+
+- (id)noRetainObjectArgs {
+	retainObjectArguments = NO;
+	return self;
 }
 
 - (void)stopMocking
@@ -326,7 +332,9 @@
         // value could be self. That would produce a retain cycle self->invocations->anInvocation->self.
         // However we need to retain everything on anInvocation that isn't self because we expect them to
         // stick around after this method returns. Use our special method to retain just what's needed.
-        [anInvocation retainObjectArgumentsExcludingObject:self];
+		if (retainObjectArguments) {
+			[anInvocation retainObjectArgumentsExcludingObject:self];
+		}
         [invocations addObject:anInvocation];
     }
 

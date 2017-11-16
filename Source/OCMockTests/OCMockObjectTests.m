@@ -171,6 +171,21 @@ TestOpaque myOpaque;
 
 @end
 
+@interface TestClassObjectArgMethod : NSObject
+
+- (void)doStuffWithObject:(id)object;
+
+@end
+
+@implementation TestClassObjectArgMethod
+
+- (void)doStuffWithObject:(id)object
+{
+	// stubbed out anyway
+}
+
+@end
+
 static NSString *TestNotification = @"TestNotification";
 
 
@@ -1168,6 +1183,34 @@ static NSString *TestNotification = @"TestNotification";
     NSDate *end = [NSDate date];
     
     XCTAssertTrue([end timeIntervalSinceDate:start] < 3, @"Should have returned before delay was up");
+}
+
+- (void)testRetainObjectArgs
+{
+	mock = OCMClassMock([TestClassObjectArgMethod class]);
+	NSObject *__weak weakObject;
+
+	@autoreleasepool {
+		NSObject *object = [[NSObject alloc] init];
+		weakObject = object;
+		[mock doStuffWithObject:object];
+	}
+
+	XCTAssertNotNil(weakObject, @"Object should have been retained.");
+}
+
+- (void)testNoRetainObjectArgs
+{
+	mock = [OCMClassMock([TestClassObjectArgMethod class]) noRetainObjectArgs];
+	NSObject *__weak weakObject;
+
+	@autoreleasepool {
+		NSObject *object = [[NSObject alloc] init];
+		weakObject = object;
+		[mock doStuffWithObject:object];
+	}
+
+	XCTAssertNil(weakObject, @"Object should not have been retained.");
 }
 
 @end
