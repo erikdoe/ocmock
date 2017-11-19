@@ -145,7 +145,7 @@
     }];
 }
 
-- (BOOL) isKindOfClassWithName:(NSString*)clsName class:(Class)cls{
+- (BOOL)isKindOfClassWithName:(NSString*)clsName class:(Class)cls{
     
     if (cls == nil) return NO;
     
