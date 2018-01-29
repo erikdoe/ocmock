@@ -171,6 +171,21 @@ TestOpaque myOpaque;
 
 @end
 
+@interface TestClassWithClassArgMethod : NSObject
+
+- (void)doStuffWithClass:(Class)aClass;
+
+@end
+
+@implementation TestClassWithClassArgMethod
+
+- (void)doStuffWithClass:(Class)aClass
+{
+    // stubbed out anyway
+}
+
+@end
+
 static NSString *TestNotification = @"TestNotification";
 
 
@@ -985,7 +1000,6 @@ static NSString *TestNotification = @"TestNotification";
 	XCTAssertThrows([mock verifyWithDelay:0.1], @"Should have raised an exception because method was not called.");
 }
 
-
 // --------------------------------------------------------------------------------------
 //	ordered expectations
 // --------------------------------------------------------------------------------------
@@ -1168,6 +1182,16 @@ static NSString *TestNotification = @"TestNotification";
     NSDate *end = [NSDate date];
     
     XCTAssertTrue([end timeIntervalSinceDate:start] < 3, @"Should have returned before delay was up");
+}
+
+- (void)testClassArgsAreRetained
+{
+
+    id mockWithClassMethod = [OCMockObject mockForClass:[TestClassWithClassArgMethod class]];
+    @autoreleasepool {
+        [[mockWithClassMethod stub] doStuffWithClass:[OCMArg any]];
+    }
+    XCTAssertNoThrow([mockWithClassMethod doStuffWithClass:[NSString class]]);
 }
 
 @end
