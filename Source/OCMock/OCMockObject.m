@@ -31,7 +31,9 @@
 #import "OCMExpectationRecorder.h"
 
 
-@implementation OCMockObject
+@implementation OCMockObject {
+	BOOL initialized;
+}
 
 #pragma mark  Class initialisation
 
@@ -95,7 +97,14 @@
         [recorder setMockObject:self];
         return (id)[recorder init];
     }
-    
+
+	// Prevent initialization in production code from resetting mock state.
+	if (initialized) {
+		return self;
+	} else {
+		initialized = YES;
+	}
+
 	// no [super init], we're inheriting from NSProxy
 	expectationOrderMatters = NO;
 	stubs = [[NSMutableArray alloc] init];
