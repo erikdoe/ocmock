@@ -121,7 +121,7 @@
         if((cls == object_getClass([NSObject class])) || (cls == [NSObject class]) || (cls == object_getClass(cls)))
             return;
         NSString *className = NSStringFromClass(cls);
-        if([className isEqualToString:@"NSManagedObject"])
+        if ([self isKindOfClassWithName:@"NSManagedObject" class:cls])
             return;
         NSString *selName = NSStringFromSelector(sel);
         if(([className hasPrefix:@"NS"] || [className hasPrefix:@"UI"]) &&
@@ -138,6 +138,17 @@
             // ignore for now
         }
     }];
+}
+
+- (BOOL)isKindOfClassWithName:(NSString*)clsName class:(Class)cls{
+    
+    if (cls == nil) return NO;
+    
+    NSString* currentClassName = NSStringFromClass(cls);
+    if ([currentClassName isEqualToString:clsName]){
+        return YES;
+    }
+    return [self isKindOfClassWithName:clsName class:[cls superclass]];
 }
 
 - (void)setupForwarderForClassMethodSelector:(SEL)selector
