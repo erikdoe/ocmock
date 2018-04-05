@@ -63,18 +63,13 @@
         const char *createdSubclassName = object_getClassName(mockedClass);
         Class createdSubclass = objc_lookUpClass(createdSubclassName);
 
-        [self restoreMetaClass];
+        OCMSetAssociatedMockForClass(nil, mockedClass);
+        object_setClass(mockedClass, originalMetaClass);
+        originalMetaClass = nil;
 
         objc_disposeClassPair(createdSubclass);
     }
     [super stopMocking];
-}
-
-- (void)restoreMetaClass
-{
-    OCMSetAssociatedMockForClass(nil, mockedClass);
-    object_setClass(mockedClass, originalMetaClass);
-    originalMetaClass = nil;
 }
 
 - (void)addStub:(OCMInvocationStub *)aStub
@@ -96,7 +91,7 @@
     /* if there is another mock for this exact class, stop it */
     id otherMock = OCMGetAssociatedMockForClass(mockedClass, NO);
     if(otherMock != nil)
-        [otherMock restoreMetaClass];
+        [otherMock stopMocking];
 
     OCMSetAssociatedMockForClass(self, mockedClass);
 

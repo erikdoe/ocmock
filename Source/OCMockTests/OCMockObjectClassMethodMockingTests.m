@@ -257,6 +257,34 @@ static NSUInteger initializeCallCount = 0;
     XCTAssertNoThrow([TestClassWithClassMethods foo]);
 }
 
+- (void)testStopMockingDisposesMetaClass
+{
+    id mock = [[OCClassMockObject alloc] initWithClass:[TestClassWithClassMethods class]];
+
+    const char *createdSubclassName = object_getClassName([TestClassWithClassMethods class]);
+    XCTAssertNotNil(objc_lookUpClass(createdSubclassName));
+
+    [mock stopMocking];
+    XCTAssertNil(objc_lookUpClass(createdSubclassName));
+}
+
+- (void)testSecondClassMockDisposesFirstMetaClass
+{
+    id mock1 = [[OCClassMockObject alloc] initWithClass:[TestClassWithClassMethods class]];
+    const char *createdSubclassName1 = object_getClassName([TestClassWithClassMethods class]);
+    XCTAssertNotNil(objc_lookUpClass(createdSubclassName1));
+
+    id mock2 = [[OCClassMockObject alloc] initWithClass:[TestClassWithClassMethods class]];
+    const char *createdSubclassName2 = object_getClassName([TestClassWithClassMethods class]);
+    XCTAssertNotNil(objc_lookUpClass(createdSubclassName2));
+
+    [mock1 stopMocking];
+    [mock2 stopMocking];
+
+    XCTAssertNil(objc_lookUpClass(createdSubclassName1));
+    XCTAssertNil(objc_lookUpClass(createdSubclassName2));
+}
+
 - (void)testForwardToRealObject
 {
     NSString *classFooValue = [TestClassWithClassMethods foo];
