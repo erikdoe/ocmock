@@ -26,6 +26,9 @@
 #import "OCMFunctions.h"
 #import "OCMInvocationStub.h"
 
+@interface OCMStubRecorder()
+@property (nonatomic, assign) BOOL replaceFlag;
+@end
 
 @implementation OCMStubRecorder
 
@@ -91,13 +94,21 @@
     return self;
 }
 
-
+- (id)replace
+{
+    self.replaceFlag = YES;
+    return self;
+}
 #pragma mark Finishing recording
 
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
     [super forwardInvocation:anInvocation];
-    [mockObject addStub:[self stub]];
+    if (self.replaceFlag) {
+        [mockObject replaceStub:[self stub]];
+    } else {
+        [mockObject addStub:[self stub]];
+    }
 }
 
 
@@ -182,6 +193,17 @@
     id (^theBlock)(void) = ^ (void)
     {
         return [self andForwardToRealObject];
+    };
+    return [[theBlock copy] autorelease];
+}
+
+@dynamic _replace;
+
+- (OCMStubRecorder *(^)(void))_replace
+{
+    id (^theBlock)(void) = ^ (void)
+    {
+        return [self replace];
     };
     return [[theBlock copy] autorelease];
 }
