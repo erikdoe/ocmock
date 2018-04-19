@@ -31,9 +31,7 @@
 #import "OCMExpectationRecorder.h"
 
 
-@implementation OCMockObject {
-	BOOL initialized;
-}
+@implementation OCMockObject
 
 #pragma mark  Class initialisation
 
@@ -99,10 +97,8 @@
     }
 
 	// Prevent initialization in production code from resetting mock state.
-	if (initialized) {
+	if (stubs) {
 		return self;
-	} else {
-		initialized = YES;
 	}
 
 	// no [super init], we're inheriting from NSProxy
