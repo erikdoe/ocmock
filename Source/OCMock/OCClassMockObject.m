@@ -87,6 +87,10 @@
     /* the runtime and OCMock depend on string and array; we don't intercept methods on them to avoid endless loops */
     if([[mockedClass class] isSubclassOfClass:[NSString class]] || [[mockedClass class] isSubclassOfClass:[NSArray class]])
         return;
+    
+    /* trying to replace class methods on NSManagedObject and subclasses of it doesn't work; see #339 */
+    if([mockedClass isSubclassOfClass:objc_getClass("NSManagedObject")])
+        return;
 
     /* if there is another mock for this exact class, stop it */
     id otherMock = OCMGetAssociatedMockForClass(mockedClass, NO);
@@ -113,7 +117,6 @@
     IMP myForwardIMP = method_getImplementation(myForwardMethod);
     class_addMethod(newMetaClass, @selector(forwardInvocation:), myForwardIMP, method_getTypeEncoding(myForwardMethod));
 
-
     /* adding forwarder for most class methods (instance methods on meta class) to allow for verify after run */
     NSArray *methodBlackList = @[@"class", @"forwardingTargetForSelector:", @"methodSignatureForSelector:", @"forwardInvocation:", @"isBlock",
             @"instanceMethodForwarderForSelector:", @"instanceMethodSignatureForSelector:"];
@@ -121,8 +124,6 @@
         if((cls == object_getClass([NSObject class])) || (cls == [NSObject class]) || (cls == object_getClass(cls)))
             return;
         NSString *className = NSStringFromClass(cls);
-        if([className isEqualToString:@"NSManagedObject"])
-            return;
         NSString *selName = NSStringFromSelector(sel);
         if(([className hasPrefix:@"NS"] || [className hasPrefix:@"UI"]) &&
            ([selName hasPrefix:@"_"] || [selName hasSuffix:@"_"]))

@@ -307,7 +307,7 @@ static NSUInteger initializeCallCount = 0;
 
 #pragma mark   Tests for Core Data interaction with mocks
 
-- (void)testMockingManagedObject;
+- (void)testMockingManagedObject
 {
     // Set up the Core Data stack for the test.
     
