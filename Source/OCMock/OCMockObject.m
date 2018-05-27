@@ -96,10 +96,11 @@
         return (id)[recorder init];
     }
 
-	// Prevent initialization in production code from resetting mock state.
-	if (stubs) {
-		return self;
-	}
+	// skip initialisation when init is called again, which can happen when stubbing alloc/init
+    if(stubs != nil)
+    {
+        return self;
+    }
 
 	// no [super init], we're inheriting from NSProxy
 	expectationOrderMatters = NO;

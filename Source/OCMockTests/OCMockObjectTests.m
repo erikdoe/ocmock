@@ -171,21 +171,6 @@ TestOpaque myOpaque;
 
 @end
 
-@interface TestClassObjectInitMethod : NSObject
-
-- (NSString *)testClassProperty;
-
-@end
-
-@implementation TestClassObjectInitMethod
-
-- (NSString *)testClassProperty
-{
-	TestClassWithProperty *testClass = [[TestClassWithProperty alloc] init];
-	return testClass.title;
-}
-
-@end
 
 static NSString *TestNotification = @"TestNotification";
 
@@ -1190,12 +1175,10 @@ static NSString *TestNotification = @"TestNotification";
 {
 	mock = OCMClassMock([TestClassWithProperty class]);
 	OCMStub([mock alloc]).andReturn(mock);
+	OCMStub([mock title]).andReturn(@"foo");
 
-	NSString *title = @"title";
-	OCMStub([mock title]).andReturn(title);
-
-	TestClassObjectInitMethod *object = [[TestClassObjectInitMethod alloc] init];
-	XCTAssertEqualObjects(title, [object testClassProperty]);
+	TestClassWithProperty *object = [[TestClassWithProperty alloc] init];
+	XCTAssertEqualObjects(@"foo", object.title);
 }
 
 @end
