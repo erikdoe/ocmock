@@ -3,6 +3,10 @@ commit messages and/or the pull requests.
 
 OCMock 3.4.2 (not released)
 
+* Skipping attempt to replace class methods on subclasses of NSManagedObject,
+  which fixes a conflict in newer iOS runtimes.
+* Skipping initialisation of mock when init is called again. This allows to
+  stub alloc/init; with some limitations. (Alan Terranova)
 * Removing dynamically created subclasses when a second mock replaces a mock
   for the same class. (David Sansome)
 
