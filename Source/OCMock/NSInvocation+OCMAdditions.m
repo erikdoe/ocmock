@@ -80,7 +80,7 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
     for(NSUInteger index = 2; index < numberOfArguments; index++)
     {
         const char *argumentType = [[self methodSignature] getArgumentTypeAtIndex:index];
-        if(OCMIsObjectType(argumentType) && !OCMIsClassType(argumentType))
+        if(OCMIsObjectType(argumentType))
         {
             id argument;
             [self getArgument:&argument atIndex:index];
@@ -102,7 +102,7 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
     }
 
     const char *returnType = [[self methodSignature] methodReturnType];
-    if(OCMIsObjectType(returnType) && !OCMIsClassType(returnType))
+    if(OCMIsObjectType(returnType))
     {
         id returnValue;
         [self getReturnValue:&returnValue];

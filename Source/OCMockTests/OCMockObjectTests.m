@@ -172,6 +172,22 @@ TestOpaque myOpaque;
 @end
 
 
+@interface TestClassWithClassArgMethod : NSObject
+
+- (void)doStuffWithClass:(Class)aClass;
+
+@end
+
+@implementation TestClassWithClassArgMethod
+
+- (void)doStuffWithClass:(Class)aClass
+{
+    // stubbed out anyway
+}
+
+@end
+
+
 static NSString *TestNotification = @"TestNotification";
 
 
@@ -986,7 +1002,6 @@ static NSString *TestNotification = @"TestNotification";
 	XCTAssertThrows([mock verifyWithDelay:0.1], @"Should have raised an exception because method was not called.");
 }
 
-
 // --------------------------------------------------------------------------------------
 //	ordered expectations
 // --------------------------------------------------------------------------------------
@@ -1171,7 +1186,8 @@ static NSString *TestNotification = @"TestNotification";
     XCTAssertTrue([end timeIntervalSinceDate:start] < 3, @"Should have returned before delay was up");
 }
 
-- (void)testNoResetMockStateOnInit
+
+- (void)testDoesNotReinitialiseMockWhenInitIsCalledMoreThanOnce
 {
 	mock = OCMClassMock([TestClassWithProperty class]);
 	OCMStub([mock alloc]).andReturn(mock);
@@ -1179,6 +1195,17 @@ static NSString *TestNotification = @"TestNotification";
 
 	TestClassWithProperty *object = [[TestClassWithProperty alloc] init];
 	XCTAssertEqualObjects(@"foo", object.title);
+}
+
+
+- (void)testClassArgsAreRetained
+{
+
+    id mockWithClassMethod = OCMClassMock([TestClassWithClassArgMethod class]);
+    @autoreleasepool {
+        [[mockWithClassMethod stub] doStuffWithClass:[OCMArg any]];
+    }
+    XCTAssertNoThrow([mockWithClassMethod doStuffWithClass:[NSString class]]);
 }
 
 @end
