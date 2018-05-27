@@ -48,11 +48,6 @@ static BOOL OCMIsUnqualifiedClassType(const char *unqualifiedObjCType)
     return (strcmp(unqualifiedObjCType, @encode(Class)) == 0);
 }
 
-BOOL OCMIsClassType(const char *objCType)
-{
-    return OCMIsUnqualifiedClassType(OCMTypeWithoutQualifiers(objCType));
-}
-
 
 static BOOL OCMIsUnqualifiedBlockType(const char *unqualifiedObjCType)
 {
