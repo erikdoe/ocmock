@@ -171,6 +171,7 @@ TestOpaque myOpaque;
 
 @end
 
+
 static NSString *TestNotification = @"TestNotification";
 
 
@@ -1168,6 +1169,16 @@ static NSString *TestNotification = @"TestNotification";
     NSDate *end = [NSDate date];
     
     XCTAssertTrue([end timeIntervalSinceDate:start] < 3, @"Should have returned before delay was up");
+}
+
+- (void)testNoResetMockStateOnInit
+{
+	mock = OCMClassMock([TestClassWithProperty class]);
+	OCMStub([mock alloc]).andReturn(mock);
+	OCMStub([mock title]).andReturn(@"foo");
+
+	TestClassWithProperty *object = [[TestClassWithProperty alloc] init];
+	XCTAssertEqualObjects(@"foo", object.title);
 }
 
 @end
