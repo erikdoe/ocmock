@@ -95,7 +95,12 @@
         [recorder setMockObject:self];
         return (id)[recorder init];
     }
-    
+
+	// Prevent initialization in production code from resetting mock state.
+	if (stubs) {
+		return self;
+	}
+
 	// no [super init], we're inheriting from NSProxy
 	expectationOrderMatters = NO;
 	stubs = [[NSMutableArray alloc] init];
