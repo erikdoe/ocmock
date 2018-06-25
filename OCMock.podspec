@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name                  = "OCMock"
-  s.version               = "3.4.1"
+  s.version               = "3.4.2"
   
   s.summary               = "Mock objects for Objective-C"
   s.description           = <<-DESC
@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
   s.author                = { "Erik Doernenburg" => "erik@doernenburg.com" }
   s.social_media_url      = "http://twitter.com/erikdoe"
   
-  s.source                = { :git => "https://github.com/erikdoe/ocmock.git", :tag => "v3.4.1" }
+  s.source                = { :git => "https://github.com/erikdoe/ocmock.git", :tag => "v3.4.2" }
   s.source_files          = "Source/OCMock/*.{h,m}"
 
   s.requires_arc          = false

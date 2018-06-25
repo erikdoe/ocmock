@@ -1,7 +1,7 @@
 Listing of notable changes by release. More detail is usually found in the Git
 commit messages and/or the pull requests.
 
-OCMock 3.4.2 (not released)
+OCMock 3.4.2 (2018-06-25)
 
 * Skipping attempt to replace class methods on subclasses of NSManagedObject,
   which fixes a conflict in newer iOS runtimes.
