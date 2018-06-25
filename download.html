@@ -21,32 +21,34 @@ published: true
 		<th>File</th>
 	</tr>
 	<tr>
-		<td>OCMock 3.4.1</td>
-		<td>macOS 10.13, iOS 11.1, tvOS 11.1</td>
-		<td>OS X 10.6, <b>iOS 8.0</b>, tvOS 9.0</td>
-		<td>04-Nov-2017</td>
-		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.4.1/ocmock-3.4.1.dmg">ocmock-3.4.1.dmg</a></td>
+		<td>OCMock 3.4.2</td>
+		<td>macOS 10.14, iOS 11.4, tvOS 11.4</td>
+		<td><b>OS X 10.8</b>, iOS 8.0, tvOS 9.0</td>
+		<td>25-Jun-2018</td>
+		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.4.2/ocmock-3.4.2.dmg">ocmock-3.4.2.dmg</a></td>
 	</tr>
 	<tr>
 		<td></td>
 		<td colspan="4">
 			Recent changes:
 			<ul>
-				<li>Added workaround for crashes when mocking NSManagedObjects. As a side effect<br>
-					it is no longer possible to verify the invocation of class methods on NSManagedObject;<br>
-					see <a href="https://github.com/erikdoe/ocmock/issues/339">#338</a> for details.
-				<li>Fixed a memory leak with andThrow:
-				<li>Fixed bug that prevented protocol mocks from being used with invokeWithBlock:.
+				<li>Skipping attempt to replace class methods on subclasses of NSManagedObject, which <br>
+					fixes a conflict in newer iOS runtimes.
+				<li>Skipping initialisation of mock when init is called again. This allows to
+					stub alloc/init; with<br> some limitations. 
+				<li>Removing dynamically created subclasses when a second mock replaces a mock
+					for the<br> same class.
+				<li>Retaining class arguments to invocations.
 			</ul>
 			<a href="https://github.com/erikdoe/ocmock/blob/master/Source/Changes.txt">more...</a>
 		</td>
 	</tr>
 	<tr>
-		<td>OCMock 3.3.1</td>
-		<td>OS X 10.11, iOS 9.2, tvOS 9.1</td>
-		<td>OS X 10.6, iOS 5, tvOS 9.0</td>
-		<td>01-Jul-2016</td>
-		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.3.1/ocmock-3.3.1.dmg">ocmock-3.3.1.dmg</a></td>
+		<td>OCMock 3.4.1</td>
+		<td>macOS 10.13, iOS 11.1, tvOS 11.1</td>
+		<td>OS X 10.6, <b>iOS 8.0</b>, tvOS 9.0</td>
+		<td>04-Nov-2017</td>
+		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.4.1/ocmock-3.4.1.dmg">ocmock-3.4.1.dmg</a></td>
 	</tr>
 	<tr>
 		<td>OCMock 2.2.4</td>
@@ -70,7 +72,7 @@ published: true
 
 <h2>License for OCMock 3.x</h2>
 
-<p>Copyright (c) 2004-2017 Erik Doernenburg and contributors
+<p>Copyright (c) 2004-2018 Erik Doernenburg and contributors
 
 <p>Licensed under the Apache License, Version 2.0 (the "License"); you may
   not use these files except in compliance with the License. You may obtain
