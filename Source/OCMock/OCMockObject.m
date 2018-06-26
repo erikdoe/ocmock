@@ -133,6 +133,27 @@
     }
 }
 
+- (void)replaceStub:(OCMInvocationStub *)aStub
+{
+    @synchronized(stubs)
+    {
+        __block OCMInvocationStub *removeStub = nil;
+        __block NSUInteger replaceIdx = 0;
+        [stubs enumerateObjectsUsingBlock:^(OCMInvocationStub * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if ([obj matchesInvocation:aStub.recordedInvocation]) {
+                removeStub = obj;
+                replaceIdx = idx;
+                *stop = YES;
+            }
+        }];
+        if (removeStub) {
+            [stubs replaceObjectAtIndex:replaceIdx withObject:aStub];
+        } else {
+            [stubs addObject:aStub];
+        }
+    }
+}
+
 - (void)addExpectation:(OCMInvocationExpectation *)anExpectation
 {
     @synchronized(expectations)

@@ -27,7 +27,7 @@
 - (id)andCall:(SEL)selector onObject:(id)anObject;
 - (id)andDo:(void (^)(NSInvocation *invocation))block;
 - (id)andForwardToRealObject;
-
+- (id)replace;
 @end
 
 
@@ -57,6 +57,9 @@
 
 #define andForwardToRealObject() _andForwardToRealObject()
 @property (nonatomic, readonly) OCMStubRecorder *(^ _andForwardToRealObject)(void);
+
+#define replace(aBlock) _replace(aBlock)
+@property (nonatomic, readonly) OCMStubRecorder *(^ _replace)(void);
 
 @end
 
