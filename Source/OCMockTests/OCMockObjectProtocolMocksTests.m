@@ -27,6 +27,7 @@
 - (int)primitiveValue;
 @optional
 - (id)objectValue;
+- (void)voidWithArgument:(id)argument;
 @end
 
 @interface InterfaceForTypedef : NSObject {
@@ -150,6 +151,19 @@ typedef InterfaceForTypedef* PointerTypedefInterface;
 - (void)testRefusesToCreateProtocolMockForNilProtocol
 {
     XCTAssertThrows(OCMProtocolMock(nil));
+}
+
+- (void)testArgumentsGetReleasedAfterStopMocking
+{
+    __weak id weakArgument;
+    id mock = OCMProtocolMock(@protocol(TestProtocol));
+    @autoreleasepool {
+        NSObject *argument = [NSObject new];
+        weakArgument = argument;
+        [mock voidWithArgument:argument];
+        [mock stopMocking];
+    }
+    XCTAssertNil(weakArgument);
 }
 
 @end

@@ -1208,6 +1208,20 @@ static NSString *TestNotification = @"TestNotification";
     XCTAssertNoThrow([mockWithClassMethod doStuffWithClass:[NSString class]]);
 }
 
+
+- (void)testArgumentsGetReleasedAfterStopMocking
+{
+    __weak id weakArgument;
+    mock = OCMClassMock([TestClassWithProperty class]);
+    @autoreleasepool {
+        NSMutableString *title = [NSMutableString new];
+        weakArgument = title;
+        [mock setTitle:title];
+        [mock stopMocking];
+    }
+    XCTAssertNil(weakArgument);
+}
+
 @end
 
 

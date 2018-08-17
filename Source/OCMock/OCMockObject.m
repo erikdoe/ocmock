@@ -151,7 +151,14 @@
 
 - (void)stopMocking
 {
-    // no-op for mock objects that are not class object or partial mocks
+    // invocations can contain objects that clients expect to be deallocated by now,
+    // and they can also have a strong reference to self, creating a retain cycle. Get
+    // rid of all of the invocations to hopefully let their objects deallocate, and to
+    // break any retain cycles involving self.
+    @synchronized(invocations)
+    {
+        [invocations removeAllObjects];
+    }
 }
 
 
@@ -332,6 +339,8 @@
         // value could be self. That would produce a retain cycle self->invocations->anInvocation->self.
         // However we need to retain everything on anInvocation that isn't self because we expect them to
         // stick around after this method returns. Use our special method to retain just what's needed.
+        // This still doesn't prevent retain cycles since any of the arguments could have a strong reference
+        // to self. Those will have to be broken with manual calls to -stopMocking.
         [anInvocation retainObjectArgumentsExcludingObject:self];
         [invocations addObject:anInvocation];
     }
