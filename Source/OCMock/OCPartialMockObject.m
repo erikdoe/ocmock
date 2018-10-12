@@ -123,7 +123,7 @@
 
     /* dynamically create a subclass and set it as the class of the object */
     Class subclass = OCMCreateSubclass(mockedClass, realObject);
-	object_setClass(realObject, subclass);
+    object_setClass(realObject, subclass);
 
     /* point forwardInvocation: of the object to the implementation in the mock */
 	Method myForwardMethod = class_getInstanceMethod([self mockObjectClass], @selector(forwardInvocationForRealObject:));

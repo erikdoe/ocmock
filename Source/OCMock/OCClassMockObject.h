@@ -18,8 +18,9 @@
 
 @interface OCClassMockObject : OCMockObject 
 {
-	Class               mockedClass;
-    Class               originalMetaClass;
+    Class  mockedClass;
+    Class  originalMetaClass;
+    Class  classCreatedForNewMetaClass;
 }
 
 - (id)initWithClass:(Class)aClass;
