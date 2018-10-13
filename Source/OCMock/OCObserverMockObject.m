@@ -82,24 +82,37 @@
 
 - (void)verify
 {
-    [self verifyAtLocation:nil];
+    [self verify:YES];
 }
 
 - (void)verifyAtLocation:(OCMLocation *)location
 {
-    @synchronized(recorders)
-    {
-        if([recorders count] == 1)
-        {
+    [self verifyAtLocation:location failWithException:YES];
+}
+- (BOOL)verify:(BOOL)failWithException
+{
+    return [self verifyAtLocation:nil failWithException:failWithException];
+}
+
+- (BOOL)verifyAtLocation:(OCMLocation *)location failWithException:(BOOL)failWithException
+{
+    @synchronized(recorders) {
+        if([recorders count] == 1) {
             NSString *description = [NSString stringWithFormat:@"%@: expected notification was not observed: %@",
-             [self description], [[recorders lastObject] description]];
-            OCMReportFailure(location, description);
-        }
-        else if([recorders count] > 0)
-        {
+                                     [self description], [[recorders lastObject] description]];
+            if (failWithException) {
+                OCMReportFailure(location, description);
+            }
+            return NO;
+        } else if([recorders count] > 0) {
             NSString *description = [NSString stringWithFormat:@"%@ : %@ expected notifications were not observed.",
-             [self description], @([recorders count])];
-            OCMReportFailure(location, description);
+                                     [self description], @([recorders count])];
+            if (failWithException) {
+                OCMReportFailure(location, description);
+            }
+            return NO;
+        } else {
+            return YES;
         }
     }
 }

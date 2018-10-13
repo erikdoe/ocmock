@@ -103,6 +103,22 @@
     ); \
 })
 
+#define OCMVerifySilence(invocation) \
+({ \
+    _OCMSilenceWarnings( \
+        [OCMMacroState beginVerifyMacroAtLocation:OCMMakeLocation(self, __FILE__, __LINE__) failWithException:NO];   \
+        OCMMacroState *state = nil;                                                             \
+        @try{ \
+            invocation; \
+        }@finally{ \
+            state = [OCMMacroState globalState];    \
+            [OCMMacroState endVerifyMacro];  \
+        }                                           \
+        OCMVerifier *verifyer = (OCMVerifier *)state.recorder;      \
+        verifyer.success;                                           \
+    );                                                          \
+})
+
 #define _OCMSilenceWarnings(macro) \
 ({ \
     _Pragma("clang diagnostic push") \

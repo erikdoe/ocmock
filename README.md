@@ -8,3 +8,7 @@ For downloads, documentation, and support please visit [ocmock.org][].
 [![Build Status](https://travis-ci.org/erikdoe/ocmock.svg?branch=master)](https://travis-ci.org/erikdoe/ocmock)
 
   [ocmock.org]: http://ocmock.org/
+
+
+# Addition
+* add verify with BOOL return, no fail with testcase
