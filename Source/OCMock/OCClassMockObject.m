@@ -145,6 +145,7 @@
     }];
 }
 
+
 - (void)setupForwarderForClassMethodSelector:(SEL)selector
 {
     SEL aliasSelector = OCMAliasForOriginalSelector(selector);
@@ -157,8 +158,8 @@
 
     Class metaClass = object_getClass(mockedClass);
     IMP forwarderIMP = [originalMetaClass instanceMethodForwarderForSelector:selector];
-    class_replaceMethod(metaClass, selector, forwarderIMP, types);
     class_addMethod(metaClass, aliasSelector, originalIMP, types);
+    class_replaceMethod(metaClass, selector, forwarderIMP, types);
 }
 
 
