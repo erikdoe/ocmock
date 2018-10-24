@@ -199,6 +199,29 @@ static NSString *TestNotification = @"TestNotification";
 @end
 
 
+@interface TestClassWithClassMethod : NSObject
+
++ (id)shared;
+- (NSString *)doStuffWithClass;
+
+@end
+
+
+@implementation TestClassWithClassMethod
+
++ (id)shared
+{
+	return [TestClassWithClassMethod new];
+}
+
+- (NSString *)doStuffWithClass;
+{
+	return @"Original value";
+}
+
+@end
+
+
 // --------------------------------------------------------------------------------------
 //  setup
 // --------------------------------------------------------------------------------------
@@ -572,6 +595,21 @@ static NSString *TestNotification = @"TestNotification";
     [[[(id)myMock stub] andReturn:@"stubbed title"] title];
 
     XCTAssertEqualObjects(@"stubbed title", myMock.title);
+}
+
+- (void)testStabReturnsSameMockWithoutRetainCycle
+{
+    @autoreleasepool {
+        id mockWithClassMethod = OCMClassMock([TestClassWithClassMethod class]);
+        OCMStub([mockWithClassMethod doStuffWithClass]).andReturn(@"Stubbed value");
+        OCMStub([mockWithClassMethod shared]).andReturn(mockWithClassMethod);
+        id mockSingletone = [TestClassWithClassMethod shared];
+        
+        XCTAssertEqualObjects(@"Stubbed value", [mockSingletone doStuffWithClass], @"Should return stubbed value");
+    }
+    id singletone = [TestClassWithClassMethod shared];
+    
+    XCTAssertEqualObjects(@"Original value", [singletone doStuffWithClass], @"Should return original value");
 }
 
 

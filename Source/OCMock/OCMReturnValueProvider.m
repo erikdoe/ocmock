@@ -26,15 +26,38 @@
     if ((self = [super init]))
     {
         returnValue = [aValue retain];
+        valueRetained = YES;
     }
+	
+	return self;
+}
+
+- (instancetype)initWithValue:(id)aValue shouldRetain:(BOOL)shouldRetain
+{
+	if ((self = [super init]))
+	{
+		if (shouldRetain)
+		{
+			returnValue = [aValue retain];
+			valueRetained = YES;
+		}
+		else
+		{
+			returnValue = aValue;
+			valueRetained = NO;
+		}
+	}
 	
 	return self;
 }
 
 - (void)dealloc
 {
-	[returnValue release];
-	[super dealloc];
+    if (valueRetained)
+    {
+        [returnValue release];
+    }
+    [super dealloc];
 }
 
 - (void)handleInvocation:(NSInvocation *)anInvocation

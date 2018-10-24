@@ -19,9 +19,11 @@
 @interface OCMReturnValueProvider : NSObject 
 {
 	id	returnValue;
+	BOOL valueRetained;
 }
 
 - (instancetype)initWithValue:(id)aValue;
+- (instancetype)initWithValue:(id)aValue shouldRetain:(BOOL)shouldRetain;
 
 - (void)handleInvocation:(NSInvocation *)anInvocation;
 
