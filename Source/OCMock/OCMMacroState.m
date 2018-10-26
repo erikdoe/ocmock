@@ -42,6 +42,11 @@ static NSString *const OCMGlobalStateKey = @"OCMGlobalStateKey";
     OCMMacroState *globalState = threadDictionary[OCMGlobalStateKey];
     OCMStubRecorder *recorder = [(OCMStubRecorder *)[globalState recorder] retain];
     [threadDictionary removeObjectForKey:OCMGlobalStateKey];
+	if (!recorder.isEverInvoked)
+	{
+		[NSException raise:NSInternalInconsistencyException
+					format:@"OCMStub/OCMReject/OCMExpect must be used only to mocked object."];
+	}
     return [recorder autorelease];
 }
 
@@ -86,7 +91,15 @@ static NSString *const OCMGlobalStateKey = @"OCMGlobalStateKey";
 
 + (void)endVerifyMacro
 {
-    [[NSThread currentThread].threadDictionary removeObjectForKey:OCMGlobalStateKey];
+	NSMutableDictionary *threadDictionary = [NSThread currentThread].threadDictionary;
+	OCMMacroState *globalState = threadDictionary[OCMGlobalStateKey];
+	OCMVerifier *verifier = [(OCMVerifier *)[globalState recorder] retain];
+	[threadDictionary removeObjectForKey:OCMGlobalStateKey];
+	if (!verifier.isEverInvoked)
+	{
+		[NSException raise:NSInternalInconsistencyException
+					format:@"OCMVerify must be used only to mocked object."];
+	}
 }
 
 

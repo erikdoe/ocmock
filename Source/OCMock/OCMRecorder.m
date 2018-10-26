@@ -97,11 +97,13 @@
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
 	[anInvocation setTarget:nil];
+	self.isEverInvoked = YES;
     [invocationMatcher setInvocation:anInvocation];
 }
 
 - (void)doesNotRecognizeSelector:(SEL)aSelector
 {
+	self.isEverInvoked = YES;
     [NSException raise:NSInvalidArgumentException format:@"%@: cannot stub/expect/verify method '%@' because no such method exists in the mocked class.", mockObject, NSStringFromSelector(aSelector)];
 }
 
