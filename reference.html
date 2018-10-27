@@ -501,7 +501,7 @@ OCMStub([classMock new])).andReturn(myObject);
 
 <p>It possible, although not advisable, to stub out <code>new</code> for a class. If you find yourself doing this a lot, please consider the <a href="http://en.wikipedia.org/wiki/Dependency_injection">dependency injection</a> pattern. 
 
-<p><b>IMPORTANT:</b> It is not possible to stub the <code>init</code> method, because that is implemented by the mock itself.
+<p><b>IMPORTANT:</b> It is not possible to stub the <code>init</code> method, because that is implemented by the mock itself. However, when the <code>init</code> method is called again a after the original initialisation the mock object simply returns <code>self</code>. This makes it possible to effectively stub an <code>alloc</code>/<code>init</code> sequence.
 	
 
 <h3 class="numbered">Instance-based method swizzling</h3>
@@ -617,7 +617,7 @@ OCMVerify([mock _sendTouchesForEvent:[OCMArg any]]); // still fails
 
 <p>OCMock is not fully thread-safe. Up to version 3.2.x OCMock was not thread-aware at all. Any combination of operations on a mock object from multiple threads was likely to cause issues and make the test fail. 
 	
-<p>As of OCMock 3.3 it is still necessary to invoke all setup and verification operations from a single thread, preferrably the main thread of the test runner. It is possible, though, to use the mock object from multiple threads. The mock object can even be used from a different thread while its setup continues in the main thread. See <a href="https://github.com/erikdoe/ocmock/pull/235">#235</a> for details.
+<p>As of OCMock 3.3 it is still necessary to invoke all setup and verification operations from a single thread, preferrably the main thread of the test runner. It is possible, though, to use the mock object from multiple threads. The mock object can even be used from a different thread while its setup continues in the main thread. See <a href="https://github.com/erikdoe/ocmock/pull/235">#235</a> and <a href="https://github.com/erikdoe/ocmock/issues/328">#328</a> for details.
 	
 	
 <h2>More detail</h2>
