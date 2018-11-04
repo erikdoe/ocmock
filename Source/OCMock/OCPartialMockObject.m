@@ -174,9 +174,9 @@
         return;
 
     Method originalMethod = class_getInstanceMethod(mockedClass, sel);
-	IMP originalIMP = method_getImplementation(originalMethod);
-    const char *types = method_getTypeEncoding(originalMethod);
     /* Might be NULL if the selector is forwarded to another class */
+    IMP originalIMP = (originalMethod != NULL) ? method_getImplementation(originalMethod) : NULL;
+    const char *types = (originalMethod != NULL) ? method_getTypeEncoding(originalMethod) : NULL;
     // TODO: check the fallback implementation is actually sufficient
     if(types == NULL)
         types = ([[mockedClass instanceMethodSignatureForSelector:sel] fullObjCTypes]);
