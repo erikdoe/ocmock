@@ -22,7 +22,7 @@ Pod::Spec.new do |s|
 
   s.requires_arc          = false
   s.ios.deployment_target = '8.0'
-  s.osx.deployment_target = '10.6'
+  s.osx.deployment_target = '10.8'
   s.tvos.deployment_target = '9.0'
    
   s.public_header_files   = ["OCMock.h", "OCMockObject.h", "OCMArg.h", "OCMConstraint.h", 
