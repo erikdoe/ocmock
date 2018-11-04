@@ -261,28 +261,28 @@ static NSUInteger initializeCallCount = 0;
 {
     id mock = [[OCClassMockObject alloc] initWithClass:[TestClassWithClassMethods class]];
 
-    const char *createdSubclassName = object_getClassName([TestClassWithClassMethods class]);
-    XCTAssertNotNil(objc_lookUpClass(createdSubclassName));
+    NSString *createdSubclassName = @(object_getClassName([TestClassWithClassMethods class]));
+    XCTAssertNotNil(objc_lookUpClass(createdSubclassName.UTF8String));
 
     [mock stopMocking];
-    XCTAssertNil(objc_lookUpClass(createdSubclassName));
+    XCTAssertNil(objc_lookUpClass(createdSubclassName.UTF8String));
 }
 
 - (void)testSecondClassMockDisposesFirstMetaClass
 {
     id mock1 = [[OCClassMockObject alloc] initWithClass:[TestClassWithClassMethods class]];
-    const char *createdSubclassName1 = object_getClassName([TestClassWithClassMethods class]);
-    XCTAssertNotNil(objc_lookUpClass(createdSubclassName1));
+    NSString *createdSubclassName1 = @(object_getClassName([TestClassWithClassMethods class]));
+    XCTAssertNotNil(objc_lookUpClass(createdSubclassName1.UTF8String));
 
     id mock2 = [[OCClassMockObject alloc] initWithClass:[TestClassWithClassMethods class]];
-    const char *createdSubclassName2 = object_getClassName([TestClassWithClassMethods class]);
-    XCTAssertNotNil(objc_lookUpClass(createdSubclassName2));
+    NSString *createdSubclassName2 = @(object_getClassName([TestClassWithClassMethods class]));
+    XCTAssertNotNil(objc_lookUpClass(createdSubclassName2.UTF8String));
 
     [mock1 stopMocking];
     [mock2 stopMocking];
 
-    XCTAssertNil(objc_lookUpClass(createdSubclassName1));
-    XCTAssertNil(objc_lookUpClass(createdSubclassName2));
+    XCTAssertNil(objc_lookUpClass(createdSubclassName1.UTF8String));
+    XCTAssertNil(objc_lookUpClass(createdSubclassName2.UTF8String));
 }
 
 - (void)testForwardToRealObject
