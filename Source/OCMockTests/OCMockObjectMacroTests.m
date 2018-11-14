@@ -405,4 +405,11 @@
   [mock rangeOfString:@"foo" options:NSRegularExpressionSearch];
 }
 
+- (void)testCanUseMacroToStubMethodWithAnyNonObjectArgumentChainedWithOCMStubRecorder
+{
+  id mock = OCMClassMock([NSString class]);
+  OCMStub([mock rangeOfString:@"foo" options:0]).ignoringNonObjectArgs().andReturn(NSMakeRange(0, 1));
+  [mock rangeOfString:@"foo" options:NSRegularExpressionSearch];
+}
+
 @end
