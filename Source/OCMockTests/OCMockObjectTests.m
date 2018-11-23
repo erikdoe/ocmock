@@ -978,7 +978,7 @@ static NSString *TestNotification = @"TestNotification";
 {
     dispatch_async(dispatch_queue_create("mockqueue", nil), ^{
         [NSThread sleepForTimeInterval:0.1];
-        [mock lowercaseString];
+        [self->mock lowercaseString];
     });
     
 	[[mock expect] lowercaseString];
@@ -989,7 +989,7 @@ static NSString *TestNotification = @"TestNotification";
 {
     dispatch_async(dispatch_queue_create("mockqueue", nil), ^{
         [NSThread sleepForTimeInterval:0.1];
-        [mock lowercaseString];
+        [self->mock lowercaseString];
     });
     
 	[[mock expect] lowercaseString];
@@ -1176,7 +1176,7 @@ static NSString *TestNotification = @"TestNotification";
     [[mock expect] hasPrefix:OCMOCK_ANY];
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [mock hasPrefix:@"foo"];
+        [self->mock hasPrefix:@"foo"];
     });
                    
     NSDate *start = [NSDate date];
