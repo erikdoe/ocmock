@@ -49,7 +49,7 @@
 
 + (instancetype)constraintWithSelector:(SEL)aSelector onObject:(id)anObject withValue:(id)aValue
 {
-	OCMInvocationConstraint *constraint = [self constraintWithSelector:aSelector onObject:anObject];
+	OCMInvocationConstraint *constraint = (OCMInvocationConstraint *)[self constraintWithSelector:aSelector onObject:anObject];
 	if([[constraint->invocation methodSignature] numberOfArguments] < 4)
 		[NSException raise:NSInvalidArgumentException format:@"Constraint with value requires selector with two arguments."];
 	[constraint->invocation setArgument:&aValue atIndex:3];
