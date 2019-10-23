@@ -77,13 +77,15 @@ class Builder
     end
     
     def signFrameworks(identity)
-        osxproductdir = "#{@env.productdir}/OSX"                                        
-        iosproductdir = "#{@env.productdir}/iOS\\ framework"                                           
-        tvosproductdir = "#{@env.productdir}/tvOS"                                           
+        osxproductdir = "#{@env.productdir}/OSX"
+        iosproductdir = "#{@env.productdir}/iOS\\ framework"
+        tvosproductdir = "#{@env.productdir}/tvOS"
+        watchosproductdir = "#{@env.productdir}/watchOS"
 
         @worker.run("codesign -s 'Mac Developer: #{identity}' #{osxproductdir}/OCMock.framework")
         @worker.run("codesign -f -s 'iPhone Developer: #{identity}' #{iosproductdir}/OCMock.framework")
         @worker.run("codesign -f -s 'iPhone Developer: #{identity}' #{tvosproductdir}/OCMock.framework")
+        @worker.run("codesign -f -s 'iPhone Developer: #{identity}' #{watchosproductdir}/OCMock.framework")
     end
 
     def createPackage(packagename, volumename)    

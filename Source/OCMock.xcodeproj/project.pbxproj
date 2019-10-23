@@ -521,7 +521,6 @@
 		3CFBDD761BB3DB200050D9C5 /* TestClassWithCustomReferenceCounting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestClassWithCustomReferenceCounting.m; sourceTree = "<group>"; };
 		817EB1621BD765130047E85A /* OCMock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OCMock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DE97CA022B43EE60098C63F /* OCMock watchOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = "OCMock watchOS.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
-		8DE97CA122B43EE70098C63F /* OCMock watchOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "OCMock watchOS-Info.plist"; path = "/Users/morganchen/dev/ocmock/Source/OCMock watchOS-Info.plist"; sourceTree = "<absolute>"; };
 		A02926811CA0725A00594AAF /* TestObjects.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TestObjects.xcdatamodel; sourceTree = "<group>"; };
 		D31108AD1828DB8700737925 /* OCMockLibTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OCMockLibTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D31108B71828DB8700737925 /* OCMockLibTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OCMockLibTests-Info.plist"; sourceTree = "<group>"; };
@@ -603,7 +602,6 @@
 				D31108B51828DB8700737925 /* OCMockLibTests */,
 				03565A1C18F05626003AE91E /* Frameworks */,
 				030EF0A914632FD000B04273 /* Products */,
-				8DE97CA122B43EE70098C63F /* OCMock watchOS-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1924,7 +1922,7 @@
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = "OCMock watchOS-Info.plist";
+				INFOPLIST_FILE = "OCMock/OCMock-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -1961,7 +1959,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = "OCMock watchOS-Info.plist";
+				INFOPLIST_FILE = "OCMock/OCMock-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
