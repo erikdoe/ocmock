@@ -112,22 +112,27 @@ class Builder
         ioslibproductdir = "#{@env.productdir}/iOS\\ library"                                           
         iosproductdir = "#{@env.productdir}/iOS\\ framework"                                           
         tvosproductdir = "#{@env.productdir}/tvOS"                                           
+        watchosproductdir = "#{@env.productdir}/watchOS"                                           
 
         @worker.run("lipo -info #{osxproductdir}/OCMock.framework/OCMock")
-        puts "^^ 1/4 binaries; architectures should be x86_64\n\n"
+        puts "^^ 1/5 binaries; architectures should be x86_64\n\n"
         @worker.run("lipo -info #{ioslibproductdir}/libOCMock.a")
-        puts "^^ 2/4 binaries; architectures should be armv7 i386 x86_64 arm64\n\n"
+        puts "^^ 2/5 binaries; architectures should be armv7 i386 x86_64 arm64\n\n"
         @worker.run("lipo -info #{iosproductdir}/OCMock.framework/OCMock")
-        puts "^^ 3/4 binaries; architectures should be i386 x86_64 armv7 arm64\n\n"
+        puts "^^ 3/5 binaries; architectures should be i386 x86_64 armv7 arm64\n\n"
         @worker.run("lipo -info #{tvosproductdir}/OCMock.framework/OCMock")
-        puts "^^ 4/4 binaries; architectures should be x86_64 arm64\n\n"
+        puts "^^ 4/5 binaries; architectures should be x86_64 arm64\n\n"
+        @worker.run("lipo -info #{watchosproductdir}/OCMock.framework/OCMock")
+        puts "^^ 4/5 binaries; architectures should be i386 x86_64 armv7k arm64_32\n\n"
         
         @worker.run("codesign -dvv #{osxproductdir}/OCMock.framework")
-        puts "^^ 1/3 signed binaries\n\n"
+        puts "^^ 1/4 signed binaries\n\n"
         @worker.run("codesign -dvv #{iosproductdir}/OCMock.framework")       
-        puts "^^ 2/3 signed binaries\n\n"
+        puts "^^ 2/4 signed binaries\n\n"
         @worker.run("codesign -dvv #{tvosproductdir}/OCMock.framework")
-        puts "^^ 3/3 signed binaries\n\n"
+        puts "^^ 3/4 signed binaries\n\n"
+        @worker.run("codesign -dvv #{watchosproductdir}/OCMock.framework")
+        puts "^^ 4/4 signed binaries\n\n"
     end
     
     def upload(packagename, dest)

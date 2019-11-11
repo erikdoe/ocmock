@@ -520,7 +520,7 @@
 		3CFBDD751BB3DB200050D9C5 /* TestClassWithCustomReferenceCounting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestClassWithCustomReferenceCounting.h; sourceTree = "<group>"; };
 		3CFBDD761BB3DB200050D9C5 /* TestClassWithCustomReferenceCounting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestClassWithCustomReferenceCounting.m; sourceTree = "<group>"; };
 		817EB1621BD765130047E85A /* OCMock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OCMock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8DE97CA022B43EE60098C63F /* OCMock watchOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = "OCMock watchOS.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8DE97CA022B43EE60098C63F /* OCMock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OCMock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A02926811CA0725A00594AAF /* TestObjects.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TestObjects.xcdatamodel; sourceTree = "<group>"; };
 		D31108AD1828DB8700737925 /* OCMockLibTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OCMockLibTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D31108B71828DB8700737925 /* OCMockLibTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OCMockLibTests-Info.plist"; sourceTree = "<group>"; };
@@ -614,7 +614,7 @@
 				03565A3118F0566E003AE91E /* OCMockTests.xctest */,
 				F0B950F11B0080BE00942C38 /* OCMock.framework */,
 				817EB1621BD765130047E85A /* OCMock.framework */,
-				8DE97CA022B43EE60098C63F /* OCMock watchOS.framework */,
+				8DE97CA022B43EE60098C63F /* OCMock.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1165,7 +1165,7 @@
 			);
 			name = "OCMock watchOS";
 			productName = "OCMock iOS";
-			productReference = 8DE97CA022B43EE60098C63F /* OCMock watchOS.framework */;
+			productReference = 8DE97CA022B43EE60098C63F /* OCMock.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		D31108AC1828DB8700737925 /* OCMockLibTests */ = {
@@ -1934,7 +1934,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mulle-kybernetik.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = OCMock;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				TVOS_DEPLOYMENT_TARGET = "";
@@ -1970,7 +1970,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mulle-kybernetik.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = OCMock;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				TVOS_DEPLOYMENT_TARGET = "";

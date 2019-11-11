@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8DE97C5322B43EE60098C63F"
-               BuildableName = "OCMock watchOS.framework"
+               BuildableName = "OCMock.framework"
                BlueprintName = "OCMock watchOS"
                ReferencedContainer = "container:OCMock.xcodeproj">
             </BuildableReference>
@@ -29,8 +29,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
@@ -46,13 +44,11 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8DE97C5322B43EE60098C63F"
-            BuildableName = "OCMock watchOS.framework"
+            BuildableName = "OCMock.framework"
             BlueprintName = "OCMock watchOS"
             ReferencedContainer = "container:OCMock.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -64,7 +60,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8DE97C5322B43EE60098C63F"
-            BuildableName = "OCMock watchOS.framework"
+            BuildableName = "OCMock.framework"
             BlueprintName = "OCMock watchOS"
             ReferencedContainer = "container:OCMock.xcodeproj">
          </BuildableReference>
