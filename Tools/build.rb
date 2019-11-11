@@ -67,16 +67,25 @@ class Builder
         @worker.run("mkdir -p #{tvosproductdir}")
         @worker.run("cp -R #{@env.symroot}/Release-appletvos/OCMock.framework #{tvosproductdir}")
         @worker.run("lipo -create -output #{tvosproductdir}/OCMock.framework/OCMock #{@env.symroot}/Release-appletvos/OCMock.framework/OCMock #{@env.symroot}/Release-appletvsimulator/OCMock.framework/OCMock")
+
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock watchOS' -sdk watchos5.1 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock watchOS' -sdk iphonesimulator12.1 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
+        watchosproductdir = "#{@env.productdir}/watchOS"                                           
+        @worker.run("mkdir -p #{watchosproductdir}")
+        @worker.run("cp -R #{@env.symroot}/Release-watchos/OCMock.framework #{watchosproductdir}")
+        @worker.run("lipo -create -output #{watchosproductdir}/OCMock.framework/OCMock #{@env.symroot}/Release-watchos/OCMock.framework/OCMock #{@env.symroot}/Release-iphonesimulator/OCMock.framework/OCMock")
     end
     
     def signFrameworks(identity)
-        osxproductdir = "#{@env.productdir}/OSX"                                        
-        iosproductdir = "#{@env.productdir}/iOS\\ framework"                                           
-        tvosproductdir = "#{@env.productdir}/tvOS"                                           
+        osxproductdir = "#{@env.productdir}/OSX"
+        iosproductdir = "#{@env.productdir}/iOS\\ framework"
+        tvosproductdir = "#{@env.productdir}/tvOS"
+        watchosproductdir = "#{@env.productdir}/watchOS"
 
         @worker.run("codesign -s 'Mac Developer: #{identity}' #{osxproductdir}/OCMock.framework")
         @worker.run("codesign -f -s 'iPhone Developer: #{identity}' #{iosproductdir}/OCMock.framework")
         @worker.run("codesign -f -s 'iPhone Developer: #{identity}' #{tvosproductdir}/OCMock.framework")
+        @worker.run("codesign -f -s 'iPhone Developer: #{identity}' #{watchosproductdir}/OCMock.framework")
     end
 
     def createPackage(packagename, volumename)    
