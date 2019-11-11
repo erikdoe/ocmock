@@ -1,6 +1,11 @@
 Listing of notable changes by release. More detail is usually found in the Git
 commit messages and/or the pull requests.
 
+OCMock 3.4.4 (unreleased)
+
+* Added support for watchOS (Morgan Chen)
+
+
 OCMock 3.4.3 (2018-11-04)
 
 * Changed behaviour when a second mock takes over class method mocking from
