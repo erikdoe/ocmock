@@ -25,3 +25,5 @@
 
 @end
 
+@interface OCRespondingProtocolMockObject : OCProtocolMockObject
+@end
