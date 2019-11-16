@@ -46,7 +46,7 @@ class Builder
         osxproductdir = "#{@env.productdir}/OSX"                                        
         @worker.run("mkdir -p #{osxproductdir}")
         @worker.run("cp -R #{@env.symroot}/Release/OCMock.framework #{osxproductdir}")
-        
+
         @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphoneos13.2 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
         @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphonesimulator13.2 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
         ioslibproductdir = "#{@env.productdir}/iOS\\ library"                                           
@@ -114,25 +114,23 @@ class Builder
         tvosproductdir = "#{@env.productdir}/tvOS"                                           
         watchosproductdir = "#{@env.productdir}/watchOS"                                           
 
-        @worker.run("lipo -info #{osxproductdir}/OCMock.framework/OCMock")
-        puts "^^ 1/5 binaries; architectures should be x86_64\n\n"
-        @worker.run("lipo -info #{ioslibproductdir}/libOCMock.a")
-        puts "^^ 2/5 binaries; architectures should be armv7 i386 x86_64 arm64\n\n"
-        @worker.run("lipo -info #{iosproductdir}/OCMock.framework/OCMock")
-        puts "^^ 3/5 binaries; architectures should be i386 x86_64 armv7 arm64\n\n"
-        @worker.run("lipo -info #{tvosproductdir}/OCMock.framework/OCMock")
-        puts "^^ 4/5 binaries; architectures should be x86_64 arm64\n\n"
-        @worker.run("lipo -info #{watchosproductdir}/OCMock.framework/OCMock")
-        puts "^^ 4/5 binaries; architectures should be i386 x86_64 armv7k arm64_32\n\n"
+        archs = nil
+        @worker.run("lipo -info #{osxproductdir}/OCMock.framework/OCMock") { |lipo| archs = /re: (.*)/.match(lipo.readline)[1].strip() }
+        puts "^^ wrong architecture for macOS framework; found: #{archs}\n\n" unless archs == "x86_64"
+        @worker.run("lipo -info #{ioslibproductdir}/libOCMock.a") { |lipo| archs = /re: (.*)/.match(lipo.readline)[1].strip() }
+        puts "^^ wrong architectures for iOS framework; found: #{archs}\n\n" unless archs == "armv7 i386 x86_64 arm64"
+        @worker.run("lipo -info #{iosproductdir}/OCMock.framework/OCMock")  { |lipo| archs = /re: (.*)/.match(lipo.readline)[1].strip() }
+        puts "^^ wrong architectures for iOS library; found: #{archs}\n\n" unless archs == "i386 x86_64 armv7 arm64"
+        @worker.run("lipo -info #{tvosproductdir}/OCMock.framework/OCMock")  { |lipo| archs = /re: (.*)/.match(lipo.readline)[1].strip() }
+        puts "^^ wrong architectures for tvOS framework; found: #{archs}\n\n" unless archs == "x86_64 arm64"
+        @worker.run("lipo -info #{watchosproductdir}/OCMock.framework/OCMock")  { |lipo| archs = /re: (.*)/.match(lipo.readline)[1].strip() }
+        puts "^^ wrong architectures for watchOS framework; found: #{archs}\n\n" unless archs == "i386 x86_64 armv7k arm64_32"
+
         
         @worker.run("codesign -dvv #{osxproductdir}/OCMock.framework")
-        puts "^^ 1/4 signed binaries\n\n"
         @worker.run("codesign -dvv #{iosproductdir}/OCMock.framework")       
-        puts "^^ 2/4 signed binaries\n\n"
         @worker.run("codesign -dvv #{tvosproductdir}/OCMock.framework")
-        puts "^^ 3/4 signed binaries\n\n"
         @worker.run("codesign -dvv #{watchosproductdir}/OCMock.framework")
-        puts "^^ 4/4 signed binaries\n\n"
     end
     
     def upload(packagename, dest)
