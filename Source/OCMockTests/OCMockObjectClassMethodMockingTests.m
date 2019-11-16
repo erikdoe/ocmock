@@ -25,6 +25,7 @@
 @interface TestClassWithClassMethods : NSObject
 + (NSString *)foo;
 + (NSString *)bar;
++ (void)bazWithArgument:(id)argument;
 - (NSString *)bar;
 @end
 
@@ -50,6 +51,10 @@ static NSUInteger initializeCallCount = 0;
 + (NSString *)bar
 {
     return @"Bar-ClassMethod";
+}
+
++ (void)bazWithArgument:(id)argument
+{
 }
 
 - (NSString *)bar
@@ -348,6 +353,19 @@ static NSUInteger initializeCallCount = 0;
     id newObject = [TestClassWithClassMethods new];
 
     XCTAssertEqualObjects(dummyObject, newObject, @"Should have stubbed +new method");
+}
+
+- (void)testArgumentsGetReleasedAfterStopMocking
+{
+    __weak id weakArgument;
+    id mock = OCMClassMock([TestClassWithClassMethods class]);
+    @autoreleasepool {
+        NSObject *argument = [NSObject new];
+        weakArgument = argument;
+        [TestClassWithClassMethods bazWithArgument:argument];
+        [mock stopMocking];
+    }
+    XCTAssertNil(weakArgument);
 }
 
 @end

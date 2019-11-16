@@ -67,6 +67,7 @@ static NSUInteger initializeCallCount = 0;
 - (NSRect)methodRect2;
 - (int)methodInt;
 - (void)methodVoid;
+- (void)methodVoidWithArgument:(id)argument;
 - (void)setMethodInt:(int)anInt;
 @end
 
@@ -101,6 +102,10 @@ static NSUInteger initializeCallCount = 0;
 }
 
 - (void)methodVoid
+{
+}
+
+- (void)methodVoidWithArgument:(id)argument
 {
 }
 
@@ -501,6 +506,20 @@ static NSUInteger initializeCallCount = 0;
 	XCTAssertEqualObjects(@"TestFoo", [realObject foo], @"Should have stubbed method.");
 	[mock stopMocking];
 	XCTAssertEqualObjects(@"Foo", [realObject foo], @"Should have 'unstubbed' method.");
+}
+
+- (void)testArgumentsGetReleasedAfterStopMocking
+{
+    __weak id weakArgument;
+    TestClassThatCallsSelf *realObject = [[TestClassThatCallsSelf alloc] init];
+    id mock = OCMPartialMock(realObject);
+    @autoreleasepool {
+        NSObject *argument = [NSObject new];
+        weakArgument = argument;
+        [mock methodVoidWithArgument:argument];
+        [mock stopMocking];
+    }
+    XCTAssertNil(weakArgument);
 }
 
 
