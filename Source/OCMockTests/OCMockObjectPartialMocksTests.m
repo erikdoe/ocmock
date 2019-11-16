@@ -32,6 +32,7 @@
 @interface TestClassWithSimpleMethod : NSObject
 + (NSUInteger)initializeCallCount;
 - (NSString *)foo;
+- (void)bar:(id)someArgument;
 @end
 
 @implementation TestClassWithSimpleMethod
@@ -51,6 +52,11 @@ static NSUInteger initializeCallCount = 0;
 - (NSString *)foo
 {
     return @"Foo";
+}
+
+- (void)bar:(id)someArgument // maybe we should make it explicit that the arg is retainable
+{
+
 }
 
 @end
@@ -102,10 +108,6 @@ static NSUInteger initializeCallCount = 0;
 }
 
 - (void)methodVoid
-{
-}
-
-- (void)methodVoidWithArgument:(id)argument
 {
 }
 
@@ -511,12 +513,12 @@ static NSUInteger initializeCallCount = 0;
 - (void)testArgumentsGetReleasedAfterStopMocking
 {
     __weak id weakArgument;
-    TestClassThatCallsSelf *realObject = [[TestClassThatCallsSelf alloc] init];
+    TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
     id mock = OCMPartialMock(realObject);
     @autoreleasepool {
         NSObject *argument = [NSObject new];
         weakArgument = argument;
-        [mock methodVoidWithArgument:argument];
+        [mock bar:argument];
         [mock stopMocking];
     }
     XCTAssertNil(weakArgument);

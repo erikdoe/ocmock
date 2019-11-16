@@ -339,8 +339,8 @@
         // value could be self. That would produce a retain cycle self->invocations->anInvocation->self.
         // However we need to retain everything on anInvocation that isn't self because we expect them to
         // stick around after this method returns. Use our special method to retain just what's needed.
-        // This still doesn't prevent retain cycles since any of the arguments could have a strong reference
-        // to self. Those will have to be broken with manual calls to -stopMocking.
+        // This still doesn't completely prevent retain cycles since any of the arguments could have a
+        // strong reference to self. Those will have to be broken with manual calls to -stopMocking.
         [anInvocation retainObjectArgumentsExcludingObject:self];
         [invocations addObject:anInvocation];
     }
@@ -350,11 +350,15 @@
     {
         for(stub in stubs)
         {
-            // If the stub forwards its invocation to the real object, then we don't want to do handleInvocation: yet, since forwarding the invocation to the real object could call a method that is expected to happen after this one, which is bad if expectationOrderMatters is YES
+            // If the stub forwards its invocation to the real object, then we don't want to do
+            // handleInvocation: yet, since forwarding the invocation to the real object could call a
+            // method that is expected to happen after this one, which is bad if expectationOrderMatters
+            // is YES
             if([stub matchesInvocation:anInvocation])
                 break;
         }
-        // Retain the stub in case it ends up being removed from stubs and expectations, since we still have to call handleInvocation on the stub at the end
+        // Retain the stub in case it ends up being removed from stubs and expectations, since we still
+        // have to call handleInvocation on the stub at the end
         [stub retain];
     }
     if(stub == nil)
@@ -372,7 +376,11 @@
                              [self description], [stub description], [[expectations objectAtIndex:0] description]];
             }
 
-            // We can't check isSatisfied yet, since the stub won't be satisfied until we call handleInvocation:, and we don't want to call handleInvocation: yes for the reason in the comment above, since we'll still have the current expectation in the expectations array, which will cause an exception if expectationOrderMatters is YES and we're not ready for any future expected methods to be called yet
+            // We can't check isSatisfied yet, since the stub won't be satisfied until we call
+            // handleInvocation:, and we don't want to call handleInvocation: yes for the reason in the
+            // comment above, since we'll still have the current expectation in the expectations array, which
+            // will cause an exception if expectationOrderMatters is YES and we're not ready for any future
+            // expected methods to be called yet
             if(![(OCMInvocationExpectation *)stub isMatchAndReject])
             {
                 [expectations removeObject:stub];
