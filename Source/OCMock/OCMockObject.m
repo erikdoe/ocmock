@@ -141,6 +141,13 @@
     }
 }
 
+- (void)assertInvocationsArrayIsPresent
+{
+    if(invocations == nil) {
+        [NSException raise:NSInternalInconsistencyException format:@"** Cannot handle or verify invocations. This error usually occurs when a mock object is used after stopMocking has been called on it. In most cases it is not necessary to call stopMocking. If you know you have to, please make sure that the mock object is not used afterwards."];
+    }
+}
+
 
 #pragma mark  Public API
 
@@ -158,6 +165,8 @@
     @synchronized(invocations)
     {
         [invocations removeAllObjects];
+        [invocations autorelease];
+        invocations = nil;
     }
 }
 
@@ -266,6 +275,7 @@
 
 - (void)verifyInvocation:(OCMInvocationMatcher *)matcher atLocation:(OCMLocation *)location
 {
+    [self assertInvocationsArrayIsPresent];
     @synchronized(invocations)
     {
         for(NSInvocation *invocation in invocations)
@@ -333,6 +343,7 @@
 
 - (BOOL)handleInvocation:(NSInvocation *)anInvocation
 {
+    [self assertInvocationsArrayIsPresent];
     @synchronized(invocations)
     {
         // We can't do a normal retain arguments on anInvocation because its target/arguments/return

@@ -1222,6 +1222,29 @@ static NSString *TestNotification = @"TestNotification";
     XCTAssertNil(weakArgument);
 }
 
+- (void)testRaisesWhenAttemptingToVerifyInvocationsAfterStopMocking
+{
+    mock = OCMClassMock([TestClassWithProperty class]);
+
+    [mock title];
+    [mock stopMocking];
+
+    XCTAssertThrowsSpecificNamed([[mock verify] title], NSException, NSInternalInconsistencyException,
+                @"Should not have thrown a NSInternalInconsistencyException when attempting to verify after stopMocking.");
+
+}
+
+- (void)testRaisesWhenAttemptingToUseAfterStopMocking
+{
+    mock = OCMClassMock([TestClassWithProperty class]);
+
+    [mock stopMocking];
+
+    XCTAssertThrowsSpecificNamed([mock title], NSException, NSInternalInconsistencyException,
+                @"Should not have thrown a NSInternalInconsistencyException when attempting to verify after stopMocking.");
+
+}
+
 @end
 
 

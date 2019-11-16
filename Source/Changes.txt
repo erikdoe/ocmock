@@ -6,6 +6,8 @@ OCMock 3.5 (unreleased)
 * Changed stopMocking so that arguments will be forcibly released to break
   retain cycles. This MAY cause some existing tests to fail. However, it
   was always bad practice to use a mock after calling stopMocking. (Ian)
+* Added checks, which will throw an exception, to ensure that a mock is not
+  used after stopMocking is called.
 * Added support for watchOS (Morgan Chen)
 
 

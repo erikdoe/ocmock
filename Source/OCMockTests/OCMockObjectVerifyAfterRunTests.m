@@ -114,7 +114,19 @@
 {
     id mock = [OCMockObject niceMockForClass:[TestBaseClassForVerifyAfterRun class]];
 
-    XCTAssertThrows([[mock verify] classMethod1], @"Should not have thrown an exception for class method that was called.");
+    XCTAssertThrows([[mock verify] classMethod1], @"Should have thrown an exception for class method that was not called.");
 }
+
+- (void)testThrowsWhenVerificationIsAttemptedAfterStopMocking
+{
+    id mock = [OCMockObject niceMockForClass:[TestBaseClassForVerifyAfterRun class]];
+
+    [TestBaseClassForVerifyAfterRun classMethod1];
+    [mock stopMocking];
+
+    XCTAssertThrowsSpecificNamed([[mock verify] classMethod1], NSException, NSInternalInconsistencyException,
+                @"Should not have thrown a NSInternalInconsistencyException when attempting to verify after stopMocking.");
+}
+
 
 @end
