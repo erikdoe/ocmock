@@ -327,52 +327,42 @@
     // have not found a way to report the error; it seems we must throw an
     // exception to get out of the forwarding machinery
     XCTAssertThrowsSpecificNamed(OCMVerify([mock arrayByAddingObject:@"foo"]),
-                    NSException,
-                    NSInvalidArgumentException,
-                    @"should throw NSInvalidArgumentException exception");
+            NSException, NSInvalidArgumentException, @"should throw NSInvalidArgumentException exception");
 }
 
-- (void)testShouldThrowExceptionWhenTryingToVerifyRealObject
+
+- (void)testShouldThrowExceptionWhenNotUsingMockInVerify
 {
-	id realObject = [NSArray array];
+	id realObject = [NSMutableArray array];
 	
 	XCTAssertThrowsSpecificNamed(OCMVerify([realObject addObject:@"foo"]),
-								 NSException,
-								 NSInternalInconsistencyException,
-								 @"should throw NSInternalInconsistencyException exception");
-	
-	id mockObject = OCMClassMock([NSString class]);
-	[mockObject lowercaseString];
-	XCTAssertNoThrow(OCMVerify([mockObject lowercaseString]));
+	        NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
 }
 
-- (void)testShouldThrowExceptionWhenTryingToStubRealObject
+- (void)testShouldThrowExceptionWhenNotUsingMockInStub
 {
-	id realObject = [NSArray array];
+	id realObject = [NSMutableArray array];
 	
 	XCTAssertThrowsSpecificNamed(OCMStub([realObject addObject:@"foo"]),
-								 NSException,
-								 NSInternalInconsistencyException,
-								 @"should throw NSInternalInconsistencyException exception");
-	
-	id mockObject = OCMClassMock([NSString class]);
-	[mockObject lowercaseString];
-	XCTAssertNoThrow(OCMStub([mockObject lowercaseString]));
+	        NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
 }
 
-- (void)testShouldThrowExceptionWhenTryingToRejectRealObject
+- (void)testShouldThrowExceptionWhenNotUsingMockInExpect
 {
-	id realObject = [NSArray array];
+    id realObject = [NSMutableArray array];
+
+    XCTAssertThrowsSpecificNamed(OCMExpect([realObject addObject:@"foo"]),
+            NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
+}
+
+- (void)testShouldThrowExceptionWhenNotUsingMockInReject
+{
+	id realObject = [NSMutableArray array];
 	
 	XCTAssertThrowsSpecificNamed(OCMReject([realObject addObject:@"foo"]),
-								 NSException,
-								 NSInternalInconsistencyException,
-								 @"should throw NSInternalInconsistencyException exception");
-	
-	id mockObject = OCMClassMock([NSString class]);
-	[mockObject lowercaseString];
-	XCTAssertNoThrow(OCMReject([mockObject lowercaseString]));
+            NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
 }
+
 
 - (void)testCanExplicitlySelectClassMethodForStubs
 {
