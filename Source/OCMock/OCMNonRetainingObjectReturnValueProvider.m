@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2009-2018 Erik Doernenburg and contributors
+ *  Copyright (c) 2019 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -14,50 +14,17 @@
  *  under the License.
  */
 
-#import "NSMethodSignature+OCMAdditions.h"
-#import "OCMReturnValueProvider.h"
 #import "OCMFunctions.h"
+#import "OCMNonRetainingObjectReturnValueProvider.h"
 
 
-@implementation OCMReturnValueProvider
+@implementation OCMNonRetainingObjectReturnValueProvider
 
 - (instancetype)initWithValue:(id)aValue
 {
     if ((self = [super init]))
-    {
-        returnValue = [aValue retain];
-        valueRetained = YES;
-    }
-	
-	return self;
-}
-
-- (instancetype)initWithValue:(id)aValue shouldRetain:(BOOL)shouldRetain
-{
-	if ((self = [super init]))
-	{
-		if (shouldRetain)
-		{
-			returnValue = [aValue retain];
-			valueRetained = YES;
-		}
-		else
-		{
-			returnValue = aValue;
-			valueRetained = NO;
-		}
-	}
-	
-	return self;
-}
-
-- (void)dealloc
-{
-    if (valueRetained)
-    {
-        [returnValue release];
-    }
-    [super dealloc];
+        returnValue = aValue;
+    return self;
 }
 
 - (void)handleInvocation:(NSInvocation *)anInvocation
@@ -72,7 +39,7 @@
         // methods that "create" an object return it with an extra retain count
         [returnValue retain];
     }
-	[anInvocation setReturnValue:&returnValue];
+    [anInvocation setReturnValue:&returnValue];
 }
-
 @end
+

@@ -73,7 +73,6 @@ static NSUInteger initializeCallCount = 0;
 - (NSRect)methodRect2;
 - (int)methodInt;
 - (void)methodVoid;
-- (void)methodVoidWithArgument:(id)argument;
 - (void)setMethodInt:(int)anInt;
 @end
 

@@ -16,7 +16,7 @@
 
 #import "OCMStubRecorder.h"
 #import "OCClassMockObject.h"
-#import "OCMReturnValueProvider.h"
+#import "OCMObjectReturnValueProvider.h"
 #import "OCMBoxedReturnValueProvider.h"
 #import "OCMExceptionReturnValueProvider.h"
 #import "OCMIndirectReturnValueProvider.h"
@@ -51,7 +51,7 @@
 
 - (id)andReturn:(id)anObject
 {
-	[[self stub] addInvocationAction:[[[OCMReturnValueProvider alloc] initWithValue:anObject] autorelease]];
+	[[self stub] addInvocationAction:[[[OCMObjectReturnValueProvider alloc] initWithValue:anObject] autorelease]];
 	return self;
 }
 
@@ -61,9 +61,9 @@
 	return self;
 }
 
-- (id)andReturnSameMock:(id)anObject
+- (id)andReturnMockObject
 {
-	[[self stub] addInvocationAction:[[[OCMReturnValueProvider alloc] initWithValue:anObject shouldRetain:NO] autorelease]];
+	[[self stub] addInvocationAction:[[[OCMNonRetainingObjectReturnValueProvider alloc] initWithValue:mockObject] autorelease]];
 	return self;
 }
 
@@ -120,13 +120,9 @@
     {
         if(OCMIsObjectType([aValue objCType]))
         {
-            NSValue *objValue = nil;
+            id objValue = nil;
             [aValue getValue:&objValue];
-            if ((id)objValue == mockObject)
-            {
-                return [self andReturnSameMock:objValue];
-            }
-            return [self andReturn:objValue];
+            return (objValue == mockObject) ? [self andReturnMockObject] : [self andReturn:objValue];
         }
         else
         {

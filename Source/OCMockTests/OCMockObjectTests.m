@@ -171,6 +171,28 @@ TestOpaque myOpaque;
 @end
 
 
+@interface TestClassWithClassMethod : NSObject
+
++ (id)shared;
+- (NSString *)stringValue;
+
+@end
+
+@implementation TestClassWithClassMethod
+
++ (id)shared
+{
+	return [TestClassWithClassMethod new];
+}
+
+- (NSString *)stringValue;
+{
+	return @"foo";
+}
+
+@end
+
+
 static NSString *TestNotification = @"TestNotification";
 
 
@@ -181,28 +203,6 @@ static NSString *TestNotification = @"TestNotification";
 
 @end
 
-
-@interface TestClassWithClassMethod : NSObject
-
-+ (id)shared;
-- (NSString *)doStuffWithClass;
-
-@end
-
-
-@implementation TestClassWithClassMethod
-
-+ (id)shared
-{
-	return [TestClassWithClassMethod new];
-}
-
-- (NSString *)doStuffWithClass;
-{
-	return @"Original value";
-}
-
-@end
 
 
 #pragma mark    setup
@@ -573,19 +573,16 @@ static NSString *TestNotification = @"TestNotification";
     XCTAssertEqualObjects(@"stubbed title", myMock.title);
 }
 
-- (void)testStabReturnsSameMockWithoutRetainCycle
+- (void)testReturningMockFromMethodItStubsDoesntCreateRetainCycle
 {
     @autoreleasepool {
-        id mockWithClassMethod = OCMClassMock([TestClassWithClassMethod class]);
-        OCMStub([mockWithClassMethod doStuffWithClass]).andReturn(@"Stubbed value");
-        OCMStub([mockWithClassMethod shared]).andReturn(mockWithClassMethod);
-        id mockSingletone = [TestClassWithClassMethod shared];
-        
-        XCTAssertEqualObjects(@"Stubbed value", [mockSingletone doStuffWithClass], @"Should return stubbed value");
+        id mockWithShortLifetime = OCMClassMock([TestClassWithClassMethod class]);
+        OCMStub([mockWithShortLifetime stringValue]).andReturn(@"bar");
+        OCMStub([mockWithShortLifetime shared]).andReturn(mockWithShortLifetime);
     }
-    id singletone = [TestClassWithClassMethod shared];
+    id singleton = [TestClassWithClassMethod shared];
     
-    XCTAssertEqualObjects(@"Original value", [singletone doStuffWithClass], @"Should return original value");
+    XCTAssertEqualObjects(@"foo", [singleton stringValue], @"Should return value from real implementation (because shared is not stubbed anymore).");
 }
 
 
