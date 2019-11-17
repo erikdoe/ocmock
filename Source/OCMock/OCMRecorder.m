@@ -108,17 +108,18 @@
 
 @end
 
+
 @implementation OCMRecorder (Properties)
 
 @dynamic _ignoringNonObjectArgs;
 
 - (OCMRecorder *(^)(void))_ignoringNonObjectArgs
 {
-  id (^theBlock)(void) = ^ (void)
-  {
-    return [self ignoringNonObjectArgs];
-  };
-  return [[theBlock copy] autorelease];
+    id (^theBlock)(void) = ^ (void)
+    {
+        return [self ignoringNonObjectArgs];
+    };
+    return [[theBlock copy] autorelease];
 }
 
 
