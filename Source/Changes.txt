@@ -4,6 +4,9 @@ commit messages and/or the pull requests.
 OCMock 3.5 (unreleased)
 
 * Added macro to tell the mock to ignore non-object arguments (Yura Samsoniuk)
+* Added checks, which throw an expection if no interaction happens with a
+  mock object inside the stub/expect/reject/verify macros. This helps in cases
+  where by accient the real object is used in these macros. (Anton Vlasov)
 * Changed stopMocking so that arguments will be forcibly released to break
   retain cycles. This MAY cause some existing tests to fail. However, it
   was always bad practice to use a mock after calling stopMocking. (Ian)
