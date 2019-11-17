@@ -26,6 +26,8 @@
     OCMInvocationMatcher *invocationMatcher;
 }
 
+@property(nonatomic, assign) BOOL isEverInvoked;
+
 - (instancetype)init;
 - (instancetype)initWithMockObject:(OCMockObject *)aMockObject;
 

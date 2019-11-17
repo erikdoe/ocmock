@@ -332,6 +332,47 @@
                     @"should throw NSInvalidArgumentException exception");
 }
 
+- (void)testShouldThrowExceptionWhenTryingToVerifyRealObject
+{
+	id realObject = [NSArray array];
+	
+	XCTAssertThrowsSpecificNamed(OCMVerify([realObject addObject:@"foo"]),
+								 NSException,
+								 NSInternalInconsistencyException,
+								 @"should throw NSInternalInconsistencyException exception");
+	
+	id mockObject = OCMClassMock([NSString class]);
+	[mockObject lowercaseString];
+	XCTAssertNoThrow(OCMVerify([mockObject lowercaseString]));
+}
+
+- (void)testShouldThrowExceptionWhenTryingToStubRealObject
+{
+	id realObject = [NSArray array];
+	
+	XCTAssertThrowsSpecificNamed(OCMStub([realObject addObject:@"foo"]),
+								 NSException,
+								 NSInternalInconsistencyException,
+								 @"should throw NSInternalInconsistencyException exception");
+	
+	id mockObject = OCMClassMock([NSString class]);
+	[mockObject lowercaseString];
+	XCTAssertNoThrow(OCMStub([mockObject lowercaseString]));
+}
+
+- (void)testShouldThrowExceptionWhenTryingToRejectRealObject
+{
+	id realObject = [NSArray array];
+	
+	XCTAssertThrowsSpecificNamed(OCMReject([realObject addObject:@"foo"]),
+								 NSException,
+								 NSInternalInconsistencyException,
+								 @"should throw NSInternalInconsistencyException exception");
+	
+	id mockObject = OCMClassMock([NSString class]);
+	[mockObject lowercaseString];
+	XCTAssertNoThrow(OCMReject([mockObject lowercaseString]));
+}
 
 - (void)testCanExplicitlySelectClassMethodForStubs
 {
