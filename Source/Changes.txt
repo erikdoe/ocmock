@@ -10,6 +10,8 @@ OCMock 3.5 (unreleased)
 * Added checks, which throw an exception when stopMocking has been called
   and afterwards an attempt is made to use functionality that will definitely
   not work after stopMocking has been called.
+* Changed stub so that return value is not retained if the value is the mock
+  itself, because that creates a retain cycle. (Anton Vlasov)
 * Added support for watchOS (Morgan Chen)
 
 
