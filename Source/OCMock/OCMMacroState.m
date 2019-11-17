@@ -40,9 +40,14 @@ static NSString *const OCMGlobalStateKey = @"OCMGlobalStateKey";
 {
     NSMutableDictionary *threadDictionary = [NSThread currentThread].threadDictionary;
     OCMMacroState *globalState = threadDictionary[OCMGlobalStateKey];
-    OCMStubRecorder *recorder = [(OCMStubRecorder *)[globalState recorder] retain];
+    OCMStubRecorder *recorder = [[(OCMStubRecorder *)[globalState recorder] retain] autorelease];
     [threadDictionary removeObjectForKey:OCMGlobalStateKey];
-    return [recorder autorelease];
+	if([recorder wasUsed] == NO)
+	{
+		[NSException raise:NSInternalInconsistencyException
+					format:@"Mock object was not used in OCMStub/OCMExpect/OCMReject. Did you accidentally use a real object?"];
+	}
+    return recorder;
 }
 
 
@@ -86,7 +91,15 @@ static NSString *const OCMGlobalStateKey = @"OCMGlobalStateKey";
 
 + (void)endVerifyMacro
 {
-    [[NSThread currentThread].threadDictionary removeObjectForKey:OCMGlobalStateKey];
+	NSMutableDictionary *threadDictionary = [NSThread currentThread].threadDictionary;
+	OCMMacroState *globalState = threadDictionary[OCMGlobalStateKey];
+	OCMVerifier *verifier = [[(OCMVerifier *)[globalState recorder] retain] autorelease];
+	[threadDictionary removeObjectForKey:OCMGlobalStateKey];
+	if([verifier wasUsed] == NO)
+	{
+		[NSException raise:NSInternalInconsistencyException
+					format:@"Mock object was not used in OCMVerify. Did you accidentally use a real object?"];
+	}
 }
 
 
@@ -115,6 +128,12 @@ static NSString *const OCMGlobalStateKey = @"OCMGlobalStateKey";
     [recorder release];
     NSAssert([NSThread currentThread].threadDictionary[OCMGlobalStateKey] != self, @"Unexpected dealloc while set as the global state");
     [super dealloc];
+}
+
+- (void)setRecorder:(OCMRecorder *)aRecorder
+{
+    [recorder autorelease];
+    recorder = [aRecorder retain];
 }
 
 - (OCMRecorder *)recorder

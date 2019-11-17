@@ -327,9 +327,40 @@
     // have not found a way to report the error; it seems we must throw an
     // exception to get out of the forwarding machinery
     XCTAssertThrowsSpecificNamed(OCMVerify([mock arrayByAddingObject:@"foo"]),
-                    NSException,
-                    NSInvalidArgumentException,
-                    @"should throw NSInvalidArgumentException exception");
+            NSException, NSInvalidArgumentException, @"should throw NSInvalidArgumentException exception");
+}
+
+
+- (void)testShouldThrowExceptionWhenNotUsingMockInVerify
+{
+	id realObject = [NSMutableArray array];
+	
+	XCTAssertThrowsSpecificNamed(OCMVerify([realObject addObject:@"foo"]),
+	        NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
+}
+
+- (void)testShouldThrowExceptionWhenNotUsingMockInStub
+{
+	id realObject = [NSMutableArray array];
+	
+	XCTAssertThrowsSpecificNamed(OCMStub([realObject addObject:@"foo"]),
+	        NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
+}
+
+- (void)testShouldThrowExceptionWhenNotUsingMockInExpect
+{
+    id realObject = [NSMutableArray array];
+
+    XCTAssertThrowsSpecificNamed(OCMExpect([realObject addObject:@"foo"]),
+            NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
+}
+
+- (void)testShouldThrowExceptionWhenNotUsingMockInReject
+{
+	id realObject = [NSMutableArray array];
+	
+	XCTAssertThrowsSpecificNamed(OCMReject([realObject addObject:@"foo"]),
+            NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
 }
 
 

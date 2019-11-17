@@ -18,6 +18,8 @@
 #import <OCMock/OCMConstraint.h>
 #import "NSInvocation+OCMAdditions.h"
 #import "OCMObserverRecorder.h"
+#import "OCMMacroState.h"
+#import "OCMStubRecorder.h"
 
 @interface NSObject(HCMatcherDummy)
 - (BOOL)matches:(id)item;
@@ -34,6 +36,11 @@
 {
 	[recordedNotification release];
 	[super dealloc];
+}
+
+- (BOOL)wasUsed
+{
+	return YES; // Needed for macro use, and recorder can only end up in macro state if it was used.
 }
 
 

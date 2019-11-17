@@ -56,6 +56,11 @@
     return invocationMatcher;
 }
 
+- (BOOL)wasUsed
+{
+    return wasUsed;
+}
+
 
 #pragma mark  Modifying the matcher
 
@@ -97,11 +102,13 @@
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
 	[anInvocation setTarget:nil];
+	wasUsed = YES;
     [invocationMatcher setInvocation:anInvocation];
 }
 
 - (void)doesNotRecognizeSelector:(SEL)aSelector
 {
+	wasUsed = YES;
     [NSException raise:NSInvalidArgumentException format:@"%@: cannot stub/expect/verify method '%@' because no such method exists in the mocked class.", mockObject, NSStringFromSelector(aSelector)];
 }
 

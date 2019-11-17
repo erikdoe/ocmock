@@ -24,6 +24,7 @@
 {
     OCMockObject         *mockObject;
     OCMInvocationMatcher *invocationMatcher;
+    BOOL                 wasUsed;
 }
 
 - (instancetype)init;
@@ -32,6 +33,7 @@
 - (void)setMockObject:(OCMockObject *)aMockObject;
 
 - (OCMInvocationMatcher *)invocationMatcher;
+- (BOOL)wasUsed;
 
 - (id)classMethod;
 - (id)ignoringNonObjectArgs;

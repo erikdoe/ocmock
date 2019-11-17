@@ -29,4 +29,6 @@
 
 - (BOOL)argument:(id)expectedArg matchesArgument:(id)observedArg;
 
+- (BOOL)wasUsed;
+
 @end
