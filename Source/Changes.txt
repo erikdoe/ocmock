@@ -1,7 +1,7 @@
 Listing of notable changes by release. More detail is usually found in the Git
 commit messages and/or the pull requests.
 
-OCMock 3.5 (2018-11-17)
+OCMock 3.5 (2019-11-17)
 
 * Added macro to tell the mock to ignore non-object arguments (Yura Samsoniuk)
 * Added checks, which throw an expection if no interaction happens with a
