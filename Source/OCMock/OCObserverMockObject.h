@@ -22,7 +22,7 @@
 @interface OCObserverMockObject : NSObject 
 {
 	BOOL		    expectationOrderMatters;
-	NSMutableArray  *recorders;
+    NSMutableArray  *recorders;
     NSMutableArray  *centers;
 }
 

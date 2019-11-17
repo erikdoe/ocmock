@@ -38,25 +38,22 @@
 	[super dealloc];
 }
 
+- (BOOL)wasUsed
+{
+	return YES; // Needed for macro use, and recorder can only end up in macro state if it was used.
+}
+
 
 #pragma mark  Recording
 
 - (NSNotification *)notificationWithName:(NSString *)name object:(id)sender
 {
-	OCMMacroState *globalState = [OCMMacroState globalState];
-	OCMStubRecorder *recorder = [(OCMStubRecorder *)[globalState recorder] retain];
-	recorder.isEverInvoked = YES;
-	
 	recordedNotification = [[NSNotification notificationWithName:name object:sender] retain];
 	return nil;
 }
 
 - (NSNotification *)notificationWithName:(NSString *)name object:(id)sender userInfo:(NSDictionary *)userInfo
 {
-	OCMMacroState *globalState = [OCMMacroState globalState];
-	OCMStubRecorder *recorder = [(OCMStubRecorder *)[globalState recorder] retain];
-	recorder.isEverInvoked = YES;
-	
 	recordedNotification = [[NSNotification notificationWithName:name object:sender userInfo:userInfo] retain];
 	return nil;
 }

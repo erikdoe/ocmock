@@ -24,7 +24,7 @@
 
 @interface OCMMacroState : NSObject
 {
-    OCMRecorder *recorder;
+    id recorder;
 }
 
 + (void)beginStubMacro;
@@ -41,7 +41,8 @@
 
 + (OCMMacroState *)globalState;
 
-- (OCMRecorder *)recorder;
+- (void)setRecorder:(id)aRecorder;
+- (id)recorder;
 
 - (void)switchToClassMethod;
 
