@@ -14,10 +14,8 @@
  *  under the License.
  */
 
-#import "OCMObjectReturnValueProvider.h"
+#import "OCMNonRetainingObjectReturnValueProvider.h"
 
-@interface OCMBoxedReturnValueProvider : OCMObjectReturnValueProvider
-{
-}
+@interface OCMObjectReturnValueProvider : OCMNonRetainingObjectReturnValueProvider
 
 @end

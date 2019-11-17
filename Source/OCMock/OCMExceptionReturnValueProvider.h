@@ -14,11 +14,11 @@
  *  under the License.
  */
 
-#import "OCMReturnValueProvider.h"
+#import "OCMObjectReturnValueProvider.h"
 
 extern NSString *OCMStubbedException;
 
-@interface OCMExceptionReturnValueProvider : OCMReturnValueProvider 
+@interface OCMExceptionReturnValueProvider : OCMObjectReturnValueProvider
 {
 }
 

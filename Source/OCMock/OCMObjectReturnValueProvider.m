@@ -14,15 +14,23 @@
  *  under the License.
  */
 
-#import <Foundation/Foundation.h>
+#import "OCMObjectReturnValueProvider.h"
 
-@interface OCMReturnValueProvider : NSObject 
+
+@implementation OCMObjectReturnValueProvider
+
+- (instancetype)initWithValue:(id)aValue
 {
-	id	returnValue;
+    if((self = [super initWithValue:aValue]))
+        [returnValue retain];
+    return self;
 }
 
-- (instancetype)initWithValue:(id)aValue;
+- (void)dealloc
+{
+    [returnValue release];
+    [super dealloc];
+}
 
-- (void)handleInvocation:(NSInvocation *)anInvocation;
 
 @end

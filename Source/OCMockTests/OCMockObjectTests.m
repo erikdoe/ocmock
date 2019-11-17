@@ -171,6 +171,28 @@ TestOpaque myOpaque;
 @end
 
 
+@interface TestClassWithClassMethod : NSObject
+
++ (id)shared;
+- (NSString *)stringValue;
+
+@end
+
+@implementation TestClassWithClassMethod
+
++ (id)shared
+{
+	return [TestClassWithClassMethod new];
+}
+
+- (NSString *)stringValue;
+{
+	return @"foo";
+}
+
+@end
+
+
 static NSString *TestNotification = @"TestNotification";
 
 
@@ -182,8 +204,8 @@ static NSString *TestNotification = @"TestNotification";
 @end
 
 
-#pragma mark    setup
 
+#pragma mark    setup
 
 @implementation OCMockObjectTests
 
@@ -549,6 +571,18 @@ static NSString *TestNotification = @"TestNotification";
     [[[(id)myMock stub] andReturn:@"stubbed title"] title];
 
     XCTAssertEqualObjects(@"stubbed title", myMock.title);
+}
+
+- (void)testReturningMockFromMethodItStubsDoesntCreateRetainCycle
+{
+    @autoreleasepool {
+        id mockWithShortLifetime = OCMClassMock([TestClassWithClassMethod class]);
+        OCMStub([mockWithShortLifetime stringValue]).andReturn(@"bar");
+        OCMStub([mockWithShortLifetime shared]).andReturn(mockWithShortLifetime);
+    }
+    id singleton = [TestClassWithClassMethod shared];
+    
+    XCTAssertEqualObjects(@"foo", [singleton stringValue], @"Should return value from real implementation (because shared is not stubbed anymore).");
 }
 
 

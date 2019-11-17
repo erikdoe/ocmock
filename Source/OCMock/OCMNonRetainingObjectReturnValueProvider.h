@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2009-2018 Erik Doernenburg and contributors
+ *  Copyright (c) 2019 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -14,10 +14,15 @@
  *  under the License.
  */
 
-#import "OCMObjectReturnValueProvider.h"
+#import <Foundation/Foundation.h>
 
-@interface OCMBoxedReturnValueProvider : OCMObjectReturnValueProvider
+@interface OCMNonRetainingObjectReturnValueProvider : NSObject
 {
+    id	returnValue;
 }
+
+- (instancetype)initWithValue:(id)aValue;
+
+- (void)handleInvocation:(NSInvocation *)anInvocation;
 
 @end

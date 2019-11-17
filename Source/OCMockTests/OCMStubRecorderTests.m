@@ -17,7 +17,7 @@
 #import <XCTest/XCTest.h>
 #import "OCMStubRecorder.h"
 #import <OCMock/OCMockObject.h>
-#import "OCMReturnValueProvider.h"
+#import "OCMObjectReturnValueProvider.h"
 #import "OCMExceptionReturnValueProvider.h"
 #import "OCMInvocationMatcher.h"
 #import "OCMInvocationStub.h"
@@ -52,7 +52,7 @@
     NSArray *actionList = [(OCMInvocationStub *)[recorder invocationMatcher] invocationActions];
 
     XCTAssertEqual((NSUInteger)1, [actionList count], @"Should have added one action.");
-    XCTAssertEqualObjects([OCMReturnValueProvider class], [[actionList objectAtIndex:0] class], @"Should have added correct action.");
+    XCTAssertEqualObjects([OCMObjectReturnValueProvider class], [[actionList objectAtIndex:0] class], @"Should have added correct action.");
 }
 
 - (void)testAddsExceptionReturnValueProvider
