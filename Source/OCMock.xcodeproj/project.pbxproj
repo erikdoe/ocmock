@@ -800,8 +800,8 @@
 				03B3159A146333BF0052CD09 /* OCMNotificationPoster.m */,
 				03B315A5146333BF0052CD09 /* OCMObjectReturnValueProvider.h */,
 				03B315A6146333BF0052CD09 /* OCMObjectReturnValueProvider.m */,
-				2FA280EB5E8CDEEAE76861F7 /* OCMNonRetainingObjectReturnValueProvider.m */,
 				2FA28B1133B294089D2245AC /* OCMNonRetainingObjectReturnValueProvider.h */,
+				2FA280EB5E8CDEEAE76861F7 /* OCMNonRetainingObjectReturnValueProvider.m */,
 			);
 			name = "Invocation Actions";
 			sourceTree = "<group>";
