@@ -394,8 +394,29 @@
 - (void)testCanUseMacroToStubMethodWithDecimalReturnValue
 {
     id mock = OCMClassMock([TestClassWithDecimalReturnMethod class]);
+
     OCMStub([mock method]).andReturn([NSDecimalNumber decimalNumberWithDecimal:[@0 decimalValue]]);
+
     XCTAssertEqualObjects([mock method], [NSDecimalNumber decimalNumberWithDecimal:[@0 decimalValue]]);
+}
+
+
+- (void)testCanUseMacroToStubMethodWithAnyNonObjectArgument
+{
+    id mock = OCMStrictClassMock([NSString class]);
+
+    OCMStub([mock commonPrefixWithString:@"foo" options:0]).ignoringNonObjectArgs();
+
+    XCTAssertNoThrow([mock commonPrefixWithString:@"foo" options:NSCaseInsensitiveSearch]);
+}
+
+- (void)testCanUseMacroToStubMethodWithAnyNonObjectArgumentChainedWithOCMStubRecorder
+{
+    id mock = OCMClassMock([NSString class]);
+
+    OCMStub([mock commonPrefixWithString:@"foo" options:0]).ignoringNonObjectArgs().andReturn(@"f");
+
+    XCTAssertEqualObjects(@"f", [mock commonPrefixWithString:@"foo" options:NSCaseInsensitiveSearch]);
 }
 
 @end

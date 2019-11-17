@@ -108,6 +108,7 @@
     _Pragma("clang diagnostic push") \
     _Pragma("clang diagnostic ignored \"-Wunused-value\"") \
     _Pragma("clang diagnostic ignored \"-Wunused-getter-return-value\"") \
+    _Pragma("clang diagnostic ignored \"-Wstrict-selector-match\"") \
     macro \
     _Pragma("clang diagnostic pop") \
 })

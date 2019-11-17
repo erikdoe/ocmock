@@ -32,6 +32,7 @@
 @interface TestClassWithSimpleMethod : NSObject
 + (NSUInteger)initializeCallCount;
 - (NSString *)foo;
+- (void)bar:(id)someArgument;
 @end
 
 @implementation TestClassWithSimpleMethod
@@ -53,6 +54,11 @@ static NSUInteger initializeCallCount = 0;
     return @"Foo";
 }
 
+- (void)bar:(id)someArgument // maybe we should make it explicit that the arg is retainable
+{
+
+}
+
 @end
 
 
@@ -67,6 +73,7 @@ static NSUInteger initializeCallCount = 0;
 - (NSRect)methodRect2;
 - (int)methodInt;
 - (void)methodVoid;
+- (void)methodVoidWithArgument:(id)argument;
 - (void)setMethodInt:(int)anInt;
 @end
 
@@ -501,6 +508,20 @@ static NSUInteger initializeCallCount = 0;
 	XCTAssertEqualObjects(@"TestFoo", [realObject foo], @"Should have stubbed method.");
 	[mock stopMocking];
 	XCTAssertEqualObjects(@"Foo", [realObject foo], @"Should have 'unstubbed' method.");
+}
+
+- (void)testArgumentsGetReleasedAfterStopMocking
+{
+    __weak id weakArgument;
+    TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
+    id mock = OCMPartialMock(realObject);
+    @autoreleasepool {
+        NSObject *argument = [NSObject new];
+        weakArgument = argument;
+        [mock bar:argument];
+        [mock stopMocking];
+    }
+    XCTAssertNil(weakArgument);
 }
 
 

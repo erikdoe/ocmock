@@ -18,9 +18,8 @@
 #import <OCMock/OCMock.h>
 #import "OCMBoxedReturnValueProvider.h"
 
-// --------------------------------------------------------------------------------------
-//	Helper classes and protocols for testing
-// --------------------------------------------------------------------------------------
+
+#pragma mark    Helper classes and protocols for testing
 
 @interface TestClassWithSelectorMethod : NSObject
 
@@ -172,22 +171,6 @@ TestOpaque myOpaque;
 @end
 
 
-@interface TestClassWithClassArgMethod : NSObject
-
-- (void)doStuffWithClass:(Class)aClass;
-
-@end
-
-@implementation TestClassWithClassArgMethod
-
-- (void)doStuffWithClass:(Class)aClass
-{
-    // stubbed out anyway
-}
-
-@end
-
-
 static NSString *TestNotification = @"TestNotification";
 
 
@@ -222,10 +205,7 @@ static NSString *TestNotification = @"TestNotification";
 @end
 
 
-// --------------------------------------------------------------------------------------
-//  setup
-// --------------------------------------------------------------------------------------
-
+#pragma mark    setup
 
 @implementation OCMockObjectTests
 
@@ -235,9 +215,7 @@ static NSString *TestNotification = @"TestNotification";
 }
 
 
-// --------------------------------------------------------------------------------------
-//	accepting stubbed methods / rejecting methods not stubbed
-// --------------------------------------------------------------------------------------
+#pragma mark    accepting stubbed methods / rejecting methods not stubbed
 
 - (void)testAcceptsStubbedMethod
 {
@@ -492,9 +470,7 @@ static NSString *TestNotification = @"TestNotification";
 }
 
 
-// --------------------------------------------------------------------------------------
-//	returning values from stubbed methods
-// --------------------------------------------------------------------------------------
+#pragma mark    returning values from stubbed methods
 
 - (void)testReturnsStubbedReturnValue
 {
@@ -613,9 +589,7 @@ static NSString *TestNotification = @"TestNotification";
 }
 
 
-// --------------------------------------------------------------------------------------
-//	beyond stubbing: raising exceptions, posting notifications, etc.
-// --------------------------------------------------------------------------------------
+#pragma mark    beyond stubbing: raising exceptions, posting notifications, etc.
 
 - (void)testRaisesExceptionWhenAskedTo
 {
@@ -699,9 +673,7 @@ static NSString *TestNotification = @"TestNotification";
 }
 
 
-// --------------------------------------------------------------------------------------
-//	returning values in pass-by-reference arguments
-// --------------------------------------------------------------------------------------
+#pragma mark    returning values in pass-by-reference arguments
 
 - (void)testReturnsValuesInPassByReferenceArguments
 {
@@ -743,9 +715,7 @@ static NSString *TestNotification = @"TestNotification";
 }
 
 
-// --------------------------------------------------------------------------------------
-//	invoking block arguments
-// --------------------------------------------------------------------------------------
+#pragma mark    invoking block arguments
 
 - (void)testInvokesBlockWithArgs
 {
@@ -888,9 +858,7 @@ static NSString *TestNotification = @"TestNotification";
     XCTAssertEqual(firstParam, mockProtocol, @"Param does not match");
 }
 
-// --------------------------------------------------------------------------------------
-//	accepting expected methods
-// --------------------------------------------------------------------------------------
+#pragma mark    accepting expected methods
 
 - (void)testAcceptsExpectedMethod
 {
@@ -928,9 +896,7 @@ static NSString *TestNotification = @"TestNotification";
 }
 
 
-// --------------------------------------------------------------------------------------
-//	verifying expected methods
-// --------------------------------------------------------------------------------------
+#pragma mark    verifying expected methods
 
 - (void)testAcceptsAndVerifiesExpectedMethods
 {
@@ -997,9 +963,7 @@ static NSString *TestNotification = @"TestNotification";
 }
 
 
-// --------------------------------------------------------------------------------------
-//	verify with delay
-// --------------------------------------------------------------------------------------
+#pragma mark    verify with delay
 
 - (void)testAcceptsAndVerifiesExpectedMethodsWithDelay
 {
@@ -1016,7 +980,7 @@ static NSString *TestNotification = @"TestNotification";
 {
     dispatch_async(dispatch_queue_create("mockqueue", nil), ^{
         [NSThread sleepForTimeInterval:0.1];
-        [mock lowercaseString];
+        [self->mock lowercaseString];
     });
     
 	[[mock expect] lowercaseString];
@@ -1027,7 +991,7 @@ static NSString *TestNotification = @"TestNotification";
 {
     dispatch_async(dispatch_queue_create("mockqueue", nil), ^{
         [NSThread sleepForTimeInterval:0.1];
-        [mock lowercaseString];
+        [self->mock lowercaseString];
     });
     
 	[[mock expect] lowercaseString];
@@ -1040,9 +1004,7 @@ static NSString *TestNotification = @"TestNotification";
 	XCTAssertThrows([mock verifyWithDelay:0.1], @"Should have raised an exception because method was not called.");
 }
 
-// --------------------------------------------------------------------------------------
-//	ordered expectations
-// --------------------------------------------------------------------------------------
+#pragma mark    ordered expectations
 
 - (void)testAcceptsExpectedMethodsInRecordedSequenceWhenOrderMatters
 {
@@ -1075,9 +1037,7 @@ static NSString *TestNotification = @"TestNotification";
 
 
 
-// --------------------------------------------------------------------------------------
-//	nice mocks don't complain about unknown methods, unless told to
-// --------------------------------------------------------------------------------------
+#pragma mark    nice mocks don't complain about unknown methods, unless told to
 
 - (void)testReturnsDefaultValueWhenUnknownMethodIsCalledOnNiceClassMock
 {
@@ -1113,138 +1073,6 @@ static NSString *TestNotification = @"TestNotification";
 
 }
 
-
-// --------------------------------------------------------------------------------------
-//  some internal tests
-// --------------------------------------------------------------------------------------
-
-- (void)testReRaisesFailFastExceptionsOnVerify
-{
-	@try
-	{
-		[mock lowercaseString];
-	}
-	@catch(NSException *exception)
-	{
-		// expected
-	}
-	XCTAssertThrows([mock verify], @"Should have reraised the exception.");
-}
-
-
-- (void)testDoesNotReRaiseStubbedExceptions
-{
-	[[[mock expect] andThrow:[NSException exceptionWithName:@"ExceptionForTest" reason:@"test" userInfo:nil]] lowercaseString];
-	@try
-	{
-		[mock lowercaseString];
-	}
-	@catch(NSException *exception)
-	{
-		// expected
-	}
-	XCTAssertNoThrow([mock verify], @"Should not have reraised stubbed exception.");
-
-}
-
-- (void)testAndThrowDoesntLeak {
-    __weak NSException *exception = nil;
-    @autoreleasepool {
-        id innerMock = [OCMockObject partialMockForObject:[NSProcessInfo processInfo]];
-        exception = [NSException exceptionWithName:NSGenericException
-                                            reason:nil
-                                          userInfo:nil];
-        [[[innerMock expect] andThrow:exception] arguments];
-
-        BOOL threw = NO;
-        @try {
-            [[NSProcessInfo processInfo] arguments];
-        } @catch (NSException *ex) {
-            threw = YES;
-        }
-        XCTAssertTrue(threw);
-        [innerMock verify]; [innerMock stopMocking]; innerMock = nil;
-    }
-
-    XCTAssertNil(exception, @"The exception should have been released by now");
-}
-
-- (void)testReRaisesRejectExceptionsOnVerify
-{
-	mock = [OCMockObject niceMockForClass:[NSString class]];
-	[[mock reject] uppercaseString];
-	@try
-	{
-		[mock uppercaseString];
-	}
-	@catch(NSException *exception)
-	{
-		// expected
-	}
-	XCTAssertThrows([mock verify], @"Should have reraised the exception.");
-}
-
-
-- (void)testCanCreateExpectationsAfterInvocations
-{
-	[[mock expect] lowercaseString];
-	[mock lowercaseString];
-	[mock expect];
-}
-
-
-- (void)testArgumentConstraintsAreOnlyCalledAsOftenAsTheMethodIsCalled
-{
-    __block int count = 0;
-
-    [[mock stub] hasSuffix:[OCMArg checkWithBlock:^(id value) { count++; return YES; }]];
-
-    [mock hasSuffix:@"foo"];
-    [mock hasSuffix:@"bar"];
-
-    XCTAssertEqual(2, count, @"Should have evaluated constraint only twice");
-}
-
-
-- (void)testVerifyWithDelayDoesNotWaitForRejects
-{
-    mock = [OCMockObject niceMockForClass:[NSString class]];
-
-    [[mock reject] hasSuffix:OCMOCK_ANY];
-    [[mock expect] hasPrefix:OCMOCK_ANY];
-
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [mock hasPrefix:@"foo"];
-    });
-                   
-    NSDate *start = [NSDate date];
-    [mock verifyWithDelay:4];
-    NSDate *end = [NSDate date];
-    
-    XCTAssertTrue([end timeIntervalSinceDate:start] < 3, @"Should have returned before delay was up");
-}
-
-
-- (void)testDoesNotReinitialiseMockWhenInitIsCalledMoreThanOnce
-{
-	mock = OCMClassMock([TestClassWithProperty class]);
-	OCMStub([mock alloc]).andReturn(mock);
-	OCMStub([mock title]).andReturn(@"foo");
-
-	TestClassWithProperty *object = [[TestClassWithProperty alloc] init];
-	XCTAssertEqualObjects(@"foo", object.title);
-}
-
-
-- (void)testClassArgsAreRetained
-{
-
-    id mockWithClassMethod = OCMClassMock([TestClassWithClassArgMethod class]);
-    @autoreleasepool {
-        [[mockWithClassMethod stub] doStuffWithClass:[OCMArg any]];
-    }
-    XCTAssertNoThrow([mockWithClassMethod doStuffWithClass:[NSString class]]);
-}
 
 @end
 
