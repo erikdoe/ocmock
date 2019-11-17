@@ -37,3 +37,10 @@
 - (id)ignoringNonObjectArgs;
 
 @end
+
+@interface OCMRecorder (Properties)
+
+#define ignoringNonObjectArgs() _ignoringNonObjectArgs()
+@property (nonatomic, readonly) OCMRecorder *(^ _ignoringNonObjectArgs)(void);
+
+@end

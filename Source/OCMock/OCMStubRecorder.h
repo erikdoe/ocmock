@@ -58,6 +58,8 @@
 #define andForwardToRealObject() _andForwardToRealObject()
 @property (nonatomic, readonly) OCMStubRecorder *(^ _andForwardToRealObject)(void);
 
+@property (nonatomic, readonly) OCMStubRecorder *(^ _ignoringNonObjectArgs)(void);
+
 @end
 
 
