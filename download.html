@@ -14,11 +14,11 @@ published: true
     
 <table>
 	<tr>
-		<th>Release</th>
-		<th>Build SDK</th>
-		<th>Deployment Target</th>
-		<th>Date</th>
-		<th>File</th>
+		<th width="15%">Release</th>
+		<th width="25%">Build SDKs</th>
+		<th width="25%">Deployment Targets</th>
+		<th width="15%">Date</th>
+		<th width="20%">File</th>
 	</tr>
 	<tr>
 		<td>OCMock 3.5</td>
@@ -35,7 +35,7 @@ published: true
 					<li>Added macro to tell the mock to ignore non-object arguments.
 					<li>Added checks, which throw an expection if no interaction happens with a
 						mock object inside the stub/expect/reject/verify macros. This helps in cases
-						where by accient the real object is used in these macros.
+						where by accident the real object is used in these macros.
 					<li>Changed stopMocking so that arguments will be forcibly released to break
 						retain cycles. This MAY cause some existing tests to fail. However, it
 						was always bad practice to use a mock after calling stopMocking.
@@ -78,7 +78,7 @@ published: true
 
 <h2>License for OCMock 3.x</h2>
 
-<p>Copyright (c) 2004-2018 Erik Doernenburg and contributors
+<p>Copyright (c) 2004-2019 Erik Doernenburg and contributors
 
 <p>Licensed under the Apache License, Version 2.0 (the "License"); you may
   not use these files except in compliance with the License. You may obtain
