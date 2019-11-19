@@ -239,12 +239,10 @@ OCMStub([mock someMethodWithSelectorArgument:[OCMArg anySelector]])
 <h3 class="numbered">Ignoring non-object arguments</h3>
 
 {% highlight objc %}
-[[[mock stub] ignoringNonObjectArgs] someMethodWithIntArgument:0]
+OCMStub([mock someMethodWithIntArgument:0]).ignoringNonObjectArgs();
 {% endhighlight objc %}
 
 <p>This tells the mock to ignore all non-object arguments in the invocation. It will accept any invocation of <code>someMethodWithIntArgument:</code> no matter what argument is actually passed. If the method has object arguments as well as non-object arguments, the object arguments can still be constrained as usual using the methods on <code>OCMArg</code>.
-	
-<p><b>NOTE:</b> this should have a modern syntax.
 
 
 <h3 class="numbered">Matching arguments</h3>
@@ -514,6 +512,19 @@ OCMStub([partialMock someMethod]).andCall(differentObject, @selector(differentMe
 {% endhighlight objc %}
 
 <p>After these two lines, when <code>someMethod</code> is sent to <code>anObject</code> the implementation of that method is not invoked. Instead, <code>differentMethod</code> is called on <code>differentObject</code>. Other instances of the same class are not affected; for these the original implementation of <code>someMethod</code> is still invoked. The methods can have different names but their signatures should be the same.
+
+
+<h3 class="numbered">Breaking retain cycles</h3>
+
+<p>In order to verify method invocations after runnning, a mock object records all method invocations and, as a side effect, it retains the arguments of the invocations. Now, if the mock itself is an argument or the return value of an invocation that would result in an obvious retain cycle. In these cases the mock does not retain itself. 
+  
+<p>However, it is possible that an object that is passed as an argument holds a reference to the mock. If the mock retains the argument that object might in turn retain the mock, forming a retain cycle. There really isn't much OCMock can do, other than offer a method to manually break such cycles.
+
+{% highlight objc %}
+[mock stopMocking];
+{% endhighlight objc %}
+ 
+<p>When <code>stopMocking</code> is called on a mock object, it immediatly clears its list of recorded invocations, which causes the arguments to be released and, as a consequence, retain cycles are broken. If an attempt is made to verify or record invocations after <code>stopMocking</code> has been called the mock object will throw a descriptive exception. 
 
 
 <h2 id="limitations" class="numbered">Limitations</h2>
