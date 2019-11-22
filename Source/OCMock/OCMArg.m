@@ -15,8 +15,8 @@
  */
 
 #import <objc/runtime.h>
-#import <OCMock/OCMArg.h>
-#import <OCMock/OCMConstraint.h>
+#import <OCMArg.h>
+#import <OCMConstraint.h>
 #import "OCMPassByRefSetter.h"
 #import "OCMBlockArgCaller.h"
 
