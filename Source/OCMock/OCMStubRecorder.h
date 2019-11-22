@@ -14,8 +14,8 @@
  *  under the License.
  */
 
-#import <OCMRecorder.h>
-#import <OCMFunctions.h>
+#import "OCMRecorder.h"
+#import "OCMFunctions.h"
 #import <objc/runtime.h>
 
 @interface OCMStubRecorder : OCMRecorder
