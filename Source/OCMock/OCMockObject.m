@@ -14,13 +14,13 @@
  *  under the License.
  */
 
-#import <OCMock/OCMockObject.h>
+#import <OCMockObject.h>
 #import "OCClassMockObject.h"
 #import "OCProtocolMockObject.h"
 #import "OCPartialMockObject.h"
 #import "OCObserverMockObject.h"
 #import "OCMStubRecorder.h"
-#import <OCMock/OCMLocation.h>
+#import <OCMLocation.h>
 #import "NSInvocation+OCMAdditions.h"
 #import "OCMInvocationMatcher.h"
 #import "OCMMacroState.h"

@@ -14,7 +14,7 @@
  *  under the License.
  */
 
-#import <OCMock/OCMConstraint.h>
+#import <OCMConstraint.h>
 
 
 @implementation OCMConstraint
