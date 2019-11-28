@@ -1,6 +1,15 @@
 Listing of notable changes by release. More detail is usually found in the Git
 commit messages and/or the pull requests.
 
+OCMock 3.5.1 (unreleased)
+
+* Switched to Carthage to manage dependencies. This means you must have Carthage
+  installed to build OCMock (see https://github.com/Carthage/Carthage). It does
+  not mean that OCMock comes with OCHamcrest bundled. When you use OCMock you
+  do not have to depend on OCHamcrest and you still have to make sure it is
+  available if you want to use it.
+  
+
 OCMock 3.5 (2019-11-17)
 
 * Added macro to tell the mock to ignore non-object arguments (Yura Samsoniuk)

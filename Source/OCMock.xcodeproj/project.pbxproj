@@ -29,7 +29,6 @@
 		03565A4A18F05721003AE91E /* OCObserverMockObjectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B316291463350E0052CD09 /* OCObserverMockObjectTests.m */; };
 		03565A4B18F05721003AE91E /* NSInvocationOCMAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B3161F1463350E0052CD09 /* NSInvocationOCMAdditionsTests.m */; };
 		03565A4C18F05721003AE91E /* NSMethodSignatureOCMAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28DEDB9163597B7C49F3D /* NSMethodSignatureOCMAdditionsTests.m */; };
-		03565A4E18F05877003AE91E /* OCHamcrest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03565A4D18F05877003AE91E /* OCHamcrest.framework */; };
 		03618D83195B553400389166 /* OCMRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 03618D81195B553400389166 /* OCMRecorder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03618D84195B553400389166 /* OCMRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 03618D81195B553400389166 /* OCMRecorder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03618D85195B553400389166 /* OCMRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 03618D82195B553400389166 /* OCMRecorder.m */; };
@@ -133,6 +132,10 @@
 		03C9CA1D18F05A75006DF94D /* OCMockObjectProtocolMocksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA286BFBD8B9D068B41E7EF /* OCMockObjectProtocolMocksTests.m */; };
 		03C9CA1E18F05A84006DF94D /* OCMArgTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28EDBF243639C57F88A1B /* OCMArgTests.m */; };
 		03C9CA1F18F05A8E006DF94D /* NSMethodSignatureOCMAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28DEDB9163597B7C49F3D /* NSMethodSignatureOCMAdditionsTests.m */; };
+		03CED2E22390770C001845CC /* OCHamcrest.framework.dSYM in Resources */ = {isa = PBXBuildFile; fileRef = 03CED2E02390770B001845CC /* OCHamcrest.framework.dSYM */; };
+		03CED2E32390770C001845CC /* OCHamcrest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03CED2E12390770C001845CC /* OCHamcrest.framework */; };
+		03CED2E423907759001845CC /* OCHamcrest.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 03CED2E12390770C001845CC /* OCHamcrest.framework */; };
+		03CED2E523907759001845CC /* OCHamcrest.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 03CED2E02390770B001845CC /* OCHamcrest.framework.dSYM */; };
 		03DCED6D183406BC0059089E /* NSObject+OCMAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28991BEFD67DEF2CCF7D2 /* NSObject+OCMAdditions.m */; };
 		03DCED6F183406DA0059089E /* NSObject+OCMAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA28C5F4A475BEC0C28BDC3 /* NSObject+OCMAdditions.h */; };
 		03E0FAD81B93C00B000C5096 /* OCMBlockArgCaller.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA2891034E7B73AA3511D17 /* OCMBlockArgCaller.h */; };
@@ -428,6 +431,20 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		0397296423907547000E1C45 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				03CED2E423907759001845CC /* OCHamcrest.framework in CopyFiles */,
+				03CED2E523907759001845CC /* OCHamcrest.framework.dSYM in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		030EF0A814632FD000B04273 /* OCMock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OCMock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		030EF0B314632FD000B04273 /* OCMock-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OCMock-Info.plist"; sourceTree = "<group>"; };
@@ -447,7 +464,6 @@
 		03565A3518F0566F003AE91E /* OCMockTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OCMockTests-Info.plist"; sourceTree = "<group>"; };
 		03565A3718F0566F003AE91E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		03565A3B18F0566F003AE91E /* OCMockTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OCMockTests-Prefix.pch"; sourceTree = "<group>"; };
-		03565A4D18F05877003AE91E /* OCHamcrest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OCHamcrest.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/OCMock-eolppnbannkelbekssbvglkcoyjl/Build/Products/Debug/Frameworks/OCHamcrest.framework"; sourceTree = "<group>"; };
 		03618D81195B553400389166 /* OCMRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMRecorder.h; sourceTree = "<group>"; };
 		03618D82195B553400389166 /* OCMRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMRecorder.m; sourceTree = "<group>"; };
 		037ECD5318FAD84100AF0E4C /* OCMInvocationMatcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMInvocationMatcherTests.m; sourceTree = "<group>"; };
@@ -500,10 +516,14 @@
 		03B316271463350E0052CD09 /* OCMStubRecorderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMStubRecorderTests.m; sourceTree = "<group>"; };
 		03B316291463350E0052CD09 /* OCObserverMockObjectTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCObserverMockObjectTests.m; sourceTree = "<group>"; };
 		03B3168F14633FAB0052CD09 /* Changes.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Changes.txt; sourceTree = "<group>"; };
+		03BA728F23907AD600877EF8 /* Cartfile.resolved */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile.resolved; sourceTree = SOURCE_ROOT; };
+		03BA729023907AD600877EF8 /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile; sourceTree = SOURCE_ROOT; };
 		03C7BF08195DA2F200A545DD /* OCMInvocationStub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMInvocationStub.h; sourceTree = "<group>"; };
 		03C7BF09195DA2F200A545DD /* OCMInvocationStub.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMInvocationStub.m; sourceTree = "<group>"; };
 		03C7BF0E195DAB5300A545DD /* OCMExpectationRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMExpectationRecorder.h; sourceTree = "<group>"; };
 		03C7BF0F195DAB5300A545DD /* OCMExpectationRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMExpectationRecorder.m; sourceTree = "<group>"; };
+		03CED2E02390770B001845CC /* OCHamcrest.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = OCHamcrest.framework.dSYM; path = Carthage/Build/Mac/OCHamcrest.framework.dSYM; sourceTree = "<group>"; };
+		03CED2E12390770C001845CC /* OCHamcrest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OCHamcrest.framework; path = Carthage/Build/Mac/OCHamcrest.framework; sourceTree = "<group>"; };
 		03E98D4918F308B400522D42 /* OCMLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMLocation.h; sourceTree = "<group>"; };
 		03E98D4A18F308B400522D42 /* OCMLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMLocation.m; sourceTree = "<group>"; };
 		03E98D4F18F310EE00522D42 /* OCMockObjectMacroTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMockObjectMacroTests.m; sourceTree = "<group>"; };
@@ -568,7 +588,7 @@
 			files = (
 				03C7BF1619606E7A00A545DD /* XCTest.framework in Frameworks */,
 				03C7BF1719606EFD00A545DD /* OCMock.framework in Frameworks */,
-				03565A4E18F05877003AE91E /* OCHamcrest.framework in Frameworks */,
+				03CED2E32390770C001845CC /* OCHamcrest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -611,6 +631,8 @@
 			isa = PBXGroup;
 			children = (
 				03B3168F14633FAB0052CD09 /* Changes.txt */,
+				03BA729023907AD600877EF8 /* Cartfile */,
+				03BA728F23907AD600877EF8 /* Cartfile.resolved */,
 				030EF0B114632FD000B04273 /* OCMock */,
 				03565A3318F0566F003AE91E /* OCMockTests */,
 				030EF0DF14632FF700B04273 /* OCMockLib */,
@@ -686,8 +708,9 @@
 			isa = PBXGroup;
 			children = (
 				F0B9510A1B0080D500942C38 /* Foundation.framework */,
-				03565A4D18F05877003AE91E /* OCHamcrest.framework */,
 				03565A1D18F05626003AE91E /* XCTest.framework */,
+				03CED2E12390770C001845CC /* OCHamcrest.framework */,
+				03CED2E02390770B001845CC /* OCHamcrest.framework.dSYM */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -724,10 +747,10 @@
 		03565A3418F0566F003AE91E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				A02926801CA0725A00594AAF /* TestObjects.xcdatamodeld */,
-				03565A3518F0566F003AE91E /* OCMockTests-Info.plist */,
 				03565A3618F0566F003AE91E /* InfoPlist.strings */,
+				03565A3518F0566F003AE91E /* OCMockTests-Info.plist */,
 				03565A3B18F0566F003AE91E /* OCMockTests-Prefix.pch */,
+				A02926801CA0725A00594AAF /* TestObjects.xcdatamodeld */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1141,6 +1164,7 @@
 			buildConfigurationList = 03565A3E18F0566F003AE91E /* Build configuration list for PBXNativeTarget "OCMockTests" */;
 			buildPhases = (
 				03565A4F18F058A0003AE91E /* ShellScript */,
+				0397296423907547000E1C45 /* CopyFiles */,
 				03565A2D18F0566E003AE91E /* Sources */,
 				03565A2E18F0566E003AE91E /* Frameworks */,
 				03565A2F18F0566E003AE91E /* Resources */,
@@ -1286,6 +1310,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A02926821CA0725A00594AAF /* TestObjects.xcdatamodeld in Resources */,
+				03CED2E22390770C001845CC /* OCHamcrest.framework.dSYM in Resources */,
 				03565A3818F0566F003AE91E /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1333,7 +1358,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Unpack frameworks required for this target\npushd \"${TARGET_BUILD_DIR}\"\n#if [ ! -d Frameworks ]; then\n#mkdir Frameworks\n#fi\n#cd Frameworks\nif [ ! -d  OCHamcrest.framework ]; then\ntar xjf \"${PROJECT_DIR}/Frameworks/OCHamcrest.tar.bz2\"\nfi\npopd\n";
+			shellScript = "# Resolve dependencies using Carthage\nif [ ! -d ${PROJECT_DIR}/Carthage/Build ]; then\n    carthage update --platform macOS\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1835,6 +1860,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OCMockTests/OCMockTests-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1863,6 +1892,10 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_NS_ASSERTIONS = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OCMockTests/OCMockTests-Prefix.pch";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
