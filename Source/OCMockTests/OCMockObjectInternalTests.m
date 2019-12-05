@@ -223,7 +223,6 @@
     BOOL threw = NO;
     @try {
       [[mock verify] title];
-        // [[NSProcessInfo processInfo] arguments];
     } @catch (NSException *ex) {
         threw = YES;
         XCTAssertEqualObjects(ex.name, NSInternalInconsistencyException);
