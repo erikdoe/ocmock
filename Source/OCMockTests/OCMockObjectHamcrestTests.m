@@ -15,10 +15,8 @@
  */
 
 #import <XCTest/XCTest.h>
-#import <OCMock/OCMock.h>
-
-#define HC_SHORTHAND
 #import <OCHamcrest/OCHamcrest.h>
+#import <OCMock/OCMock.h>
 
 
 @interface OCMockObjectHamcrestTests : XCTestCase
