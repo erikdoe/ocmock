@@ -202,16 +202,13 @@
     [mock title];
     [mock stopMocking];
 
-    BOOL threw = NO;
     @try {
-      [[mock verify] title];
+        [[mock verify] title];
+        XCTFail(@"Should have thrown an NSInternalInconsistencyException when attempting to verify after stopMocking.");
     } @catch (NSException *ex) {
-        threw = YES;
         XCTAssertEqualObjects(ex.name, NSInternalInconsistencyException);
-        NSString *expectedReason = [NSString stringWithFormat:@"** Cannot handle or verify invocations on %@ at %p. This error usually occurs when a mock object is used after stopMocking has been called on it. In most cases it is not necessary to call stopMocking. If you know you have to, please make sure that the mock object is not used afterwards.", [mock description], mock];
-        XCTAssertEqualObjects(ex.reason, expectedReason);
+        XCTAssertTrue([ex.reason containsString:[mock description]]);
     }
-    XCTAssertTrue(threw, @"Should have thrown a NSInternalInconsistencyException when attempting to verify after stopMocking.");
 }
 
 - (void)testRaisesWhenAttemptingToUseAfterStopMocking
@@ -220,16 +217,13 @@
 
     [mock stopMocking];
 
-    BOOL threw = NO;
     @try {
-      [[mock verify] title];
+        [mock title];
+        XCTFail(@"Should have thrown an NSInternalInconsistencyException when attempting to use after stopMocking.");
     } @catch (NSException *ex) {
-        threw = YES;
         XCTAssertEqualObjects(ex.name, NSInternalInconsistencyException);
-        NSString *expectedReason = [NSString stringWithFormat:@"** Cannot handle or verify invocations on %@ at %p. This error usually occurs when a mock object is used after stopMocking has been called on it. In most cases it is not necessary to call stopMocking. If you know you have to, please make sure that the mock object is not used afterwards.", [mock description], mock];
-        XCTAssertEqualObjects(ex.reason, expectedReason);
+        XCTAssertTrue([ex.reason containsString:[mock description]]);
     }
-    XCTAssertTrue(threw, @"Should have thrown a NSInternalInconsistencyException when attempting to verify after stopMocking.");
 }
 
 
