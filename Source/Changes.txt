@@ -8,6 +8,8 @@ OCMock 3.5.1 (unreleased)
   not mean that OCMock comes with OCHamcrest bundled. When you use OCMock you
   do not have to depend on OCHamcrest and you still have to make sure it is
   available if you want to use it.
+* Added description of mock object to the exception that is thrown when the
+  mock is used after stopMocking was called (Chaoshuai Lu)
   
 
 OCMock 3.5 (2019-11-17)
