@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2004-2016 Erik Doernenburg and contributors
+ *  Copyright (c) 2004-2019 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -96,7 +96,13 @@
         [recorder setMockObject:self];
         return (id)[recorder init];
     }
-    
+
+	// skip initialisation when init is called again, which can happen when stubbing alloc/init
+    if(stubs != nil)
+    {
+        return self;
+    }
+
 	// no [super init], we're inheriting from NSProxy
 	expectationOrderMatters = NO;
 	stubs = [[NSMutableArray alloc] init];
@@ -136,6 +142,13 @@
     }
 }
 
+- (void)assertInvocationsArrayIsPresent
+{
+    if(invocations == nil) {
+        [NSException raise:NSInternalInconsistencyException format:@"** Cannot handle or verify invocations on %@ at %p. This error usually occurs when a mock object is used after stopMocking has been called on it. In most cases it is not necessary to call stopMocking. If you know you have to, please make sure that the mock object is not used afterwards.", [self description], self];
+    }
+}
+
 
 #pragma mark  Public API
 
@@ -146,7 +159,16 @@
 
 - (void)stopMocking
 {
-    // no-op for mock objects that are not class object or partial mocks
+    // invocations can contain objects that clients expect to be deallocated by now,
+    // and they can also have a strong reference to self, creating a retain cycle. Get
+    // rid of all of the invocations to hopefully let their objects deallocate, and to
+    // break any retain cycles involving self.
+    @synchronized(invocations)
+    {
+        [invocations removeAllObjects];
+        [invocations autorelease];
+        invocations = nil;
+    }
 }
 
 
@@ -225,7 +247,16 @@
     {
         @synchronized(expectations)
         {
-            if([expectations count] == 0)
+            BOOL allExpectationsAreMatchAndReject = YES;
+            for(OCMInvocationExpectation *expectation in expectations)
+            {
+                if(![expectation isMatchAndReject])
+                {
+                    allExpectationsAreMatchAndReject = NO;
+                    break;
+                }
+            }
+            if(allExpectationsAreMatchAndReject)
                 break;
         }
         [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:MIN(step, delay)]];
@@ -251,6 +282,7 @@
 - (void)verifyInvocation:(OCMInvocationMatcher *)matcher withQuantifier:(OCMQuantifier *)quantifier atLocation:(OCMLocation *)location
 {
     NSUInteger count = 0;
+    [self assertInvocationsArrayIsPresent];
     @synchronized(invocations)
     {
         for(NSInvocation *invocation in invocations)
@@ -330,12 +362,15 @@
 
 - (BOOL)handleInvocation:(NSInvocation *)anInvocation
 {
+    [self assertInvocationsArrayIsPresent];
     @synchronized(invocations)
     {
         // We can't do a normal retain arguments on anInvocation because its target/arguments/return
         // value could be self. That would produce a retain cycle self->invocations->anInvocation->self.
         // However we need to retain everything on anInvocation that isn't self because we expect them to
         // stick around after this method returns. Use our special method to retain just what's needed.
+        // This still doesn't completely prevent retain cycles since any of the arguments could have a
+        // strong reference to self. Those will have to be broken with manual calls to -stopMocking.
         [anInvocation retainObjectArgumentsExcludingObject:self];
         [invocations addObject:anInvocation];
     }
@@ -345,11 +380,15 @@
     {
         for(stub in stubs)
         {
-            // If the stub forwards its invocation to the real object, then we don't want to do handleInvocation: yet, since forwarding the invocation to the real object could call a method that is expected to happen after this one, which is bad if expectationOrderMatters is YES
+            // If the stub forwards its invocation to the real object, then we don't want to do
+            // handleInvocation: yet, since forwarding the invocation to the real object could call a
+            // method that is expected to happen after this one, which is bad if expectationOrderMatters
+            // is YES
             if([stub matchesInvocation:anInvocation])
                 break;
         }
-        // Retain the stub in case it ends up being removed from stubs and expectations, since we still have to call handleInvocation on the stub at the end
+        // Retain the stub in case it ends up being removed from stubs and expectations, since we still
+        // have to call handleInvocation on the stub at the end
         [stub retain];
     }
     if(stub == nil)
@@ -367,7 +406,11 @@
                              [self description], [stub description], [[expectations objectAtIndex:0] description]];
             }
 
-            // We can't check isSatisfied yet, since the stub won't be satisfied until we call handleInvocation:, and we don't want to call handleInvocation: yes for the reason in the comment above, since we'll still have the current expectation in the expectations array, which will cause an exception if expectationOrderMatters is YES and we're not ready for any future expected methods to be called yet
+            // We can't check isSatisfied yet, since the stub won't be satisfied until we call
+            // handleInvocation:, and we don't want to call handleInvocation: yes for the reason in the
+            // comment above, since we'll still have the current expectation in the expectations array, which
+            // will cause an exception if expectationOrderMatters is YES and we're not ready for any future
+            // expected methods to be called yet
             if(![(OCMInvocationExpectation *)stub isMatchAndReject])
             {
                 [expectations removeObject:stub];
@@ -382,8 +425,12 @@
             [stubs removeObject:stub];
         }
     }
-    [stub handleInvocation:anInvocation];
-    [stub release];
+
+    @try {
+        [stub handleInvocation:anInvocation];
+    } @finally {
+        [stub release];
+    }
 
     return YES;
 }

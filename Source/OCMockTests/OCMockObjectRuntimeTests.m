@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2014-2016 Erik Doernenburg and contributors
+ *  Copyright (c) 2014-2019 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -83,6 +83,15 @@ typedef NSString TypedefString;
 @end
 
 
+@interface NSValueSubclassForTesting : NSValue
+
+@end
+
+@implementation NSValueSubclassForTesting
+
+@end
+
+
 
 #pragma mark   Tests for interaction with runtime and foundation conventions
 
@@ -118,10 +127,18 @@ typedef NSString TypedefString;
 }
 
 
+- (void)testMockConformsToProtocolImplementedInSuperclass
+{
+    id mock = [OCMockObject mockForClass:[NSValueSubclassForTesting class]];
+    XCTAssertTrue([mock conformsToProtocol:@protocol(NSCopying)]);
+
+}
+
 - (void)testCanMockNSMutableArray
 {
     id mock = [OCMockObject niceMockForClass:[NSMutableArray class]];
     id anArray = [[NSMutableArray alloc] init];
+#pragma unused(mock, anArray)
 }
 
 
@@ -184,7 +201,10 @@ typedef NSString TypedefString;
 - (void)testComplainsWhenAttemptIsMadeToStubInitMethodViaMacro
 {
     id mock = [OCMockObject mockForClass:[NSString class]];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-value"
     XCTAssertThrows(OCMStub([mock init]));
+#pragma clang diagnostic pop
 }
 
 

@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2013-2016 Erik Doernenburg and contributors
+ *  Copyright (c) 2013-2019 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -109,7 +109,7 @@
 
 - (void)testCreatesCorrectSignatureForBlockWithNoArgsAndVoidReturn
 {
-    void (^block)() = ^() {
+    void (^block)(void) = ^() {
     };
 
     NSMethodSignature *sig = [NSMethodSignature signatureForBlock:block];
@@ -141,7 +141,7 @@
 
 - (void)testCreatesCorrectSignatureForBlockWithBoolReturn
 {
-    BOOL (^block)() = ^() {
+    BOOL (^block)(void) = ^() {
         return NO;
     };
 

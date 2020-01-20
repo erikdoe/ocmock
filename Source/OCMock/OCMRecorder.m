@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2014-2016 Erik Doernenburg and contributors
+ *  Copyright (c) 2014-2019 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -56,6 +56,11 @@
     return invocationMatcher;
 }
 
+- (BOOL)wasUsed
+{
+    return wasUsed;
+}
+
 
 #pragma mark  Modifying the matcher
 
@@ -97,12 +102,31 @@
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
 	[anInvocation setTarget:nil];
+	wasUsed = YES;
     [invocationMatcher setInvocation:anInvocation];
 }
 
 - (void)doesNotRecognizeSelector:(SEL)aSelector
 {
+	wasUsed = YES;
     [NSException raise:NSInvalidArgumentException format:@"%@: cannot stub/expect/verify method '%@' because no such method exists in the mocked class.", mockObject, NSStringFromSelector(aSelector)];
+}
+
+
+@end
+
+
+@implementation OCMRecorder (Properties)
+
+@dynamic _ignoringNonObjectArgs;
+
+- (OCMRecorder *(^)(void))_ignoringNonObjectArgs
+{
+    id (^theBlock)(void) = ^ (void)
+    {
+        return [self ignoringNonObjectArgs];
+    };
+    return [[theBlock copy] autorelease];
 }
 
 

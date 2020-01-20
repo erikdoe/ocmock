@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2009-2016 Erik Doernenburg and contributors
+ *  Copyright (c) 2009-2019 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -14,15 +14,23 @@
  *  under the License.
  */
 
-#import <Foundation/Foundation.h>
+#import "OCMObjectReturnValueProvider.h"
 
-@interface OCMReturnValueProvider : NSObject 
+
+@implementation OCMObjectReturnValueProvider
+
+- (instancetype)initWithValue:(id)aValue
 {
-	id	returnValue;
+    if((self = [super initWithValue:aValue]))
+        [returnValue retain];
+    return self;
 }
 
-- (instancetype)initWithValue:(id)aValue;
+- (void)dealloc
+{
+    [returnValue release];
+    [super dealloc];
+}
 
-- (void)handleInvocation:(NSInvocation *)anInvocation;
 
 @end

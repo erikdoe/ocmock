@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2004-2016 Erik Doernenburg and contributors
+ *  Copyright (c) 2004-2019 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -17,7 +17,7 @@
 #import <XCTest/XCTest.h>
 #import "OCMStubRecorder.h"
 #import <OCMock/OCMockObject.h>
-#import "OCMReturnValueProvider.h"
+#import "OCMObjectReturnValueProvider.h"
 #import "OCMExceptionReturnValueProvider.h"
 #import "OCMInvocationMatcher.h"
 #import "OCMInvocationStub.h"
@@ -52,7 +52,7 @@
     NSArray *actionList = [(OCMInvocationStub *)[recorder invocationMatcher] invocationActions];
 
     XCTAssertEqual((NSUInteger)1, [actionList count], @"Should have added one action.");
-    XCTAssertEqualObjects([OCMReturnValueProvider class], [[actionList objectAtIndex:0] class], @"Should have added correct action.");
+    XCTAssertEqualObjects([OCMObjectReturnValueProvider class], [[actionList objectAtIndex:0] class], @"Should have added correct action.");
 }
 
 - (void)testAddsExceptionReturnValueProvider

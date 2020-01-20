@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2004-2016 Erik Doernenburg and contributors
+ *  Copyright (c) 2004-2019 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -136,6 +136,7 @@
     _Pragma("clang diagnostic push") \
     _Pragma("clang diagnostic ignored \"-Wunused-value\"") \
     _Pragma("clang diagnostic ignored \"-Wunused-getter-return-value\"") \
+    _Pragma("clang diagnostic ignored \"-Wstrict-selector-match\"") \
     macro \
     _Pragma("clang diagnostic pop") \
 })

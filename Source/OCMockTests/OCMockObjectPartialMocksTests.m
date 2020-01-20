@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2013-2016 Erik Doernenburg and contributors
+ *  Copyright (c) 2013-2019 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -14,6 +14,7 @@
  *  under the License.
  */
 
+#import <CoreData/CoreData.h>
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
 #import <objc/runtime.h>
@@ -31,6 +32,7 @@
 @interface TestClassWithSimpleMethod : NSObject
 + (NSUInteger)initializeCallCount;
 - (NSString *)foo;
+- (void)bar:(id)someArgument;
 @end
 
 @implementation TestClassWithSimpleMethod
@@ -50,6 +52,11 @@ static NSUInteger initializeCallCount = 0;
 - (NSString *)foo
 {
     return @"Foo";
+}
+
+- (void)bar:(id)someArgument // maybe we should make it explicit that the arg is retainable
+{
+
 }
 
 @end
@@ -136,6 +143,34 @@ static NSUInteger initializeCallCount = 0;
 
 @end
 
+@interface OCTestManagedObject : NSManagedObject
+
+@property (nonatomic, copy) NSString *name;
+@property (nonatomic, assign) int32_t sortOrder;
+
+@property (nonatomic, strong) OCTestManagedObject *toOneRelationship;
+@property (nonatomic, strong) NSSet *toManyRelationship;
+
+@end
+
+@interface OCTestManagedObject (CoreDataGeneratedAccessors)
+
+- (void)addToManyRelationshipObject:(OCTestManagedObject *)value;
+- (void)removeToManyRelationshipObject:(OCTestManagedObject *)value;
+- (void)addToManyRelationship:(NSSet *)values;
+- (void)removeToManyRelationship:(NSSet *)values;
+
+@end
+
+@implementation OCTestManagedObject
+
+@dynamic name;
+@dynamic sortOrder;
+
+@dynamic toOneRelationship;
+@dynamic toManyRelationship;
+
+@end
 
 @implementation OCMockObjectPartialMocksTests
 
@@ -276,6 +311,105 @@ static NSUInteger initializeCallCount = 0;
     XCTAssertNotNil(partialMock);
 }
 
+- (void)testSettingUpSecondPartialMockForSameClassDoesNotAffectInstanceMethods
+{
+	TestClassWithSimpleMethod *object1 = [[TestClassWithSimpleMethod alloc] init];
+	TestClassWithSimpleMethod *object2 = [[TestClassWithSimpleMethod alloc] init];
+
+	TestClassWithSimpleMethod *mock1 = OCMPartialMock(object1);
+	XCTAssertEqualObjects(@"Foo", [object1 foo]);
+
+	TestClassWithSimpleMethod *mock2 = OCMPartialMock(object2);
+	XCTAssertEqualObjects(@"Foo", [object1 foo]);
+	XCTAssertEqualObjects(@"Foo", [object2 foo]);
+
+	XCTAssertEqualObjects(@"Foo", [mock1 foo]);
+	XCTAssertEqualObjects(@"Foo", [mock2 foo]);
+}
+
+- (void)testSettingUpSecondPartialMockForSameClassDoesNotAffectStubs
+{
+	TestClassWithSimpleMethod *object1 = [[TestClassWithSimpleMethod alloc] init];
+	TestClassWithSimpleMethod *object2 = [[TestClassWithSimpleMethod alloc] init];
+
+	TestClassWithSimpleMethod *mock1 = OCMPartialMock(object1);
+	XCTAssertEqualObjects(@"Foo", [object1 foo]);
+	OCMStub([mock1 foo]).andReturn(@"Bar");
+	XCTAssertEqualObjects(@"Bar", [object1 foo]);
+
+	TestClassWithSimpleMethod *mock2 = OCMPartialMock(object2);
+	XCTAssertEqualObjects(@"Bar", [object1 foo]);
+	XCTAssertEqualObjects(@"Foo", [object2 foo]);
+
+	XCTAssertEqualObjects(@"Bar", [mock1 foo]);
+	XCTAssertEqualObjects(@"Foo", [mock2 foo]);
+}
+
+
+#pragma mark   Tests for Core Data interaction with mocks
+
+- (void)testMockingManagedObject
+{
+    // Set up the Core Data stack for the test.
+    
+    NSManagedObjectModel *const model = [NSManagedObjectModel mergedModelFromBundles:@[[NSBundle bundleForClass:self.class]]];
+    NSEntityDescription *const entity = model.entitiesByName[NSStringFromClass([OCTestManagedObject class])];
+    NSPersistentStoreCoordinator *const coordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
+    [coordinator addPersistentStoreWithType:NSInMemoryStoreType configuration:nil URL:nil options:nil error:NULL];
+    NSManagedObjectContext *const context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    
+    // Create and mock a real core data object.
+    
+    OCTestManagedObject *const realObject = [[OCTestManagedObject alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
+    OCTestManagedObject *const partialMock = [OCMockObject partialMockForObject:realObject];
+    
+    // Verify the subclassing behaviour is as we expect.
+    
+    Class const runtimeObjectClass = object_getClass(realObject);
+    Class const reportedClass = [realObject class];
+    
+    // Core Data generates a dynamic subclass at runtime to implement modeled proprerties.
+    // It will look something like "OCTestManagedObject_OCTestManagedObject_".
+    XCTAssertTrue([runtimeObjectClass isSubclassOfClass:reportedClass]);
+    XCTAssertNotEqual(runtimeObjectClass, reportedClass);
+    
+    // Verify accessors and setters for attributes work as expected.
+    
+    partialMock.name = @"OCMock";
+    partialMock.sortOrder = 120;
+    
+    XCTAssertEqualObjects(partialMock.name, @"OCMock");
+    XCTAssertEqual(partialMock.sortOrder, 120);
+    
+    partialMock.name = nil;
+    partialMock.sortOrder = 0;
+    
+    XCTAssertNil(partialMock.name);
+    XCTAssertEqual(partialMock.sortOrder, 0);
+    
+    // Verify to-many relationships work as expected.
+    
+    OCTestManagedObject *const realObject2 = [[OCTestManagedObject alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
+    OCTestManagedObject *const realObject3 = [[OCTestManagedObject alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
+    
+    [partialMock addToManyRelationshipObject:realObject2];
+    
+    XCTAssertEqualObjects(partialMock.toManyRelationship, [NSSet setWithObject:realObject2]);
+    XCTAssertEqualObjects(realObject2.toManyRelationship, [NSSet setWithObject:realObject]);
+    
+    partialMock.toOneRelationship = realObject3;
+    
+    XCTAssertEqualObjects(partialMock.toOneRelationship, realObject3);
+    XCTAssertEqualObjects(realObject3.toOneRelationship, realObject);
+    
+    // Verify saving the context works as expected.
+    
+    NSError *saveError = nil;
+    [context save:&saveError];
+    
+    XCTAssertNil(saveError);
+}
+
 #pragma mark   Tests for KVO interaction with mocks
 
 /* Starting KVO observations on an already-mocked object generally should work. */
@@ -373,6 +507,20 @@ static NSUInteger initializeCallCount = 0;
 	XCTAssertEqualObjects(@"TestFoo", [realObject foo], @"Should have stubbed method.");
 	[mock stopMocking];
 	XCTAssertEqualObjects(@"Foo", [realObject foo], @"Should have 'unstubbed' method.");
+}
+
+- (void)testArgumentsGetReleasedAfterStopMocking
+{
+    __weak id weakArgument;
+    TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
+    id mock = OCMPartialMock(realObject);
+    @autoreleasepool {
+        NSObject *argument = [NSObject new];
+        weakArgument = argument;
+        [mock bar:argument];
+        [mock stopMocking];
+    }
+    XCTAssertNil(weakArgument);
 }
 
 

@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2004-2016 Erik Doernenburg and contributors
+ *  Copyright (c) 2004-2019 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -16,7 +16,7 @@
 
 #import "OCMStubRecorder.h"
 #import "OCClassMockObject.h"
-#import "OCMReturnValueProvider.h"
+#import "OCMObjectReturnValueProvider.h"
 #import "OCMBoxedReturnValueProvider.h"
 #import "OCMExceptionReturnValueProvider.h"
 #import "OCMIndirectReturnValueProvider.h"
@@ -51,13 +51,19 @@
 
 - (id)andReturn:(id)anObject
 {
-	[[self stub] addInvocationAction:[[[OCMReturnValueProvider alloc] initWithValue:anObject] autorelease]];
+	[[self stub] addInvocationAction:[[[OCMObjectReturnValueProvider alloc] initWithValue:anObject] autorelease]];
 	return self;
 }
 
 - (id)andReturnValue:(NSValue *)aValue
 {
     [[self stub] addInvocationAction:[[[OCMBoxedReturnValueProvider alloc] initWithValue:aValue] autorelease]];
+	return self;
+}
+
+- (id)andReturnMockObject
+{
+	[[self stub] addInvocationAction:[[[OCMNonRetainingObjectReturnValueProvider alloc] initWithValue:mockObject] autorelease]];
 	return self;
 }
 
@@ -114,9 +120,9 @@
     {
         if(OCMIsObjectType([aValue objCType]))
         {
-            NSValue *objValue = nil;
+            id objValue = nil;
             [aValue getValue:&objValue];
-            return [self andReturn:objValue];
+            return (objValue == mockObject) ? [self andReturnMockObject] : [self andReturn:objValue];
         }
         else
         {

@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2014-2016 Erik Doernenburg and contributors
+ *  Copyright (c) 2014-2019 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -210,6 +210,18 @@
     OCMVerifyAll(observer);
 }
 
+- (void)testNotificationObservingWithUserInfo
+{
+    id observer = OCMObserverMock();
+    [[NSNotificationCenter defaultCenter] addMockObserver:observer name:@"TestNotificationWithInfo" object:nil];
+    OCMExpect([observer notificationWithName:@"TestNotificationWithInfo" object:[OCMArg any] userInfo:[OCMArg any]]);
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"TestNotificationWithInfo" object:self userInfo:@{ @"foo": @"bar" }];
+
+    OCMVerifyAll(observer);
+}
+
+
 - (void)testSetsUpSubstituteCall
 {
     id mock = OCMStrictProtocolMock(@protocol(TestProtocolForMacroTesting));
@@ -315,9 +327,40 @@
     // have not found a way to report the error; it seems we must throw an
     // exception to get out of the forwarding machinery
     XCTAssertThrowsSpecificNamed(OCMVerify([mock arrayByAddingObject:@"foo"]),
-                    NSException,
-                    NSInvalidArgumentException,
-                    @"should throw NSInvalidArgumentException exception");
+            NSException, NSInvalidArgumentException, @"should throw NSInvalidArgumentException exception");
+}
+
+
+- (void)testShouldThrowExceptionWhenNotUsingMockInVerify
+{
+	id realObject = [NSMutableArray array];
+	
+	XCTAssertThrowsSpecificNamed(OCMVerify([realObject addObject:@"foo"]),
+	        NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
+}
+
+- (void)testShouldThrowExceptionWhenNotUsingMockInStub
+{
+	id realObject = [NSMutableArray array];
+	
+	XCTAssertThrowsSpecificNamed(OCMStub([realObject addObject:@"foo"]),
+	        NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
+}
+
+- (void)testShouldThrowExceptionWhenNotUsingMockInExpect
+{
+    id realObject = [NSMutableArray array];
+
+    XCTAssertThrowsSpecificNamed(OCMExpect([realObject addObject:@"foo"]),
+            NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
+}
+
+- (void)testShouldThrowExceptionWhenNotUsingMockInReject
+{
+	id realObject = [NSMutableArray array];
+	
+	XCTAssertThrowsSpecificNamed(OCMReject([realObject addObject:@"foo"]),
+            NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
 }
 
 
@@ -382,8 +425,29 @@
 - (void)testCanUseMacroToStubMethodWithDecimalReturnValue
 {
     id mock = OCMClassMock([TestClassWithDecimalReturnMethod class]);
+
     OCMStub([mock method]).andReturn([NSDecimalNumber decimalNumberWithDecimal:[@0 decimalValue]]);
+
     XCTAssertEqualObjects([mock method], [NSDecimalNumber decimalNumberWithDecimal:[@0 decimalValue]]);
+}
+
+
+- (void)testCanUseMacroToStubMethodWithAnyNonObjectArgument
+{
+    id mock = OCMStrictClassMock([NSString class]);
+
+    OCMStub([mock commonPrefixWithString:@"foo" options:0]).ignoringNonObjectArgs();
+
+    XCTAssertNoThrow([mock commonPrefixWithString:@"foo" options:NSCaseInsensitiveSearch]);
+}
+
+- (void)testCanUseMacroToStubMethodWithAnyNonObjectArgumentChainedWithOCMStubRecorder
+{
+    id mock = OCMClassMock([NSString class]);
+
+    OCMStub([mock commonPrefixWithString:@"foo" options:0]).ignoringNonObjectArgs().andReturn(@"f");
+
+    XCTAssertEqualObjects(@"f", [mock commonPrefixWithString:@"foo" options:NSCaseInsensitiveSearch]);
 }
 
 @end

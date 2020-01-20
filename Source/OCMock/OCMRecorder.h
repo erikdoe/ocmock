@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2014-2016 Erik Doernenburg and contributors
+ *  Copyright (c) 2014-2019 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -24,6 +24,7 @@
 {
     OCMockObject         *mockObject;
     OCMInvocationMatcher *invocationMatcher;
+    BOOL                 wasUsed;
 }
 
 - (instancetype)init;
@@ -32,8 +33,16 @@
 - (void)setMockObject:(OCMockObject *)aMockObject;
 
 - (OCMInvocationMatcher *)invocationMatcher;
+- (BOOL)wasUsed;
 
 - (id)classMethod;
 - (id)ignoringNonObjectArgs;
+
+@end
+
+@interface OCMRecorder (Properties)
+
+#define ignoringNonObjectArgs() _ignoringNonObjectArgs()
+@property (nonatomic, readonly) OCMRecorder *(^ _ignoringNonObjectArgs)(void);
 
 @end

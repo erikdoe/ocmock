@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2014-2016 Erik Doernenburg and contributors
+ *  Copyright (c) 2014-2019 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -25,7 +25,7 @@
 
 @interface OCMMacroState : NSObject
 {
-    OCMRecorder *recorder;
+    id recorder;
 }
 
 + (void)beginStubMacro;
@@ -43,7 +43,8 @@
 
 + (OCMMacroState *)globalState;
 
-- (OCMRecorder *)recorder;
+- (void)setRecorder:(id)aRecorder;
+- (id)recorder;
 
 - (void)switchToClassMethod;
 
