@@ -35,11 +35,33 @@
 
 
 @interface OCMQuantifierTests : XCTestCase
+{
+    BOOL    expectFailure;
+    BOOL    didRecordFailure;
+}
 
 @end
 
 
 @implementation OCMQuantifierTests
+
+- (void)setUp
+{
+    expectFailure = NO;
+}
+
+- (void)recordFailureWithDescription:(NSString *)description inFile:(NSString *)file atLine:(NSUInteger)line expected:(BOOL)expected
+{
+    if(expectFailure)
+    {
+        didRecordFailure = YES;
+    }
+    else
+    {
+        [super recordFailureWithDescription:description inFile:file atLine:line expected:expected];
+    }
+}
+
 
 - (void)testAtLeastThrowsWhenMinimumCountIsNotReached
 {
@@ -99,42 +121,69 @@
     XCTAssertThrows([[[mock verify] withQuantifier:[OCMQuantifier never]] doStuff]);
 }
 
-- (void)testQuantifierShorthandMacro
-{
-    id mock = OCMClassMock([TestClassForQuantifiers class]);
-    
-    [mock doStuff];
-
-    OCMVerifyQ(atLeastOnce, [mock doStuff]);
-}
-
-- (void)testQuantifierShorthandMacroWithArgument
-{
-    id mock = OCMClassMock([TestClassForQuantifiers class]);
-    
-    [mock doStuff];
-    [mock doStuff];
-    
-    OCMVerifyQ(atLeast(2), [mock doStuff]);
-}
 
 - (void)testQuantifierMacro
 {
     id mock = OCMClassMock([TestClassForQuantifiers class]);
 
     [mock doStuff];
-    
-    OCMVerifyQ2([OCMQnt atLeastOnce], [mock doStuff]);
+
+    _OCMVerifyWithQuantifier([OCMQnt atLeastOnce], [mock doStuff]);
 }
 
-- (void)testQuantifierWtihStandardMacro
+- (void)testQuantifierMacroAtLeast
 {
     id mock = OCMClassMock([TestClassForQuantifiers class]);
-
     [mock doStuff];
-
-    OCMVerify([OCMQnt atLeastOnce]; [mock doStuff]);
+    [mock doStuff];
+    OCMVerifyAtLeast(2, [mock doStuff]);
 }
+
+- (void)testQuantifierMacroAtLeastFailure
+{
+    id mock = OCMClassMock([TestClassForQuantifiers class]);
+    [mock doStuff];
+    [mock doStuff];
+    expectFailure = YES;
+    OCMVerifyAtLeast(3, [mock doStuff]);
+    expectFailure = NO;
+    XCTAssertTrue(didRecordFailure);
+}
+
+- (void)testQuantifierMacroAtLeastOnce
+{
+    id mock = OCMClassMock([TestClassForQuantifiers class]);
+    [mock doStuff];
+    [mock doStuff];
+    OCMVerifyAtLeastOnce([mock doStuff]);
+}
+
+
+- (void)testQuantifierMacroAtMost
+{
+    id mock = OCMClassMock([TestClassForQuantifiers class]);
+    [mock doStuff];
+    [mock doStuff];
+    OCMVerifyAtMost(2, [mock doStuff]);
+}
+
+- (void)testQuantifierMacroAtMostFailure
+{
+    id mock = OCMClassMock([TestClassForQuantifiers class]);
+    [mock doStuff];
+    [mock doStuff];
+    expectFailure = YES;
+    OCMVerifyAtMost(1, [mock doStuff]);
+    expectFailure = NO;
+    XCTAssertTrue(didRecordFailure);
+}
+
+- (void)testQuantifierMacroNever
+{
+    id mock = OCMClassMock([TestClassForQuantifiers class]);
+    OCMVerifyNever([mock doStuff]);
+}
+
 
 @end
 

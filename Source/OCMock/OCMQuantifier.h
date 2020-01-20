@@ -29,16 +29,5 @@
 
 @end
 
-@interface OCMQuantifierFactory : NSObject
-
-+ (instancetype)sharedInstance;
-
-@property (nonatomic, readonly) OCMQuantifier *_atLeastOnce;
-@property (nonatomic, readonly) OCMQuantifier *(^ _atLeast)(NSUInteger);
-@property (nonatomic, readonly) OCMQuantifier *_never;
-@property (nonatomic, readonly) OCMQuantifier *(^ _atMost)(NSUInteger);
-
-@end
-
 
 #define OCMQnt OCMQuantifier

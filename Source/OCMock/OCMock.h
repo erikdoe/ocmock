@@ -105,7 +105,7 @@
     ); \
 })
 
-#define OCMVerifyQ2(quantifier, invocation) \
+#define _OCMVerifyWithQuantifier(quantifier, invocation) \
 ({ \
     _OCMSilenceWarnings( \
         [OCMMacroState beginVerifyMacroAtLocation:OCMMakeLocation(self, __FILE__, __LINE__) withQuantifier:quantifier]; \
@@ -117,18 +117,18 @@
     ); \
 })
 
-#define OCMVerifyQ(quantifier, invocation) \
-({ \
-    _OCMSilenceWarnings( \
-        [OCMMacroState beginVerifyMacroAtLocation:OCMMakeLocation(self, __FILE__, __LINE__) \
-                        withQuantifier:[OCMQuantifierFactory sharedInstance]._##quantifier]; \
-        @try{ \
-            invocation; \
-        }@finally{ \
-            [OCMMacroState endVerifyMacro]; \
-        } \
-    ); \
-})
+#define OCMVerifyAtLeast(count, invocation) \
+    _OCMVerifyWithQuantifier([OCMQuantifier atLeast:(count)], invocation)
+
+#define OCMVerifyAtLeastOnce(invocation) \
+    _OCMVerifyWithQuantifier([OCMQuantifier atLeastOnce], invocation)
+
+#define OCMVerifyAtMost(count, invocation) \
+    _OCMVerifyWithQuantifier([OCMQuantifier atMost:(count)], invocation)
+
+#define OCMVerifyNever(invocation) \
+    _OCMVerifyWithQuantifier([OCMQuantifier never], invocation)
+
 
 
 #define _OCMSilenceWarnings(macro) \
