@@ -118,3 +118,52 @@
 }
 
 @end
+
+
+@implementation OCMQuantifierFactory
+
++ (instancetype)sharedInstance
+{
+    return [[[OCMQuantifierFactory alloc] init] autorelease];
+}
+
+@dynamic atLeastOnce;
+
+- (OCMQuantifier *)atLeastOnce
+{
+    return [OCMQuantifier atLeastOnce];
+}
+
+@dynamic atLeast;
+
+- (OCMQuantifier *(^)(NSUInteger))atLeast
+{
+    id (^theBlock)(NSUInteger) = ^ (NSUInteger count)
+    {
+        return [OCMQuantifier atLeast:count];
+    };
+    return [[theBlock copy] autorelease];
+}
+
+@dynamic never;
+
+- (OCMQuantifier *)never
+{
+    return [OCMQuantifier never];
+}
+
+@dynamic atMost;
+
+- (OCMQuantifier *(^)(NSUInteger))atMost
+{
+    id (^theBlock)(NSUInteger) = ^ (NSUInteger count)
+    {
+        return [OCMQuantifier atMost:count];
+    };
+    return [[theBlock copy] autorelease];
+}
+
+
+@end
+
+

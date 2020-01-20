@@ -125,65 +125,19 @@
 - (void)testQuantifierMacro
 {
     id mock = OCMClassMock([TestClassForQuantifiers class]);
-
     [mock doStuff];
-
-    _OCMVerifyWithQuantifier([OCMQnt atLeastOnce], [mock doStuff]);
+    [mock doStuff];
+    OCMVerify(OCMQ.atLeast(2), [mock doStuff]);
 }
 
-- (void)testQuantifierMacroAtLeast
+- (void)testQuantifierMacroFailure
 {
     id mock = OCMClassMock([TestClassForQuantifiers class]);
-    [mock doStuff];
-    [mock doStuff];
-    OCMVerifyAtLeast(2, [mock doStuff]);
-}
-
-- (void)testQuantifierMacroAtLeastFailure
-{
-    id mock = OCMClassMock([TestClassForQuantifiers class]);
-    [mock doStuff];
-    [mock doStuff];
     expectFailure = YES;
-    OCMVerifyAtLeast(3, [mock doStuff]);
+    OCMVerify(OCMQ.atLeastOnce, [mock doStuff]);
     expectFailure = NO;
     XCTAssertTrue(didRecordFailure);
 }
-
-- (void)testQuantifierMacroAtLeastOnce
-{
-    id mock = OCMClassMock([TestClassForQuantifiers class]);
-    [mock doStuff];
-    [mock doStuff];
-    OCMVerifyAtLeastOnce([mock doStuff]);
-}
-
-
-- (void)testQuantifierMacroAtMost
-{
-    id mock = OCMClassMock([TestClassForQuantifiers class]);
-    [mock doStuff];
-    [mock doStuff];
-    OCMVerifyAtMost(2, [mock doStuff]);
-}
-
-- (void)testQuantifierMacroAtMostFailure
-{
-    id mock = OCMClassMock([TestClassForQuantifiers class]);
-    [mock doStuff];
-    [mock doStuff];
-    expectFailure = YES;
-    OCMVerifyAtMost(1, [mock doStuff]);
-    expectFailure = NO;
-    XCTAssertTrue(didRecordFailure);
-}
-
-- (void)testQuantifierMacroNever
-{
-    id mock = OCMClassMock([TestClassForQuantifiers class]);
-    OCMVerifyNever([mock doStuff]);
-}
-
 
 @end
 

@@ -93,7 +93,7 @@
 
 #define OCMVerifyAllWithDelay(mock, delay) [mock verifyWithDelay:delay atLocation:OCMMakeLocation(self, __FILE__, __LINE__)]
 
-#define OCMVerify(invocation) \
+#define _OCMVerify(invocation) \
 ({ \
     _OCMSilenceWarnings( \
         [OCMMacroState beginVerifyMacroAtLocation:OCMMakeLocation(self, __FILE__, __LINE__)]; \
@@ -117,18 +117,12 @@
     ); \
 })
 
-#define OCMVerifyAtLeast(count, invocation) \
-    _OCMVerifyWithQuantifier([OCMQuantifier atLeast:(count)], invocation)
+// explanation for macros below here: https://stackoverflow.com/questions/3046889/optional-parameters-with-c-macros
 
-#define OCMVerifyAtLeastOnce(invocation) \
-    _OCMVerifyWithQuantifier([OCMQuantifier atLeastOnce], invocation)
-
-#define OCMVerifyAtMost(count, invocation) \
-    _OCMVerifyWithQuantifier([OCMQuantifier atMost:(count)], invocation)
-
-#define OCMVerifyNever(invocation) \
-    _OCMVerifyWithQuantifier([OCMQuantifier never], invocation)
-
+#define _OCMVerify_1(A)                 _OCMVerify(A)
+#define _OCMVerify_2(A,B)               _OCMVerifyWithQuantifier(A, B)
+#define _OCMVerify_X(x,A,B,FUNC, ...)   FUNC
+#define OCMVerify(...) _OCMVerify_X(,##__VA_ARGS__, _OCMVerify_2(__VA_ARGS__), _OCMVerify_1(__VA_ARGS__))
 
 
 #define _OCMSilenceWarnings(macro) \
