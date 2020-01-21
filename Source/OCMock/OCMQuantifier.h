@@ -34,8 +34,8 @@
 @end
 
 
-#define OCMQTimes(n)    ([OCMQuantifier exactly:(n)])
-#define OCMQAtLeastOnce ([OCMQuantifier atLeastOnce])
-#define OCMQAtLeast(n)  ([OCMQuantifier atLeast:(n)])
-#define OCMQNever       ([OCMQuantifier never])
-#define OCMQAtMost(n)   ([OCMQuantifier atMost:(n)])
+#define OCMTimes(n)    ([OCMQuantifier exactly:(n)])
+#define OCMAtLeastOnce ([OCMQuantifier atLeastOnce])
+#define OCMAtLeast(n)  ([OCMQuantifier atLeast:(n)])
+#define OCMNever       ([OCMQuantifier never])
+#define OCMAtMost(n)   ([OCMQuantifier atMost:(n)])

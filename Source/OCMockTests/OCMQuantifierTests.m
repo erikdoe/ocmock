@@ -170,14 +170,14 @@
     id mock = OCMClassMock([TestClassForQuantifiers class]);
     [mock doStuff];
     [mock doStuff];
-    OCMVerify(OCMQAtLeast(2), [mock doStuff]);
+    OCMVerify(OCMAtLeast(2), [mock doStuff]);
 }
 
 - (void)testQuantifierMacroFailure
 {
     id mock = OCMClassMock([TestClassForQuantifiers class]);
     expectFailure = YES;
-    OCMVerify(OCMQAtLeastOnce, [mock doStuff]);
+    OCMVerify(OCMAtLeastOnce, [mock doStuff]);
     expectFailure = NO;
     XCTAssertTrue(didRecordFailure);
 }
