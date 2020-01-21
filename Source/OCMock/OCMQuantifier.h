@@ -18,6 +18,7 @@
 
 @interface OCMQuantifier : NSObject
 
++ (instancetype)exactly:(NSUInteger)count;
 + (instancetype)atLeastOnce;
 + (instancetype)atLeast:(NSUInteger)count;
 + (instancetype)never;
@@ -30,6 +31,7 @@
 @end
 
 
+#define OCMQTimes(n)    ([OCMQuantifier exactly:(n)])
 #define OCMQAtLeastOnce ([OCMQuantifier atLeastOnce])
 #define OCMQAtLeast(n)  ([OCMQuantifier atLeast:(n)])
 #define OCMQNever       ([OCMQuantifier never])

@@ -19,6 +19,13 @@
 #import "OCMVerifier.h"
 #import "OCMQuantifier.h"
 
+
+@interface OCMExactCountQuantifier : OCMQuantifier
+
+@property NSUInteger count;
+
+@end
+
 @interface OCMAtLeastQuantifier : OCMQuantifier
 
 @property NSUInteger count;
@@ -34,6 +41,14 @@
 
 
 @implementation OCMQuantifier
+
++ (instancetype)exactly:(NSUInteger)count
+{
+    OCMExactCountQuantifier *quantifier = [[[OCMExactCountQuantifier alloc] init] autorelease];
+    quantifier.count = count;
+    return quantifier;
+}
+
 
 + (instancetype)atLeastOnce
 {
@@ -80,6 +95,26 @@
 {
     [NSException raise:NSInternalInconsistencyException format:@"Subclass should have implemented method description."];
     return nil; // keep compiler happy
+}
+
+@end
+
+
+@implementation OCMExactCountQuantifier
+
+- (BOOL)isValidCount:(NSUInteger)count
+{
+    return count == self.count;
+}
+
+- (NSString *)description
+{
+    switch(self.count)
+    {
+        case 0:  return @"never";
+        case 1:  return @"once";
+        default: return [NSString stringWithFormat:@"%ld times", self.count];
+    }
 }
 
 @end

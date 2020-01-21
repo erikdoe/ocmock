@@ -63,6 +63,37 @@
 }
 
 
+- (void)testExactlyThrowsWhenCountTooSmall
+{
+    id mock = OCMClassMock([TestClassForQuantifiers class]);
+
+    [mock doStuff];
+
+    XCTAssertThrows([[[mock verify] withQuantifier:[OCMQuantifier exactly:2]] doStuff]);
+}
+
+- (void)testExactlyMatchesCount
+{
+    id mock = OCMClassMock([TestClassForQuantifiers class]);
+
+    [mock doStuff];
+    [mock doStuff];
+
+    [[[mock verify] withQuantifier:[OCMQuantifier exactly:2]] doStuff];
+}
+
+- (void)testExactlyThrowsWhenCountTooLarge
+{
+    id mock = OCMClassMock([TestClassForQuantifiers class]);
+
+    [mock doStuff];
+    [mock doStuff];
+    [mock doStuff];
+
+    XCTAssertThrows([[[mock verify] withQuantifier:[OCMQuantifier exactly:2]] doStuff]);
+}
+
+
 - (void)testAtLeastThrowsWhenMinimumCountIsNotReached
 {
     id mock = OCMClassMock([TestClassForQuantifiers class]);
