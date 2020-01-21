@@ -124,6 +124,12 @@
     [[[mock verify] withQuantifier:[OCMQuantifier atLeast:2]] doStuff];
 }
 
+- (void)testAtLeastThrowsWhenInitializedWithZeroCount
+{
+    XCTAssertThrows([OCMQuantifier atLeast:0]);
+}
+
+
 - (void)testAtMostMatchesUpToMaximumCount
 {
     id mock = OCMClassMock([TestClassForQuantifiers class]);
@@ -142,6 +148,12 @@
     
     XCTAssertThrows([[[mock verify] withQuantifier:[OCMQuantifier atMost:1]] doStuff]);
 }
+
+- (void)testAtMostThrowsWhenInitializedWithZeroCount
+{
+    XCTAssertThrows([OCMQuantifier atMost:0]);
+}
+
 
 - (void)testNeverThrowsWhenInvocationsOccurred
 {

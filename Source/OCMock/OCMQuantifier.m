@@ -22,19 +22,13 @@
 
 @interface OCMExactCountQuantifier : OCMQuantifier
 
-@property NSUInteger count;
-
 @end
 
 @interface OCMAtLeastQuantifier : OCMQuantifier
 
-@property NSUInteger count;
-
 @end
 
 @interface OCMAtMostQuantifier : OCMQuantifier
-
-@property NSUInteger count;
 
 @end
 
@@ -44,42 +38,35 @@
 
 + (instancetype)exactly:(NSUInteger)count
 {
-    OCMExactCountQuantifier *quantifier = [[[OCMExactCountQuantifier alloc] init] autorelease];
-    quantifier.count = count;
-    return quantifier;
+    return [[[OCMExactCountQuantifier alloc] initWithCount:count] autorelease];
 }
 
++ (instancetype)never
+{
+    return [self exactly:0];
+}
+
++ (instancetype)atLeast:(NSUInteger)count
+{
+    return [[[OCMAtLeastQuantifier alloc] initWithCount:count] autorelease];
+}
 
 + (instancetype)atLeastOnce
 {
     return [self atLeast:1];
 }
 
-+ (instancetype)atLeast:(NSUInteger)count
-{
-    OCMAtLeastQuantifier *quantifier = [[[OCMAtLeastQuantifier alloc] init] autorelease];
-    quantifier.count = count;
-    return quantifier;
-}
-
-
-+ (instancetype)never
-{
-    return [self atMost:0];
-}
-
 + (instancetype)atMost:(NSUInteger)count
 {
-    OCMAtMostQuantifier *quantifier = [[[OCMAtMostQuantifier alloc] init] autorelease];
-    quantifier.count = count;
-    return quantifier;
+    return [[[OCMAtMostQuantifier alloc] initWithCount:count] autorelease];
 }
 
 
-- (instancetype)init
+- (instancetype)initWithCount:(NSUInteger)count
 {
     if((self = [super init]) != nil)
     {
+        expectedCount = count;
         [(OCMVerifier *)[[OCMMacroState globalState] recorder] setQuantifier:self];
     }
     return self;
@@ -93,8 +80,12 @@
 
 - (NSString *)description
 {
-    [NSException raise:NSInternalInconsistencyException format:@"Subclass should have implemented method description."];
-    return nil; // keep compiler happy
+    switch(expectedCount)
+    {
+        case 0:  return @"never";
+        case 1:  return @"once";
+        default: return [NSString stringWithFormat:@"%ld times", expectedCount];
+    }
 }
 
 @end
@@ -104,17 +95,7 @@
 
 - (BOOL)isValidCount:(NSUInteger)count
 {
-    return count == self.count;
-}
-
-- (NSString *)description
-{
-    switch(self.count)
-    {
-        case 0:  return @"never";
-        case 1:  return @"once";
-        default: return [NSString stringWithFormat:@"%ld times", self.count];
-    }
+    return count == expectedCount;
 }
 
 @end
@@ -122,14 +103,21 @@
 
 @implementation OCMAtLeastQuantifier
 
+- (instancetype)initWithCount:(NSUInteger)count
+{
+    if(count == 0)
+        @throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Count for an at-least quantifier cannot be zero." userInfo:nil];
+    return [super initWithCount:count];
+}
+
 - (BOOL)isValidCount:(NSUInteger)count
 {
-    return count >= self.count;
+    return count >= expectedCount;
 }
 
 - (NSString *)description
 {
-    return (self.count == 1) ? @"at least once" : [NSString stringWithFormat:@"at least %ld times", self.count];
+    return [@"at least " stringByAppendingString:[super description]];
 }
 
 @end
@@ -137,19 +125,21 @@
 
 @implementation OCMAtMostQuantifier
 
+- (instancetype)initWithCount:(NSUInteger)count
+{
+    if(count == 0)
+        @throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Count for an at-most quantifier cannot be zero. Use never or exactly-zero quantifier instead." userInfo:nil];
+    return [super initWithCount:count];
+}
+
 - (BOOL)isValidCount:(NSUInteger)count
 {
-    return count <= self.count;
+    return count <= expectedCount;
 }
 
 - (NSString *)description
 {
-    switch(self.count)
-    {
-        case 0:  return @"never";
-        case 1:  return @"at most once";
-        default: return [NSString stringWithFormat:@"at most %ld times", self.count];
-    }
+    return [@"at most " stringByAppendingString:[super description]];
 }
 
 @end

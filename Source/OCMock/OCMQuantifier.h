@@ -17,11 +17,14 @@
 #import <Foundation/Foundation.h>
 
 @interface OCMQuantifier : NSObject
+{
+    NSUInteger    expectedCount;
+}
 
 + (instancetype)exactly:(NSUInteger)count;
-+ (instancetype)atLeastOnce;
-+ (instancetype)atLeast:(NSUInteger)count;
 + (instancetype)never;
++ (instancetype)atLeast:(NSUInteger)count;
++ (instancetype)atLeastOnce;
 + (instancetype)atMost:(NSUInteger)count;
 
 - (BOOL)isValidCount:(NSUInteger)count;
