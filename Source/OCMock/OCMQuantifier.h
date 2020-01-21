@@ -30,17 +30,7 @@
 @end
 
 
-@interface OCMQuantifierFactory : NSObject
-
-+ (instancetype)sharedInstance;
-
-@property (nonatomic, readonly) OCMQuantifier *atLeastOnce;
-@property (nonatomic, readonly) OCMQuantifier *(^ atLeast)(NSUInteger);
-@property (nonatomic, readonly) OCMQuantifier *never;
-@property (nonatomic, readonly) OCMQuantifier *(^ atMost)(NSUInteger);
-
-@end
-
-
-#define OCMQ [OCMQuantifierFactory sharedInstance]
-
+#define OCMQAtLeastOnce ([OCMQuantifier atLeastOnce])
+#define OCMQAtLeast(n)  ([OCMQuantifier atLeast:(n)])
+#define OCMQNever       ([OCMQuantifier never])
+#define OCMQAtMost(n)   ([OCMQuantifier atMost:(n)])
