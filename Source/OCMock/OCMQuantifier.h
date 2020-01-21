@@ -34,8 +34,16 @@
 @end
 
 
-#define OCMTimes(n)    ([OCMQuantifier exactly:(n)])
-#define OCMAtLeastOnce ([OCMQuantifier atLeastOnce])
-#define OCMAtLeast(n)  ([OCMQuantifier atLeast:(n)])
-#define OCMNever       ([OCMQuantifier never])
-#define OCMAtMost(n)   ([OCMQuantifier atMost:(n)])
+#define OCMTimes(n)         ([OCMQuantifier exactly:(n)])
+#define OCMAtLeastOnce()    ([OCMQuantifier atLeastOnce])
+#define OCMAtLeast(n)       ([OCMQuantifier atLeast:(n)])
+#define OCMNever()          ([OCMQuantifier never])
+#define OCMAtMost(n)        ([OCMQuantifier atMost:(n)])
+
+#ifndef OCM_DISABLE_SHORT_SYNTAX
+#define times(n)        OCMTimes(n)
+#define atLeastOnce()   OCMAtLeastOnce()
+#define atLeast(n)      OCMAtLeast(n)
+#define never()         OCMNever()
+#define atMost(n)       OCMAtMost(n)
+#endif
