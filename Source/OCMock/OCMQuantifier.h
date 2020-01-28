@@ -40,7 +40,7 @@
 #define OCMNever()          ([OCMQuantifier never])
 #define OCMAtMost(n)        ([OCMQuantifier atMost:(n)])
 
-#ifndef OCM_DISABLE_SHORT_SYNTAX
+#ifndef OCM_DISABLE_SHORT_QSYNTAX
 #define times(n)        OCMTimes(n)
 #define atLeastOnce()   OCMAtLeastOnce()
 #define atLeast(n)      OCMAtLeast(n)

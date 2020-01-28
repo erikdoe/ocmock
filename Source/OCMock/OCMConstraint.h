@@ -66,6 +66,7 @@
 
 @end
 
-
+#ifndef OCM_DISABLE_SHORT_SYNTAX
 #define CONSTRAINT(aSelector) [OCMConstraint constraintWithSelector:aSelector onObject:self]
 #define CONSTRAINTV(aSelector, aValue) [OCMConstraint constraintWithSelector:aSelector onObject:self withValue:(aValue)]
+#endif

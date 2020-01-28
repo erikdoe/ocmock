@@ -27,6 +27,11 @@
 #import <OCMock/OCMFunctions.h>
 
 
+#ifdef OCM_DISABLE_SHORT_SYNTAX
+#define OCM_DISABLE_SHORT_QSYNTAX
+#endif
+
+
 #define OCMClassMock(cls) [OCMockObject niceMockForClass:cls]
 
 #define OCMStrictClassMock(cls) [OCMockObject mockForClass:cls]
@@ -82,11 +87,18 @@
     ); \
 })
 
-#define ClassMethod(invocation) \
+
+
+#define OCMClassMethod(invocation) \
     _OCMSilenceWarnings( \
         [[OCMMacroState globalState] switchToClassMethod]; \
         invocation; \
     );
+
+
+#ifndef OCM_DISABLE_SHORT_SYNTAX
+#define ClassMethod(invocation) OCMClassMethod(invocation)
+#endif
 
 
 #define OCMVerifyAll(mock) [mock verifyAtLocation:OCMMakeLocation(self, __FILE__, __LINE__)]
