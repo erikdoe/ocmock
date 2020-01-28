@@ -16,10 +16,14 @@
 
 #import "OCMRecorder.h"
 #import "OCMLocation.h"
+#import "OCMQuantifier.h"
 
 
 @interface OCMVerifier : OCMRecorder
 
 @property(retain) OCMLocation *location;
+@property(retain) OCMQuantifier *quantifier;
+
+- (instancetype)withQuantifier:(OCMQuantifier *)quantifier;
 
 @end

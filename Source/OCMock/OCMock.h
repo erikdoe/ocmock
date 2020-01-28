@@ -16,10 +16,12 @@
 
 #import <OCMock/OCMockObject.h>
 #import <OCMock/OCMRecorder.h>
+#import <OCMock/OCMVerifier.h>
 #import <OCMock/OCMStubRecorder.h>
 #import <OCMock/OCMConstraint.h>
 #import <OCMock/OCMArg.h>
 #import <OCMock/OCMLocation.h>
+#import <OCMock/OCMQuantifier.h>
 #import <OCMock/OCMMacroState.h>
 #import <OCMock/NSNotificationCenter+OCMAdditions.h>
 #import <OCMock/OCMFunctions.h>
@@ -91,7 +93,7 @@
 
 #define OCMVerifyAllWithDelay(mock, delay) [mock verifyWithDelay:delay atLocation:OCMMakeLocation(self, __FILE__, __LINE__)]
 
-#define OCMVerify(invocation) \
+#define _OCMVerify(invocation) \
 ({ \
     _OCMSilenceWarnings( \
         [OCMMacroState beginVerifyMacroAtLocation:OCMMakeLocation(self, __FILE__, __LINE__)]; \
@@ -102,6 +104,26 @@
         } \
     ); \
 })
+
+#define _OCMVerifyWithQuantifier(quantifier, invocation) \
+({ \
+    _OCMSilenceWarnings( \
+        [OCMMacroState beginVerifyMacroAtLocation:OCMMakeLocation(self, __FILE__, __LINE__) withQuantifier:quantifier]; \
+        @try{ \
+           invocation; \
+        }@finally{ \
+            [OCMMacroState endVerifyMacro]; \
+        } \
+    ); \
+})
+
+// explanation for macros below here: https://stackoverflow.com/questions/3046889/optional-parameters-with-c-macros
+
+#define _OCMVerify_1(A)                 _OCMVerify(A)
+#define _OCMVerify_2(A,B)               _OCMVerifyWithQuantifier(A, B)
+#define _OCMVerify_X(x,A,B,FUNC, ...)   FUNC
+#define OCMVerify(...) _OCMVerify_X(,##__VA_ARGS__, _OCMVerify_2(__VA_ARGS__), _OCMVerify_1(__VA_ARGS__))
+
 
 #define _OCMSilenceWarnings(macro) \
 ({ \

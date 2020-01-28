@@ -29,6 +29,7 @@
 #import "OCMInvocationExpectation.h"
 #import "OCMExceptionReturnValueProvider.h"
 #import "OCMExpectationRecorder.h"
+#import "OCMQuantifier.h"
 
 
 @implementation OCMockObject
@@ -275,19 +276,37 @@
 
 - (void)verifyInvocation:(OCMInvocationMatcher *)matcher atLocation:(OCMLocation *)location
 {
+    [self verifyInvocation:matcher withQuantifier:nil atLocation:location];
+}
+
+- (void)verifyInvocation:(OCMInvocationMatcher *)matcher withQuantifier:(OCMQuantifier *)quantifier atLocation:(OCMLocation *)location
+{
+    NSUInteger count = 0;
     [self assertInvocationsArrayIsPresent];
     @synchronized(invocations)
     {
         for(NSInvocation *invocation in invocations)
         {
             if([matcher matchesInvocation:invocation])
-                return;
+                count += 1;
         }
     }
-    NSString *description = [NSString stringWithFormat:@"%@: Method %@ was not invoked.",
-     [self description], [matcher description]];
-
-    OCMReportFailure(location, description);
+    if(quantifier == nil)
+        quantifier = [OCMQuantifier atLeastOnce];
+    if(![quantifier isValidCount:count])
+    {
+        NSString *actualDescription = nil;
+        switch(count)
+        {
+            case 0:  actualDescription = @"not invoked";  break;
+            case 1:  actualDescription = @"invoked once"; break;
+            default: actualDescription = [NSString stringWithFormat:@"invoked %ld times", count]; break;
+        }
+        
+        NSString *description = [NSString stringWithFormat:@"%@: Method %@ was %@; but was expected %@.",
+                                 [self description], [matcher description], actualDescription, [quantifier description]];
+        OCMReportFailure(location, description);
+    }
 }
 
 

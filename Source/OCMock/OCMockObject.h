@@ -17,6 +17,7 @@
 #import <Foundation/Foundation.h>
 
 @class OCMLocation;
+@class OCMQuantifier;
 @class OCMInvocationStub;
 @class OCMStubRecorder;
 @class OCMInvocationMatcher;
@@ -69,6 +70,7 @@
 
 - (void)verifyInvocation:(OCMInvocationMatcher *)matcher;
 - (void)verifyInvocation:(OCMInvocationMatcher *)matcher atLocation:(OCMLocation *)location;
+- (void)verifyInvocation:(OCMInvocationMatcher *)matcher withQuantifier:(OCMQuantifier *)quantifier atLocation:(OCMLocation *)location;
 
 @end
 

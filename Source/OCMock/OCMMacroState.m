@@ -82,8 +82,14 @@ static NSString *const OCMGlobalStateKey = @"OCMGlobalStateKey";
 
 + (void)beginVerifyMacroAtLocation:(OCMLocation *)aLocation
 {
+    return [self beginVerifyMacroAtLocation:aLocation withQuantifier:nil];
+}
+
++ (void)beginVerifyMacroAtLocation:(OCMLocation *)aLocation withQuantifier:(OCMQuantifier *)quantifier
+{
     OCMVerifier *recorder = [[[OCMVerifier alloc] init] autorelease];
     [recorder setLocation:aLocation];
+    [recorder setQuantifier:quantifier];
     OCMMacroState *macroState = [[OCMMacroState alloc] initWithRecorder:recorder];
     [NSThread currentThread].threadDictionary[OCMGlobalStateKey] = macroState;
     [macroState release];
