@@ -88,10 +88,10 @@ p.postdate {
 }
 
 .tag {
-	border: 1px solid #AAA;
+	font-size: 90%;
 	background: #DDD;
-	padding: 1px 3px 0px 2px;
-	border-radius: 3px 3px 3px 3px;
+	padding: 3px 4px;
+	border-radius: 2px;
 }
 
 
