@@ -6,7 +6,7 @@
 		<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 		
 		<meta name="twitter:card" content="summary" />
-		<meta name="twitter:title" content="OCMock" />
+		<meta name="twitter:title" content="OCMock {{ page.title }}" />
 		<meta name="twitter:description" content="Mock objects for Objective-C: Stubs, dynamic mocks, partial mocks" />
 		<meta name="twitter:image" content="http://ocmock.org/images/tweetcard-small.png" />
 
@@ -87,9 +87,9 @@
     <header class="group">
     	<div id="navmenu-btn">≡</div>
     	<nav>
-        {% unless page.title == "Front Page" %}
+        {% if page.title %}
         <a href="{{ site.baseurl }}/"><img id="logo" src="{{ site.baseurl }}/images/ocmock-252x81.png" width="126" height="41" alt="OCMock"></a>
-	      {% endunless %}
+	      {% endif %}
     		<ul>
     			<li class="textnav" id="home"><a href="{{ site.baseurl }}/">Home</a></li>
     			<li class="textnav"><a href="{{ site.baseurl }}/introduction">Introduction</a></li>
@@ -132,7 +132,7 @@
 			</nav>
 
       <div id="footercopy" class="group">
-		  	<p class="copyright">Copyright &copy; 2004-2019 by Erik D&ouml;rnenburg
+		  	<p class="copyright">Copyright &copy; 2004-2020 by Erik D&ouml;rnenburg
 	  	</div>
 		</footer>
 
