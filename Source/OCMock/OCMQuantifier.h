@@ -21,10 +21,9 @@
     NSUInteger    expectedCount;
 }
 
-+ (instancetype)exactly:(NSUInteger)count;
 + (instancetype)never;
++ (instancetype)exactly:(NSUInteger)count;
 + (instancetype)atLeast:(NSUInteger)count;
-+ (instancetype)atLeastOnce;
 + (instancetype)atMost:(NSUInteger)count;
 
 - (BOOL)isValidCount:(NSUInteger)count;
@@ -34,16 +33,14 @@
 @end
 
 
-#define OCMTimes(n)         ([OCMQuantifier exactly:(n)])
-#define OCMAtLeastOnce()    ([OCMQuantifier atLeastOnce])
-#define OCMAtLeast(n)       ([OCMQuantifier atLeast:(n)])
 #define OCMNever()          ([OCMQuantifier never])
+#define OCMTimes(n)         ([OCMQuantifier exactly:(n)])
+#define OCMAtLeast(n)       ([OCMQuantifier atLeast:(n)])
 #define OCMAtMost(n)        ([OCMQuantifier atMost:(n)])
 
 #ifndef OCM_DISABLE_SHORT_QSYNTAX
-#define times(n)        OCMTimes(n)
-#define atLeastOnce()   OCMAtLeastOnce()
-#define atLeast(n)      OCMAtLeast(n)
 #define never()         OCMNever()
+#define times(n)        OCMTimes(n)
+#define atLeast(n)      OCMAtLeast(n)
 #define atMost(n)       OCMAtMost(n)
 #endif

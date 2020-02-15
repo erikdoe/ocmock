@@ -47,6 +47,8 @@
 		037ECD5518FAD84100AF0E4C /* OCMInvocationMatcherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 037ECD5318FAD84100AF0E4C /* OCMInvocationMatcherTests.m */; };
 		038599F723807B06002B3ABE /* OCMockObjectInternalTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 038599F623807B06002B3ABE /* OCMockObjectInternalTests.m */; };
 		038599F823807B06002B3ABE /* OCMockObjectInternalTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 038599F623807B06002B3ABE /* OCMockObjectInternalTests.m */; };
+		03A1CC9E23F89F36005ADA04 /* OCMQuantifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 0368656C1D35730B005E6BEE /* OCMQuantifier.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03A1CC9F23F8A045005ADA04 /* OCMQuantifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 036865671D3572ED005E6BEE /* OCMQuantifier.m */; };
 		03B315AF146333BF0052CD09 /* NSInvocation+OCMAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 03B31585146333BF0052CD09 /* NSInvocation+OCMAdditions.h */; };
 		03B315B0146333BF0052CD09 /* NSInvocation+OCMAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 03B31585146333BF0052CD09 /* NSInvocation+OCMAdditions.h */; };
 		03B315B1146333BF0052CD09 /* NSInvocation+OCMAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B31586146333BF0052CD09 /* NSInvocation+OCMAdditions.m */; };
@@ -1099,6 +1101,7 @@
 				8DE97C9522B43EE60098C63F /* NSInvocation+OCMAdditions.h in Headers */,
 				8DE97C9622B43EE60098C63F /* NSMethodSignature+OCMAdditions.h in Headers */,
 				8DE97C9722B43EE60098C63F /* NSObject+OCMAdditions.h in Headers */,
+				03A1CC9E23F89F36005ADA04 /* OCMQuantifier.h in Headers */,
 				8DE97C9822B43EE60098C63F /* NSValue+OCMAdditions.h in Headers */,
 				8DE97C9922B43EE60098C63F /* OCMFunctions.h in Headers */,
 				8DE97C9A22B43EE60098C63F /* OCMBlockArgCaller.h in Headers */,
@@ -1557,6 +1560,7 @@
 				8DE97C5722B43EE60098C63F /* OCPartialMockObject.m in Sources */,
 				8DE97C5822B43EE60098C63F /* OCProtocolMockObject.m in Sources */,
 				8DE97C5922B43EE60098C63F /* OCMRecorder.m in Sources */,
+				03A1CC9F23F8A045005ADA04 /* OCMQuantifier.m in Sources */,
 				8DE97C5A22B43EE60098C63F /* OCMStubRecorder.m in Sources */,
 				8DE97C5B22B43EE60098C63F /* OCMExpectationRecorder.m in Sources */,
 				8DE97C5C22B43EE60098C63F /* OCMVerifier.m in Sources */,

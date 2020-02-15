@@ -1,15 +1,17 @@
 Listing of notable changes by release. More detail is usually found in the Git
 commit messages and/or the pull requests.
 
-OCMock 3.6 (unreleased)
+OCMock 3.6 (2020-02-16)
 
-* Added support for quantifiers. Please see documentation for details.
-* Switched to Carthage to manage dependencies. This means you must have Carthage
-  installed to build OCMock (see https://github.com/Carthage/Carthage). It does
-  not mean that OCMock comes with OCHamcrest bundled. When you use OCMock you
-  do not have to depend on OCHamcrest and you still have to make sure it is
-  available if you want to use it.
-* Added preprocessor macros to disable short syntax (in case of clashes)
+* Added support for quantifiers. Please see documentation section 3.3 for
+  details.
+* Added preprocessor macros to disable short syntax (in case of clashes). See
+  section 9.6. for details.
+* Switched to Carthage to manage dependencies, which is currenly only
+  OCHamcrest. This means you must have Carthage installed to build OCMock
+  (see https://github.com/Carthage/Carthage). Releases of OCMock still come
+  without OCHamcrest and if you want to use it, you must make it availble in
+  your project, using the dependency management system of your choice.
 * Added description of mock object to the exception that is thrown when the
   mock is used after stopMocking was called (Chaoshuai Lu)
   

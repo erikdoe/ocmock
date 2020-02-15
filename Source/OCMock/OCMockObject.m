@@ -292,7 +292,7 @@
         }
     }
     if(quantifier == nil)
-        quantifier = [OCMQuantifier atLeastOnce];
+        quantifier = [OCMQuantifier atLeast:1];
     if(![quantifier isValidCount:count])
     {
         NSString *actualDescription = nil;

@@ -51,11 +51,6 @@
     return [[[OCMAtLeastQuantifier alloc] initWithCount:count] autorelease];
 }
 
-+ (instancetype)atLeastOnce
-{
-    return [self atLeast:1];
-}
-
 + (instancetype)atMost:(NSUInteger)count
 {
     return [[[OCMAtMostQuantifier alloc] initWithCount:count] autorelease];

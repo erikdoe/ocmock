@@ -177,7 +177,7 @@
 {
     id mock = OCMClassMock([TestClassForQuantifiers class]);
     expectFailure = YES;
-    OCMVerify(atLeastOnce(), [mock doStuff]);
+    OCMVerify(atLeast(1), [mock doStuff]);
     expectFailure = NO;
     XCTAssertTrue(didRecordFailure);
 }

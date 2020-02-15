@@ -29,7 +29,7 @@ Pod::Spec.new do |s|
   s.public_header_files   = ["OCMock.h", "OCMockObject.h", "OCMArg.h", "OCMConstraint.h", 
                               "OCMLocation.h", "OCMMacroState.h", "OCMRecorder.h", 
                               "OCMStubRecorder.h", "NSNotificationCenter+OCMAdditions.h", 
-                              "OCMFunctions.h"]
+                              "OCMFunctions.h", "OCMQuantifier.h" ]
                               .map { |file| "Source/OCMock/" + file }
   
 end
