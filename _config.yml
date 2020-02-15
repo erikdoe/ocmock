@@ -3,5 +3,5 @@ highlighter: rouge
 exclude: [Gemfile, Gemfile.lock, Makefile, run.sh]
 permalink: pretty
 date_format: "%d %B %Y"
-baseurl: "http://ocmock.org"
+baseurl: "https://ocmock.org"
 
