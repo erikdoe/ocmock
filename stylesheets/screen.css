@@ -307,6 +307,15 @@ div#navmenu-btn, li#home {
 
 footer {
 	background: #CCC;
+	padding: 0.6em 0 1em 0;
+}
+
+footer div.copyblock {
+	float: left;
+	min-width: 234px;
+	margin-bottom: 1em;
+	margin-left: 0;
+	margin-right: 6em
 }
 
 footer nav div.navblock {
@@ -316,20 +325,15 @@ footer nav div.navblock {
 	margin-left: 0;
 }
 
-footer div#footercopy {
-	clear: both;
-}
-
 footer h2 {
 	font-size: 1em;
-	margin-bottom: 0.2em;
+	margin-bottom: 0.8em;
 }
 
-footer p {
-	font-size: 0.875em;
-	margin-top: 0;
+footer li {
+	font-size: 1em;
+	margin-bottom: 0.3em;
 }
-
 
 /* responsive top nav for small (presumably touch) screens */
 
