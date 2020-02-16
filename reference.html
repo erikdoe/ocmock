@@ -221,7 +221,45 @@ OCMVerify([mock someMethod]);
 {% endhighlight objc %}
 
 <p>It is possible to stub a method and still verify that it has been called.
-	
+
+
+<h3 class="numbered">Quantifiers (requires OCMock 3.6 or higher)</h3>
+
+{% highlight objc %}
+
+id mock = OCMClassMock([SomeClass class]);
+
+/* run code under test */
+
+OCMVerify(atLeast(2), [mock doStuff]);
+
+{%endhighlight objc %}
+
+<p>By default, verification simply checks whether a method has been called or, more precisely, whether it has been called at least once. Sometimes tests require to be more specific. Here the test verifies that the <code>doStuff</code> method was called at least twice.
+
+
+{% highlight objc %}
+
+OCMVerify(never(),    [mock doStuff]);     
+OCMVerify(times(n),   [mock doStuff]);     
+OCMVerify(atLeast(n), [mock doStuff]);  
+OCMVerify(atMost(n),  [mock doStuff]);    
+
+{% endhighlight objc %}
+
+<p>A number of different quantifiers exist for various cases. The <code>never()</code> quantifier is simply an abbreviation of <code>times(0)</code>. 
+  
+<p>If these macros cause problems in your code, it is possible to define the <code>OCM_DISABLE_SHORT_SYNTAX</code> or <code>OCM_DISABLE_SHORT_QSYNTAX</code> preprocessor macros, and use a prefixed form of the macro. In that case <code>times(n)</code> becomes <code>OCMTimes(n)</code> and so on. See section 9.6 below for details.
+  
+  
+{% highlight objc %}
+
+[[[mock verify] withQuantifier:[OCMQuantifier atMost:1]] doStuff];
+
+{% endhighlight objc %}
+
+<p>Because it isn't documented anywhere else: for fans of the old, selector-based syntax quantifiers are also available as shown above.
+
 
 <h2 id="argument-constraints" class="numbered">Argument constraints</h2>
 
@@ -525,6 +563,13 @@ OCMStub([partialMock someMethod]).andCall(differentObject, @selector(differentMe
 {% endhighlight objc %}
  
 <p>When <code>stopMocking</code> is called on a mock object, it immediatly clears its list of recorded invocations, which causes the arguments to be released and, as a consequence, retain cycles are broken. If an attempt is made to verify or record invocations after <code>stopMocking</code> has been called the mock object will throw a descriptive exception. 
+
+
+<h3 class="numbered">Disabling short syntax</h3>
+
+<p>In a number of places OCMock uses macros that are not prefixed with <code>OCM</code>, e.g. <code>ClassMethod()</code> and <code>atLeast()</code>.  This may lead to clashes with macros defined in other libraries. All macros in OCMock have a longer form, too, e.g. <code>OCMClassMethod()</code> and <code>OCMAtLeast()</code>.
+
+<p>Defining the preprocessor macro <code>OCM_DISABLE_SHORT_SYNTAX</code> will supress the definition of the short macros. Defining <code>OCM_DISABLE_SHORT_QSYNTAX</code> will only skip the new macros introduced for quantifiers in OCMock 3.6.
 
 
 <h2 id="limitations" class="numbered">Limitations</h2>

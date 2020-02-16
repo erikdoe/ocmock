@@ -21,40 +21,39 @@ published: true
 		<th width="20%">File</th>
 	</tr>
 	<tr>
-		<td>OCMock 3.5</td>
-		<td>macOS 10.14, iOS 13.2, tvOS 13.2, watchOS 6.1</td>
+		<td>OCMock 3.6</td>
+		<td>macOS 10.15, iOS 13.2, tvOS 13.2, watchOS 6.1</td>
 		<td>OS X 10.8, iOS 8.0, tvOS 9.0, watchOS 4.0</td>
-		<td>17-Nov-2019</td>
-		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.5/ocmock-3.5.dmg">ocmock-3.5.dmg</a></td>
+		<td>16-Feb-2020</td>
+		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.6/ocmock-3.6.dmg">ocmock-3.6.dmg</a></td>
 	</tr>
 	<tr>
 		<td></td>
 		<td colspan="4">
 			Recent changes:
 			<ul>
-					<li>Added macro to tell the mock to ignore non-object arguments.
-					<li>Added checks, which throw an expection if no interaction happens with a
-						mock object inside the stub/expect/reject/verify macros. This helps in cases
-						where by accident the real object is used in these macros.
-					<li>Changed stopMocking so that arguments will be forcibly released to break
-						retain cycles. This MAY cause some existing tests to fail. However, it
-						was always bad practice to use a mock after calling stopMocking.
-					<li>Added checks, which throw an exception when stopMocking has been called
-						and afterwards an attempt is made to use functionality that will definitely
-						not work after stopMocking has been called.
-					<li>Changed stub so that return value is not retained if the value is the mock
-						itself, because that creates a retain cycle.
-					<li>Added support for watchOS
+					<li>Added support for quantifiers. Please see documentation section 3.3 as well
+						as #302 for details.
+					<li>Added preprocessor macros to disable short syntax (in case of clashes). See
+						section 9.6. for details.
+					<li>Set up dependency management with Carthage. This means that in order to 
+						build OCMock from source you must have Carthage installed on your system.
+						See https://github.com/Carthage/Carthage for details. You do not need to have
+						Carthage installed to use OCMock, and if you want to use OCHamcrest with 
+						OCMock you must make OCHamcrest available in your project, using whatever 
+						dependency management system you use for your project.
+					<li>Added description of mock object to the exception that is thrown when the
+						mock is used after stopMocking was called.
 			</ul>
 			<a href="https://github.com/erikdoe/ocmock/blob/master/Source/Changes.txt">more...</a>
 		</td>
 	</tr>
 	<tr>
-		<td>OCMock 3.4.3</td>
-		<td>macOS 10.14, iOS 12.1, tvOS 12.1</td>
-		<td>OS X 10.8, iOS 8.0, tvOS 9.0</td>
-		<td>4-Nov-2018</td>
-		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.4.3/ocmock-3.4.3.dmg">ocmock-3.4.3.dmg</a></td>
+		<td>OCMock 3.5</td>
+		<td>macOS 10.14, iOS 13.2, tvOS 13.2, watchOS 6.1</td>
+		<td>OS X 10.8, iOS 8.0, tvOS 9.0, watchOS 4.0</td>
+		<td>17-Nov-2019</td>
+		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.5/ocmock-3.5.dmg">ocmock-3.5.dmg</a></td>
 	</tr>
 	<tr>
 		<td>OCMock 2.2.4</td>
