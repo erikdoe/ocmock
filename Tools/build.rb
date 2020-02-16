@@ -13,7 +13,7 @@ class Builder
       copySource
       buildModules
       signFrameworks "erik@doernenburg.com"
-      createPackage "ocmock-3.5.dmg", "OCMock 3.5"
+      createPackage "ocmock-3.6.dmg", "OCMock 3.6"
       sanityCheck
       openPackageDir
     end
