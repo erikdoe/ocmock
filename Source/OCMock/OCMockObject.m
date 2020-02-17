@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2004-2019 Erik Doernenburg and contributors
+ *  Copyright (c) 2004-2020 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -29,6 +29,7 @@
 #import "OCMInvocationExpectation.h"
 #import "OCMExceptionReturnValueProvider.h"
 #import "OCMExpectationRecorder.h"
+#import "OCMQuantifier.h"
 
 
 @implementation OCMockObject
@@ -144,7 +145,7 @@
 - (void)assertInvocationsArrayIsPresent
 {
     if(invocations == nil) {
-        [NSException raise:NSInternalInconsistencyException format:@"** Cannot handle or verify invocations. This error usually occurs when a mock object is used after stopMocking has been called on it. In most cases it is not necessary to call stopMocking. If you know you have to, please make sure that the mock object is not used afterwards."];
+        [NSException raise:NSInternalInconsistencyException format:@"** Cannot handle or verify invocations on %@ at %p. This error usually occurs when a mock object is used after stopMocking has been called on it. In most cases it is not necessary to call stopMocking. If you know you have to, please make sure that the mock object is not used afterwards.", [self description], self];
     }
 }
 
@@ -275,19 +276,37 @@
 
 - (void)verifyInvocation:(OCMInvocationMatcher *)matcher atLocation:(OCMLocation *)location
 {
+    [self verifyInvocation:matcher withQuantifier:nil atLocation:location];
+}
+
+- (void)verifyInvocation:(OCMInvocationMatcher *)matcher withQuantifier:(OCMQuantifier *)quantifier atLocation:(OCMLocation *)location
+{
+    NSUInteger count = 0;
     [self assertInvocationsArrayIsPresent];
     @synchronized(invocations)
     {
         for(NSInvocation *invocation in invocations)
         {
             if([matcher matchesInvocation:invocation])
-                return;
+                count += 1;
         }
     }
-    NSString *description = [NSString stringWithFormat:@"%@: Method %@ was not invoked.",
-     [self description], [matcher description]];
-
-    OCMReportFailure(location, description);
+    if(quantifier == nil)
+        quantifier = [OCMQuantifier atLeast:1];
+    if(![quantifier isValidCount:count])
+    {
+        NSString *actualDescription = nil;
+        switch(count)
+        {
+            case 0:  actualDescription = @"not invoked";  break;
+            case 1:  actualDescription = @"invoked once"; break;
+            default: actualDescription = [NSString stringWithFormat:@"invoked %ld times", count]; break;
+        }
+        
+        NSString *description = [NSString stringWithFormat:@"%@: Method %@ was %@; but was expected %@.",
+                                 [self description], [matcher description], actualDescription, [quantifier description]];
+        OCMReportFailure(location, description);
+    }
 }
 
 

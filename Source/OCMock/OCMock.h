@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2004-2019 Erik Doernenburg and contributors
+ *  Copyright (c) 2004-2020 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -14,15 +14,22 @@
  *  under the License.
  */
 
-#import <OCMockObject.h>
-#import <OCMRecorder.h>
-#import <OCMStubRecorder.h>
-#import <OCMConstraint.h>
-#import <OCMArg.h>
-#import <OCMLocation.h>
-#import <OCMMacroState.h>
-#import <NSNotificationCenter+OCMAdditions.h>
-#import <OCMFunctions.h>
+#import <OCMock/OCMockObject.h>
+#import <OCMock/OCMRecorder.h>
+#import <OCMock/OCMVerifier.h>
+#import <OCMock/OCMStubRecorder.h>
+#import <OCMock/OCMConstraint.h>
+#import <OCMock/OCMArg.h>
+#import <OCMock/OCMLocation.h>
+#import <OCMock/OCMQuantifier.h>
+#import <OCMock/OCMMacroState.h>
+#import <OCMock/NSNotificationCenter+OCMAdditions.h>
+#import <OCMock/OCMFunctions.h>
+
+
+#ifdef OCM_DISABLE_SHORT_SYNTAX
+#define OCM_DISABLE_SHORT_QSYNTAX
+#endif
 
 
 #define OCMClassMock(cls) [OCMockObject niceMockForClass:cls]
@@ -80,18 +87,25 @@
     ); \
 })
 
-#define ClassMethod(invocation) \
+
+
+#define OCMClassMethod(invocation) \
     _OCMSilenceWarnings( \
         [[OCMMacroState globalState] switchToClassMethod]; \
         invocation; \
     );
 
 
+#ifndef OCM_DISABLE_SHORT_SYNTAX
+#define ClassMethod(invocation) OCMClassMethod(invocation)
+#endif
+
+
 #define OCMVerifyAll(mock) [mock verifyAtLocation:OCMMakeLocation(self, __FILE__, __LINE__)]
 
 #define OCMVerifyAllWithDelay(mock, delay) [mock verifyWithDelay:delay atLocation:OCMMakeLocation(self, __FILE__, __LINE__)]
 
-#define OCMVerify(invocation) \
+#define _OCMVerify(invocation) \
 ({ \
     _OCMSilenceWarnings( \
         [OCMMacroState beginVerifyMacroAtLocation:OCMMakeLocation(self, __FILE__, __LINE__)]; \
@@ -102,6 +116,26 @@
         } \
     ); \
 })
+
+#define _OCMVerifyWithQuantifier(quantifier, invocation) \
+({ \
+    _OCMSilenceWarnings( \
+        [OCMMacroState beginVerifyMacroAtLocation:OCMMakeLocation(self, __FILE__, __LINE__) withQuantifier:quantifier]; \
+        @try{ \
+           invocation; \
+        }@finally{ \
+            [OCMMacroState endVerifyMacro]; \
+        } \
+    ); \
+})
+
+// explanation for macros below here: https://stackoverflow.com/questions/3046889/optional-parameters-with-c-macros
+
+#define _OCMVerify_1(A)                 _OCMVerify(A)
+#define _OCMVerify_2(A,B)               _OCMVerifyWithQuantifier(A, B)
+#define _OCMVerify_X(x,A,B,FUNC, ...)   FUNC
+#define OCMVerify(...) _OCMVerify_X(,##__VA_ARGS__, _OCMVerify_2(__VA_ARGS__), _OCMVerify_1(__VA_ARGS__))
+
 
 #define _OCMSilenceWarnings(macro) \
 ({ \

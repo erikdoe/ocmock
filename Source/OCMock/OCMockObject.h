@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2004-2019 Erik Doernenburg and contributors
+ *  Copyright (c) 2004-2020 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -17,6 +17,7 @@
 #import <Foundation/Foundation.h>
 
 @class OCMLocation;
+@class OCMQuantifier;
 @class OCMInvocationStub;
 @class OCMStubRecorder;
 @class OCMInvocationMatcher;
@@ -69,6 +70,7 @@
 
 - (void)verifyInvocation:(OCMInvocationMatcher *)matcher;
 - (void)verifyInvocation:(OCMInvocationMatcher *)matcher atLocation:(OCMLocation *)location;
+- (void)verifyInvocation:(OCMInvocationMatcher *)matcher withQuantifier:(OCMQuantifier *)quantifier atLocation:(OCMLocation *)location;
 
 @end
 

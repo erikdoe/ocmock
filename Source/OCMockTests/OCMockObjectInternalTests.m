@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019 Erik Doernenburg and contributors
+ *  Copyright (c) 2019-2020 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -202,9 +202,13 @@
     [mock title];
     [mock stopMocking];
 
-    XCTAssertThrowsSpecificNamed([[mock verify] title], NSException, NSInternalInconsistencyException,
-                @"Should not have thrown a NSInternalInconsistencyException when attempting to verify after stopMocking.");
-
+    @try {
+        [[mock verify] title];
+        XCTFail(@"Should have thrown an NSInternalInconsistencyException when attempting to verify after stopMocking.");
+    } @catch (NSException *ex) {
+        XCTAssertEqualObjects(ex.name, NSInternalInconsistencyException);
+        XCTAssertTrue([ex.reason containsString:[mock description]]);
+    }
 }
 
 - (void)testRaisesWhenAttemptingToUseAfterStopMocking
@@ -213,9 +217,13 @@
 
     [mock stopMocking];
 
-    XCTAssertThrowsSpecificNamed([mock title], NSException, NSInternalInconsistencyException,
-                @"Should not have thrown a NSInternalInconsistencyException when attempting to verify after stopMocking.");
-
+    @try {
+        [mock title];
+        XCTFail(@"Should have thrown an NSInternalInconsistencyException when attempting to use after stopMocking.");
+    } @catch (NSException *ex) {
+        XCTAssertEqualObjects(ex.name, NSInternalInconsistencyException);
+        XCTAssertTrue([ex.reason containsString:[mock description]]);
+    }
 }
 
 

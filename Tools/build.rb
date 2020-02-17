@@ -13,7 +13,7 @@ class Builder
       copySource
       buildModules
       signFrameworks "erik@doernenburg.com"
-      createPackage "ocmock-3.5.dmg", "OCMock 3.5"
+      createPackage "ocmock-3.6.dmg", "OCMock 3.6"
       sanityCheck
       openPackageDir
     end
@@ -43,7 +43,7 @@ class Builder
         @worker.chdir("#{@env.sourcedir}/Source")
         
         @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMock OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
-        osxproductdir = "#{@env.productdir}/OSX"                                        
+        osxproductdir = "#{@env.productdir}/macOS"                                        
         @worker.run("mkdir -p #{osxproductdir}")
         @worker.run("cp -R #{@env.symroot}/Release/OCMock.framework #{osxproductdir}")
 
@@ -108,7 +108,7 @@ class Builder
     end
     
     def sanityCheck
-        osxproductdir = "#{@env.productdir}/OSX"                                        
+        osxproductdir = "#{@env.productdir}/macOS"                                        
         ioslibproductdir = "#{@env.productdir}/iOS\\ library"                                           
         iosproductdir = "#{@env.productdir}/iOS\\ framework"                                           
         tvosproductdir = "#{@env.productdir}/tvOS"                                           
