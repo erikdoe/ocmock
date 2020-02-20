@@ -126,6 +126,8 @@ OCMStub([mock someMethod]).andDo(^(NSInvocation *invocation)
 
 <p>The mock object will call the passed block when <code>someMethod</code> is called. The block can read the arguments from the invocation object, and it can use the invocation object to set up a possible return value.
 
+<p><b>IMPORTANT:</b> If you read the arguments from the invocation and get hard-to-explain crashes, please read the answer to <a href="https://stackoverflow.com/questions/13268502/exc-bad-access-when-accessing-parameters-in-anddo-of-ocmock">this question on StackOverflow</a>.
+
 
 <h3 class="numbered">Returning values in pass-by-reference arguments</h3>
 
