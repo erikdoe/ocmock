@@ -51,44 +51,46 @@
 
 - (id)andReturn:(id)anObject
 {
-	[[self stub] addInvocationAction:[[[OCMObjectReturnValueProvider alloc] initWithValue:anObject] autorelease]];
-	return self;
+    Class returnValueProviderClass;
+    if (anObject == mockObject)
+    {
+        returnValueProviderClass = [OCMNonRetainingObjectReturnValueProvider class];
+    } else
+    {
+        returnValueProviderClass = [OCMObjectReturnValueProvider class];
+    }
+    [[self stub] addInvocationAction:[[[returnValueProviderClass alloc] initWithValue:anObject] autorelease]];
+    return self;
 }
 
 - (id)andReturnValue:(NSValue *)aValue
 {
     [[self stub] addInvocationAction:[[[OCMBoxedReturnValueProvider alloc] initWithValue:aValue] autorelease]];
-	return self;
-}
-
-- (id)andReturnMockObject
-{
-	[[self stub] addInvocationAction:[[[OCMNonRetainingObjectReturnValueProvider alloc] initWithValue:mockObject] autorelease]];
-	return self;
+	  return self;
 }
 
 - (id)andThrow:(NSException *)anException
 {
     [[self stub] addInvocationAction:[[[OCMExceptionReturnValueProvider alloc] initWithValue:anException] autorelease]];
-	return self;
+	  return self;
 }
 
 - (id)andPost:(NSNotification *)aNotification
 {
     [[self stub] addInvocationAction:[[[OCMNotificationPoster alloc] initWithNotification:aNotification] autorelease]];
-	return self;
+	  return self;
 }
 
 - (id)andCall:(SEL)selector onObject:(id)anObject
 {
     [[self stub] addInvocationAction:[[[OCMIndirectReturnValueProvider alloc] initWithProvider:anObject andSelector:selector] autorelease]];
-	return self;
+	  return self;
 }
 
 - (id)andDo:(void (^)(NSInvocation *))aBlock 
 {
     [[self stub] addInvocationAction:[[[OCMBlockCaller alloc] initWithCallBlock:aBlock] autorelease]];
-	return self;
+	  return self;
 }
 
 - (id)andForwardToRealObject
@@ -122,7 +124,7 @@
         {
             id objValue = nil;
             [aValue getValue:&objValue];
-            return (objValue == mockObject) ? [self andReturnMockObject] : [self andReturn:objValue];
+            return [self andReturn:objValue];
         }
         else
         {
