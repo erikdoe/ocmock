@@ -68,7 +68,24 @@
         [recordedArg handleArgument:passedArg];
     }
 
+    BOOL isInit = OCMIsInvocationInitFamily(anInvocation);
+    const id badReturnValue = (id)-1;
+    if (isInit)
+    {
+        id returnVal = badReturnValue;
+        [anInvocation setReturnValue:&returnVal];
+    }
     [invocationActions makeObjectsPerformSelector:@selector(handleInvocation:) withObject:anInvocation];
+    if (isInit) 
+    {
+        id returnVal;
+        [anInvocation getReturnValue:&returnVal];
+        if (returnVal == badReturnValue) 
+        {
+            // Init Family Methods must return something.
+            [NSException raise:NSInvalidArgumentException format:@"%@ was stubbed but no return value set. A return value is required for an init method. If you intended to return nil, make this explicit with .andReturn(nil)", NSStringFromSelector([anInvocation selector])];
+        }
+    }
 }
 
 @end

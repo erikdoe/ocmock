@@ -68,7 +68,6 @@ static NSString *const OCMGlobalStateKey = @"OCMGlobalStateKey";
 + (void)beginRejectMacro
 {
     OCMExpectationRecorder *recorder = [[[OCMExpectationRecorder alloc] init] autorelease];
-    [recorder never];
     OCMMacroState *macroState = [[OCMMacroState alloc] initWithRecorder:recorder];
     [NSThread currentThread].threadDictionary[OCMGlobalStateKey] = macroState;
     [macroState release];
@@ -76,6 +75,11 @@ static NSString *const OCMGlobalStateKey = @"OCMGlobalStateKey";
 
 + (OCMStubRecorder *)endRejectMacro
 {
+    NSMutableDictionary *threadDictionary = [NSThread currentThread].threadDictionary;
+    // `never` must be called after the invocation has been invoked to avoid running
+    // afoul of ARC's expectations on return values from inits.
+    OCMMacroState *globalState = threadDictionary[OCMGlobalStateKey];
+    [(OCMExpectationRecorder *)[globalState recorder] never];
     return [self endStubMacro];
 }
 

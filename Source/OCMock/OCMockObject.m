@@ -318,6 +318,12 @@
     {
         OCMRecorder *recorder = [[OCMMacroState globalState] recorder];
         [recorder setMockObject:self];
+        // If the initTarget has not been set then this is the first call through the
+        // recorder so we set it to the mock object.
+        if (![recorder initTarget])
+        {
+            [recorder setInitTarget:self];
+        }
         return recorder;
     }
     return nil;

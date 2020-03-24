@@ -19,6 +19,8 @@
 #import "OCMockObject.h"
 #import "OCMInvocationMatcher.h"
 #import "OCClassMockObject.h"
+#import "OCMFunctionsPrivate.h"
+#import "OCMMacroState.h"
 
 @implementation OCMRecorder
 
@@ -61,11 +63,20 @@
     return wasUsed;
 }
 
+- (id)initTarget {
+    return initTarget;
+}
+
+- (void)setInitTarget:(id)target
+{
+    initTarget = target;
+}
 
 #pragma mark  Modifying the matcher
 
 - (id)classMethod
 {
+    [self setInitTarget:self];
     // should we handle the case where this is called with a mock that isn't a class mock?
     [invocationMatcher setRecordedAsClassMethod:YES];
     return self;
@@ -73,6 +84,7 @@
 
 - (id)ignoringNonObjectArgs
 {
+    [self setInitTarget:self];
     [invocationMatcher setIgnoreNonObjectArgs:YES];
     return self;
 }
@@ -104,6 +116,18 @@
 	[anInvocation setTarget:nil];
 	wasUsed = YES;
     [invocationMatcher setInvocation:anInvocation];
+	if (OCMIsInvocationInitFamily(anInvocation))
+	{
+        // init methods must be instance methods and must return an Objective-C pointer type.
+        // An init called from ARC code is expecting to get something back to release if it chose
+        // to retain it before the init call. If we don't set a return type here, ARC code may crash.
+        id target = [self initTarget];
+        if (!target) {
+          // target was never set by forwarding, so target must be us.
+          target = self;
+        }
+        [anInvocation setReturnValue:&target];
+	}
 }
 
 - (void)doesNotRecognizeSelector:(SEL)aSelector
