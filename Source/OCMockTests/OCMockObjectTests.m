@@ -214,6 +214,11 @@ static NSString *TestNotification = @"TestNotification";
 	mock = [OCMockObject mockForClass:[NSString class]];
 }
 
+- (void)testDescription
+{
+    XCTAssertEqualObjects([mock description], @"OCClassMockObject(NSString)");
+}
+
 #pragma mark    accepting stubbed methods / rejecting methods not stubbed
 
 - (void)testAcceptsStubbedMethod
