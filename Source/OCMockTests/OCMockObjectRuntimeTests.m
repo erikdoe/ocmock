@@ -92,6 +92,31 @@ typedef NSString TypedefString;
 @end
 
 
+@interface TestClassWithInitMethod : NSObject
+@end
+
+@implementation TestClassWithInitMethod
+
+- (id)initMethodNotCalledJustInitWithArg:(id)foo {
+return [super init];
+}
+
+- (id)initMethodNotCalledJustInit
+{
+	return [super init];
+}
+
+- (id)_init
+{
+	return [super init];
+}
+
+- (id)initMethodWithNestedInit
+{
+	return [self initMethodNotCalledJustInit];
+}
+
+@end
 
 #pragma mark   Tests for interaction with runtime and foundation conventions
 
@@ -266,5 +291,160 @@ typedef NSString TypedefString;
     XCTAssertEqual(numClassesBefore, numClassesAfter, @"Should have disposed dynamically generated classes.");
 }
 
+#pragma mark    verify mocks work properly when mocking init
+
+- (void)testPartialMockNestedInitReturnsCorrectSelfAndDoesntLeak
+{
+	__weak id outerMock;
+	__weak id outerReal;
+	@autoreleasepool
+	{
+		TestClassWithInitMethod *realObject = [TestClassWithInitMethod alloc];
+		outerReal = realObject;
+		id innerMock = [OCMockObject partialMockForObject:realObject];
+		outerMock = innerMock;
+		TestClassWithInitMethod *mockInstance = [innerMock initMethodNotCalledJustInit];
+		TestClassWithInitMethod *objectInstance = [realObject initMethodNotCalledJustInit];
+
+		// Intentionally comparing pointers.
+		XCTAssertEqual(mockInstance, innerMock);
+
+		// Intentionally comparing pointers.
+		XCTAssertEqual(objectInstance, realObject, @"No Stub, so realObject should be returned");
+
+		__unused id value = [[[innerMock stub] andReturn:mockInstance] initMethodNotCalledJustInit];
+
+		mockInstance = [innerMock initMethodWithNestedInit];
+		XCTAssertEqual(mockInstance, innerMock);
+
+		objectInstance = [realObject initMethodWithNestedInit];
+		XCTAssertEqual(objectInstance, innerMock, @"Stubbed, so mock should be returned");
+	}
+	XCTAssertNil(outerMock, @"innerMock should not be leaked.");
+	XCTAssertNil(outerReal, @"realObject should not be leaked.");
+}
+
+- (void)testPartialMockNestedInitReturnsCorrectSelfAndDoesntLeakWithMacro
+{
+	__weak id outerMock;
+	__weak id outerReal;
+	@autoreleasepool
+	{
+		TestClassWithInitMethod *realObject = [TestClassWithInitMethod alloc];
+		outerReal = realObject;
+		id innerMock = [OCMockObject partialMockForObject:realObject];
+		outerMock = innerMock;
+		TestClassWithInitMethod *mockInstance = [innerMock initMethodNotCalledJustInit];
+		TestClassWithInitMethod *objectInstance = [realObject initMethodNotCalledJustInit];
+
+		// Intentionally comparing pointers.
+		XCTAssertEqual(mockInstance, innerMock);
+
+		// Intentionally comparing pointers.
+		XCTAssertEqual(objectInstance, realObject, @"No Stub, so realObject should be returned");
+
+		OCMStub([innerMock initMethodNotCalledJustInit]).andReturn(mockInstance);
+
+		mockInstance = [innerMock initMethodWithNestedInit];
+		XCTAssertEqual(mockInstance, innerMock);
+
+		objectInstance = [realObject initMethodWithNestedInit];
+		XCTAssertEqual(objectInstance, innerMock, @"Stubbed, so mock should be returned");
+	}
+	XCTAssertNil(outerMock, @"innerMock should not be leaked.");
+	XCTAssertNil(outerReal, @"realObject should not be leaked.");
+}
+
+- (void)testDoesntLeakWhenAnInitMethodIsStubbedAndReturnsDifferentObject {
+	__weak id outerMock;
+	__weak id outerReal;
+	@autoreleasepool
+	{
+		TestClassWithInitMethod *realObject = [[TestClassWithInitMethod alloc] init];
+		outerReal = realObject;
+		id innerMock = OCMClassMock([TestClassWithInitMethod class]);
+		outerMock = innerMock;
+		__unused id value = [[[innerMock stub] andReturn:realObject] initMethodNotCalledJustInit];
+		TestClassWithInitMethod *object = [innerMock initMethodNotCalledJustInit];
+		XCTAssertEqualObjects(object, realObject, @"Stub should return expected object.");
+	}
+	XCTAssertNil(outerMock, @"innerMock should not be leaked.");
+	XCTAssertNil(outerReal, @"outerReal should not be leaked.");
+}
+
+- (void)testDoesntLeakWhenAnInitMethodIsStubbedWithMacroAndReturnsDifferentObject {
+	__weak id outerMock;
+	__weak id outerReal;
+	@autoreleasepool
+	{
+		TestClassWithInitMethod *realObject = [[TestClassWithInitMethod alloc] init];
+		outerReal = realObject;
+		id innerMock = OCMClassMock([TestClassWithInitMethod class]);
+		outerMock = innerMock;
+		OCMStub([innerMock initMethodNotCalledJustInit]).andReturn(realObject);
+		TestClassWithInitMethod *object = [innerMock initMethodNotCalledJustInit];
+		XCTAssertEqualObjects(object, realObject, @"Stub should return expected object.");
+	}
+	XCTAssertNil(outerMock, @"innerMock should not be leaked.");
+	XCTAssertNil(outerReal, @"outerReal should not be leaked.");
+}
+
+- (void)testUnderscoreInit {
+	// According to https://clang.llvm.org/docs/AutomaticReferenceCounting.html#method-families
+	// methods that are part of families are allowed to start with underscores.
+	__weak id outerMock;
+	__weak id outerReal;
+	@autoreleasepool
+	{
+		TestClassWithInitMethod *realObject = [[TestClassWithInitMethod alloc] init];
+		outerReal = realObject;
+		id innerMock = OCMClassMock([TestClassWithInitMethod class]);
+		outerMock = innerMock;
+		__unused id value = [[[innerMock stub] andReturn:realObject] _init];
+		TestClassWithInitMethod *object = [innerMock _init];
+		XCTAssertEqualObjects(object, realObject, @"Stub should return expected object.");
+	}
+	XCTAssertNil(outerMock, @"innerMock should not be leaked.");
+	XCTAssertNil(outerReal, @"outerReal should not be leaked.");
+}
+
+- (void)testInitStubWithNoReturnValueSetDoesntLeak {
+	__weak id outerMock;
+	@autoreleasepool
+	{
+		id innerMock = OCMClassMock([TestClassWithInitMethod class]);
+		outerMock = innerMock;
+		__unused id value = [[innerMock stub] initMethodNotCalledJustInit];
+	}
+	XCTAssertNil(outerMock, @"innerMock should not be leaked.");
+}
+
+- (void)testInitStubWithNoReturnValueSetWithMacroDoesntLeak {
+  __weak id outerMock;
+  @autoreleasepool
+  {
+    id innerMock = OCMClassMock([TestClassWithInitMethod class]);
+    outerMock = innerMock;
+    OCMStub([innerMock initMethodNotCalledJustInit]);
+  }
+  XCTAssertNil(outerMock, @"innerMock should not be leaked.");
+}
+
+- (void)testInitStubWithNoReturnValueSetThrowsWhenCalled {
+  id mock = OCMClassMock([TestClassWithInitMethod class]);
+  __unused id value = [[mock stub] initMethodNotCalledJustInit];
+  XCTAssertThrowsSpecificNamed([mock initMethodNotCalledJustInit], NSException, NSInvalidArgumentException);
+}
+
+- (void)testInitStubWithNoReturnValueSetWithMacroThrowsWhenCalled {
+  id mock = OCMClassMock([TestClassWithInitMethod class]);
+  OCMStub([mock initMethodNotCalledJustInit]);
+  XCTAssertThrowsSpecificNamed([mock initMethodNotCalledJustInit], NSException, NSInvalidArgumentException);
+}
+
+- (void)testInitStubWithRejectMacro {
+  id mock = OCMClassMock([TestClassWithInitMethod class]);
+  OCMReject([mock initMethodNotCalledJustInit]);
+}
 
 @end

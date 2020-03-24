@@ -51,6 +51,7 @@
 
 - (id)andReturn:(id)anObject
 {
+    [self setInitTarget:self];
     id action;
     if(anObject == mockObject)
     {
@@ -66,36 +67,42 @@
 
 - (id)andReturnValue:(NSValue *)aValue
 {
+    [self setInitTarget:self];
     [[self stub] addInvocationAction:[[[OCMBoxedReturnValueProvider alloc] initWithValue:aValue] autorelease]];
     return self;
 }
 
 - (id)andThrow:(NSException *)anException
 {
+    [self setInitTarget:self];
     [[self stub] addInvocationAction:[[[OCMExceptionReturnValueProvider alloc] initWithValue:anException] autorelease]];
     return self;
 }
 
 - (id)andPost:(NSNotification *)aNotification
 {
+    [self setInitTarget:self];
     [[self stub] addInvocationAction:[[[OCMNotificationPoster alloc] initWithNotification:aNotification] autorelease]];
 	return self;
 }
 
 - (id)andCall:(SEL)selector onObject:(id)anObject
 {
+    [self setInitTarget:self];
     [[self stub] addInvocationAction:[[[OCMIndirectReturnValueProvider alloc] initWithProvider:anObject andSelector:selector] autorelease]];
 	return self;
 }
 
 - (id)andDo:(void (^)(NSInvocation *))aBlock 
 {
+    [self setInitTarget:self];
     [[self stub] addInvocationAction:[[[OCMBlockCaller alloc] initWithCallBlock:aBlock] autorelease]];
     return self;
 }
 
 - (id)andForwardToRealObject
 {
+    [self setInitTarget:self];
     [[self stub] addInvocationAction:[[[OCMRealObjectForwarder alloc] init] autorelease]];
     return self;
 }
