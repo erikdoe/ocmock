@@ -584,7 +584,7 @@ static NSString *TestNotification = @"TestNotification";
     XCTAssertEqualObjects(@"foo", [singleton stringValue], @"Should return value from real implementation (because shared is not stubbed anymore).");
 }
 
-- (void)testReturningMockFromMethodItStubsDoesntCreateRetainCycleUsingMacros
+- (void)testReturningMockFromMethodItStubsDoesntCreateRetainCycleWhenUsingMacro
 {
     @autoreleasepool {
         id mockWithShortLifetime = OCMClassMock([TestClassWithClassMethod class]);

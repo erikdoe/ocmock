@@ -51,46 +51,47 @@
 
 - (id)andReturn:(id)anObject
 {
-    Class returnValueProviderClass;
-    if (anObject == mockObject)
+    id action;
+    if(anObject == mockObject)
     {
-        returnValueProviderClass = [OCMNonRetainingObjectReturnValueProvider class];
-    } else
-    {
-        returnValueProviderClass = [OCMObjectReturnValueProvider class];
+        action = [[[OCMNonRetainingObjectReturnValueProvider alloc] initWithValue:anObject] autorelease];
     }
-    [[self stub] addInvocationAction:[[[returnValueProviderClass alloc] initWithValue:anObject] autorelease]];
+    else
+    {
+        action = [[[OCMObjectReturnValueProvider alloc] initWithValue:anObject] autorelease];
+    }
+    [[self stub] addInvocationAction:action];
     return self;
 }
 
 - (id)andReturnValue:(NSValue *)aValue
 {
     [[self stub] addInvocationAction:[[[OCMBoxedReturnValueProvider alloc] initWithValue:aValue] autorelease]];
-	  return self;
+    return self;
 }
 
 - (id)andThrow:(NSException *)anException
 {
     [[self stub] addInvocationAction:[[[OCMExceptionReturnValueProvider alloc] initWithValue:anException] autorelease]];
-	  return self;
+    return self;
 }
 
 - (id)andPost:(NSNotification *)aNotification
 {
     [[self stub] addInvocationAction:[[[OCMNotificationPoster alloc] initWithNotification:aNotification] autorelease]];
-	  return self;
+	return self;
 }
 
 - (id)andCall:(SEL)selector onObject:(id)anObject
 {
     [[self stub] addInvocationAction:[[[OCMIndirectReturnValueProvider alloc] initWithProvider:anObject andSelector:selector] autorelease]];
-	  return self;
+	return self;
 }
 
 - (id)andDo:(void (^)(NSInvocation *))aBlock 
 {
     [[self stub] addInvocationAction:[[[OCMBlockCaller alloc] initWithCallBlock:aBlock] autorelease]];
-	  return self;
+    return self;
 }
 
 - (id)andForwardToRealObject
