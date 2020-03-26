@@ -101,9 +101,9 @@
 #endif
 
 
-#define OCMVerifyAll(mock) [mock verifyAtLocation:OCMMakeLocation(self, __FILE__, __LINE__)]
+#define OCMVerifyAll(mock) [(OCMockObject *)mock verifyAtLocation:OCMMakeLocation(self, __FILE__, __LINE__)]
 
-#define OCMVerifyAllWithDelay(mock, delay) [mock verifyWithDelay:delay atLocation:OCMMakeLocation(self, __FILE__, __LINE__)]
+#define OCMVerifyAllWithDelay(mock, delay) [(OCMockObject *)mock verifyWithDelay:delay atLocation:OCMMakeLocation(self, __FILE__, __LINE__)]
 
 #define _OCMVerify(invocation) \
 ({ \
