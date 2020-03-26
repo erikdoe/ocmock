@@ -214,7 +214,6 @@ static NSString *TestNotification = @"TestNotification";
 	mock = [OCMockObject mockForClass:[NSString class]];
 }
 
-
 #pragma mark    accepting stubbed methods / rejecting methods not stubbed
 
 - (void)testAcceptsStubbedMethod
@@ -577,6 +576,18 @@ static NSString *TestNotification = @"TestNotification";
 {
     @autoreleasepool {
         id mockWithShortLifetime = OCMClassMock([TestClassWithClassMethod class]);
+        [[[mockWithShortLifetime stub] andReturn:@"bar"] stringValue];
+        [[[mockWithShortLifetime stub] andReturn:mockWithShortLifetime] shared];
+    }
+    id singleton = [TestClassWithClassMethod shared];
+
+    XCTAssertEqualObjects(@"foo", [singleton stringValue], @"Should return value from real implementation (because shared is not stubbed anymore).");
+}
+
+- (void)testReturningMockFromMethodItStubsDoesntCreateRetainCycleWhenUsingMacro
+{
+    @autoreleasepool {
+        id mockWithShortLifetime = OCMClassMock([TestClassWithClassMethod class]);
         OCMStub([mockWithShortLifetime stringValue]).andReturn(@"bar");
         OCMStub([mockWithShortLifetime shared]).andReturn(mockWithShortLifetime);
     }
@@ -584,6 +595,7 @@ static NSString *TestNotification = @"TestNotification";
     
     XCTAssertEqualObjects(@"foo", [singleton stringValue], @"Should return value from real implementation (because shared is not stubbed anymore).");
 }
+
 
 
 #pragma mark    beyond stubbing: raising exceptions, posting notifications, etc.
