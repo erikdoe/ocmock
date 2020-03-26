@@ -114,7 +114,6 @@
 		03B315FC146333C00052CD09 /* OCMRealObjectForwarder.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B315A4146333BF0052CD09 /* OCMRealObjectForwarder.m */; };
 		03B315FE146333C00052CD09 /* OCMRealObjectForwarder.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B315A4146333BF0052CD09 /* OCMRealObjectForwarder.m */; };
 		03B315FF146333C00052CD09 /* OCMObjectReturnValueProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 03B315A5146333BF0052CD09 /* OCMObjectReturnValueProvider.h */; };
-		03B31600146333C00052CD09 /* OCMObjectReturnValueProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 03B315A5146333BF0052CD09 /* OCMObjectReturnValueProvider.h */; };
 		03B31601146333C00052CD09 /* OCMObjectReturnValueProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B315A6146333BF0052CD09 /* OCMObjectReturnValueProvider.m */; };
 		03B31603146333C00052CD09 /* OCMObjectReturnValueProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B315A6146333BF0052CD09 /* OCMObjectReturnValueProvider.m */; };
 		03B31604146333C00052CD09 /* OCObserverMockObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 03B315A7146333BF0052CD09 /* OCObserverMockObject.h */; };
@@ -1003,9 +1002,7 @@
 				03B315F6146333C00052CD09 /* OCMPassByRefSetter.h in Headers */,
 				03B315FB146333C00052CD09 /* OCMRealObjectForwarder.h in Headers */,
 				03DCED6F183406DA0059089E /* NSObject+OCMAdditions.h in Headers */,
-				03B31600146333C00052CD09 /* OCMObjectReturnValueProvider.h in Headers */,
 				0368656E1D357318005E6BEE /* OCMQuantifier.h in Headers */,
-				03B31600146333C00052CD09 /* OCMObjectReturnValueProvider.h in Headers */,
 				817EB1661BD7674D0047E85A /* OCMFunctionsPrivate.h in Headers */,
 				03B31605146333C00052CD09 /* OCObserverMockObject.h in Headers */,
 				03B3160A146333C00052CD09 /* OCPartialMockObject.h in Headers */,
