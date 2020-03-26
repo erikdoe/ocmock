@@ -16,7 +16,7 @@
 
 #import "OCMInvocationExpectation.h"
 #import "NSInvocation+OCMAdditions.h"
-
+#import "OCMockObject.h"
 
 @implementation OCMInvocationExpectation
 
@@ -52,7 +52,7 @@
     if(matchAndReject)
     {
         isSatisfied = NO;
-        [NSException raise:NSInternalInconsistencyException format:@"%@: explicitly disallowed method invoked: %@",
+        [OCMockObject logMatcherIssue:@"%@: explicitly disallowed method invoked: %@",
                 [self description], [anInvocation invocationDescription]];
     }
     else

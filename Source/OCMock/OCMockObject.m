@@ -29,6 +29,20 @@
 #import "OCMFunctionsPrivate.h"
 #import "NSInvocation+OCMAdditions.h"
 
+@class XCTestCase;
+@class XCTest;
+
+// gMocksToStopRecorders is a stack of recorders that gets added to and removed from
+// as we enter test suite/case scopes.
+// Controlled by OCMockXCTestObserver.
+static NSMutableArray<NSHashTable<OCMockObject *> *> *gMocksToStopRecorders;
+
+// Flag that controls whether we should be asserting after stopmocking is called.
+// Controlled by OCMockXCTestObserver.
+static BOOL gAssertOnCallsAfterStopMocking;
+
+// Flag that tracks if we are stopping the mocks.
+static BOOL gStoppingMocks = NO;
 
 @implementation OCMockObject
 
@@ -36,11 +50,52 @@
 
 + (void)initialize
 {
-	if([[NSInvocation class] instanceMethodSignatureForSelector:@selector(getArgumentAtIndexAsObject:)] == NULL)
-		[NSException raise:NSInternalInconsistencyException format:@"** Expected method not present; the method getArgumentAtIndexAsObject: is not implemented by NSInvocation. If you see this exception it is likely that you are using the static library version of OCMock and your project is not configured correctly to load categories from static libraries. Did you forget to add the -ObjC linker flag?"];
+    if([[NSInvocation class] instanceMethodSignatureForSelector:@selector(getArgumentAtIndexAsObject:)] == NULL)
+    {
+        [NSException raise:NSInternalInconsistencyException format:@"** Expected method not present; the method getArgumentAtIndexAsObject: is not implemented by NSInvocation. If you see this exception it is likely that you are using the static library version of OCMock and your project is not configured correctly to load categories from static libraries. Did you forget to add the -ObjC linker flag?"];
+    }
 }
 
+#pragma mark  Mock cleanup recording
 
++ (void)recordAMockToStop:(OCMockObject *)mock
+{
+  @synchronized(self)
+  {
+    if(gStoppingMocks)
+    {
+      [NSException raise:NSInternalInconsistencyException format:@"Attempting to add a mock while mocks are being stopped."];
+    }
+    [[gMocksToStopRecorders lastObject] addObject:mock];
+  }
+}
+
++ (void)removeAMockToStop:(OCMockObject *)mock
+{
+  @synchronized(self)
+  {
+    if(gStoppingMocks)
+    {
+      [NSException raise:NSInternalInconsistencyException format:@"Attempting to remove a mock while mocks are being stopped."];
+    }
+    [[gMocksToStopRecorders lastObject] removeObject:mock];
+  }
+}
+
++ (void)stopAllCurrentMocks
+{
+  @synchronized(self)
+  {
+    gStoppingMocks = YES;
+    NSHashTable<OCMockObject *> *recorder = [gMocksToStopRecorders lastObject];
+    for (OCMockObject *mock in recorder)
+    {
+      [mock stopMocking];
+    }
+    [recorder removeAllObjects];
+    gStoppingMocks = NO;
+  }
+}
 #pragma mark  Factory methods
 
 + (id)mockForClass:(Class)aClass
@@ -112,6 +167,7 @@
 	expectations = [[NSMutableArray alloc] init];
 	exceptions = [[NSMutableArray alloc] init];
     invocations = [[NSMutableArray alloc] init];
+    [OCMockObject recordAMockToStop:self];
     return self;
 }
 
@@ -161,7 +217,7 @@
 {
     if(invocations == nil)
     {
-        [NSException raise:NSInternalInconsistencyException format:@"** Cannot use mock object %@ at %p. This error usually occurs when a mock object is used after stopMocking has been called on it. In most cases it is not necessary to call stopMocking. If you know you have to, please make sure that the mock object is not used afterwards.", [self description], (void *)self];
+        [OCMockObject logMatcherIssue:@"** Cannot use mock object %@ at %p. This error usually occurs when a mock object is used after stopMocking has been called on it. In most cases it is not necessary to call stopMocking. If you know you have to, please make sure that the mock object is not used afterwards.", [self description], (void *)self];
     }
 }
 
@@ -180,6 +236,16 @@
     }
 }
 
++ (void)logMatcherIssue:(NSString *)format, ...
+{
+    if(gAssertOnCallsAfterStopMocking)
+    {
+        va_list args;
+        va_start(args, format);
+        [NSException raise:NSInternalInconsistencyException format:format arguments:args];
+        va_end(args);
+    }
+}
 
 #pragma mark  Public API
 
@@ -469,7 +535,7 @@
 {
 	if(isNice == NO)
 	{
-		[NSException raise:NSInternalInconsistencyException format:@"%@: unexpected method invoked: %@ %@",
+		  [OCMockObject logMatcherIssue:@"%@: unexpected method invoked: %@ %@",
                         [self description], [anInvocation invocationDescription], [self _stubDescriptions:NO]];
 	}
 }
@@ -528,5 +594,84 @@
 	return outputString;
 }
 
+
+@end
+
+/**
+ * The observer gets installed the first time a mock object is created (see +[OCMockObject initialize]
+ * It stops all the mocks that are still active when the testcase has finished.
+ * In many cases this should break a lot of retain loops and allow mocks to be freed.
+ * More importantly this will remove mocks that have mocked a class method and persist across testcases.
+ * It intentionally turns off the assert that fires when calling a mock after stopMocking has been
+ * called on it, because when we are doing cleanup there are cases in dealloc methods where a mock
+ * may be called. We allow the "assert off" state to persist beyond the end of -testCaseDidFinish
+ * because objects may be destroyed by the autoreleasepool that wraps the entire test and this may
+ * cause  mocks to be called. The state is global (instead of per mock) because we want to be able
+ * to catch the case where a mock is trapped by some global state (e.g. a non-mock singleton) and
+ * then that singleton is used in a later test and attempts to call a stopped mock.
+ **/
+@interface OCMockXCTestObserver : NSObject
+@end
+
+// "Fake" Protocol so we can avoid having to link to XCTest, but not get warnings about
+// methods not being declared.
+@protocol OCMockXCTestObservation
++ (id)sharedTestObservationCenter;
+- (void)addTestObserver:(id)observer;
+@end
+
+@implementation OCMockXCTestObserver
+
++ (void)load
+{
+    gMocksToStopRecorders = [[NSMutableArray alloc] init];
+    gAssertOnCallsAfterStopMocking = YES;
+    Class xctest = NSClassFromString(@"XCTestObservationCenter");
+    if (xctest)
+    {
+        // If XCTest is available, we set up an observer to stop our mocks for us.
+        [[xctest sharedTestObservationCenter] addTestObserver:[[OCMockXCTestObserver alloc] init]];
+    }
+}
+
+- (BOOL)conformsToProtocol:(Protocol *)aProtocol
+{
+    // This allows us to avoid linking XCTest into OCMock.
+    return strcmp(protocol_getName(aProtocol), "XCTestObservation") == 0;
+}
+
+- (void)addRecorder
+{
+    gAssertOnCallsAfterStopMocking = YES;
+    NSHashTable<OCMockObject *> *recorder = [NSHashTable weakObjectsHashTable];
+    [gMocksToStopRecorders addObject:recorder];
+}
+
+- (void)finalizeRecorder
+{
+    gAssertOnCallsAfterStopMocking = NO;
+    [OCMockObject stopAllCurrentMocks];
+    [gMocksToStopRecorders removeLastObject];
+}
+
+- (void)testSuiteWillStart:(XCTestCase *)testCase
+{
+    [self addRecorder];
+}
+
+- (void)testSuiteDidFinish:(XCTestCase *)testCase
+{
+    [self finalizeRecorder];
+}
+
+- (void)testCaseWillStart:(XCTestCase *)testCase
+{
+    [self addRecorder];
+}
+
+- (void)testCaseDidFinish:(XCTestCase *)testCase
+{
+    [self finalizeRecorder];
+}
 
 @end

@@ -24,12 +24,19 @@
 
 - (id)initWithProtocol:(Protocol *)aProtocol
 {
-	if(aProtocol == nil)
-		[NSException raise:NSInvalidArgumentException format:@"Protocol cannot be nil."];
-
-	[super init];
-	mockedProtocol = aProtocol;
-	return self;
+    @try
+    {
+        if(aProtocol == nil)
+          [NSException raise:NSInvalidArgumentException format:@"Protocol cannot be nil."];
+        [super init];
+        mockedProtocol = aProtocol;
+    }
+    @catch(NSException *e)
+    {
+        [OCMockObject removeAMockToStop:self];
+        [e raise];
+    }
+    return self;
 }
 
 - (NSString *)description

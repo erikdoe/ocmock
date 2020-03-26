@@ -74,5 +74,8 @@
 - (void)verifyInvocation:(OCMInvocationMatcher *)matcher withQuantifier:(OCMQuantifier *)quantifier atLocation:(OCMLocation *)location;
 - (NSString *)descriptionForVerificationFailureWithMatcher:(OCMInvocationMatcher *)matcher quantifier:(OCMQuantifier *)quantifier invocationCount:(NSUInteger)count;
 
++ (void)removeAMockToStop:(OCMockObject *)mock;
+
++ (void)logMatcherIssue:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
 @end
 
