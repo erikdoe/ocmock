@@ -300,7 +300,7 @@
         {
             case 0:  actualDescription = @"not invoked";  break;
             case 1:  actualDescription = @"invoked once"; break;
-            default: actualDescription = [NSString stringWithFormat:@"invoked %ld times", count]; break;
+            default: actualDescription = [NSString stringWithFormat:@"invoked %lu times", (unsigned long)count]; break;
         }
         
         NSString *description = [NSString stringWithFormat:@"%@: Method %@ was %@; but was expected %@.",
