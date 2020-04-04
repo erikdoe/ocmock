@@ -1010,6 +1010,7 @@ static NSString *TestNotification = @"TestNotification";
     
 	[[mock expect] lowercaseString];
 	XCTAssertThrows([mock verify], @"Should have raised an exception because method was not called in time.");
+	[mock verifyWithDelay:1];
 }
 
 - (void)testFailsVerifyExpectedMethodsWithDelay
