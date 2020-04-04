@@ -174,6 +174,13 @@ static NSUInteger initializeCallCount = 0;
 
 @implementation OCMockObjectPartialMocksTests
 
+- (void)testDescription
+{
+    TestClassWithSimpleMethod *object = [[TestClassWithSimpleMethod alloc] init];
+    id mock = [OCMockObject partialMockForObject:object];
+    XCTAssertEqualObjects([mock description], @"OCPartialMockObject(TestClassWithSimpleMethod)");
+}
+
 #pragma mark   Tests for stubbing with partial mocks
 
 - (void)testStubsMethodsOnPartialMock

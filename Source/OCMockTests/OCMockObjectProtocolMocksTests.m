@@ -71,10 +71,10 @@ typedef InterfaceForTypedef* PointerTypedefInterface;
     [mock verify];
 }
 
-- (void)testSetsCorrectNameForProtocolMockObjects
+- (void)testDescription
 {
     id mock = [OCMockObject mockForProtocol:@protocol(NSLocking)];
-    XCTAssertEqualObjects(@"OCMockObject(NSLocking)", [mock description], @"Should have returned correct description.");
+    XCTAssertEqualObjects([mock description], @"OCProtocolMockObject(NSLocking)");
 }
 
 - (void)testRaisesWhenUnknownMethodIsCalledOnProtocol
