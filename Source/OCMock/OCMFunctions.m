@@ -32,6 +32,14 @@
 - (void)failWithException:(NSException *)exception;
 @end
 
+@interface NSObject(OCMKnownNSObjectMethods)
+- (BOOL)_isDeallocating;
+@end
+
+// From objc/runtime/objc-internal.h
+// Only available on macOS 10.11/iOS 9.
+extern id objc_initWeakOrNil(id *location, id newObj) __attribute__((weak_import));
+extern void objc_destroyWeak(id _Nullable * _Nonnull location) __attribute__((weak_import));
 
 #pragma mark  Functions related to ObjC type system
 
@@ -466,3 +474,9 @@ void OCMReportFailure(OCMLocation *loc, NSString *description)
     }
 
 }
+
+BOOL OCMIsDeallocating(id anObject)
+{
+    return [anObject _isDeallocating];
+}
+

@@ -86,7 +86,7 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
         {
             id argument;
             [self getArgument:&argument atIndex:index];
-            if((argument != nil) && (argument != objectToExclude))
+            if((argument != nil) && (argument != objectToExclude) && !OCMIsDeallocating(argument))
             {
                 if(OCMIsBlockType(argumentType))
                 {
@@ -122,7 +122,7 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
     {
         id returnValue;
         [self getReturnValue:&returnValue];
-        if((returnValue != nil) && (returnValue != objectToExclude))
+        if((returnValue != nil) && (returnValue != objectToExclude) && !OCMIsDeallocating(returnValue))
         {
             if(OCMIsBlockType(returnType))
             {

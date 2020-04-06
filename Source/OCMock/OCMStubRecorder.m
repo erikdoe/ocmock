@@ -24,6 +24,7 @@
 #import "OCMBlockCaller.h"
 #import "OCMRealObjectForwarder.h"
 #import "OCMInvocationStub.h"
+#import "OCMFunctionsPrivate.h"
 
 
 @implementation OCMStubRecorder
@@ -51,7 +52,7 @@
 - (id)andReturn:(id)anObject
 {
     id action;
-    if(anObject == mockObject)
+    if(anObject == mockObject || OCMIsDeallocating(anObject))
     {
         action = [[[OCMNonRetainingObjectReturnValueProvider alloc] initWithValue:anObject] autorelease];
     }
