@@ -337,32 +337,53 @@
 	
 	XCTAssertThrowsSpecificNamed(OCMVerify([realObject addObject:@"foo"]),
 	        NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
-}
 
-- (void)testShouldThrowExceptionWhenNotUsingMockInStub
-{
-	id realObject = [NSMutableArray array];
-	
 	XCTAssertThrowsSpecificNamed(OCMStub([realObject addObject:@"foo"]),
 	        NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
-}
 
-- (void)testShouldThrowExceptionWhenNotUsingMockInExpect
-{
-    id realObject = [NSMutableArray array];
-
-    XCTAssertThrowsSpecificNamed(OCMExpect([realObject addObject:@"foo"]),
+	XCTAssertThrowsSpecificNamed(OCMExpect([realObject addObject:@"foo"]),
             NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
-}
 
-- (void)testShouldThrowExceptionWhenNotUsingMockInReject
-{
-	id realObject = [NSMutableArray array];
-	
 	XCTAssertThrowsSpecificNamed(OCMReject([realObject addObject:@"foo"]),
             NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
+
+	// Verify that the exception string contains something close to what we want people to be aware of.
+	@try
+	{
+		OCMStub([realObject addObject:@"foo"]);
+	}
+	@catch (NSException *e)
+	{
+		XCTAssertTrue([[e reason] containsString:@"The receiver is not a mock object."]);
+	}
 }
 
+- (void)testShouldThrowExceptionWhenAttemptingToMockNSObjectMethod
+{
+	id mock = OCMClassMock([NSString class]);
+
+	XCTAssertThrowsSpecificNamed(OCMVerify([mock description]),
+			NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
+
+	XCTAssertThrowsSpecificNamed(OCMStub([mock description]),
+			NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
+
+    XCTAssertThrowsSpecificNamed(OCMExpect([mock description]),
+            NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
+
+	XCTAssertThrowsSpecificNamed(OCMReject([mock description]),
+			  NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
+
+	// Verify that the exception string contains something close to what we want people to be aware of.
+	@try
+	{
+		OCMStub([mock description]);
+	}
+	@catch (NSException *e)
+	{
+		XCTAssertTrue([[e reason] containsString:@"The selector conflicts with a selector implemented by OCMStubRecorder/OCMExpectationRecorder."]);
+	}
+}
 
 - (void)testCanExplicitlySelectClassMethodForStubs
 {
