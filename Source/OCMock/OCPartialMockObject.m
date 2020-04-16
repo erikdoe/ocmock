@@ -38,13 +38,6 @@
 	return self;
 }
 
-- (void)dealloc
-{
-	[self stopMocking];
-	[realObject release];
-	[super dealloc];
-}
-
 - (NSString *)description
 {
 	return [NSString stringWithFormat:@"OCPartialMockObject(%@)", NSStringFromClass(mockedClass)];

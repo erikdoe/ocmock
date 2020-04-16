@@ -53,7 +53,7 @@
 
 - (NSString *)description
 {
-	return @"OCMockObserver";
+	return @"OCObserverMockObject";
 }
 
 - (void)setExpectationOrderMatters:(BOOL)flag

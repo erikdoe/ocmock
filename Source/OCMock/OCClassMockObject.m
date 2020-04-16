@@ -42,7 +42,7 @@
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"OCMockObject(%@)", NSStringFromClass(mockedClass)];
+	return [NSString stringWithFormat:@"OCClassMockObject(%@)", NSStringFromClass(mockedClass)];
 }
 
 - (Class)mockedClass

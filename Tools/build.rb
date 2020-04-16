@@ -77,7 +77,7 @@ class Builder
     end
     
     def signFrameworks(identity)
-        osxproductdir = "#{@env.productdir}/OSX"
+        osxproductdir = "#{@env.productdir}/macOS"
         iosproductdir = "#{@env.productdir}/iOS\\ framework"
         tvosproductdir = "#{@env.productdir}/tvOS"
         watchosproductdir = "#{@env.productdir}/watchOS"
@@ -90,7 +90,7 @@ class Builder
 
     def createPackage(packagename, volumename)    
         @worker.chdir(@env.packagedir)  
-        @worker.run("hdiutil create -size 5m temp.dmg -layout NONE") 
+        @worker.run("hdiutil create -size 7m temp.dmg -layout NONE") 
         disk_id = nil
         @worker.run("hdid -nomount temp.dmg") { |hdid| disk_id = hdid.readline.split[0] }
         @worker.run("newfs_hfs -v '#{volumename}' #{disk_id}")
@@ -186,7 +186,10 @@ class Executer
 
     def run(cmd, &block)     
         if block == nil
-          system(cmd)
+          if !system(cmd)
+            puts "** command failed with error"
+            exit
+          end
         else
           IO.popen(cmd, &block)
         end

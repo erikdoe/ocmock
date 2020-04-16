@@ -51,26 +51,29 @@
 
 - (id)andReturn:(id)anObject
 {
-	[[self stub] addInvocationAction:[[[OCMObjectReturnValueProvider alloc] initWithValue:anObject] autorelease]];
-	return self;
+    id action;
+    if(anObject == mockObject)
+    {
+        action = [[[OCMNonRetainingObjectReturnValueProvider alloc] initWithValue:anObject] autorelease];
+    }
+    else
+    {
+        action = [[[OCMObjectReturnValueProvider alloc] initWithValue:anObject] autorelease];
+    }
+    [[self stub] addInvocationAction:action];
+    return self;
 }
 
 - (id)andReturnValue:(NSValue *)aValue
 {
     [[self stub] addInvocationAction:[[[OCMBoxedReturnValueProvider alloc] initWithValue:aValue] autorelease]];
-	return self;
-}
-
-- (id)andReturnMockObject
-{
-	[[self stub] addInvocationAction:[[[OCMNonRetainingObjectReturnValueProvider alloc] initWithValue:mockObject] autorelease]];
-	return self;
+    return self;
 }
 
 - (id)andThrow:(NSException *)anException
 {
     [[self stub] addInvocationAction:[[[OCMExceptionReturnValueProvider alloc] initWithValue:anException] autorelease]];
-	return self;
+    return self;
 }
 
 - (id)andPost:(NSNotification *)aNotification
@@ -88,7 +91,7 @@
 - (id)andDo:(void (^)(NSInvocation *))aBlock 
 {
     [[self stub] addInvocationAction:[[[OCMBlockCaller alloc] initWithCallBlock:aBlock] autorelease]];
-	return self;
+    return self;
 }
 
 - (id)andForwardToRealObject
@@ -122,7 +125,7 @@
         {
             id objValue = nil;
             [aValue getValue:&objValue];
-            return (objValue == mockObject) ? [self andReturnMockObject] : [self andReturn:objValue];
+            return [self andReturn:objValue];
         }
         else
         {

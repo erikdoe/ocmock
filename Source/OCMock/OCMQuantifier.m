@@ -79,7 +79,7 @@
     {
         case 0:  return @"never";
         case 1:  return @"once";
-        default: return [NSString stringWithFormat:@"%ld times", expectedCount];
+        default: return [NSString stringWithFormat:@"%lu times", (unsigned long)expectedCount];
     }
 }
 
