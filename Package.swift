@@ -16,8 +16,8 @@ let package = Package(
         // .package(url: /* package url */, from: "1.0.0"),
     ],
     targets: [
-        .target(name: "OCMock", dependencies: [], path: "Source", exclude: [], sources: ["OCMock"], publicHeadersPath: "OCMock", cSettings: [.unsafeFlags(["-fno-objc-arc"])], cxxSettings: nil, swiftSettings: nil, linkerSettings: nil),
-        .testTarget(name: "OCMockTests", dependencies: ["OCMock"], path: "Source", exclude: [], sources: ["OCMockTests"], cSettings: [.unsafeFlags(["-fno-objc-arc"])], cxxSettings: [.unsafeFlags(["-fno-objc-arc"])], swiftSettings: nil, linkerSettings: [.unsafeFlags(["OCMock", "CLANG_ENABLE_OBJC_WEAK=YES"], nil)])
+        .target(name: "OCMock", dependencies: [], path: "Source", exclude: [], sources: ["OCMock"], publicHeadersPath: "OCMock", cSettings: [.unsafeFlags(["-fno-objc-arc"])], cxxSettings: nil, swiftSettings: nil, linkerSettings: [.unsafeFlags(["OCMock", "CLANG_ENABLE_OBJC_WEAK=YES"], nil)]),
+        /*.testTarget(name: "OCMockTests", dependencies: ["OCMock"], path: "Source", exclude: [], sources: ["OCMockTests"], cSettings: [.unsafeFlags(["-fno-objc-arc"])], cxxSettings: [.unsafeFlags(["-fno-objc-arc"])], swiftSettings: nil, linkerSettings: [.unsafeFlags(["OCMock", "CLANG_ENABLE_OBJC_WEAK=YES"], nil)])*/
     ]
 )
 

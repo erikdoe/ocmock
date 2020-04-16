@@ -15,7 +15,7 @@
  */
 
 #import <XCTest/XCTest.h>
-#import <OCHamcrest/OCHamcrest.h>
+#import <OCHamcrest.h>
 #import <OCMock/OCMock.h>
 
 
