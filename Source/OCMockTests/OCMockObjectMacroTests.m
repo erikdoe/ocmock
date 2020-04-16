@@ -50,6 +50,22 @@
 
 @end
 
+@interface TestClassWithClassReturnMethod : NSObject
+
+- (Class)method;
+
+@end
+
+@implementation TestClassWithClassReturnMethod
+
+- (Class)method
+{
+    return [self class];
+}
+
+@end
+
+
 
 // implemented in OCMockObjectClassMethodMockingTests
 
@@ -177,11 +193,24 @@
 
 - (void)testSetsUpStubReturningNilForIdReturnType
 {
-    id mock = OCMClassMock([NSString class]);
+    id mock = OCMPartialMock([NSArray arrayWithObject:@"Foo"]);
 
-    OCMStub([mock lowercaseString]).andReturn(nil);
+    OCMExpect([mock lastObject]).andReturn(nil);
+    XCTAssertNil([mock lastObject], @"Should have returned stubbed value");
 
-    XCTAssertNil([mock lowercaseString], @"Should have returned stubbed value");
+    OCMExpect([mock lastObject]).andReturn(Nil);
+    XCTAssertNil([mock lastObject], @"Should have returned stubbed value");
+}
+
+- (void)testSetsUpStubReturningNilForClassReturnType
+{
+    id mock = OCMPartialMock([[TestClassWithClassReturnMethod alloc] init]);
+
+    OCMExpect([mock method]).andReturn(nil);
+    XCTAssertNil([mock method], @"Should have returned stubbed value");
+
+    OCMExpect([mock method]).andReturn(Nil);
+    XCTAssertNil([mock method], @"Should have returned stubbed value");
 }
 
 - (void)testSetsUpExceptionThrowing

@@ -18,6 +18,18 @@
 #import "OCMFunctionsPrivate.h"
 #import "NSValue+OCMAdditions.h"
 
+static BOOL IsZeroBuffer(const char* buffer, size_t length)
+{
+    for(size_t i = 0; i < length; ++i)
+    {
+        if(buffer[i] != 0)
+        {
+            return NO;
+        }
+    }
+    return YES;
+}
+
 @implementation OCMBoxedReturnValueProvider
 
 - (void)handleInvocation:(NSInvocation *)anInvocation
@@ -26,10 +38,13 @@
     NSUInteger returnTypeSize = [[anInvocation methodSignature] methodReturnLength];
     char valueBuffer[returnTypeSize];
     NSValue *returnValueAsNSValue = (NSValue *)returnValue;
+    [returnValueAsNSValue getValue:valueBuffer];
 
-    if([self isMethodReturnType:returnType compatibleWithValueType:[returnValueAsNSValue objCType]])
+    if([self isMethodReturnType:returnType
+        compatibleWithValueType:[returnValueAsNSValue objCType]
+                          value:valueBuffer
+                      valueSize:returnTypeSize])
     {
-        [returnValueAsNSValue getValue:valueBuffer];
         [anInvocation setReturnValue:valueBuffer];
     }
     else if([returnValueAsNSValue getBytes:valueBuffer objCType:returnType])
@@ -43,16 +58,37 @@
     }
 }
 
-
-- (BOOL)isMethodReturnType:(const char *)returnType compatibleWithValueType:(const char *)valueType
+- (BOOL)isMethodReturnType:(const char *)returnType compatibleWithValueType:(const char *)valueType value:(const char*)value valueSize:(size_t)valueSize
 {
     /* Same types are obviously compatible */
     if(strcmp(returnType, valueType) == 0)
         return YES;
 
-    /* Allow void* for methods that return id, mainly to be able to handle nil */
-    if(strcmp(returnType, @encode(id)) == 0 && strcmp(valueType, @encode(void *)) == 0)
-        return YES;
+    // Special casing for nil and Nil
+    if(strcmp(returnType, @encode(id)) == 0 || strcmp(returnType, @encode(Class)) == 0)
+    {
+        // Check to verify that the value is actually zero.
+        if(IsZeroBuffer(value, valueSize))
+        {
+            // nil and Nil get potentially different encodings depending on the compilation
+            // settings of the file where the return value gets recorded. We check to verify
+            // against all the values we know of.
+            const char *validNilEncodings[] =
+            {
+                @encode(void *),    // Standard Obj C
+                @encode(int),       // 32 bit C++ (before nullptr)
+                @encode(long long), // 64 bit C++ (before nullptr)
+                @encode(char *),    // C++ with nullptr
+            };
+            for(size_t i = 0; i < sizeof(validNilEncodings) / sizeof(validNilEncodings[0]); ++i)
+            {
+                if(strcmp(valueType, validNilEncodings[i]) == 0)
+                {
+                    return YES;
+                }
+            }
+        }
+    }
 
     return OCMEqualTypesAllowingOpaqueStructs(returnType, valueType);
 }
