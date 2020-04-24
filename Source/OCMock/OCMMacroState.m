@@ -38,8 +38,9 @@ static NSString *const OCMGlobalStateKey = @"OCMGlobalStateKey";
     NSMutableDictionary *threadDictionary = [NSThread currentThread].threadDictionary;
     OCMMacroState *globalState = threadDictionary[OCMGlobalStateKey];
     OCMStubRecorder *recorder = [[(OCMStubRecorder *)[globalState recorder] retain] autorelease];
+    BOOL caughtException = [globalState caughtException];
     [threadDictionary removeObjectForKey:OCMGlobalStateKey];
-	if([recorder wasUsed] == NO)
+	if(caughtException == NO && [recorder wasUsed] == NO)
 	{
 		[NSException raise:NSInternalInconsistencyException
 					format:@"Did not record an invocation in OCMStub/OCMExpect/OCMReject.\n"
@@ -103,8 +104,9 @@ static NSString *const OCMGlobalStateKey = @"OCMGlobalStateKey";
 	NSMutableDictionary *threadDictionary = [NSThread currentThread].threadDictionary;
 	OCMMacroState *globalState = threadDictionary[OCMGlobalStateKey];
 	OCMVerifier *verifier = [[(OCMVerifier *)[globalState recorder] retain] autorelease];
+  BOOL caughtException = [globalState caughtException];
 	[threadDictionary removeObjectForKey:OCMGlobalStateKey];
-	if([verifier wasUsed] == NO)
+	if(caughtException == NO && [verifier wasUsed] == NO)
     {
         [NSException raise:NSInternalInconsistencyException
                     format:@"Did not record an invocation in OCMVerify.\n"
@@ -152,6 +154,16 @@ static NSString *const OCMGlobalStateKey = @"OCMGlobalStateKey";
 {
     return recorder;
 }
+
+- (BOOL)caughtException
+{
+    return caughtException;
+}
+
+- (void)setCaughtException
+ {
+    caughtException = YES;
+ }
 
 
 #pragma mark  Changing the recorder

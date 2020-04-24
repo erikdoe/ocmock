@@ -503,4 +503,61 @@
     OCMStub([[[[mock ignoringNonObjectArgs] andReturn:nil] andThrow:nil] initWithString:OCMOCK_ANY]);
 }
 
+- (void)testMacrosPassExceptionsThroughOnStub {
+    id mock = OCMClassMock([TestClassForMacroTesting class]);
+    BOOL caughtException = NO;
+    @try
+    {
+        OCMStub([mock init]).andReturn(mock);
+    }
+    @catch(NSException *exception)
+    {
+        caughtException = YES;
+        XCTAssertEqualObjects(exception.name, NSInternalInconsistencyException);
+        XCTAssertTrue([exception.reason containsString:@"Method init invoked twice on stub recorder"]);
+    }
+    @finally
+    {
+        XCTAssertTrue(caughtException, @"An exception should have been thrown.");
+    }
+}
+
+- (void)testMacrosPassExceptionsThroughOnExpect {
+    id mock = OCMClassMock([TestClassForMacroTesting class]);
+    BOOL caughtException = NO;
+    @try
+    {
+        OCMExpect([mock init]).andReturn(mock);
+    }
+    @catch(NSException *exception)
+    {
+        caughtException = YES;
+        XCTAssertEqualObjects(exception.name, NSInternalInconsistencyException);
+        XCTAssertTrue([exception.reason containsString:@"Method init invoked twice on stub recorder"]);
+    }
+    @finally
+    {
+        XCTAssertTrue(caughtException, @"An exception should have been thrown.");
+    }
+}
+
+- (void)testMacrosPassExceptionsThroughOnVerify {
+    id mock = OCMClassMock([TestClassForMacroTesting class]);
+    BOOL caughtException = NO;
+    @try
+    {
+        OCMVerify([mock init]);
+    }
+    @catch(NSException *exception)
+    {
+        caughtException = YES;
+        XCTAssertEqualObjects(exception.name, NSInternalInconsistencyException);
+        XCTAssertTrue([exception.reason containsString:@"Method init invoked twice on verifier"]);
+    }
+    @finally
+    {
+        XCTAssertTrue(caughtException, @"An exception should have been thrown.");
+    }
+}
+
 @end
