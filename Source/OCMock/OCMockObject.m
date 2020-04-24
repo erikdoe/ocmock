@@ -301,9 +301,15 @@
             case 1:  actualDescription = @"invoked once"; break;
             default: actualDescription = [NSString stringWithFormat:@"invoked %lu times", (unsigned long)count]; break;
         }
-        
-        NSString *description = [NSString stringWithFormat:@"%@: Method %@ was %@; but was expected %@.",
-                                 [self description], [matcher description], actualDescription, [quantifier description]];
+
+        NSString *addedInstructions = @"";
+        // Hacky way of determining if we are a class mock or a partial mock.
+        if (class_getInstanceMethod(object_getClass(self), @selector(realObject)))
+        {
+            addedInstructions = [NSString stringWithFormat:@"Adding a stub for `%@` may resolve the issue. ex: `OCMStub([foo %@]).andForwardToRealObject()`", [matcher description], [matcher description]];
+        }
+        NSString *description = [NSString stringWithFormat:@"%@: Method `%@` was %@; but was expected %@.%@",
+                                 [self description], [matcher description], actualDescription, [quantifier description], addedInstructions];
         OCMReportFailure(location, description);
     }
 }
