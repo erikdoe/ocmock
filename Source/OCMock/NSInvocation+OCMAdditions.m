@@ -93,7 +93,11 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
                     [retainedArguments addObject:blockArgument];
                     [blockArgument release];
                 }
-                else
+                // If the parameter type is Class then the actual argument could either be an OCMock
+                // matcher or a Class. If it's a matcher then we must ensure that it's retained.
+                // We don't want to retain real classes because there are cases where we could end
+                // up retaining our dynamically created subclasses which causes crashes on release.
+                else if (!(OCMIsClassType(argumentType) && object_isClass(argument)))
                 {
                     [retainedArguments addObject:argument];
                 }
