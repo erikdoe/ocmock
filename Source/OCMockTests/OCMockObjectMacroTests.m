@@ -331,25 +331,21 @@
 }
 
 
-- (void)testShouldThrowExceptionWhenNotUsingMockInVerify
+- (void)testShouldThrowExceptionWhenNotUsingMockInMacroThatRequiresMock
 {
-	id realObject = [NSMutableArray array];
-	
-	XCTAssertThrowsSpecificNamed(OCMVerify([realObject addObject:@"foo"]),
-	        NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
+    id realObject = [NSMutableArray array];
 
-	XCTAssertThrowsSpecificNamed(OCMStub([realObject addObject:@"foo"]),
-	        NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
+    XCTAssertThrowsSpecificNamed(OCMStub([realObject addObject:@"foo"]), NSException, NSInternalInconsistencyException);
+    XCTAssertThrowsSpecificNamed(OCMExpect([realObject addObject:@"foo"]), NSException, NSInternalInconsistencyException);
+    XCTAssertThrowsSpecificNamed(OCMReject([realObject addObject:@"foo"]), NSException, NSInternalInconsistencyException);
+    XCTAssertThrowsSpecificNamed(OCMVerify([realObject addObject:@"foo"]), NSException, NSInternalInconsistencyException);
+}
 
-	XCTAssertThrowsSpecificNamed(OCMExpect([realObject addObject:@"foo"]),
-            NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
-
-	XCTAssertThrowsSpecificNamed(OCMReject([realObject addObject:@"foo"]),
-            NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
-
-	// Verify that the exception string contains something close to what we want people to be aware of.
-	@try
+- (void)testShouldHintAtPossibleReasonWhenNotUsingMockInMacroThatRequiresMock
+{
+    @try
 	{
+        id realObject = [NSMutableArray array];
 		OCMStub([realObject addObject:@"foo"]);
 	}
 	@catch (NSException *e)
@@ -358,25 +354,21 @@
 	}
 }
 
-- (void)testShouldThrowExceptionWhenAttemptingToMockNSObjectMethod
+- (void)testShouldThrowExceptionWhenMockingMethodThatCannotBeMocked
 {
-	id mock = OCMClassMock([NSString class]);
+    id mock = OCMClassMock([NSString class]);
 
-	XCTAssertThrowsSpecificNamed(OCMVerify([mock description]),
-			NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
+    XCTAssertThrowsSpecificNamed(OCMStub([mock description]), NSException, NSInternalInconsistencyException);
+    XCTAssertThrowsSpecificNamed(OCMExpect([mock description]), NSException, NSInternalInconsistencyException);
+    XCTAssertThrowsSpecificNamed(OCMReject([mock description]), NSException, NSInternalInconsistencyException);
+    XCTAssertThrowsSpecificNamed(OCMVerify([mock description]), NSException, NSInternalInconsistencyException);
+}
 
-	XCTAssertThrowsSpecificNamed(OCMStub([mock description]),
-			NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
-
-    XCTAssertThrowsSpecificNamed(OCMExpect([mock description]),
-            NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
-
-	XCTAssertThrowsSpecificNamed(OCMReject([mock description]),
-			  NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
-
-	// Verify that the exception string contains something close to what we want people to be aware of.
+- (void)testShouldHintAtPossibleReasonWhenMockingMethodThatCannotBeMocked
+{
 	@try
 	{
+        id mock = OCMClassMock([NSString class]);
 		OCMStub([mock description]);
 	}
 	@catch (NSException *e)
@@ -384,6 +376,20 @@
 		XCTAssertTrue([[e reason] containsString:@"The selector conflicts with a selector implemented by OCMStubRecorder/OCMExpectationRecorder."]);
 	}
 }
+
+- (void)testShouldHintAtPossibleReasonWhenVerifyingMethodThatCannotBeMocked
+{
+    @try
+    {
+        id mock = OCMClassMock([NSString class]);
+        OCMVerify([mock description]);
+    }
+    @catch (NSException *e)
+    {
+        XCTAssertTrue([[e reason] containsString:@"The selector conflicts with a selector implemented by OCMVerifier."]);
+    }
+}
+
 
 - (void)testCanExplicitlySelectClassMethodForStubs
 {
