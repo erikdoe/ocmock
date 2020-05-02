@@ -111,7 +111,7 @@
 	// the realObject, then realObject will be over released and the mock will leak. Equally if
 	// we are called on the realObject we need to make sure not to return the mock.
 	id targetReceivingInit = nil;
-	if([anInvocation isInitMethodFamily])
+	if([anInvocation methodIsInInitFamily])
 	{
 		targetReceivingInit = [anInvocation target];
 		[realObject retain];

@@ -312,22 +312,22 @@
 	NSInvocation *invocation;
 
 	invocation = [self invocationForClass:[NSString class] selector:@selector(init)];
-	XCTAssertTrue([invocation isInitMethodFamily]);
+	XCTAssertTrue([invocation methodIsInInitFamily]);
 
 	invocation = [self invocationForClass:[NSString class] selector:@selector(initWithString:)];
-	XCTAssertTrue([invocation isInitMethodFamily]);
+	XCTAssertTrue([invocation methodIsInInitFamily]);
 
 	invocation = [self invocationForClass:[NSValue class] selector:@selector(__init)];
-	XCTAssertTrue([invocation isInitMethodFamily]);
+	XCTAssertTrue([invocation methodIsInInitFamily]);
 
 	invocation = [self invocationForClass:[NSObject class] selector:@selector(copy)];
-	XCTAssertFalse([invocation isInitMethodFamily]);
+	XCTAssertFalse([invocation methodIsInInitFamily]);
 
 	invocation = [self invocationForClass:[NSValue class] selector:@selector(initialValue)];
-	XCTAssertFalse([invocation isInitMethodFamily]);
+	XCTAssertFalse([invocation methodIsInInitFamily]);
 
 	invocation = [self invocationForClass:[NSValue class] selector:@selector(initNonObject)];
-	XCTAssertFalse([invocation isInitMethodFamily]);
+	XCTAssertFalse([invocation methodIsInInitFamily]);
 }
 
 

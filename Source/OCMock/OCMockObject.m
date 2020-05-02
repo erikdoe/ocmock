@@ -29,7 +29,6 @@
 #import "OCMInvocationExpectation.h"
 #import "OCMExceptionReturnValueProvider.h"
 #import "OCMExpectationRecorder.h"
-#import "OCMQuantifier.h"
 
 
 @implementation OCMockObject
