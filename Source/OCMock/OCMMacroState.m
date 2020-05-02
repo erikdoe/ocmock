@@ -45,7 +45,10 @@ static NSString *const OCMGlobalStateKey = @"OCMGlobalStateKey";
 	if([recorder wasUsed] == NO)
 	{
 		[NSException raise:NSInternalInconsistencyException
-					format:@"Mock object was not used in OCMStub/OCMExpect/OCMReject. Did you accidentally use a real object?"];
+					format:@"Did not record an invocation in OCMStub/OCMExpect/OCMReject.\n"
+						   @"Possible causes are:\n"
+						   @"- The receiver is not a mock object.\n"
+						   @"- The selector conflicts with a selector implemented by OCMStubRecorder/OCMExpectationRecorder."];
 	}
     return recorder;
 }
@@ -102,10 +105,13 @@ static NSString *const OCMGlobalStateKey = @"OCMGlobalStateKey";
 	OCMVerifier *verifier = [[(OCMVerifier *)[globalState recorder] retain] autorelease];
 	[threadDictionary removeObjectForKey:OCMGlobalStateKey];
 	if([verifier wasUsed] == NO)
-	{
-		[NSException raise:NSInternalInconsistencyException
-					format:@"Mock object was not used in OCMVerify. Did you accidentally use a real object?"];
-	}
+    {
+        [NSException raise:NSInternalInconsistencyException
+                    format:@"Did not record an invocation in OCMVerify.\n"
+                           @"Possible causes are:\n"
+                           @"- The receiver is not a mock object.\n"
+                           @"- The selector conflicts with a selector implemented by OCMVerifier."];
+    }
 }
 
 

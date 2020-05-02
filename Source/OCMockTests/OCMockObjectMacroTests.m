@@ -331,36 +331,63 @@
 }
 
 
-- (void)testShouldThrowExceptionWhenNotUsingMockInVerify
-{
-	id realObject = [NSMutableArray array];
-	
-	XCTAssertThrowsSpecificNamed(OCMVerify([realObject addObject:@"foo"]),
-	        NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
-}
-
-- (void)testShouldThrowExceptionWhenNotUsingMockInStub
-{
-	id realObject = [NSMutableArray array];
-	
-	XCTAssertThrowsSpecificNamed(OCMStub([realObject addObject:@"foo"]),
-	        NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
-}
-
-- (void)testShouldThrowExceptionWhenNotUsingMockInExpect
+- (void)testShouldThrowExceptionWhenNotUsingMockInMacroThatRequiresMock
 {
     id realObject = [NSMutableArray array];
 
-    XCTAssertThrowsSpecificNamed(OCMExpect([realObject addObject:@"foo"]),
-            NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
+    XCTAssertThrowsSpecificNamed(OCMStub([realObject addObject:@"foo"]), NSException, NSInternalInconsistencyException);
+    XCTAssertThrowsSpecificNamed(OCMExpect([realObject addObject:@"foo"]), NSException, NSInternalInconsistencyException);
+    XCTAssertThrowsSpecificNamed(OCMReject([realObject addObject:@"foo"]), NSException, NSInternalInconsistencyException);
+    XCTAssertThrowsSpecificNamed(OCMVerify([realObject addObject:@"foo"]), NSException, NSInternalInconsistencyException);
 }
 
-- (void)testShouldThrowExceptionWhenNotUsingMockInReject
+- (void)testShouldHintAtPossibleReasonWhenNotUsingMockInMacroThatRequiresMock
 {
-	id realObject = [NSMutableArray array];
-	
-	XCTAssertThrowsSpecificNamed(OCMReject([realObject addObject:@"foo"]),
-            NSException, NSInternalInconsistencyException, @"should throw NSInternalInconsistencyException exception");
+    @try
+	{
+        id realObject = [NSMutableArray array];
+		OCMStub([realObject addObject:@"foo"]);
+	}
+	@catch (NSException *e)
+	{
+		XCTAssertTrue([[e reason] containsString:@"The receiver is not a mock object."]);
+	}
+}
+
+- (void)testShouldThrowExceptionWhenMockingMethodThatCannotBeMocked
+{
+    id mock = OCMClassMock([NSString class]);
+
+    XCTAssertThrowsSpecificNamed(OCMStub([mock description]), NSException, NSInternalInconsistencyException);
+    XCTAssertThrowsSpecificNamed(OCMExpect([mock description]), NSException, NSInternalInconsistencyException);
+    XCTAssertThrowsSpecificNamed(OCMReject([mock description]), NSException, NSInternalInconsistencyException);
+    XCTAssertThrowsSpecificNamed(OCMVerify([mock description]), NSException, NSInternalInconsistencyException);
+}
+
+- (void)testShouldHintAtPossibleReasonWhenMockingMethodThatCannotBeMocked
+{
+	@try
+	{
+        id mock = OCMClassMock([NSString class]);
+		OCMStub([mock description]);
+	}
+	@catch (NSException *e)
+	{
+		XCTAssertTrue([[e reason] containsString:@"The selector conflicts with a selector implemented by OCMStubRecorder/OCMExpectationRecorder."]);
+	}
+}
+
+- (void)testShouldHintAtPossibleReasonWhenVerifyingMethodThatCannotBeMocked
+{
+    @try
+    {
+        id mock = OCMClassMock([NSString class]);
+        OCMVerify([mock description]);
+    }
+    @catch (NSException *e)
+    {
+        XCTAssertTrue([[e reason] containsString:@"The selector conflicts with a selector implemented by OCMVerifier."]);
+    }
 }
 
 
