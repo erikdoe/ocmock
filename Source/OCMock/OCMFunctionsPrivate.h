@@ -41,8 +41,3 @@ OCPartialMockObject *OCMGetAssociatedMockForObject(id anObject);
 
 void OCMReportFailure(OCMLocation *loc, NSString *description);
 
-BOOL OCMIsInvocationInitFamily(NSInvocation *invocation);
-BOOL OCMIsInvocationAllocFamily(NSInvocation *invocation);
-BOOL OCMIsInvocationCopyFamily(NSInvocation *invocation);
-BOOL OCMIsInvocationMutableCopyFamily(NSInvocation *invocation);
-BOOL OCMIsInvocationNewFamily(NSInvocation *invocation);

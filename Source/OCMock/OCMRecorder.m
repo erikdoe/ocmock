@@ -21,6 +21,7 @@
 #import "OCClassMockObject.h"
 #import "OCMFunctionsPrivate.h"
 #import "OCMMacroState.h"
+#import "NSInvocation+OCMAdditions.h"
 
 @implementation OCMRecorder
 
@@ -116,7 +117,7 @@
 	[anInvocation setTarget:nil];
 	wasUsed = YES;
     [invocationMatcher setInvocation:anInvocation];
-	if (OCMIsInvocationInitFamily(anInvocation))
+	if([anInvocation isInitMethodFamily])
 	{
         // init methods must be instance methods and must return an Objective-C pointer type.
         // An init called from ARC code is expecting to get something back to release if it chose

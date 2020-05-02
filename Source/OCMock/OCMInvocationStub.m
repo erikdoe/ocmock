@@ -68,7 +68,7 @@
         [recordedArg handleArgument:passedArg];
     }
 
-    BOOL isInit = OCMIsInvocationInitFamily(anInvocation);
+    BOOL isInit = [anInvocation isInitMethodFamily];
     const id badReturnValue = (id)-1;
     if (isInit)
     {

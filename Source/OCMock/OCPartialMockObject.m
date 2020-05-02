@@ -21,6 +21,7 @@
 #import "NSObject+OCMAdditions.h"
 #import "OCMFunctionsPrivate.h"
 #import "OCMInvocationStub.h"
+#import "NSInvocation+OCMAdditions.h"
 
 
 @implementation OCPartialMockObject
@@ -110,7 +111,7 @@
 	// the realObject, then realObject will be over released and the mock will leak. Equally if
 	// we are called on the realObject we need to make sure not to return the mock.
 	id targetReceivingInit = nil;
-	if (OCMIsInvocationInitFamily(anInvocation))
+	if([anInvocation isInitMethodFamily])
 	{
 		targetReceivingInit = [anInvocation target];
 		[realObject retain];

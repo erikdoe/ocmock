@@ -17,6 +17,7 @@
 #import "OCMFunctions.h"
 #import "OCMNonRetainingObjectReturnValueProvider.h"
 #import "OCMFunctionsPrivate.h"
+#import "NSInvocation+OCMAdditions.h"
 
 @implementation OCMNonRetainingObjectReturnValueProvider
 
@@ -34,12 +35,13 @@
         @throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Expected invocation with object return type. Did you mean to use andReturnValue: instead?" userInfo:nil];
     }
 
-    if(OCMIsInvocationAllocFamily(anInvocation) || OCMIsInvocationNewFamily(anInvocation) || OCMIsInvocationCopyFamily(anInvocation) || OCMIsInvocationMutableCopyFamily(anInvocation))
+    if([anInvocation isAllocMethodFamily] || [anInvocation isNewMethodFamily] || [anInvocation isCopyMethodFamily] ||
+            [anInvocation isMutableMethodFamily])
     {
         // methods that "create" an object return it with an extra retain count
         [returnValue retain];
     }
-    else if(OCMIsInvocationInitFamily(anInvocation))
+    else if([anInvocation isInitMethodFamily])
     {
         // init family methods "consume" self and retain their return value. Do the retain first in case the return value and self are the same.
         [returnValue retain];
