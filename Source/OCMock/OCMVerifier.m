@@ -35,6 +35,7 @@
 
 - (instancetype)withQuantifier:(OCMQuantifier *)quantifier
 {
+    [self setInitTarget:self];
     [self setQuantifier:quantifier];
     return self;
 }

@@ -25,7 +25,9 @@
     OCMockObject         *mockObject;
     OCMInvocationMatcher *invocationMatcher;
     BOOL                 wasUsed;
+    id                   initTarget;
 }
+
 
 - (instancetype)init;
 - (instancetype)initWithMockObject:(OCMockObject *)aMockObject;
@@ -37,6 +39,10 @@
 
 - (id)classMethod;
 - (id)ignoringNonObjectArgs;
+
+// initTarget is the target of the invocation used for making sure init calls return the right value.
+- (id)initTarget;
+- (void)setInitTarget:(id)target;
 
 @end
 
