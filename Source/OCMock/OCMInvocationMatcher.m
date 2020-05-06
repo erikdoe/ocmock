@@ -20,9 +20,7 @@
 #import "OCMPassByRefSetter.h"
 #import "NSInvocation+OCMAdditions.h"
 #import "OCMInvocationMatcher.h"
-#import "OCClassMockObject.h"
 #import "OCMFunctionsPrivate.h"
-#import "OCMBlockArgCaller.h"
 
 
 @interface NSObject(HCMatcherDummy)

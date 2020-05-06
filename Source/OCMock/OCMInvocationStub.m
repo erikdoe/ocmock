@@ -15,10 +15,11 @@
  */
 
 #import "OCMInvocationStub.h"
-#import "OCMFunctionsPrivate.h"
 #import "OCMArg.h"
 #import "OCMArgAction.h"
 #import "NSInvocation+OCMAdditions.h"
+
+#define UNSET_RETURN_VALUE_MARKER ((id)0x01234567)
 
 @implementation OCMInvocationStub
 
@@ -49,6 +50,29 @@
 
 - (void)handleInvocation:(NSInvocation *)anInvocation
 {
+    [self invokeArgActionsForInvocation:anInvocation];
+
+    if([anInvocation methodIsInInitFamily])
+    {
+        id returnVal = UNSET_RETURN_VALUE_MARKER;
+        [anInvocation setReturnValue:&returnVal];
+
+        [self invokeActionsForInvocation:anInvocation];
+
+        [anInvocation getReturnValue:&returnVal];
+        if(returnVal == UNSET_RETURN_VALUE_MARKER)
+        {
+            [NSException raise:NSInvalidArgumentException format:@"%@ was stubbed but no return value set. A return value is required for an init method. If you intended to return nil, make this explicit with .andReturn(nil)", NSStringFromSelector([anInvocation selector])];
+        }
+    }
+    else
+    {
+        [self invokeActionsForInvocation:anInvocation];
+    }
+}
+
+- (void)invokeArgActionsForInvocation:(NSInvocation *)anInvocation
+{
     NSMethodSignature *signature = [recordedInvocation methodSignature];
     NSUInteger n = [signature numberOfArguments];
     for(NSUInteger i = 2; i < n; i++)
@@ -62,13 +86,15 @@
         if([recordedArg isKindOfClass:[NSValue class]])
             recordedArg = [OCMArg resolveSpecialValues:recordedArg];
 
-        if(![recordedArg isKindOfClass:[OCMArgAction class]])
-            continue;
-
-        [recordedArg handleArgument:passedArg];
+        if([recordedArg isKindOfClass:[OCMArgAction class]])
+            [recordedArg handleArgument:passedArg];
     }
+}
 
+- (void)invokeActionsForInvocation:(NSInvocation *)anInvocation
+{
     [invocationActions makeObjectsPerformSelector:@selector(handleInvocation:) withObject:anInvocation];
 }
+
 
 @end

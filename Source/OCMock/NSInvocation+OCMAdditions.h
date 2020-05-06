@@ -46,4 +46,11 @@
 - (NSString *)cStringDescriptionAtIndex:(NSInteger)anInt;
 - (NSString *)selectorDescriptionAtIndex:(NSInteger)anInt;
 
+- (BOOL)methodIsInInitFamily;
+- (BOOL)methodIsInAllocFamily;
+- (BOOL)methodIsInCopyFamily;
+- (BOOL)methodIsInMutableCopyFamily;
+- (BOOL)methodIsInNewFamily;
+
+
 @end

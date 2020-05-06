@@ -1,3 +1,4 @@
+#import <limits.h>
 /*
  *  Copyright (c) 2014-2020 Erik Doernenburg and contributors
  *
@@ -19,12 +20,15 @@
 #import "OCMockObject.h"
 #import "OCMInvocationMatcher.h"
 #import "OCClassMockObject.h"
+#import "NSInvocation+OCMAdditions.h"
 
 @implementation OCMRecorder
 
 - (instancetype)init
 {
     // no super, we're inheriting from NSProxy
+    wasUsed = NO;
+    shouldReturnMockFromInit = NO;
     return self;
 }
 
@@ -38,6 +42,11 @@
 - (void)setMockObject:(OCMockObject *)aMockObject
 {
     mockObject = aMockObject;
+}
+
+- (void)setShouldReturnMockFromInit:(BOOL)flag
+{
+    shouldReturnMockFromInit = flag;
 }
 
 - (void)dealloc
@@ -104,9 +113,20 @@
 	[anInvocation setTarget:nil];
 	wasUsed = YES;
     [invocationMatcher setInvocation:anInvocation];
+
+    // Code with ARC may retain the receiver of an init method before invoking it. In that case it
+    // relies on the init method returning an object it can release. So, we must set the correct
+    // return value here. Normally, the correct return value is the recorder but sometimes it's the
+    // mock. The decision is easier to make in the mock, which is why the mock sets a flag in the
+    // recorder and we simply use the flag here.
+    if([anInvocation methodIsInInitFamily])
+    {
+        id returnValue = shouldReturnMockFromInit ? (id)mockObject : (id)self;
+        [anInvocation setReturnValue:&returnValue];
+	}
 }
 
-- (void)doesNotRecognizeSelector:(SEL)aSelector
+- (void)doesNotRecognizeSelector:(SEL)aSelector __used
 {
 	wasUsed = YES;
     [NSException raise:NSInvalidArgumentException format:@"%@: cannot stub/expect/verify method '%@' because no such method exists in the mocked class.", mockObject, NSStringFromSelector(aSelector)];

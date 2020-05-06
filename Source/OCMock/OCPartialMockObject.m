@@ -21,6 +21,7 @@
 #import "NSObject+OCMAdditions.h"
 #import "OCMFunctionsPrivate.h"
 #import "OCMInvocationStub.h"
+#import "NSInvocation+OCMAdditions.h"
 
 
 @implementation OCPartialMockObject
@@ -104,7 +105,30 @@
 
 - (void)handleUnRecordedInvocation:(NSInvocation *)anInvocation
 {
+	// In the case of an init that is called on a mock we must return the mock instance and
+	// not the realObject if the underlying init returns the realObject because at the call site
+	// ARC will have retained the target and the release/retain count must balance. If we return
+	// the realObject, then realObject will be over released and the mock will leak. Equally if
+	// we are called on the realObject we need to make sure not to return the mock.
+	id targetReceivingInit = nil;
+	if([anInvocation methodIsInInitFamily])
+	{
+		targetReceivingInit = [anInvocation target];
+		[realObject retain];
+	}
 	[anInvocation invokeWithTarget:realObject];
+	if (targetReceivingInit)
+	{
+		id returnVal;
+		[anInvocation getReturnValue:&returnVal];
+		if (returnVal == realObject)
+		{
+			[anInvocation setReturnValue:&self];
+			[realObject release];
+			[self retain];
+		}
+		[targetReceivingInit release];
+	}
 }
 
 

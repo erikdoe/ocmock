@@ -14,10 +14,9 @@
  *  under the License.
  */
 
-#import <Foundation/Foundation.h>
+#import "OCMQuantifier.h"
 #import "OCMMacroState.h"
 #import "OCMVerifier.h"
-#import "OCMQuantifier.h"
 
 
 @interface OCMExactCountQuantifier : OCMQuantifier

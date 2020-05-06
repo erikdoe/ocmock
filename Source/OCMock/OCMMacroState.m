@@ -16,10 +16,7 @@
 
 #import "OCMMacroState.h"
 #import "OCMStubRecorder.h"
-#import "OCMockObject.h"
 #import "OCMExpectationRecorder.h"
-#import "OCMVerifier.h"
-#import "OCMInvocationMatcher.h"
 
 
 @implementation OCMMacroState
@@ -71,7 +68,6 @@ static NSString *const OCMGlobalStateKey = @"OCMGlobalStateKey";
 + (void)beginRejectMacro
 {
     OCMExpectationRecorder *recorder = [[[OCMExpectationRecorder alloc] init] autorelease];
-    [recorder never];
     OCMMacroState *macroState = [[OCMMacroState alloc] initWithRecorder:recorder];
     [NSThread currentThread].threadDictionary[OCMGlobalStateKey] = macroState;
     [macroState release];
@@ -79,6 +75,10 @@ static NSString *const OCMGlobalStateKey = @"OCMGlobalStateKey";
 
 + (OCMStubRecorder *)endRejectMacro
 {
+    OCMMacroState *globalState = [NSThread currentThread].threadDictionary[OCMGlobalStateKey];
+    // Calling never after the invocation to avoid running afoul of ARC's expectations on
+    // return values from init methods.
+    [(OCMExpectationRecorder *)[globalState recorder] never];
     return [self endStubMacro];
 }
 

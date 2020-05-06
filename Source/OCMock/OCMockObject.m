@@ -29,7 +29,6 @@
 #import "OCMInvocationExpectation.h"
 #import "OCMExceptionReturnValueProvider.h"
 #import "OCMExpectationRecorder.h"
-#import "OCMQuantifier.h"
 
 
 @implementation OCMockObject
@@ -318,6 +317,11 @@
     {
         OCMRecorder *recorder = [[OCMMacroState globalState] recorder];
         [recorder setMockObject:self];
+        // In order for ARC to work correctly, the recorder has to set up return values for
+        // methods in the init family of methods. If the mock forwards a method to the recorder
+        // that it will record, i.e. a method that the recorder does not implement, then the
+        // recorder must set the mock as the return value. Otherwise it must use itself.
+        [recorder setShouldReturnMockFromInit:(class_getInstanceMethod(object_getClass(recorder), aSelector) == NO)];
         return recorder;
     }
     return nil;

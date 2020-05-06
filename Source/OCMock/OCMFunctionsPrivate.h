@@ -40,3 +40,4 @@ void OCMSetAssociatedMockForObject(OCClassMockObject *mock, id anObject);
 OCPartialMockObject *OCMGetAssociatedMockForObject(id anObject);
 
 void OCMReportFailure(OCMLocation *loc, NSString *description);
+

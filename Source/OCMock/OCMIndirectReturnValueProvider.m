@@ -14,9 +14,7 @@
  *  under the License.
  */
 
-#import "NSMethodSignature+OCMAdditions.h"
 #import "OCMIndirectReturnValueProvider.h"
-#import "NSInvocation+OCMAdditions.h"
 
 
 @implementation OCMIndirectReturnValueProvider

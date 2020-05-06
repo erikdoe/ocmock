@@ -528,4 +528,59 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
 	return [NSString stringWithFormat:@"@selector(%@)", NSStringFromSelector(selectorValue)];
 }
 
+
+- (BOOL)isMethodFamily:(NSString *)family
+{
+	// Definitions here: https://clang.llvm.org/docs/AutomaticReferenceCounting.html#method-families
+
+	NSMethodSignature *signature = [self methodSignature];
+	if(OCMIsObjectType(signature.methodReturnType) == NO)
+	{
+		return NO;
+	}
+
+	NSString *selString = NSStringFromSelector([self selector]);
+	NSRange underscoreRange = [selString rangeOfString:@"^_*" options:NSRegularExpressionSearch];
+	selString = [selString substringFromIndex:NSMaxRange(underscoreRange)];
+
+	if([selString hasPrefix:family] == NO)
+	{
+		return NO;
+	}
+	NSUInteger familyLength = [family length];
+	if(([selString length] > familyLength) &&
+			([[NSCharacterSet lowercaseLetterCharacterSet] characterIsMember:[selString characterAtIndex:familyLength]]))
+	{
+		return NO;
+	}
+	return YES;
+}
+
+
+- (BOOL)methodIsInInitFamily
+{
+	return [self isMethodFamily:@"init"];
+}
+
+- (BOOL)methodIsInAllocFamily
+{
+	return [self isMethodFamily:@"alloc"];
+}
+
+- (BOOL)methodIsInCopyFamily
+{
+	return [self isMethodFamily:@"copy"];
+}
+
+- (BOOL)methodIsInMutableCopyFamily
+{
+	return [self isMethodFamily:@"mutableCopy"];
+}
+
+- (BOOL)methodIsInNewFamily
+{
+	return [self isMethodFamily:@"new"];
+}
+
+
 @end
