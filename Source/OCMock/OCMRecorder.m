@@ -1,3 +1,4 @@
+#import <limits.h>
 /*
  *  Copyright (c) 2014-2020 Erik Doernenburg and contributors
  *
@@ -26,6 +27,8 @@
 - (instancetype)init
 {
     // no super, we're inheriting from NSProxy
+    wasUsed = NO;
+    shouldReturnMockFromInit = NO;
     return self;
 }
 
@@ -39,6 +42,11 @@
 - (void)setMockObject:(OCMockObject *)aMockObject
 {
     mockObject = aMockObject;
+}
+
+- (void)setShouldReturnMockFromInit:(BOOL)flag
+{
+    shouldReturnMockFromInit = flag;
 }
 
 - (void)dealloc
@@ -62,20 +70,11 @@
     return wasUsed;
 }
 
-- (id)initTarget {
-    return initTarget;
-}
-
-- (void)setInitTarget:(id)target
-{
-    initTarget = target;
-}
 
 #pragma mark  Modifying the matcher
 
 - (id)classMethod
 {
-    [self setInitTarget:self];
     // should we handle the case where this is called with a mock that isn't a class mock?
     [invocationMatcher setRecordedAsClassMethod:YES];
     return self;
@@ -83,7 +82,6 @@
 
 - (id)ignoringNonObjectArgs
 {
-    [self setInitTarget:self];
     [invocationMatcher setIgnoreNonObjectArgs:YES];
     return self;
 }
@@ -115,21 +113,20 @@
 	[anInvocation setTarget:nil];
 	wasUsed = YES;
     [invocationMatcher setInvocation:anInvocation];
-	if([anInvocation methodIsInInitFamily])
-	{
-        // init methods must be instance methods and must return an Objective-C pointer type.
-        // An init called from ARC code is expecting to get something back to release if it chose
-        // to retain it before the init call. If we don't set a return type here, ARC code may crash.
-        id target = [self initTarget];
-        if (!target) {
-          // target was never set by forwarding, so target must be us.
-          target = self;
-        }
-        [anInvocation setReturnValue:&target];
+
+    // Code with ARC may retain the receiver of an init method before invoking it. In that case it
+    // relies on the init method returning an object it can release. So, we must set the correct
+    // return value here. Normally, the correct return value is the recorder but sometimes it's the
+    // mock. The decision is easier to make in the mock, which is why the mock sets a flag in the
+    // recorder and we simply use the flag here.
+    if([anInvocation methodIsInInitFamily])
+    {
+        id returnValue = shouldReturnMockFromInit ? (id)mockObject : (id)self;
+        [anInvocation setReturnValue:&returnValue];
 	}
 }
 
-- (void)doesNotRecognizeSelector:(SEL)aSelector
+- (void)doesNotRecognizeSelector:(SEL)aSelector __used
 {
 	wasUsed = YES;
     [NSException raise:NSInvalidArgumentException format:@"%@: cannot stub/expect/verify method '%@' because no such method exists in the mocked class.", mockObject, NSStringFromSelector(aSelector)];

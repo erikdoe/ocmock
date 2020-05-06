@@ -39,7 +39,6 @@
 
 - (id)never
 {
-    [self setInitTarget:self];
     [[self expectation] setMatchAndReject:YES];
     return self;
 }

@@ -317,12 +317,11 @@
     {
         OCMRecorder *recorder = [[OCMMacroState globalState] recorder];
         [recorder setMockObject:self];
-        // If the initTarget has not been set then this is the first call through the
-        // recorder so we set it to the mock object.
-        if (![recorder initTarget])
-        {
-            [recorder setInitTarget:self];
-        }
+        // In order for ARC to work correctly, the recorder has to set up return values for
+        // methods in the init family of methods. If the mock forwards a method to the recorder
+        // that it will record, i.e. a method that the recorder does not implement, then the
+        // recorder must set the mock as the return value. Otherwise it must use itself.
+        [recorder setShouldReturnMockFromInit:(class_getInstanceMethod(object_getClass(recorder), aSelector) == NO)];
         return recorder;
     }
     return nil;
