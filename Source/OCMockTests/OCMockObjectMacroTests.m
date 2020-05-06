@@ -477,12 +477,15 @@
     XCTAssertEqualObjects(@"f", [mock commonPrefixWithString:@"foo" options:NSCaseInsensitiveSearch]);
 }
 
-- (void)testInitWithRecorderMethodsBeingPassedThroughMock
+- (void)testReturnsCorrectObjectFromInitMethodCalledOnRecorderInsideMacro
 {
-    // Because of the way the macros work, you can call recorder methods on the mock and they
-    // will work correctly. Technically these are a mix of old syntax and new.
-    // If these test fail we expect a crash.
-    // Note that the andReturn:nil has to be the first stub so that there is a return value.
+    // Because of the way the macros work, you can call recorder methods on the mock and they will
+    // work correctly. Technically these are a mix of old syntax and new.
+    //
+    // There are no assertions here, the tests will crash with an incorrect implementation.
+    //
+    // Note that the andReturn:nil has to be first because this is the stub that will actually be
+    // used and we're now making sure that a return value is specified for init methods.
     id mock = OCMClassMock([NSString class]);
     OCMStub([[mock andReturn:nil] initWithString:OCMOCK_ANY]);
     OCMStub([[mock ignoringNonObjectArgs] initWithString:OCMOCK_ANY]);
@@ -494,7 +497,7 @@
     OCMStub([[mock andForwardToRealObject] initWithString:OCMOCK_ANY]);
     OCMExpect([[mock never] initWithString:OCMOCK_ANY]);
     __unused id value = [mock initWithString:@"hello"];
-    _OCMVerify([[mock withQuantifier:nil] initWithString:OCMOCK_ANY]);
+    _OCMVerify([(id)[mock withQuantifier:nil] initWithString:OCMOCK_ANY]);
 
     // Test multiple levels of recorder methods.
     OCMStub([[[[mock ignoringNonObjectArgs] andReturn:nil] andThrow:nil] initWithString:OCMOCK_ANY]);

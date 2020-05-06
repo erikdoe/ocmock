@@ -80,23 +80,27 @@
 
 }
 
-- (void)testAndThrowDoesntLeak {
+- (void)testAndThrowDoesntLeak
+{
     __weak NSException *exception = nil;
     @autoreleasepool {
-        id innerMock = [OCMockObject partialMockForObject:[NSProcessInfo processInfo]];
+        id mock = [OCMockObject partialMockForObject:[NSProcessInfo processInfo]];
         exception = [NSException exceptionWithName:NSGenericException
                                             reason:nil
                                           userInfo:nil];
-        [[[innerMock expect] andThrow:exception] arguments];
+        [[[mock expect] andThrow:exception] arguments];
 
         BOOL threw = NO;
-        @try {
+        @try
+        {
             [[NSProcessInfo processInfo] arguments];
-        } @catch (NSException *ex) {
+        }
+        @catch (NSException *ex)
+        {
             threw = YES;
         }
         XCTAssertTrue(threw);
-        [innerMock verify]; [innerMock stopMocking]; innerMock = nil;
+        [mock verify]; [mock stopMocking]; mock = nil;
     }
 
     XCTAssertNil(exception, @"The exception should have been released by now");
