@@ -53,7 +53,7 @@
         @try{ \
             invocation; \
         }@catch(...){ \
-            [[OCMMacroState globalState] setCaughtException]; \
+            [[OCMMacroState globalState] setInvocationDidThrow:YES]; \
             @throw; \
         }@finally{ \
             recorder = [OCMMacroState endStubMacro]; \
@@ -70,7 +70,7 @@
         @try{ \
             invocation; \
         }@catch(...){ \
-            [[OCMMacroState globalState] setCaughtException]; \
+            [[OCMMacroState globalState] setInvocationDidThrow:YES]; \
             @throw; \
         }@finally{ \
             recorder = [OCMMacroState endExpectMacro]; \
@@ -87,7 +87,7 @@
         @try{ \
             invocation; \
         }@catch(...){ \
-            [[OCMMacroState globalState] setCaughtException]; \
+            [[OCMMacroState globalState] setInvocationDidThrow:YES]; \
             @throw; \
         }@finally{ \
             recorder = [OCMMacroState endRejectMacro]; \
@@ -121,7 +121,7 @@
         @try{ \
             invocation; \
         }@catch(...){ \
-            [[OCMMacroState globalState] setCaughtException]; \
+            [[OCMMacroState globalState] setInvocationDidThrow:YES]; \
             @throw; \
         }@finally{ \
             [OCMMacroState endVerifyMacro]; \
@@ -136,7 +136,7 @@
         @try{ \
            invocation; \
         }@catch(...){ \
-            [[OCMMacroState globalState] setCaughtException]; \
+            [[OCMMacroState globalState] setInvocationDidThrow:YES]; \
             @throw; \
         }@finally{ \
             [OCMMacroState endVerifyMacro]; \

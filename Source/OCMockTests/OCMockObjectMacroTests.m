@@ -503,60 +503,48 @@
     OCMStub([[[[mock ignoringNonObjectArgs] andReturn:nil] andThrow:nil] initWithString:OCMOCK_ANY]);
 }
 
-- (void)testMacrosPassExceptionsThroughOnStub {
+- (void)testStubMacroPassesExceptionThrough
+{
     id mock = OCMClassMock([TestClassForMacroTesting class]);
-    BOOL caughtException = NO;
     @try
     {
         OCMStub([mock init]).andReturn(mock);
+        XCTFail(@"An exception should have been thrown.");
     }
     @catch(NSException *exception)
     {
-        caughtException = YES;
         XCTAssertEqualObjects(exception.name, NSInternalInconsistencyException);
         XCTAssertTrue([exception.reason containsString:@"Method init invoked twice on stub recorder"]);
     }
-    @finally
-    {
-        XCTAssertTrue(caughtException, @"An exception should have been thrown.");
-    }
 }
 
-- (void)testMacrosPassExceptionsThroughOnExpect {
+- (void)testExpectMacroPassesExceptionThrough
+{
     id mock = OCMClassMock([TestClassForMacroTesting class]);
-    BOOL caughtException = NO;
     @try
     {
         OCMExpect([mock init]).andReturn(mock);
+        XCTFail(@"An exception should have been thrown.");
     }
     @catch(NSException *exception)
     {
-        caughtException = YES;
         XCTAssertEqualObjects(exception.name, NSInternalInconsistencyException);
         XCTAssertTrue([exception.reason containsString:@"Method init invoked twice on stub recorder"]);
     }
-    @finally
-    {
-        XCTAssertTrue(caughtException, @"An exception should have been thrown.");
-    }
 }
 
-- (void)testMacrosPassExceptionsThroughOnVerify {
+- (void)testVerifyMacroPassExceptionsThrough
+{
     id mock = OCMClassMock([TestClassForMacroTesting class]);
-    BOOL caughtException = NO;
     @try
     {
         OCMVerify([mock init]);
+        XCTFail(@"An exception should have been thrown.");
     }
     @catch(NSException *exception)
     {
-        caughtException = YES;
         XCTAssertEqualObjects(exception.name, NSInternalInconsistencyException);
         XCTAssertTrue([exception.reason containsString:@"Method init invoked twice on verifier"]);
-    }
-    @finally
-    {
-        XCTAssertTrue(caughtException, @"An exception should have been thrown.");
     }
 }
 

@@ -26,7 +26,7 @@
 @interface OCMMacroState : NSObject
 {
     id recorder;
-    BOOL caughtException;
+    BOOL invocationDidThrow;
 }
 
 + (void)beginStubMacro;
@@ -48,6 +48,8 @@
 - (id)recorder;
 
 - (void)switchToClassMethod;
-- (void)setCaughtException;
+
+- (void)setInvocationDidThrow:(BOOL)flag;
+- (BOOL)invocationDidThrow;
 
 @end
