@@ -132,6 +132,28 @@ typedef NSString TypedefString;
 
 @end
 
+@interface TestClassWithResolveMethods : NSObject
+@end
+
+@implementation TestClassWithResolveMethods
+
+- (void)instanceMethod {
+}
+
++ (BOOL)resolveInstanceMethod:(SEL)sel
+{
+  return [super resolveInstanceMethod:sel];
+}
+
++ (void)classMethod {
+}
+
++ (BOOL)resolveClassMethod:(SEL)sel
+{
+  return [super resolveClassMethod:sel];
+}
+
+@end
 
 #pragma mark   Tests for interaction with runtime and foundation conventions
 
@@ -310,6 +332,12 @@ typedef NSString TypedefString;
 {
     TestClassWithClassMethodThatImitatesCALayer *object = [[TestClassWithClassMethodThatImitatesCALayer alloc] init];
     __unused id mock = OCMPartialMock(object);
+}
+
+- (void)testClassesWithResolveMethodsCanBeMocked
+{
+    // If this test fails it will crash due to recursion.
+    __unused id mock = OCMClassMock([TestClassWithResolveMethods class]);
 }
 
 #pragma mark    verify mocks work properly when mocking init

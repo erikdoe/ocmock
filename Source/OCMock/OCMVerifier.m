@@ -23,6 +23,8 @@
 
 - (id)init
 {
+    if(invocationMatcher != nil)
+        [NSException raise:NSInternalInconsistencyException format:@"** Method init invoked twice on verifier. Are you trying to verify the init method? This is currently not supported."];
     if ((self = [super init]))
     {
         invocationMatcher = [[OCMInvocationMatcher alloc] init];
