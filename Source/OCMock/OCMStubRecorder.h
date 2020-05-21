@@ -18,6 +18,10 @@
 #import <OCMock/OCMFunctions.h>
 #import <objc/runtime.h>
 
+#if !TARGET_OS_WATCH
+@class XCTestExpectation;
+#endif  // !TARGET_OS_WATCH
+
 @interface OCMStubRecorder : OCMRecorder
 
 - (id)andReturn:(id)anObject;
@@ -27,6 +31,10 @@
 - (id)andCall:(SEL)selector onObject:(id)anObject;
 - (id)andDo:(void (^)(NSInvocation *invocation))block;
 - (id)andForwardToRealObject;
+
+#if !TARGET_OS_WATCH
+- (id)andFulfill:(XCTestExpectation *)expectation;
+#endif  // !TARGET_OS_WATCH
 
 @end
 
@@ -57,6 +65,11 @@
 
 #define andForwardToRealObject() _andForwardToRealObject()
 @property (nonatomic, readonly) OCMStubRecorder *(^ _andForwardToRealObject)(void);
+
+#if !TARGET_OS_WATCH
+#define andFulfill(anExpectation) _andFulfill(anExpectation)
+@property(nonatomic, readonly) OCMStubRecorder * (^_andFulfill)(XCTestExpectation *);
+#endif  // !TARGET_OS_WATCH
 
 @property (nonatomic, readonly) OCMStubRecorder *(^ _ignoringNonObjectArgs)(void);
 
