@@ -55,14 +55,12 @@
 
 + (id)isEqual:(id)value
 {
-    return value;
+	return [[[OCMIsEqualConstraint alloc] initWithTestValue:value] autorelease];
 }
 
 + (id)isNotEqual:(id)value
 {
-    OCMIsNotEqualConstraint *constraint = [OCMIsNotEqualConstraint constraint];
-    constraint->testValue = value;
-    return constraint;
+    return [[[OCMIsNotEqualConstraint alloc] initWithTestValue:value] autorelease];
 }
 
 + (id)isKindOfClass:(Class)cls

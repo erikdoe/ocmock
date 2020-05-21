@@ -17,6 +17,18 @@
 #import <XCTest/XCTest.h>
 #import "OCMConstraint.h"
 
+@interface TestEqualityFake : NSObject
+@property BOOL isValueEqual;
+@end
+
+@implementation TestEqualityFake
+
+- (BOOL)isEqual:(id)object
+{
+  return self.isValueEqual;
+}
+
+@end
 
 @interface OCMConstraintTests : XCTestCase
 {
@@ -59,11 +71,53 @@
 
 - (void)testNotEqualAcceptsAnythingButValue
 {
-    OCMIsNotEqualConstraint *constraint = [OCMIsNotEqualConstraint constraint];
-    constraint->testValue = @"foo";
+    OCMIsNotEqualConstraint *constraint = [[OCMIsNotEqualConstraint alloc] initWithTestValue:@"foo"];
 
     XCTAssertFalse([constraint evaluate:@"foo"], @"Should not have accepted value.");
     XCTAssertTrue([constraint evaluate:@"bar"], @"Should have accepted other value.");
+    XCTAssertTrue([constraint evaluate:nil], @"Should have accepted nil.");
+
+    constraint = [[OCMIsNotEqualConstraint alloc] initWithTestValue:nil];
+
+    XCTAssertTrue([constraint evaluate:@"foo"], @"Should have accepted value.");
+    XCTAssertFalse([constraint evaluate:nil], @"Should not have accepted nil.");
+}
+
+- (void)testEqualUsesTestValuesDefinitionOfEquality
+{
+    TestEqualityFake *testValue = [[TestEqualityFake alloc] init];
+    testValue.isValueEqual = YES;
+
+    TestEqualityFake *value = [[TestEqualityFake alloc] init];
+    value.isValueEqual = NO;
+
+    OCMIsEqualConstraint *constraint = [[OCMIsEqualConstraint alloc] initWithTestValue:testValue];
+    XCTAssertTrue([constraint evaluate:value]);
+}
+
+- (void)testNotEqualUsesTestValuesDefinitionOfEquality
+{
+    TestEqualityFake *testValue = [[TestEqualityFake alloc] init];
+    testValue.isValueEqual = NO;
+
+    TestEqualityFake *value = [[TestEqualityFake alloc] init];
+    value.isValueEqual = YES;
+
+    OCMIsNotEqualConstraint *constraint = [[OCMIsNotEqualConstraint alloc] initWithTestValue:testValue];
+    XCTAssertTrue([constraint evaluate:value]);
+}
+
+- (void)testEqualAcceptsNothingButValue
+{
+    OCMIsEqualConstraint *constraint = [[OCMIsEqualConstraint alloc] initWithTestValue:@"foo"];
+
+    XCTAssertTrue([constraint evaluate:@"foo"], @"Should have accepted value.");
+    XCTAssertFalse([constraint evaluate:@"bar"], @"Should not have accepted other value.");
+    XCTAssertFalse([constraint evaluate:nil], @"Should not have accepted nil.");
+
+    constraint = [[OCMIsEqualConstraint alloc] initWithTestValue:nil];
+
+    XCTAssertFalse([constraint evaluate:@"foo"], @"Should not have accepted other value.");
     XCTAssertTrue([constraint evaluate:nil], @"Should have accepted nil.");
 }
 

@@ -40,12 +40,20 @@
 @interface OCMIsNotNilConstraint : OCMConstraint
 @end
 
-@interface OCMIsNotEqualConstraint : OCMConstraint
+@interface OCMEqualityConstraint : OCMConstraint
 {
-@public
     id testValue;
 }
 
+- (instancetype)initWithTestValue:(id)testValue NS_DESIGNATED_INITIALIZER;
+- (instancetype)init NS_UNAVAILABLE;
+
+@end
+
+@interface OCMIsEqualConstraint : OCMEqualityConstraint
+@end
+
+@interface OCMIsNotEqualConstraint : OCMEqualityConstraint
 @end
 
 @interface OCMInvocationConstraint : OCMConstraint

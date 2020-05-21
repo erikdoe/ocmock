@@ -97,14 +97,49 @@
 
 @end
 
-
 #pragma mark -
+
+@implementation OCMEqualityConstraint
+
+- (instancetype)initWithTestValue:(id)aTestValue
+{
+    if((self = [super init]))
+    {
+        testValue = [aTestValue retain];
+    }
+    return self;
+}
+
+- (void)dealloc
+{
+    [testValue release];
+    [super dealloc];
+}
+
+@end
+
+#pragma mark  -
+
+@implementation OCMIsEqualConstraint
+
+- (BOOL)evaluate:(id)value
+{
+    // Note that ordering of `[testValue isEqual:value]` is intentional as we want `testValue`
+    // to control what equality means in this case. `value` may not even support equality.
+    return value == testValue || [testValue isEqual:value];
+}
+
+@end
+
+#pragma mark  -
 
 @implementation OCMIsNotEqualConstraint
 
 - (BOOL)evaluate:(id)value
 {
-    return ![value isEqual:testValue];
+    // Note that ordering of `[testValue isEqual:value]` is intentional as we want `testValue`
+    // to control what inequality means in this case. `value` may not even support equality.
+    return value != testValue && ![testValue isEqual: value];
 }
 
 @end
