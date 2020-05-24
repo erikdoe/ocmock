@@ -292,6 +292,19 @@ BOOL OCMEqualTypesAllowingOpaqueStructs(const char *type1, const char *type2)
 }
 
 
+BOOL OCMIsAppleBaseClass(Class cls)
+{
+    return (cls == [NSObject class]) || (cls == [NSProxy class]);
+}
+
+BOOL OCMIsApplePrivateMethod(Class cls, SEL sel)
+{
+    NSString *className = NSStringFromClass(cls);
+    NSString *selName = NSStringFromSelector(sel);
+    return ([className hasPrefix:@"NS"] || [className hasPrefix:@"UI"]) &&
+            ([selName hasPrefix:@"_"] || [selName hasSuffix:@"_"]);
+}
+
 #pragma mark  Creating classes
 
 Class OCMCreateSubclass(Class class, void *ref)

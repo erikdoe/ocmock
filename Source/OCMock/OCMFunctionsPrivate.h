@@ -27,6 +27,9 @@ const char *OCMTypeWithoutQualifiers(const char *objCType);
 BOOL OCMEqualTypesAllowingOpaqueStructs(const char *type1, const char *type2);
 CFNumberType OCMNumberTypeForObjCType(const char *objcType);
 
+BOOL OCMIsAppleBaseClass(Class cls);
+BOOL OCMIsApplePrivateMethod(Class cls, SEL sel);
+
 Class OCMCreateSubclass(Class cls, void *ref);
 
 BOOL OCMIsAliasSelector(SEL selector);

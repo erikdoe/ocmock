@@ -14,10 +14,8 @@
  *  under the License.
  */
 
-#import <CoreData/CoreData.h>
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
-#import <objc/runtime.h>
 #import "TestClassWithCustomReferenceCounting.h"
 
 #if TARGET_OS_IPHONE
@@ -606,6 +604,56 @@ static NSUInteger initializeCallCount = 0;
 	id mock = [OCMockObject partialMockForObject:foo];
 	[[[mock stub] andCall:@selector(aMethodWithVoidReturn) onObject:self] methodVoid];
 	XCTAssertNoThrow([foo method1], @"Should have worked.");
+}
+
+
+#pragma mark	Tests for exception messages
+
+- (void)testVerifyFailureIncludesHintForPartialMockMethodsThatDontGetForwarderInstalled
+{
+	TestClassThatCallsSelf *realObject = [[TestClassThatCallsSelf alloc] init];
+	id mock = [OCMockObject partialMockForObject:realObject];
+	[realObject categoryMethod];
+    @try
+    {
+        [[mock verify] categoryMethod];
+        XCTFail(@"An exception should have been thrown.");
+    }
+    @catch(NSException *e)
+    {
+        XCTAssertTrue([[e reason] containsString:@"Adding a stub"]);
+    }
+}
+
+- (void)testDoesNotIncludeHintWhenMockIsNotPartialMock
+{
+	id mock = [OCMockObject niceMockForClass:[TestClassThatCallsSelf class]];
+	@try
+	{
+		[[mock verify] categoryMethod];
+		XCTFail(@"An exception should have been thrown.");
+	}
+	@catch(NSException *e)
+	{
+		XCTAssertFalse([[e reason] containsString:@"Adding a stub"]);
+	}
+
+}
+
+- (void)testDoesNotIncludeHintWhenStubbingIsNotGoingToHelp
+{
+    TestClassThatCallsSelf *realObject = [[TestClassThatCallsSelf alloc] init];
+    id mock = [OCMockObject partialMockForObject:realObject];
+    @try
+    {
+        [[mock verify] method2];
+        XCTFail(@"An exception should have been thrown.");
+
+    }
+    @catch(NSException *e)
+    {
+        XCTAssertFalse([[e reason] containsString:@"Adding a stub"]);
+    }
 }
 
 
