@@ -127,6 +127,7 @@
 
 - (void)addStub:(OCMInvocationStub *)aStub
 {
+    [self assertInvocationsArrayIsPresent];
     @synchronized(stubs)
     {
         [stubs addObject:aStub];
@@ -143,8 +144,9 @@
 
 - (void)assertInvocationsArrayIsPresent
 {
-    if(invocations == nil) {
-        [NSException raise:NSInternalInconsistencyException format:@"** Cannot handle or verify invocations on %@ at %p. This error usually occurs when a mock object is used after stopMocking has been called on it. In most cases it is not necessary to call stopMocking. If you know you have to, please make sure that the mock object is not used afterwards.", [self description], self];
+    if(invocations == nil)
+    {
+        [NSException raise:NSInternalInconsistencyException format:@"** Cannot use mock object %@ at %p. This error usually occurs when a mock object is used after stopMocking has been called on it. In most cases it is not necessary to call stopMocking. If you know you have to, please make sure that the mock object is not used afterwards.", [self description], (void *)self];
     }
 }
 

@@ -50,16 +50,11 @@
 	return mockedClass;
 }
 
-- (BOOL)mockingHasBeenStopped
-{
-    return stoppedMocking;
-}
 
 #pragma mark  Extending/overriding superclass behaviour
 
 - (void)stopMocking
 {
-    stoppedMocking = YES;
     if(originalMetaClass != nil)
     {
         [self stopMockingClassMethods];
@@ -84,10 +79,6 @@
 
 - (void)addStub:(OCMInvocationStub *)aStub
 {
-    if ([self mockingHasBeenStopped])
-    {
-        [NSException raise:NSInternalInconsistencyException format:@"Cannot add stubs or expectations on %@ at %p. This occurs when a mock object is used after `stopMocking` has been called on it.", self, self];
-    }
     [super addStub:aStub];
     if([aStub recordedAsClassMethod])
         [self setupForwarderForClassMethodSelector:[[aStub recordedInvocation] selector]];

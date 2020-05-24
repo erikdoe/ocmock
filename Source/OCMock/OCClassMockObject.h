@@ -21,7 +21,6 @@
     Class  mockedClass;
     Class  originalMetaClass;
     Class  classCreatedForNewMetaClass;
-    BOOL   stoppedMocking;
 }
 
 - (id)initWithClass:(Class)aClass;

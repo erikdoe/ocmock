@@ -368,11 +368,11 @@ static NSUInteger initializeCallCount = 0;
     XCTAssertNil(weakArgument);
 }
 
-- (void)testShouldThrowAssertionWhenStoppedMockHasClassMethodStubbed
+- (void)testThrowsWhenAttemptingToStubClassMethodOnStoppedMock
 {
-    id mock = OCMClassMock([TestClassWithClassMethods class]);
+    id mock = [OCClassMockObject mockForClass:[TestClassWithClassMethods class]];
     [mock stopMocking];
-    XCTAssertThrowsSpecificNamed(OCMStub([mock foo]).andReturn(@"hello"), NSException, NSInternalInconsistencyException);
+    XCTAssertThrowsSpecificNamed([[[mock stub] andReturn:@"hello"] foo], NSException, NSInternalInconsistencyException);
 }
 
 @end
