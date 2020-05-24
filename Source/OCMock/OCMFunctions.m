@@ -310,6 +310,14 @@ BOOL OCMIsApplePrivateMethod(Class cls, SEL sel)
             ([selName hasPrefix:@"_"] || [selName hasSuffix:@"_"]);
 }
 
+
+BOOL OCMIsNonEscapingBlock(id block)
+{
+    struct OCMBlockDef *blockRef = (__bridge struct OCMBlockDef *)block;
+    return (blockRef->flags & OCMBlockIsNoEscape) != 0;
+}
+
+
 #pragma mark  Creating classes
 
 Class OCMCreateSubclass(Class class, void *ref)

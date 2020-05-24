@@ -88,10 +88,18 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
             {
                 if(OCMIsBlockType(argumentType))
                 {
-                    // block types need to be copied in case they're stack blocks
-                    id blockArgument = [argument copy];
-                    [retainedArguments addObject:blockArgument];
-                    [blockArgument release];
+                    // Block types need to be copied because they could be stack blocks.
+                    // However, non-escaping blocks have a lifetime that is stack-based and they
+                    // treat copy/release as a no-op. For details see:
+                    // https://reviews.llvm.org/rGdbfa453e4138bb977644929c69d1c71e5e8b4bee
+                    // If we keep a reference to a non-escaping block in retainedArguments, it
+                    // will end up as dangling pointer, resulting in a crash later.
+                    if(OCMIsNonEscapingBlock(argument) == NO)
+                    {
+                        id blockArgument = [argument copy];
+                        [retainedArguments addObject:blockArgument];
+                        [blockArgument release];
+                    }
                 }
                 else if(OCMIsClassType(argumentType) && object_isClass(argument))
                 {
@@ -116,9 +124,13 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
         {
             if(OCMIsBlockType(returnType))
             {
-                id blockReturnValue = [returnValue copy];
-                [retainedArguments addObject:blockReturnValue];
-                [blockReturnValue release];
+                // See above for an explanation
+                if(OCMIsNonEscapingBlock(returnValue) == NO)
+                {
+                    id blockReturnValue = [returnValue copy];
+                    [retainedArguments addObject:blockReturnValue];
+                    [blockReturnValue release];
+                }
             }
             else
             {

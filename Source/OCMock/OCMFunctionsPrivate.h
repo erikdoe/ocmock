@@ -45,3 +45,31 @@ OCPartialMockObject *OCMGetAssociatedMockForObject(id anObject);
 
 void OCMReportFailure(OCMLocation *loc, NSString *description);
 
+BOOL OCMIsNonEscapingBlock(id block);
+
+
+
+struct OCMBlockDef
+{
+    void *isa; // initialized to &_NSConcreteStackBlock or &_NSConcreteGlobalBlock
+    int flags;
+    int reserved;
+    void (*invoke)(void *, ...);
+    struct block_descriptor {
+        unsigned long int reserved;                 // NULL
+        unsigned long int size;                     // sizeof(struct Block_literal_1)
+        // optional helper functions
+        void (*copy_helper)(void *dst, void *src);  // IFF (1<<25)
+        void (*dispose_helper)(void *src);          // IFF (1<<25)
+        // required ABI.2010.3.16
+        const char *signature;                      // IFF (1<<30)
+    } *descriptor;
+};
+
+enum
+{
+    OCMBlockIsNoEscape                     = (1 << 23),
+    OCMBlockDescriptionFlagsHasCopyDispose = (1 << 25),
+    OCMBlockDescriptionFlagsHasSignature   = (1 << 30)
+};
+
