@@ -538,7 +538,8 @@
     id mock = OCMClassMock([TestClassForMacroTesting class]);
     @try
     {
-        OCMVerify([mock init]);
+        // Using _OCMVerify here because of https://github.com/erikdoe/ocmock/issues/390
+        _OCMVerify([mock init]);
         XCTFail(@"An exception should have been thrown.");
     }
     @catch(NSException *exception)
