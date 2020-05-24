@@ -1,6 +1,15 @@
 Listing of notable changes by release. More detail is usually found in the Git
 commit messages and/or the pull requests.
 
+OCMock 3.6.1 (unreleased)
+
+* Fixed mocking init methods when using ARC. This worked before but could
+  result in memory related crashes. (Dave MacLachlan)
+* Added support for non-escaping blocks. (Dave MacLachlan)
+* Numerous other bug-fixes and improvements to developer experience, e.g.
+  clearer error messages. (Dave MacLachlan)
+
+
 OCMock 3.6 (2020-02-16)
 
 * Added support for quantifiers. Please see documentation section 3.3 as well
