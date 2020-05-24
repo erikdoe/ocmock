@@ -139,6 +139,7 @@ static NSUInteger initializeCallCount = 0;
 @interface OCMockObjectPartialMocksTests : XCTestCase
 {
     int numKVOCallbacks;
+    NSString *expectedDescription;
 }
 
 @end
@@ -173,6 +174,18 @@ static NSUInteger initializeCallCount = 0;
 @end
 
 @implementation OCMockObjectPartialMocksTests
+
+- (void)recordFailureWithDescription:(NSString *)description inFile:(NSString *)filePath atLine:(NSUInteger)lineNumber expected:(BOOL)expected
+{
+	// By setting expectedDescription we can test expected failures.
+	if (expectedDescription && [description containsString:expectedDescription])
+	{
+		 // Was an expected failure.
+		 expectedDescription = nil;
+		 return;
+	}
+	[super recordFailureWithDescription:description inFile:filePath atLine:lineNumber expected:expected];
+}
 
 - (void)testDescription
 {
@@ -608,5 +621,13 @@ static NSUInteger initializeCallCount = 0;
 	XCTAssertNoThrow([foo method1], @"Should have worked.");
 }
 
+- (void)testAttemptingToVerifyMethodImplementedByNSObjectUsingMacroThrows
+{
+	TestClassThatCallsSelf *realObject = [[TestClassThatCallsSelf alloc] init];
+	id mock = [OCMockObject partialMockForObject:realObject];
+	[realObject categoryMethod];
+	expectedDescription = @"Adding a stub";
+	OCMVerify([mock categoryMethod]);
+}
 
 @end
