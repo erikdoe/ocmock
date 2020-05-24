@@ -294,25 +294,23 @@
         quantifier = [OCMQuantifier atLeast:1];
     if(![quantifier isValidCount:count])
     {
-        NSString *actualDescription = nil;
-        switch(count)
-        {
-            case 0:  actualDescription = @"not invoked";  break;
-            case 1:  actualDescription = @"invoked once"; break;
-            default: actualDescription = [NSString stringWithFormat:@"invoked %lu times", (unsigned long)count]; break;
-        }
-
-        NSString *description = [NSString stringWithFormat:@"%@: Method `%@` was %@; but was expected %@.",
-                                 [self description], [matcher description], actualDescription, [quantifier description]];
-
-        // Have to use the function and equality test because mocks manipulate the methods to determine class membership
-        if(object_getClass(self) == [OCPartialMockObject class])
-        {
-            description = [description stringByAppendingFormat:@" If the method is implemented by NSObject or a category on it, adding a stub for the method may resolve the issue, e.g. `OCMStub([mockObject %@]).andForwardToRealObject()`", [matcher description]];
-        }
-
+        NSString *description = [self descriptionForVerificationFailureWithMatcher:matcher quantifier:quantifier invocationCount:count];
         OCMReportFailure(location, description);
     }
+}
+
+- (NSString *)descriptionForVerificationFailureWithMatcher:(OCMInvocationMatcher *)matcher quantifier:(OCMQuantifier *)quantifier invocationCount:(NSUInteger)count
+{
+    NSString *actualDescription = nil;
+    switch(count)
+    {
+        case 0:  actualDescription = @"not invoked";  break;
+        case 1:  actualDescription = @"invoked once"; break;
+        default: actualDescription = [NSString stringWithFormat:@"invoked %lu times", (unsigned long)count]; break;
+    }
+
+    return [NSString stringWithFormat:@"%@: Method `%@` was %@; but was expected %@.",
+            [self description], [matcher description], actualDescription, [quantifier description]];
 }
 
 

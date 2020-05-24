@@ -71,6 +71,7 @@
 - (void)verifyInvocation:(OCMInvocationMatcher *)matcher;
 - (void)verifyInvocation:(OCMInvocationMatcher *)matcher atLocation:(OCMLocation *)location;
 - (void)verifyInvocation:(OCMInvocationMatcher *)matcher withQuantifier:(OCMQuantifier *)quantifier atLocation:(OCMLocation *)location;
+- (NSString *)descriptionForVerificationFailureWithMatcher:(OCMInvocationMatcher *)matcher quantifier:(OCMQuantifier *)quantifier invocationCount:(NSUInteger)count;
 
 @end
 

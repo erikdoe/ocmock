@@ -164,14 +164,9 @@
     NSArray *methodBlackList = @[@"class", @"forwardingTargetForSelector:", @"methodSignatureForSelector:", @"forwardInvocation:",
             @"allowsWeakReference", @"retainWeakReference", @"isBlock", @"retainCount", @"retain", @"release", @"autorelease"];
     [NSObject enumerateMethodsInClass:mockedClass usingBlock:^(Class cls, SEL sel) {
-        if((cls == [NSObject class]) || (cls == [NSProxy class]))
+        if(OCMIsAppleBaseClass(cls) || OCMIsApplePrivateMethod(cls, sel))
             return;
-        NSString *className = NSStringFromClass(cls);
-        NSString *selName = NSStringFromSelector(sel);
-        if(([className hasPrefix:@"NS"] || [className hasPrefix:@"UI"]) &&
-           ([selName hasPrefix:@"_"] || [selName hasSuffix:@"_"]))
-            return;
-        if([methodBlackList containsObject:selName])
+        if([methodBlackList containsObject:NSStringFromSelector(sel)])
             return;
         @try
         {
@@ -247,6 +242,27 @@
         [anInvocation setSelector:OCMAliasForOriginalSelector([anInvocation selector])];
         [anInvocation invoke];
     }
+}
+
+
+
+#pragma mark    Verification handling
+
+- (NSString *)descriptionForVerificationFailureWithMatcher:(OCMInvocationMatcher *)matcher quantifier:(OCMQuantifier *)quantifier invocationCount:(NSUInteger)count
+{
+    SEL matcherSel = [[matcher recordedInvocation] selector];
+    __block BOOL stubbingMightHelp = NO;
+    [NSObject enumerateMethodsInClass:mockedClass usingBlock:^(Class cls, SEL sel) {
+        if(sel == matcherSel)
+            stubbingMightHelp = OCMIsAppleBaseClass(cls) || OCMIsApplePrivateMethod(cls, sel);
+    }];
+
+    NSString *description = [super descriptionForVerificationFailureWithMatcher:matcher quantifier:quantifier invocationCount:count];
+    if(stubbingMightHelp)
+    {
+        description = [description stringByAppendingFormat:@" Adding a stub for the method may resolve the issue, e.g. `OCMStub([mockObject %@]).andForwardToRealObject()`", [matcher description]];
+    }
+    return description;
 }
 
 

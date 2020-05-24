@@ -127,12 +127,9 @@
     [NSObject enumerateMethodsInClass:originalMetaClass usingBlock:^(Class cls, SEL sel) {
         if((cls == object_getClass([NSObject class])) || (cls == [NSObject class]) || (cls == object_getClass(cls)))
             return;
-        NSString *className = NSStringFromClass(cls);
-        NSString *selName = NSStringFromSelector(sel);
-        if(([className hasPrefix:@"NS"] || [className hasPrefix:@"UI"]) &&
-           ([selName hasPrefix:@"_"] || [selName hasSuffix:@"_"]))
+        if(OCMIsApplePrivateMethod(cls, sel))
             return;
-        if([methodBlackList containsObject:selName])
+        if([methodBlackList containsObject:NSStringFromSelector(sel)])
             return;
         @try
         {

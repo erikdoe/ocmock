@@ -609,7 +609,7 @@ static NSUInteger initializeCallCount = 0;
 
 #pragma mark	Tests for exception messages
 
-- (void)testVerfiyFailureIncludesHelpfulHintForPartialMocks
+- (void)testVerifyFailureIncludesHintForPartialMockMethodsThatDontGetForwarderInstalled
 {
 	TestClassThatCallsSelf *realObject = [[TestClassThatCallsSelf alloc] init];
 	id mock = [OCMockObject partialMockForObject:realObject];
@@ -618,15 +618,14 @@ static NSUInteger initializeCallCount = 0;
     {
         [[mock verify] categoryMethod];
         XCTFail(@"An exception should have been thrown.");
-
     }
     @catch(NSException *e)
     {
-        XCTAssertTrue([[e reason] containsString:@"implemented by NSObject"]);
+        XCTAssertTrue([[e reason] containsString:@"Adding a stub"]);
     }
 }
 
-- (void)testDoesNotIncludeHelpfulMessageWhenMockIsNotPartialMock
+- (void)testDoesNotIncludeHintWhenMockIsNotPartialMock
 {
 	id mock = [OCMockObject niceMockForClass:[TestClassThatCallsSelf class]];
 	@try
@@ -636,9 +635,25 @@ static NSUInteger initializeCallCount = 0;
 	}
 	@catch(NSException *e)
 	{
-		XCTAssertFalse([[e reason] containsString:@"implemented by NSObject"]);
+		XCTAssertFalse([[e reason] containsString:@"Adding a stub"]);
 	}
 
+}
+
+- (void)testDoesNotIncludeHintWhenStubbingIsNotGoingToHelp
+{
+    TestClassThatCallsSelf *realObject = [[TestClassThatCallsSelf alloc] init];
+    id mock = [OCMockObject partialMockForObject:realObject];
+    @try
+    {
+        [[mock verify] method2];
+        XCTFail(@"An exception should have been thrown.");
+
+    }
+    @catch(NSException *e)
+    {
+        XCTAssertFalse([[e reason] containsString:@"Adding a stub"]);
+    }
 }
 
 
