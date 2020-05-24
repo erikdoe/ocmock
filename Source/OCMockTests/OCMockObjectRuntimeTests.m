@@ -109,17 +109,15 @@ typedef NSString TypedefString;
 
 @end
 
+
 @interface TestClassWithResolveMethods : NSObject
 @end
 
 @implementation TestClassWithResolveMethods
 
-- (void)instanceMethod {
-}
-
 + (BOOL)resolveInstanceMethod:(SEL)sel
 {
-  return [super resolveInstanceMethod:sel];
+    return [super resolveInstanceMethod:sel];
 }
 
 + (void)classMethod {
@@ -127,10 +125,36 @@ typedef NSString TypedefString;
 
 + (BOOL)resolveClassMethod:(SEL)sel
 {
-  return [super resolveClassMethod:sel];
+    return [super resolveClassMethod:sel];
+}
+
+- (void)instanceMethod __used
+{
 }
 
 @end
+
+// This class imitates a bit how CALayer functions internally;
+// see https://github.com/erikdoe/ocmock/issues/411
+@interface TestClassWithResolveMethodsLikeCALayer : TestClassWithResolveMethods
+@end
+
+@implementation TestClassWithResolveMethodsLikeCALayer
+
++ (void)aMethodWithClass:(Class)cls __used
+{
+}
+
++ (BOOL)resolveInstanceMethod:(SEL)sel {
+    // resolve must call a class method with self as an argument.
+    [self aMethodWithClass:self];
+    return NO;
+}
+
+@end
+
+
+
 
 #pragma mark   Tests for interaction with runtime and foundation conventions
 
@@ -305,11 +329,20 @@ typedef NSString TypedefString;
     XCTAssertEqual(numClassesBefore, numClassesAfter, @"Should have disposed dynamically generated classes.");
 }
 
+
 - (void)testClassesWithResolveMethodsCanBeMocked
 {
     // If this test fails it will crash due to recursion.
     __unused id mock = OCMClassMock([TestClassWithResolveMethods class]);
 }
+
+- (void)testWithClassesWithResolveMethodSimilarToCALayer
+{
+    // If this test fails it will crash.
+    TestClassWithResolveMethodsLikeCALayer *object = [[TestClassWithResolveMethodsLikeCALayer alloc] init];
+    __unused id mock = OCMPartialMock(object);
+}
+
 
 #pragma mark    verify mocks work properly when mocking init
 

@@ -62,6 +62,11 @@ static BOOL OCMIsUnqualifiedBlockType(const char *unqualifiedObjCType)
     return NO;
 }
 
+BOOL OCMIsClassType(const char *objCType)
+{
+    return OCMIsUnqualifiedClassType(OCMTypeWithoutQualifiers(objCType));
+}
+
 BOOL OCMIsBlockType(const char *objCType)
 {
     return OCMIsUnqualifiedBlockType(OCMTypeWithoutQualifiers(objCType));

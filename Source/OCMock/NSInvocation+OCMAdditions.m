@@ -93,9 +93,15 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
                     [retainedArguments addObject:blockArgument];
                     [blockArgument release];
                 }
+                else if(OCMIsClassType(argumentType) && object_isClass(argument))
+                {
+                    // The argument's type is class and the passed argument is a class. In this
+                    // case do not retain the argument. Note: Even though the type is class the
+                    // argument could be a non-class, e.g. an instance of OCMArg.
+                }
                 else
                 {
-                    [retainedArguments addObject:argument];
+                	[retainedArguments addObject:argument];
                 }
             }
         }
