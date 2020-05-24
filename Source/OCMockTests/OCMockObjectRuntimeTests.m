@@ -82,6 +82,29 @@ typedef NSString TypedefString;
 
 @end
 
+// This class imitates a bit how CALayer functions internally to repro
+// https://github.com/erikdoe/ocmock/issues/411
+@interface TestClassWithClassMethodThatImitatesCALayer : NSObject
+@end
+
+@implementation TestClassWithClassMethodThatImitatesCALayer
+
++ (void)aMethodWithClass:(Class)cls
+{
+}
+
++ (BOOL)resolveInstanceMethod:(SEL)sel {
+    // resolve must call a class method with self as an argument.
+    [self aMethodWithClass:self];
+    return NO;
+}
+
+- (void)aMethod
+{
+    // We need to have an instance method for the Partial Mock to swizzle.
+}
+
+@end
 
 @interface NSValueSubclassForTesting : NSValue
 
@@ -303,6 +326,12 @@ typedef NSString TypedefString;
 
     int numClassesAfter = objc_getClassList(NULL, 0);
     XCTAssertEqual(numClassesBefore, numClassesAfter, @"Should have disposed dynamically generated classes.");
+}
+
+- (void)testWithClassesSimilarToCALayer
+{
+    TestClassWithClassMethodThatImitatesCALayer *object = [[TestClassWithClassMethodThatImitatesCALayer alloc] init];
+    __unused id mock = OCMPartialMock(object);
 }
 
 - (void)testClassesWithResolveMethodsCanBeMocked
