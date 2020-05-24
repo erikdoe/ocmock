@@ -473,6 +473,12 @@ static NSString *TestNotification = @"TestNotification";
     XCTAssertTrue(blockWasInvoked, @"Should not have ignored the block argument.");
 }
 
+- (void)testThrowsWhenAttemptingToStubMethodOnStoppedMock
+{
+	[mock stopMocking];
+	XCTAssertThrowsSpecificNamed([[mock stub] rangeOfString:@"foo" options:0], NSException, NSInternalInconsistencyException);
+}
+
 
 #pragma mark    returning values from stubbed methods
 

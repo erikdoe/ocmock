@@ -50,6 +50,7 @@
 	return mockedClass;
 }
 
+
 #pragma mark  Extending/overriding superclass behaviour
 
 - (void)stopMocking

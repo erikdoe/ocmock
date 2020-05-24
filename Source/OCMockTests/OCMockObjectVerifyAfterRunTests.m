@@ -124,16 +124,16 @@
     [TestBaseClassForVerifyAfterRun classMethod1];
     [mock stopMocking];
 
-    BOOL threw = NO;
-    @try {
-      [[mock verify] classMethod1];
-    } @catch (NSException *ex) {
-        threw = YES;
-        XCTAssertEqualObjects(ex.name, NSInternalInconsistencyException);
-        NSString *expectedReason = [NSString stringWithFormat:@"** Cannot handle or verify invocations on %@ at %p. This error usually occurs when a mock object is used after stopMocking has been called on it. In most cases it is not necessary to call stopMocking. If you know you have to, please make sure that the mock object is not used afterwards.", [mock description], mock];
-        XCTAssertEqualObjects(ex.reason, expectedReason);
+    @try
+    {
+        [[mock verify] classMethod1];
+        XCTFail(@"Should have thrown an exception.");
     }
-    XCTAssertTrue(threw, @"Should have thrown a NSInternalInconsistencyException when attempting to verify after stopMocking.");
+    @catch(NSException *e)
+    {
+        XCTAssertEqualObjects([e name], NSInternalInconsistencyException);
+        XCTAssertTrue([[e reason] containsString:@"after stopMocking has been called"]);
+    }
 }
 
 
