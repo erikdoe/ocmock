@@ -14,6 +14,7 @@
  *  under the License.
  */
 
+#import <CoreData/CoreData.h>
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
 #import "TestClassWithCustomReferenceCounting.h"
