@@ -88,17 +88,14 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
             {
                 if(OCMIsBlockType(argumentType))
                 {
-                    if (!OCMIsBlockNoEscape(argument))
+                    // Block types need to be copied because they could be stack blocks.
+                    // However, non-escaping blocks have a lifetime that is stack-based and they
+                    // treat copy/release as a no-op. For details see:
+                    // https://reviews.llvm.org/rGdbfa453e4138bb977644929c69d1c71e5e8b4bee
+                    // If we keep a reference to a non-escaping block in retainedArguments, it
+                    // will end up as dangling pointer, resulting in a crash later.
+                    if(OCMIsNonEscapingBlock(argument) == NO)
                     {
-                        // Normal block types need to be copied in case they're stack blocks.
-                        // No escape blocks are special though and should not be retained because
-                        // their life time is stack based and copying/retaining a non-escaping
-                        // block is a no-op. For details see:
-                        // https://reviews.llvm.org/rGdbfa453e4138bb977644929c69d1c71e5e8b4bee
-                        // This means that if we keep a reference to a no escape block in
-                        // retainedArguments, it will end up as dangling pointer when we exit the
-                        // stack scope the block is declared in, and we will crash when we attempt
-                        // to use it.
                         id blockArgument = [argument copy];
                         [retainedArguments addObject:blockArgument];
                         [blockArgument release];
@@ -127,7 +124,8 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
         {
             if(OCMIsBlockType(returnType))
             {
-                if (!OCMIsBlockNoEscape(returnValue))
+                // See above for an explanation
+                if(OCMIsNonEscapingBlock(returnValue) == NO)
                 {
                     id blockReturnValue = [returnValue copy];
                     [retainedArguments addObject:blockReturnValue];

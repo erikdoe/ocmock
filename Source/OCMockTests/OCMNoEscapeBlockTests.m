@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2004-2020 Erik Doernenburg and contributors
+ *  Copyright (c) 2020 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -18,10 +18,10 @@
 #import <OCMock/OCMock.h>
 #import "OCMFunctionsPrivate.h"
 
-@interface NSString (NoEscapeBlock)
+@interface NSString(NoEscapeBlock)
 @end
 
-@implementation NSString (NoEscapeBlock)
+@implementation NSString(NoEscapeBlock)
 
 - (void)methodWithNoEscapeBlock:(void(NS_NOESCAPE ^)(void))block
 {
@@ -35,31 +35,32 @@
 
 @implementation BlockCapturer
 {
-  XCTestExpectation *expectation;
+    XCTestExpectation *expectation;
 }
 
 - (instancetype)initWithExpectation:(XCTestExpectation *)anExpectation
 {
-  expectation = anExpectation;
-  return self;
+    expectation = anExpectation;
+    return self;
 }
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)selector
 {
-  return [NSString instanceMethodSignatureForSelector:selector];
+    return [NSString instanceMethodSignatureForSelector:selector];
 }
 
 - (void)forwardInvocation:(NSInvocation *)invocation
 {
-  __unsafe_unretained id block;
-  [invocation getArgument:&block atIndex:2];
-  if (OCMIsBlockNoEscape(block))
-  {
-    [expectation fulfill];
-  }
+    __unsafe_unretained id block;
+    [invocation getArgument:&block atIndex:2];
+    if(OCMIsNonEscapingBlock(block))
+    {
+        [expectation fulfill];
+    }
 }
 
 @end
+
 
 @interface OCMNoEscapeBlockTests : XCTestCase
 @end
@@ -68,29 +69,29 @@
 
 - (void)testThatBlocksAreNoEscape
 {
-  // This tests that this file is compiled with
-  // `-Xclang -fexperimental-optimized-noescape` or equivalent.
-  XCTestExpectation *expectation = [self expectationWithDescription:@"Block should be noescape"];
-  id blockCapturer = [[BlockCapturer alloc] initWithExpectation:expectation];
-  int i = 0;
-  [blockCapturer methodWithNoEscapeBlock:^{
-      // Force i to be pulled into the closure.
-      (void)i;
-  }];
-  [self waitForExpectationsWithTimeout:0 handler:nil];
+    // This tests that this file is compiled with
+    // `-Xclang -fexperimental-optimized-noescape` or equivalent.
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Block should be noescape"];
+    id blockCapturer = [[BlockCapturer alloc] initWithExpectation:expectation];
+    int i = 0;
+    [blockCapturer methodWithNoEscapeBlock:^{
+        // Force i to be pulled into the closure.
+        (void)i;
+    }];
+    [self waitForExpectationsWithTimeout:0 handler:nil];
 }
 
-// This test will crash if it fails.
 - (void)testNoEscapeBlocksAreNotRetained
 {
-  // This tests that OCMock can handle noescape blocks.
-  id mock = [OCMockObject mockForClass:[NSString class]];
-  [[mock stub] methodWithNoEscapeBlock:[OCMArg invokeBlock]];
-  int i = 0;
-  [mock methodWithNoEscapeBlock:^{
-      // Force i to be pulled into the closure.
-      (void)i;
-  }];
+    // This tests that OCMock can handle noescape blocks.
+    // It crashes if it fails
+    id mock = [OCMockObject mockForClass:[NSString class]];
+    [[mock stub] methodWithNoEscapeBlock:[OCMArg invokeBlock]];
+    int i = 0;
+    [mock methodWithNoEscapeBlock:^{
+        // Force i to be pulled into the closure.
+        (void)i;
+    }];
 }
 
 @end

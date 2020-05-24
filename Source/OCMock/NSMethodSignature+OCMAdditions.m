@@ -113,8 +113,29 @@
 
 + (NSMethodSignature *)signatureForBlock:(id)block
 {
-    return OCMSignatureForBlock(block);
+    /* For a more complete implementation of parsing the block data structure see:
+     *
+     * https://github.com/ebf/CTObjectiveCRuntimeAdditions/tree/master/CTObjectiveCRuntimeAdditions/CTObjectiveCRuntimeAdditions
+     */
+
+    struct OCMBlockDef *blockRef = (__bridge struct OCMBlockDef *) block;
+
+    if(!(blockRef->flags & OCMBlockDescriptionFlagsHasSignature))
+        return nil;
+
+    void *signatureLocation = blockRef->descriptor;
+    signatureLocation += sizeof(unsigned long int);
+    signatureLocation += sizeof(unsigned long int);
+    if(blockRef->flags & OCMBlockDescriptionFlagsHasCopyDispose)
+    {
+        signatureLocation += sizeof(void (*)(void *dst, void *src));
+        signatureLocation += sizeof(void (*)(void *src));
+    }
+
+    const char *signature = (*(const char **) signatureLocation);
+    return [NSMethodSignature signatureWithObjCTypes:signature];
 }
+
 
 #pragma mark    Extended attributes
 
