@@ -279,6 +279,8 @@
 		817EB15C1BD765130047E85A /* OCMBlockArgCaller.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA2891034E7B73AA3511D17 /* OCMBlockArgCaller.h */; };
 		817EB15D1BD765130047E85A /* OCMArgAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA2833B48908EAD36444671 /* OCMArgAction.h */; };
 		817EB1661BD7674D0047E85A /* OCMFunctionsPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 03F370CA1BAA1DE800CAD3E8 /* OCMFunctionsPrivate.h */; };
+		8BF73E53246CA75E00B9A52C /* OCMNoEscapeBlockTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF73E52246CA75E00B9A52C /* OCMNoEscapeBlockTests.m */; settings = {COMPILER_FLAGS = "-Xclang -fexperimental-optimized-noescape"; }; };
+		8BF73E54246CA75E00B9A52C /* OCMNoEscapeBlockTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF73E52246CA75E00B9A52C /* OCMNoEscapeBlockTests.m */; settings = {COMPILER_FLAGS = "-Xclang -fexperimental-optimized-noescape"; }; };
 		8DE97C5522B43EE60098C63F /* OCMockObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B3159E146333BF0052CD09 /* OCMockObject.m */; };
 		8DE97C5622B43EE60098C63F /* OCClassMockObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B3158C146333BF0052CD09 /* OCClassMockObject.m */; };
 		8DE97C5722B43EE60098C63F /* OCPartialMockObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B315AA146333BF0052CD09 /* OCPartialMockObject.m */; };
@@ -569,6 +571,7 @@
 		3CFBDD751BB3DB200050D9C5 /* TestClassWithCustomReferenceCounting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestClassWithCustomReferenceCounting.h; sourceTree = "<group>"; };
 		3CFBDD761BB3DB200050D9C5 /* TestClassWithCustomReferenceCounting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestClassWithCustomReferenceCounting.m; sourceTree = "<group>"; };
 		817EB1621BD765130047E85A /* OCMock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OCMock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8BF73E52246CA75E00B9A52C /* OCMNoEscapeBlockTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMNoEscapeBlockTests.m; sourceTree = "<group>"; };
 		8DE97CA022B43EE60098C63F /* OCMock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OCMock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A02926811CA0725A00594AAF /* TestObjects.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TestObjects.xcdatamodel; sourceTree = "<group>"; };
 		D31108AD1828DB8700737925 /* OCMockLibTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OCMockLibTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -743,6 +746,7 @@
 				03B316231463350E0052CD09 /* OCMockObjectHamcrestTests.m */,
 				038599F623807B06002B3ABE /* OCMockObjectInternalTests.m */,
 				2FA2813F93050582D83E1499 /* OCMockObjectRuntimeTests.m */,
+				8BF73E52246CA75E00B9A52C /* OCMNoEscapeBlockTests.m */,
 				03B316271463350E0052CD09 /* OCMStubRecorderTests.m */,
 				037ECD5318FAD84100AF0E4C /* OCMInvocationMatcherTests.m */,
 				031E50571BB4A56300E257C3 /* OCMBoxedReturnValueProviderTests.m */,
@@ -1501,6 +1505,7 @@
 				2FA28FA53C57236B6DD64E82 /* OCMockObjectRuntimeTests.m in Sources */,
 				2FA2839F33289795284C32FB /* OCMockObjectTests.m in Sources */,
 				038599F723807B06002B3ABE /* OCMockObjectInternalTests.m in Sources */,
+				8BF73E53246CA75E00B9A52C /* OCMNoEscapeBlockTests.m in Sources */,
 				2FA28AB33F01A7D980F2C705 /* OCMockObjectDynamicPropertyMockingTests.m in Sources */,
 				031E50581BB4A56300E257C3 /* OCMBoxedReturnValueProviderTests.m in Sources */,
 			);
@@ -1613,6 +1618,7 @@
 				A06930951CA1BFC900513023 /* TestObjects.xcdatamodeld in Sources */,
 				2FA28295E1F58F40A77D7448 /* OCMockObjectRuntimeTests.m in Sources */,
 				038599F823807B06002B3ABE /* OCMockObjectInternalTests.m in Sources */,
+				8BF73E54246CA75E00B9A52C /* OCMNoEscapeBlockTests.m in Sources */,
 				2FA28246CD449A01717B1CEC /* OCMockObjectTests.m in Sources */,
 				2FA28F12AAD384A8CB16094B /* OCMockObjectDynamicPropertyMockingTests.m in Sources */,
 			);

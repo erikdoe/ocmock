@@ -424,3 +424,61 @@ void OCMReportFailure(OCMLocation *loc, NSString *description)
     }
 
 }
+
+#pragma mark  Block Support
+
+struct OCMBlockDef
+{
+    void *isa; // initialized to &_NSConcreteStackBlock or &_NSConcreteGlobalBlock
+    int flags;
+    int reserved;
+    void (*invoke)(void *, ...);
+    struct block_descriptor {
+        unsigned long int reserved;                 // NULL
+        unsigned long int size;                     // sizeof(struct Block_literal_1)
+        // optional helper functions
+        void (*copy_helper)(void *dst, void *src);  // IFF (1<<25)
+        void (*dispose_helper)(void *src);          // IFF (1<<25)
+        // required ABI.2010.3.16
+        const char *signature;                      // IFF (1<<30)
+    } *descriptor;
+};
+
+enum
+{
+    OCMBlockIsNoEscape                     = (1 << 23),
+    OCMBlockDescriptionFlagsHasCopyDispose = (1 << 25),
+    OCMBlockDescriptionFlagsHasSignature   = (1 << 30)
+};
+
+
+NSMethodSignature *OCMSignatureForBlock(id block)
+{
+    /* For a more complete implementation of parsing the block data structure see:
+     *
+     * https://github.com/ebf/CTObjectiveCRuntimeAdditions/tree/master/CTObjectiveCRuntimeAdditions/CTObjectiveCRuntimeAdditions
+     */
+
+    struct OCMBlockDef *blockRef = (__bridge struct OCMBlockDef *)block;
+
+    if(!(blockRef->flags & OCMBlockDescriptionFlagsHasSignature))
+        return nil;
+
+    void *signatureLocation = blockRef->descriptor;
+    signatureLocation += sizeof(unsigned long int);
+    signatureLocation += sizeof(unsigned long int);
+    if(blockRef->flags & OCMBlockDescriptionFlagsHasCopyDispose)
+    {
+        signatureLocation += sizeof(void(*)(void *dst, void *src));
+        signatureLocation += sizeof(void (*)(void *src));
+    }
+
+    const char *signature = (*(const char **)signatureLocation);
+    return [NSMethodSignature signatureWithObjCTypes:signature];
+}
+
+BOOL OCMIsBlockNoEscape(id block)
+{
+    struct OCMBlockDef *blockRef = (__bridge struct OCMBlockDef *)block;
+    return blockRef->flags & OCMBlockIsNoEscape;
+}

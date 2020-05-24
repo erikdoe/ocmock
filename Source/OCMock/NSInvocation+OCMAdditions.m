@@ -88,10 +88,21 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
             {
                 if(OCMIsBlockType(argumentType))
                 {
-                    // block types need to be copied in case they're stack blocks
-                    id blockArgument = [argument copy];
-                    [retainedArguments addObject:blockArgument];
-                    [blockArgument release];
+                    if (!OCMIsBlockNoEscape(argument))
+                    {
+                        // Normal block types need to be copied in case they're stack blocks.
+                        // No escape blocks are special though and should not be retained because
+                        // their life time is stack based and copying/retaining a non-escaping
+                        // block is a no-op. For details see:
+                        // https://reviews.llvm.org/rGdbfa453e4138bb977644929c69d1c71e5e8b4bee
+                        // This means that if we keep a reference to a no escape block in
+                        // retainedArguments, it will end up as dangling pointer when we exit the
+                        // stack scope the block is declared in, and we will crash when we attempt
+                        // to use it.
+                        id blockArgument = [argument copy];
+                        [retainedArguments addObject:blockArgument];
+                        [blockArgument release];
+                    }
                 }
                 else if(OCMIsClassType(argumentType) && object_isClass(argument))
                 {
@@ -116,9 +127,12 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
         {
             if(OCMIsBlockType(returnType))
             {
-                id blockReturnValue = [returnValue copy];
-                [retainedArguments addObject:blockReturnValue];
-                [blockReturnValue release];
+                if (!OCMIsBlockNoEscape(returnValue))
+                {
+                    id blockReturnValue = [returnValue copy];
+                    [retainedArguments addObject:blockReturnValue];
+                    [blockReturnValue release];
+                }
             }
             else
             {
