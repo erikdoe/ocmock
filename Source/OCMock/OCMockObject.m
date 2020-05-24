@@ -302,14 +302,15 @@
             default: actualDescription = [NSString stringWithFormat:@"invoked %lu times", (unsigned long)count]; break;
         }
 
-        NSString *addedInstructions = @"";
-        // Hacky way of determining if we are a class mock or a partial mock.
-        if (class_getInstanceMethod(object_getClass(self), @selector(realObject)))
+        NSString *description = [NSString stringWithFormat:@"%@: Method `%@` was %@; but was expected %@.",
+                                 [self description], [matcher description], actualDescription, [quantifier description]];
+
+        // Have to use the function and equality test because mocks manipulate the methods to determine class membership
+        if(object_getClass(self) == [OCPartialMockObject class])
         {
-            addedInstructions = [NSString stringWithFormat:@"Adding a stub for `%@` may resolve the issue. ex: `OCMStub([foo %@]).andForwardToRealObject()`", [matcher description], [matcher description]];
+            description = [description stringByAppendingFormat:@" If the method is implemented by NSObject or a category on it, adding a stub for the method may resolve the issue, e.g. `OCMStub([mockObject %@]).andForwardToRealObject()`", [matcher description]];
         }
-        NSString *description = [NSString stringWithFormat:@"%@: Method `%@` was %@; but was expected %@.%@",
-                                 [self description], [matcher description], actualDescription, [quantifier description], addedInstructions];
+
         OCMReportFailure(location, description);
     }
 }
