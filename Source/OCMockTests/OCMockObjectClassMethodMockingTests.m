@@ -18,7 +18,7 @@
 #import "OCClassMockObject.h"
 #import "OCMock.h"
 #import "OCPartialMockObject.h"
-
+#import "OCMIssueReporter.h"
 
 #pragma mark Helper classes
 
@@ -371,9 +371,12 @@ static NSUInteger initializeCallCount = 0;
 
 - (void)testThrowsWhenAttemptingToStubClassMethodOnStoppedMock
 {
+    OCMIssueReporter *reporter = [OCMIssueReporter defaultReporter];
+    [reporter pushIssueTreatment:OCMIssueTreatmentErrors];
     id mock = [OCClassMockObject mockForClass:[TestClassWithClassMethods class]];
     [mock stopMocking];
     XCTAssertThrowsSpecificNamed([[[mock stub] andReturn:@"hello"] foo], NSException, NSInternalInconsistencyException);
+    [reporter popIssueTreatment];
 }
 
 @end

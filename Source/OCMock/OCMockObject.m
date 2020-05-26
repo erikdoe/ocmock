@@ -28,7 +28,7 @@
 #import "OCObserverMockObject.h"
 #import "OCPartialMockObject.h"
 #import "OCProtocolMockObject.h"
-
+#import "OCMIssueReporter.h"
 
 @implementation OCMockObject
 
@@ -131,7 +131,10 @@
 
 - (void)addStub:(OCMInvocationStub *)aStub
 {
-    [self assertInvocationsArrayIsPresent];
+    if(![self checkThatInvocationsArrayIsPresent])
+    {
+      return;
+    }
     @synchronized(stubs)
     {
         [stubs addObject:aStub];
@@ -157,12 +160,15 @@
     }
 }
 
-- (void)assertInvocationsArrayIsPresent
+- (BOOL)checkThatInvocationsArrayIsPresent
 {
     if(invocations == nil)
     {
-        [NSException raise:NSInternalInconsistencyException format:@"** Cannot use mock object %@ at %p. This error usually occurs when a mock object is used after stopMocking has been called on it. In most cases it is not necessary to call stopMocking. If you know you have to, please make sure that the mock object is not used afterwards.", [self description], (void *)self];
+        NSString *reason = [NSString stringWithFormat:@"** Cannot use mock object %@ at %p. This issue usually occurs when a mock object is used after stopMocking has been called on it. In most cases it is not necessary to call stopMocking. If you know you have to, please make sure that the mock object is not used afterwards.", [self description], (void *)self];
+        [[OCMIssueReporter defaultReporter] reportIssueInFile:__FILE__ line:__LINE__ exceptionName:NSInternalInconsistencyException reason:reason];
+        return NO;
     }
+    return YES;
 }
 
 - (void)addInvocation:(NSInvocation *)anInvocation
@@ -313,7 +319,10 @@
 - (void)verifyInvocation:(OCMInvocationMatcher *)matcher withQuantifier:(OCMQuantifier *)quantifier atLocation:(OCMLocation *)location
 {
     NSUInteger count = 0;
-    [self assertInvocationsArrayIsPresent];
+    if(![self checkThatInvocationsArrayIsPresent])
+    {
+        return;
+    }
     @synchronized(invocations)
     {
         for(NSInvocation *invocation in invocations)
@@ -403,7 +412,10 @@
 
 - (BOOL)handleInvocation:(NSInvocation *)anInvocation
 {
-    [self assertInvocationsArrayIsPresent];
+    if(![self checkThatInvocationsArrayIsPresent])
+    {
+        return NO;
+    }
     [self addInvocation:anInvocation];
 
     OCMInvocationStub *stub = [self stubForInvocation:anInvocation];
