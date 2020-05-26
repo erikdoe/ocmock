@@ -7,7 +7,7 @@
 
 BUILD_DIR = OBJROOT="$(CURDIR)/build" SYMROOT="$(CURDIR)/build"
 SHELL = /bin/bash -e -o pipefail
-IOS32 = -scheme OCMockLib -destination 'platform=iOS Simulator,OS=10.3.1,name=iPhone 5' $(BUILD_DIR)
+IOS32 = -scheme OCMockLib -destination 'platform=iOS Simulator,OS=10.3.1,name=iPad (5th generation)' $(BUILD_DIR)
 IOS64 = -scheme OCMockLib -destination 'platform=iOS Simulator,OS=latest,name=iPhone 11' $(BUILD_DIR)
 MACOSX = -scheme OCMock -sdk macosx $(BUILD_DIR)
 XCODEBUILD = xcodebuild -project "$(CURDIR)/Source/OCMock.xcodeproj"
