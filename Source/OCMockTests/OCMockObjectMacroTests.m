@@ -538,7 +538,7 @@
     id mock = OCMClassMock([TestClassForMacroTesting class]);
     @try
     {
-        OCMVerify([mock init]);
+        OCMVerify([[mock init] description]);
         XCTFail(@"An exception should have been thrown.");
     }
     @catch(NSException *exception)
