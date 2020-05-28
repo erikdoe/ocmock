@@ -78,7 +78,7 @@ TestOpaque myOpaque;
 
 @interface TestClassWithProperty : NSObject
 
-@property (nonatomic, retain) NSString *title;
+@property (nonatomic, copy) NSString *title;
 
 @end
 

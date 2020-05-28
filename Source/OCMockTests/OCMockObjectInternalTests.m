@@ -22,7 +22,7 @@
 
 @interface TestClassForInternalTests : NSObject
 
-@property (nonatomic, retain) NSString *title;
+@property (nonatomic, copy) NSString *title;
 
 - (void)doStuffWithClass:(Class)aClass;
 
