@@ -92,13 +92,13 @@
 - (void)testReportsVerifyFailureWithCorrectLocation
 {
     id mock = OCMClassMock([NSString class]);
-    
+
     [[mock expect] lowercaseString];
-    
+
     shouldCaptureFailure = YES;
     OCMVerifyAll(mock); const char *expectedFile = __FILE__; int expectedLine = __LINE__;
     shouldCaptureFailure = NO;
-    
+
     XCTAssertNotNil(reportedDescription, @"Should have recorded a failure with description.");
     XCTAssertEqualObjects([NSString stringWithUTF8String:expectedFile], reportedFile, @"Should have reported correct file.");
     XCTAssertEqual(expectedLine, (int)reportedLine, @"Should have reported correct line");
@@ -107,7 +107,7 @@
 - (void)testReportsIgnoredExceptionsAtVerifyLocation
 {
     id mock = OCMClassMock([NSString class]);
-    
+
     [[mock reject] lowercaseString];
 
     @try
@@ -122,7 +122,7 @@
     shouldCaptureFailure = YES;
     OCMVerifyAll(mock); const char *expectedFile = __FILE__; int expectedLine = __LINE__;
     shouldCaptureFailure = NO;
-    
+
     XCTAssertTrue([reportedDescription rangeOfString:@"ignored"].location != NSNotFound, @"Should have reported ignored exceptions.");
     XCTAssertEqualObjects([NSString stringWithUTF8String:expectedFile], reportedFile, @"Should have reported correct file.");
     XCTAssertEqual(expectedLine, (int)reportedLine, @"Should have reported correct line");

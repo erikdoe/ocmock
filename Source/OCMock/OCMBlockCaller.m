@@ -19,17 +19,17 @@
 
 @implementation OCMBlockCaller
 
--(id)initWithCallBlock:(void (^)(NSInvocation *))theBlock 
+-(id)initWithCallBlock:(void (^)(NSInvocation *))theBlock
 {
     if ((self = [super init]))
     {
         block = [theBlock copy];
     }
-    
+
 	return self;
 }
 
--(void)dealloc 
+-(void)dealloc
 {
 	[block release];
 	[super dealloc];

@@ -22,7 +22,7 @@
 
 @implementation OCMRealObjectForwarder
 
-- (void)handleInvocation:(NSInvocation *)anInvocation 
+- (void)handleInvocation:(NSInvocation *)anInvocation
 {
 	id invocationTarget = [anInvocation target];
 

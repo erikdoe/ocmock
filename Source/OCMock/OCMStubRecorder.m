@@ -34,7 +34,7 @@
 {
     if(invocationMatcher != nil)
         [NSException raise:NSInternalInconsistencyException format:@"** Method init invoked twice on stub recorder. Are you trying to mock the init method? This is currently not supported."];
-    
+
     self = [super init];
     invocationMatcher = [[OCMInvocationStub alloc] init];
     return self;
@@ -87,7 +87,7 @@
 	return self;
 }
 
-- (id)andDo:(void (^)(NSInvocation *))aBlock 
+- (id)andDo:(void (^)(NSInvocation *))aBlock
 {
     [[self stub] addInvocationAction:[[[OCMBlockCaller alloc] initWithCallBlock:aBlock] autorelease]];
     return self;

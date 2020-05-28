@@ -357,62 +357,62 @@ static NSUInteger initializeCallCount = 0;
 - (void)testMockingManagedObject
 {
     // Set up the Core Data stack for the test.
-    
+
     NSManagedObjectModel *const model = [NSManagedObjectModel mergedModelFromBundles:@[[NSBundle bundleForClass:self.class]]];
     NSEntityDescription *const entity = model.entitiesByName[NSStringFromClass([OCTestManagedObject class])];
     NSPersistentStoreCoordinator *const coordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
     [coordinator addPersistentStoreWithType:NSInMemoryStoreType configuration:nil URL:nil options:nil error:NULL];
     NSManagedObjectContext *const context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-    
+
     // Create and mock a real core data object.
-    
+
     OCTestManagedObject *const realObject = [[OCTestManagedObject alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
     OCTestManagedObject *const partialMock = [OCMockObject partialMockForObject:realObject];
-    
+
     // Verify the subclassing behaviour is as we expect.
-    
+
     Class const runtimeObjectClass = object_getClass(realObject);
     Class const reportedClass = [realObject class];
-    
+
     // Core Data generates a dynamic subclass at runtime to implement modeled proprerties.
     // It will look something like "OCTestManagedObject_OCTestManagedObject_".
     XCTAssertTrue([runtimeObjectClass isSubclassOfClass:reportedClass]);
     XCTAssertNotEqual(runtimeObjectClass, reportedClass);
-    
+
     // Verify accessors and setters for attributes work as expected.
-    
+
     partialMock.name = @"OCMock";
     partialMock.sortOrder = 120;
-    
+
     XCTAssertEqualObjects(partialMock.name, @"OCMock");
     XCTAssertEqual(partialMock.sortOrder, 120);
-    
+
     partialMock.name = nil;
     partialMock.sortOrder = 0;
-    
+
     XCTAssertNil(partialMock.name);
     XCTAssertEqual(partialMock.sortOrder, 0);
-    
+
     // Verify to-many relationships work as expected.
-    
+
     OCTestManagedObject *const realObject2 = [[OCTestManagedObject alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
     OCTestManagedObject *const realObject3 = [[OCTestManagedObject alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
-    
+
     [partialMock addToManyRelationshipObject:realObject2];
-    
+
     XCTAssertEqualObjects(partialMock.toManyRelationship, [NSSet setWithObject:realObject2]);
     XCTAssertEqualObjects(realObject2.toManyRelationship, [NSSet setWithObject:realObject]);
-    
+
     partialMock.toOneRelationship = realObject3;
-    
+
     XCTAssertEqualObjects(partialMock.toOneRelationship, realObject3);
     XCTAssertEqualObjects(realObject3.toOneRelationship, realObject);
-    
+
     // Verify saving the context works as expected.
-    
+
     NSError *saveError = nil;
     [context save:&saveError];
-    
+
     XCTAssertNil(saveError);
 }
 
@@ -456,16 +456,16 @@ static NSUInteger initializeCallCount = 0;
 	static char *MyContext;
 	TestClassThatCallsSelf *realObject = [[TestClassThatCallsSelf alloc] init];
 	Class origClass = [realObject class];
-    
+
 	[realObject addObserver:self forKeyPath:@"methodInt" options:NSKeyValueObservingOptionNew context:MyContext];
 	Class kvoClass = object_getClass(realObject);
 
 	id mock = [OCMockObject partialMockForObject:realObject];
 	Class ourSubclass = object_getClass(realObject);
-    
+
 	XCTAssertEqualObjects([realObject class], origClass, @"We did not preserve the original [self class]");
 	XCTAssertFalse(ourSubclass == kvoClass, @"KVO with subclass did not work");
-    
+
 	/* Due to the way we replace the object's class, the KVO class gets overwritten and
 	   KVO notifications stop functioning.  If we did not do this, the presence of the mock
 	   subclass would cause KVO to crash, at least without further tinkering. */
@@ -536,10 +536,10 @@ static NSUInteger initializeCallCount = 0;
 {
 	TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
 	id mock = [OCMockObject partialMockForObject:realObject];
-    
+
 	[[[mock expect] andForwardToRealObject] foo];
 	XCTAssertEqual(@"Foo", [mock foo], @"Should have called method on real object.");
-    
+
 	[mock verify];
 }
 
@@ -547,10 +547,10 @@ static NSUInteger initializeCallCount = 0;
 {
 	TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
 	id mock = [OCMockObject partialMockForObject:realObject];
-	
+
 	[[[mock expect] andForwardToRealObject] foo];
 	XCTAssertEqual(@"Foo", [realObject foo], @"Should have called method on real object.");
-	
+
 	[mock verify];
 }
 

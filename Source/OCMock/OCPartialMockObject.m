@@ -70,7 +70,7 @@
      * is sometimes overridden, by KVO or CoreData, for example, to return a subclass.
      *
      * With KVO, if we replace and subclass the actual class, as returned by object_getClass(),
-     * we lose notifications. So, in that case only, we return the class reported by the class 
+     * we lose notifications. So, in that case only, we return the class reported by the class
      * method.
      */
 

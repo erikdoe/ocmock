@@ -26,7 +26,7 @@
         provider = [aProvider retain];
         selector = aSelector;
     }
-	
+
 	return self;
 }
 

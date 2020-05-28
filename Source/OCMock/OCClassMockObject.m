@@ -92,7 +92,7 @@
     /* the runtime and OCMock depend on string and array; we don't intercept methods on them to avoid endless loops */
     if([[mockedClass class] isSubclassOfClass:[NSString class]] || [[mockedClass class] isSubclassOfClass:[NSArray class]])
         return;
-    
+
     /* trying to replace class methods on NSManagedObject and subclasses of it doesn't work; see #339 */
     if([mockedClass isSubclassOfClass:objc_getClass("NSManagedObject")])
         return;
@@ -234,7 +234,7 @@
 /*
  taken from:
  `class-dump -f isNS /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator7.0.sdk/System/Library/Frameworks/CoreFoundation.framework`
- 
+
  @ interface NSObject (__NSIsKinds)
  - (_Bool)isNSValue__;
  - (_Bool)isNSTimeZone__;

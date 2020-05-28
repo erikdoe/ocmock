@@ -25,7 +25,7 @@
     {
         value = [aValue retain];
     }
-	
+
 	return self;
 }
 

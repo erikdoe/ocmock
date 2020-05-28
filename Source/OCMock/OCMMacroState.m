@@ -133,7 +133,7 @@ static NSString *const OCMGlobalStateKey = @"OCMGlobalStateKey";
     {
         recorder = [aRecorder retain];
     }
-    
+
     return self;
 }
 

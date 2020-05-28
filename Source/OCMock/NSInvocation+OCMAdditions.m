@@ -224,78 +224,78 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
  			[self getArgument:&s atIndex:argIndex];
             return [NSValue valueWithBytes:&s objCType:":"];
  		}
-		case 'i': 
+		case 'i':
 		{
 			int value;
 			[self getArgument:&value atIndex:argIndex];
 			return @(value);
-		}	
+		}
 		case 's':
 		{
 			short value;
 			[self getArgument:&value atIndex:argIndex];
 			return @(value);
-		}	
+		}
 		case 'l':
 		{
 			long value;
 			[self getArgument:&value atIndex:argIndex];
 			return @(value);
-		}	
+		}
 		case 'q':
 		{
 			long long value;
 			[self getArgument:&value atIndex:argIndex];
 			return @(value);
-		}	
+		}
 		case 'c':
 		{
 			char value;
 			[self getArgument:&value atIndex:argIndex];
 			return @(value);
-		}	
+		}
 		case 'C':
 		{
 			unsigned char value;
 			[self getArgument:&value atIndex:argIndex];
 			return @(value);
-		}	
+		}
 		case 'I':
 		{
 			unsigned int value;
 			[self getArgument:&value atIndex:argIndex];
 			return @(value);
-		}	
+		}
 		case 'S':
 		{
 			unsigned short value;
 			[self getArgument:&value atIndex:argIndex];
 			return @(value);
-		}	
+		}
 		case 'L':
 		{
 			unsigned long value;
 			[self getArgument:&value atIndex:argIndex];
 			return @(value);
-		}	
+		}
 		case 'Q':
 		{
 			unsigned long long value;
 			[self getArgument:&value atIndex:argIndex];
 			return @(value);
-		}	
+		}
 		case 'f':
 		{
 			float value;
 			[self getArgument:&value atIndex:argIndex];
 			return @(value);
-		}	
+		}
 		case 'd':
 		{
 			double value;
 			[self getArgument:&value atIndex:argIndex];
 			return @(value);
-		}	
+		}
 		case 'D':
 		{
 			long double value;
@@ -324,8 +324,8 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
 			NSMutableData *argumentData = [[[NSMutableData alloc] initWithLength:argSize] autorelease];
 			[self getArgument:[argumentData mutableBytes] atIndex:argIndex];
 			return [NSValue valueWithBytes:[argumentData bytes] objCType:argType];
-		}       
-			
+		}
+
 	}
 	[NSException raise:NSInvalidArgumentException format:@"Argument type '%s' not supported", argType];
 	return nil;
@@ -335,10 +335,10 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
 {
 	NSMethodSignature *methodSignature = [self methodSignature];
 	NSUInteger numberOfArgs = [methodSignature numberOfArguments];
-	
+
 	if (numberOfArgs == 2)
 		return NSStringFromSelector([self selector]);
-	
+
 	NSArray *selectorParts = [NSStringFromSelector([self selector]) componentsSeparatedByString:@":"];
 	NSMutableString *description = [[NSMutableString alloc] init];
 	NSUInteger i;
@@ -347,7 +347,7 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
 		[description appendFormat:@"%@%@:", (i > 2 ? @" " : @""), [selectorParts objectAtIndex:(i - 2)]];
 		[description appendString:[self argumentDescriptionAtIndex:(NSInteger)i]];
 	}
-	
+
 	return [description autorelease];
 }
 
@@ -378,14 +378,14 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
 		case ':':	return [self selectorDescriptionAtIndex:argIndex];
 		default:	return [@"<??" stringByAppendingString:@">"];  // avoid confusion with trigraphs...
 	}
-	
+
 }
 
 
 - (NSString *)objectDescriptionAtIndex:(NSInteger)anInt
 {
 	id object;
-	
+
 	[self getArgument:&object atIndex:anInt];
 	if (object == nil)
 		return @"nil";
@@ -407,9 +407,9 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
 {
 	unsigned char buffer[128];
 	memset(buffer, 0x0, 128);
-	
+
 	[self getArgument:&buffer atIndex:anInt];
-	
+
 	// If there's only one character in the buffer, and it's 0 or 1, then we have a BOOL
 	if (buffer[1] == '\0' && (buffer[0] == 0 || buffer[0] == 1))
 		return (buffer[0] == 1 ? @"YES" : @"NO");
@@ -421,7 +421,7 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
 {
 	unsigned char buffer[128];
 	memset(buffer, 0x0, 128);
-	
+
 	[self getArgument:&buffer atIndex:anInt];
 	return [NSString stringWithFormat:@"'%c'", *buffer];
 }
@@ -429,7 +429,7 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
 - (NSString *)intDescriptionAtIndex:(NSInteger)anInt
 {
 	int intValue;
-	
+
 	[self getArgument:&intValue atIndex:anInt];
 	return [NSString stringWithFormat:@"%d", intValue];
 }
@@ -437,7 +437,7 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
 - (NSString *)unsignedIntDescriptionAtIndex:(NSInteger)anInt
 {
 	unsigned int intValue;
-	
+
 	[self getArgument:&intValue atIndex:anInt];
 	return [NSString stringWithFormat:@"%d", intValue];
 }
@@ -445,7 +445,7 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
 - (NSString *)shortDescriptionAtIndex:(NSInteger)anInt
 {
 	short shortValue;
-	
+
 	[self getArgument:&shortValue atIndex:anInt];
 	return [NSString stringWithFormat:@"%hi", shortValue];
 }
@@ -453,7 +453,7 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
 - (NSString *)unsignedShortDescriptionAtIndex:(NSInteger)anInt
 {
 	unsigned short shortValue;
-	
+
 	[self getArgument:&shortValue atIndex:anInt];
 	return [NSString stringWithFormat:@"%hu", shortValue];
 }
@@ -461,7 +461,7 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
 - (NSString *)longDescriptionAtIndex:(NSInteger)anInt
 {
 	long longValue;
-	
+
 	[self getArgument:&longValue atIndex:anInt];
 	return [NSString stringWithFormat:@"%ld", longValue];
 }
@@ -469,7 +469,7 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
 - (NSString *)unsignedLongDescriptionAtIndex:(NSInteger)anInt
 {
 	unsigned long longValue;
-	
+
 	[self getArgument:&longValue atIndex:anInt];
 	return [NSString stringWithFormat:@"%lu", longValue];
 }
@@ -477,7 +477,7 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
 - (NSString *)longLongDescriptionAtIndex:(NSInteger)anInt
 {
 	long long longLongValue;
-	
+
 	[self getArgument:&longLongValue atIndex:anInt];
 	return [NSString stringWithFormat:@"%qi", longLongValue];
 }
@@ -485,7 +485,7 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
 - (NSString *)unsignedLongLongDescriptionAtIndex:(NSInteger)anInt
 {
 	unsigned long long longLongValue;
-	
+
 	[self getArgument:&longLongValue atIndex:anInt];
 	return [NSString stringWithFormat:@"%qu", longLongValue];
 }
@@ -493,7 +493,7 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
 - (NSString *)doubleDescriptionAtIndex:(NSInteger)anInt
 {
 	double doubleValue;
-	
+
 	[self getArgument:&doubleValue atIndex:anInt];
 	return [NSString stringWithFormat:@"%f", doubleValue];
 }
@@ -501,7 +501,7 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
 - (NSString *)floatDescriptionAtIndex:(NSInteger)anInt
 {
 	float floatValue;
-	
+
 	[self getArgument:&floatValue atIndex:anInt];
 	return [NSString stringWithFormat:@"%f", floatValue];
 }
@@ -509,7 +509,7 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
 - (NSString *)longDoubleDescriptionAtIndex:(NSInteger)anInt
 {
 	long double longDoubleValue;
-	
+
 	[self getArgument:&longDoubleValue atIndex:anInt];
 	return [NSString stringWithFormat:@"%Lf", longDoubleValue];
 }
@@ -522,7 +522,7 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
 - (NSString *)pointerDescriptionAtIndex:(NSInteger)anInt
 {
 	void *buffer;
-	
+
 	[self getArgument:&buffer atIndex:anInt];
 	return [NSString stringWithFormat:@"%p", buffer];
 }
@@ -531,7 +531,7 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
 {
 	char buffer[104];
 	char *cStringPtr;
-	
+
 	[self getArgument:&cStringPtr atIndex:anInt];
 	strlcpy(buffer, cStringPtr, sizeof(buffer));
 	strlcpy(buffer + 100, "...", (sizeof(buffer) - 100));
@@ -541,7 +541,7 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
 - (NSString *)selectorDescriptionAtIndex:(NSInteger)anInt
 {
 	SEL selectorValue;
-	
+
 	[self getArgument:&selectorValue atIndex:anInt];
 	return [NSString stringWithFormat:@"@selector(%@)", NSStringFromSelector(selectorValue)];
 }

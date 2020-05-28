@@ -29,7 +29,7 @@
     objc_property_t property = [self propertyMatchingSelector:selector inClass:aClass isGetter:&isGetter];
     if(property == NULL)
         return nil;
-    
+
     const char *propertyAttributesString = property_getAttributes(property);
     NSArray *propertyAttributes = [[NSString stringWithCString:propertyAttributesString
                                                       encoding:NSASCIIStringEncoding] componentsSeparatedByString:@","];
@@ -49,7 +49,7 @@
     NSRange r = [typeStr rangeOfString:@"\""]; // incomplete workaround to deal with structs
     if(r.location != NSNotFound)
         typeStr = [typeStr substringToIndex:r.location];
-    
+
     NSString *sigStringFormat = isGetter ? @"%@@:" : @"v@:%@";
     const char *sigCString = [[NSString stringWithFormat:sigStringFormat, typeStr] cStringUsingEncoding:NSASCIIStringEncoding];
     return [NSMethodSignature signatureWithObjCTypes:sigCString];
@@ -59,7 +59,7 @@
 + (objc_property_t)propertyMatchingSelector:(SEL)selector inClass:(Class)aClass isGetter:(BOOL *)isGetterPtr
 {
     NSString *propertyName = NSStringFromSelector(selector);
-    
+
     // first try selector as is aassuming it's a getter
     objc_property_t property = class_getProperty(aClass, [propertyName cStringUsingEncoding:NSASCIIStringEncoding]);
     if(property != NULL)
@@ -83,7 +83,7 @@
             return property;
         }
     }
-    
+
     // search through properties with custom getter/setter that corresponds to selector
     unsigned int propertiesCount = 0;
     objc_property_t *allProperties = class_copyPropertyList(aClass, &propertiesCount);

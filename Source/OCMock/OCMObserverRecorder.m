@@ -71,7 +71,7 @@
 - (BOOL)argument:(id)expectedArg matchesArgument:(id)observedArg
 {
 	if([expectedArg isKindOfClass:[OCMConstraint class]])
-	{	
+	{
 		return [expectedArg evaluate:observedArg];
 	}
 	else if([expectedArg conformsToProtocol:objc_getProtocol("HCMatcher")])

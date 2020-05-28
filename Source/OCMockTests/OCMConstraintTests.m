@@ -44,27 +44,27 @@
 - (void)testIsNilAcceptsOnlyNil
 {
 	OCMConstraint *constraint = [OCMIsNilConstraint constraint];
-	
+
 	XCTAssertFalse([constraint evaluate:@"foo"], @"Should not have accepted a value.");
-	XCTAssertTrue([constraint evaluate:nil], @"Should have accepted nil.");	
+	XCTAssertTrue([constraint evaluate:nil], @"Should have accepted nil.");
 }
 
 - (void)testIsNotNilAcceptsAnythingButNil
 {
 	OCMConstraint *constraint = [OCMIsNotNilConstraint constraint];
-	
+
 	XCTAssertTrue([constraint evaluate:@"foo"], @"Should have accepted a value.");
-	XCTAssertFalse([constraint evaluate:nil], @"Should not have accepted nil.");	
+	XCTAssertFalse([constraint evaluate:nil], @"Should not have accepted nil.");
 }
 
 - (void)testNotEqualAcceptsAnythingButValue
 {
 	OCMIsNotEqualConstraint *constraint = [OCMIsNotEqualConstraint constraint];
 	constraint->testValue = @"foo";
-	
+
 	XCTAssertFalse([constraint evaluate:@"foo"], @"Should not have accepted value.");
-	XCTAssertTrue([constraint evaluate:@"bar"], @"Should have accepted other value.");	
-	XCTAssertTrue([constraint evaluate:nil], @"Should have accepted nil.");	
+	XCTAssertTrue([constraint evaluate:@"bar"], @"Should have accepted other value.");
+	XCTAssertTrue([constraint evaluate:nil], @"Should have accepted nil.");
 }
 
 
@@ -119,14 +119,14 @@
 		{
 			return [value isEqualToString:@"foo"];
 		};
-	
+
 	OCMBlockConstraint *constraint = [[OCMBlockConstraint alloc] initWithConstraintBlock:checkForFooBlock];
 
 	XCTAssertTrue([constraint evaluate:@"foo"], @"Should have accepted foo.");
 	XCTAssertFalse([constraint evaluate:@"bar"], @"Should not have accepted bar.");
 }
 
--(void)testBlockConstraintCanCaptureArgument 
+-(void)testBlockConstraintCanCaptureArgument
 {
 	__block NSString *captured;
 	BOOL (^captureArgBlock)(id) = ^(id value)
@@ -134,7 +134,7 @@
 			captured = value;
 			return YES;
 		};
-	
+
 	OCMBlockConstraint *constraint = [[OCMBlockConstraint alloc] initWithConstraintBlock:captureArgBlock];
 
 	[constraint evaluate:@"foo"];
@@ -146,7 +146,7 @@
 - (void)testEvaluateNilBlockReturnsNo
 {
     OCMBlockConstraint *constraint = [[OCMBlockConstraint alloc] initWithConstraintBlock:nil];
-    
+
     XCTAssertFalse([constraint evaluate:@"foo"]);
 }
 

@@ -71,7 +71,7 @@
 	// Give it one argument (starts at index 2)
 	NSNumber *argument = @1;
 	[invocation setArgument:&argument atIndex:2];
-	
+
 	NSString *expected = [NSString stringWithFormat:@"isEqualToNumber:%d", 1];
 	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
@@ -81,7 +81,7 @@
 	NSInvocation *invocation = [self invocationForClass:[NSString class] selector:@selector(isEqualToString:)];
 	NSString *argument = @"TEST_STRING";
 	[invocation setArgument:&argument atIndex:2];
-	
+
 	NSString *expected = [NSString stringWithFormat:@"isEqualToString:@\"%@\"", @"TEST_STRING"];
 	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
@@ -93,7 +93,7 @@
 	NSString *argumentTwo = @"TEST_STRING";
 	[invocation setArgument:&argumentOne atIndex:2];
 	[invocation setArgument:&argumentTwo atIndex:3];
-	
+
 	NSString *expected = [NSString stringWithFormat:@"setValue:%d forKey:@\"%@\"", 1, @"TEST_STRING"];
 	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
@@ -103,7 +103,7 @@
 	NSInvocation *invocation = [self invocationForClass:[NSMutableArray class] selector:@selector(addObjectsFromArray:)];
 	NSArray *argument = @[@"TEST_STRING"];
 	[invocation setArgument:&argument atIndex:2];
-	
+
 	NSString *expected = [NSString stringWithFormat:@"addObjectsFromArray:%@", [argument description]];
 	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
@@ -113,7 +113,7 @@
 	NSInvocation *invocation = [self invocationForClass:[NSNumber class] selector:@selector(initWithInt:)];
 	int argumentOne = 1;
 	[invocation setArgument:&argumentOne atIndex:2];
-	
+
 	NSString *expected = [NSString stringWithFormat:@"initWithInt:%d", 1];
 	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
@@ -123,7 +123,7 @@
 	NSInvocation *invocation = [self invocationForClass:[NSNumber class] selector:@selector(initWithUnsignedInt:)];
 	unsigned int argumentOne = 1;
 	[invocation setArgument:&argumentOne atIndex:2];
-	
+
 	NSString *expected = [NSString stringWithFormat:@"initWithUnsignedInt:%d", 1];
 	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
@@ -133,7 +133,7 @@
 	NSInvocation *invocation = [self invocationForClass:[NSNumber class] selector:@selector(initWithBool:)];
 	BOOL argumentOne = TRUE;
 	[invocation setArgument:&argumentOne atIndex:2];
-	
+
 	NSString *expected = [NSString stringWithFormat:@"initWithBool:YES"];
 	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
@@ -143,7 +143,7 @@
 	NSInvocation *invocation = [self invocationForClass:[NSNumber class] selector:@selector(initWithChar:)];
 	char argumentOne = 'd';
 	[invocation setArgument:&argumentOne atIndex:2];
-	
+
 	NSString *expected = [NSString stringWithFormat:@"initWithChar:'%c'", argumentOne];
 	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
@@ -153,7 +153,7 @@
 	NSInvocation *invocation = [self invocationForClass:[NSNumber class] selector:@selector(initWithUnsignedChar:)];
 	unsigned char argumentOne = 'd';
 	[invocation setArgument:&argumentOne atIndex:2];
-	
+
 	NSString *expected = [NSString stringWithFormat:@"initWithUnsignedChar:'%c'", argumentOne];
 	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
@@ -163,7 +163,7 @@
 	NSInvocation *invocation = [self invocationForClass:[NSNumber class] selector:@selector(initWithDouble:)];
 	double argumentOne = 1;
 	[invocation setArgument:&argumentOne atIndex:2];
-	
+
 	NSString *expected = [NSString stringWithFormat:@"initWithDouble:%f", argumentOne];
 	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
@@ -173,7 +173,7 @@
 	NSInvocation *invocation = [self invocationForClass:[NSNumber class] selector:@selector(initWithFloat:)];
 	float argumentOne = 1;
 	[invocation setArgument:&argumentOne atIndex:2];
-	
+
 	NSString *expected = [NSString stringWithFormat:@"initWithFloat:%f", argumentOne];
 	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
@@ -183,7 +183,7 @@
 	NSInvocation *invocation = [self invocationForClass:[NSValue class] selector:@selector(ocmtest_initWithLongDouble:)];
 	long double argumentOne = 1;
 	[invocation setArgument:&argumentOne atIndex:2];
-	
+
 	NSString *expected = [NSString stringWithFormat:@"ocmtest_initWithLongDouble:%Lf", argumentOne];
 	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
@@ -193,7 +193,7 @@
     NSInvocation *invocation = [self invocationForClass:[NSNumber class] selector:@selector(initWithLong:)];
 	long argumentOne = 1;
 	[invocation setArgument:&argumentOne atIndex:2];
-	
+
 	NSString *expected = [NSString stringWithFormat:@"initWithLong:%ld", argumentOne];
 	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
@@ -203,7 +203,7 @@
 	NSInvocation *invocation = [self invocationForClass:[NSNumber class] selector:@selector(initWithUnsignedLong:)];
 	unsigned long argumentOne = 1;
 	[invocation setArgument:&argumentOne atIndex:2];
-	
+
 	NSString *expected = [NSString stringWithFormat:@"initWithUnsignedLong:%lu", argumentOne];
 	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
@@ -213,7 +213,7 @@
 	NSInvocation *invocation = [self invocationForClass:[NSNumber class] selector:@selector(initWithLongLong:)];
 	long long argumentOne = 1;
 	[invocation setArgument:&argumentOne atIndex:2];
-	
+
 	NSString *expected = [NSString stringWithFormat:@"initWithLongLong:%qi", argumentOne];
 	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
@@ -223,7 +223,7 @@
 	NSInvocation *invocation = [self invocationForClass:[NSNumber class] selector:@selector(initWithUnsignedLongLong:)];
 	unsigned long long argumentOne = 1;
 	[invocation setArgument:&argumentOne atIndex:2];
-	
+
 	NSString *expected = [NSString stringWithFormat:@"initWithUnsignedLongLong:%qu", argumentOne];
 	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
@@ -233,7 +233,7 @@
 	NSInvocation *invocation = [self invocationForClass:[NSNumber class] selector:@selector(initWithShort:)];
 	short argumentOne = 1;
 	[invocation setArgument:&argumentOne atIndex:2];
-	
+
 	NSString *expected = [NSString stringWithFormat:@"initWithShort:%hi", argumentOne];
 	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
@@ -255,7 +255,7 @@
 	range.location = 2;
 	range.length = 4;
 	[invocation setArgument:&range atIndex:2];
-	
+
 	NSString *expected = @"substringWithRange:(NSRange: {2, 4})";
 	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
@@ -264,7 +264,7 @@
 {
 	NSInvocation *invocation = [self invocationForClass:[NSString class] selector:@selector(initWithUTF8String:)];
 	NSString *string = @"A string that is longer than 100 characters. 123456789 123456789 123456789 123456789 123456789 123456789";
-	const char *cString = [string UTF8String]; 
+	const char *cString = [string UTF8String];
 	[invocation setArgument:&cString atIndex:2];
 
 	NSString *expected = [NSString stringWithFormat:@"initWithUTF8String:\"%@...\"", [string substringToIndex:100]];
@@ -276,7 +276,7 @@
 	NSInvocation *invocation = [self invocationForClass:[NSString class] selector:@selector(respondsToSelector:)];
 	SEL selectorValue = @selector(testInvocationDescriptionWithSelectorArgument);
 	[invocation setArgument:&selectorValue atIndex:2];
-	
+
 	NSString *expected = [NSString stringWithFormat:@"respondsToSelector:@selector(%@)", NSStringFromSelector(selectorValue)];
 	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
@@ -289,7 +289,7 @@
 	NSUInteger length = [data length];
 	[invocation setArgument:&bytes atIndex:2];
 	[invocation setArgument:&length atIndex:3];
-	
+
 	NSString *expected1 = [NSString stringWithFormat:@"initWithBytes:"];
 	NSString *expected2 = [NSString stringWithFormat:@"length:%lu", (unsigned long)length];
 	NSString *invocationDescription = [invocation invocationDescription];
@@ -302,7 +302,7 @@
 	NSInvocation *invocation = [self invocationForClass:[NSString class] selector:@selector(initWithString:)];
 	NSString *argString = nil;
 	[invocation setArgument:&argString atIndex:2];
-	
+
 	NSString *expected = [NSString stringWithFormat:@"initWithString:nil"];
 	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }

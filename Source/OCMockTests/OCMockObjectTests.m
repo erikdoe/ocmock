@@ -335,7 +335,7 @@ static NSString *TestNotification = @"TestNotification";
 - (void)testAcceptsStubbedMethodWithAnyPointerArgument
 {
     [[mock stub] getCharacters:[OCMArg anyPointer]];
-    
+
     unichar buffer[10];
     XCTAssertNoThrow([mock getCharacters:buffer], @"Should have stubbed method.");
 }
@@ -603,7 +603,7 @@ static NSString *TestNotification = @"TestNotification";
         OCMStub([mockWithShortLifetime shared]).andReturn(mockWithShortLifetime);
     }
     id singleton = [TestClassWithClassMethod shared];
-    
+
     XCTAssertEqualObjects(@"foo", [singleton stringValue], @"Should return value from real implementation (because shared is not stubbed anymore).");
 }
 
@@ -739,10 +739,10 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testInvokesBlockWithArgs
 {
-    
+
     BOOL bVal = YES, *bPtr = &bVal;
     [[mock stub] enumerateLinesUsingBlock:[OCMArg invokeBlockWithArgs:@"First param", OCMOCK_VALUE(bPtr), nil]];
-    
+
     __block BOOL wasCalled = NO;
     __block NSString *firstParam;
     __block BOOL *secondParam;
@@ -776,7 +776,7 @@ static NSString *TestNotification = @"TestNotification";
 - (void)testThrowsIfArgsLengthMismatch
 {
     [[mock stub] enumerateLinesUsingBlock:[OCMArg invokeBlockWithArgs:@"First but no second", nil]];
-    
+
     XCTAssertThrowsSpecificNamed([mock enumerateLinesUsingBlock:^(NSString *line, BOOL *stop) {}], NSException, NSInvalidArgumentException, @"Should have raised an exception.");
 }
 
@@ -785,7 +785,7 @@ static NSString *TestNotification = @"TestNotification";
     /// @note Should throw because we don't construct default values for the NSRange struct
     /// arguments.
     [[mock stub] enumerateSubstringsInRange:NSMakeRange(0, 10) options:NSStringEnumerationByLines usingBlock:[OCMArg invokeBlock]];
- 
+
     XCTAssertThrowsSpecificNamed([mock enumerateSubstringsInRange:NSMakeRange(0, 10) options:NSStringEnumerationByLines usingBlock:^(NSString * _Nullable substring, NSRange substringRange, NSRange enclosingRange, BOOL * _Nonnull stop) {}], NSException, NSInvalidArgumentException, @"No exception occurred");
 }
 
@@ -794,14 +794,14 @@ static NSString *TestNotification = @"TestNotification";
     /// @note Should throw because of the third argument (we don't construct a default for struct
     /// values).
     [[mock stub] enumerateSubstringsInRange:NSMakeRange(0, 10) options:NSStringEnumerationByLines usingBlock:[OCMArg invokeBlockWithArgs:@"String 1", OCMOCK_VALUE(NSMakeRange(0, 10)), [OCMArg defaultValue], [OCMArg defaultValue], nil]];
-    
+
     XCTAssertThrowsSpecificNamed([mock enumerateSubstringsInRange:NSMakeRange(0, 10) options:NSStringEnumerationByLines usingBlock:^(NSString * _Nullable substring, NSRange substringRange, NSRange enclosingRange, BOOL * _Nonnull stop) {}], NSException, NSInvalidArgumentException, @"No exception occurred");
 }
 
 - (void)testInvokesBlockWithDefaultArgs
 {
     [[mock stub] enumerateLinesUsingBlock:[OCMArg invokeBlockWithArgs:[OCMArg defaultValue], [OCMArg defaultValue], nil]];
-    
+
     __block NSString *firstParam;
     __block BOOL *secondParam;
     void (^block)(NSString *, BOOL *) = ^(NSString *line, BOOL *stop)
@@ -810,7 +810,7 @@ static NSString *TestNotification = @"TestNotification";
         secondParam = stop;
     };
     [mock enumerateLinesUsingBlock:block];
-    
+
     XCTAssertNil(firstParam, @"First param does not default to nil");
     XCTAssertEqual(secondParam, NULL, @"Second param does not default to NULL");
 }
@@ -818,7 +818,7 @@ static NSString *TestNotification = @"TestNotification";
 - (void)testInvokesBlockWithAllDefaultArgs
 {
     [[mock stub] enumerateLinesUsingBlock:[OCMArg invokeBlock]];
-    
+
     __block NSString *firstParam;
     __block BOOL *secondParam;
     void (^block)(NSString *, BOOL *) = ^(NSString *line, BOOL *stop)
@@ -827,7 +827,7 @@ static NSString *TestNotification = @"TestNotification";
         secondParam = stop;
     };
     [mock enumerateLinesUsingBlock:block];
-    
+
     XCTAssertNil(firstParam, @"First param does not default to nil");
     XCTAssertEqual(secondParam, NULL, @"Second param does not default to NULL");
 }
@@ -989,10 +989,10 @@ static NSString *TestNotification = @"TestNotification";
 {
 	[[mock expect] lowercaseString];
 	[[mock expect] uppercaseString];
-    
+
 	[mock lowercaseString];
 	[mock uppercaseString];
-    
+
 	[mock verifyWithDelay:1];
 }
 
@@ -1002,7 +1002,7 @@ static NSString *TestNotification = @"TestNotification";
         [NSThread sleepForTimeInterval:0.1];
         [self->mock lowercaseString];
     });
-    
+
 	[[mock expect] lowercaseString];
 	[mock verifyWithDelay:1];
 }
@@ -1013,7 +1013,7 @@ static NSString *TestNotification = @"TestNotification";
         [NSThread sleepForTimeInterval:0.1];
         [self->mock lowercaseString];
     });
-    
+
 	[[mock expect] lowercaseString];
 	XCTAssertThrows([mock verify], @"Should have raised an exception because method was not called in time.");
 	[mock verifyWithDelay:1];
@@ -1096,5 +1096,3 @@ static NSString *TestNotification = @"TestNotification";
 
 
 @end
-
-

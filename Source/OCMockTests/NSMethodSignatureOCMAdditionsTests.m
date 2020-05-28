@@ -54,7 +54,7 @@
                   @"Special (stret) return incorrect for type '%s'", enctype); \
  } while (0)
 #define ASSERT_TYPE(expected, type) ASSERT_ENC(expected, @encode(type))
-    
+
 #if __x86_64__
     ASSERT_TYPE(YES,NSRect);
     ASSERT_TYPE(NO, NSPoint);

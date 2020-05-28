@@ -33,7 +33,7 @@
         recorders = [[NSMutableArray alloc] init];
         centers = [[NSMutableArray alloc] init];
     }
-	
+
 	return self;
 }
 
@@ -143,7 +143,7 @@
     @synchronized(recorders)
     {
         NSUInteger i, limit;
-        
+
         limit = expectationOrderMatters ? 1 : [recorders count];
         for(i = 0; i < limit; i++)
         {
@@ -154,7 +154,7 @@
             }
         }
     }
-	[NSException raise:NSInternalInconsistencyException format:@"%@: unexpected notification observed: %@", [self description], 
+	[NSException raise:NSInternalInconsistencyException format:@"%@: unexpected notification observed: %@", [self description],
 	  [aNotification description]];
 }
 

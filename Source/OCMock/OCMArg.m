@@ -98,7 +98,7 @@
 
 + (id)invokeBlockWithArgs:(id)first,... NS_REQUIRES_NIL_TERMINATION
 {
-    
+
     NSMutableArray *params = [NSMutableArray array];
     va_list args;
     if(first)
@@ -113,7 +113,7 @@
         va_end(args);
     }
     return [[[OCMBlockArgCaller alloc] initWithBlockArguments:params] autorelease];
-    
+
 }
 
 + (id)defaultValue

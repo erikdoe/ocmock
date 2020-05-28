@@ -31,7 +31,7 @@
         file = [aFile retain];
         line = aLine;
     }
-    
+
     return self;
 }
 
@@ -63,4 +63,3 @@ OCMLocation *OCMMakeLocation(id testCase, const char *fileCString, int line)
 {
     return [OCMLocation locationWithTestCase:testCase file:[NSString stringWithUTF8String:fileCString] line:line];
 }
-

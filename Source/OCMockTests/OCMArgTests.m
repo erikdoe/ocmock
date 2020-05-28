@@ -51,7 +51,7 @@
 - (void)testIsKindOfClassCheck
 {
     OCMBlockConstraint *constraint = [OCMArg isKindOfClass:[NSString class]];
-    
+
 	XCTAssertTrue([constraint evaluate:@"foo"], @"Should have accepted \"foo\".");
 	XCTAssertFalse([constraint evaluate:[NSArray array]], @"Should not have accepted other value.");
 	XCTAssertFalse([constraint evaluate:nil], @"Should not have accepted nil.");
@@ -61,7 +61,7 @@
 {
     SEL anySelector = [OCMArg anySelector];
     NSValue *anySelectorValue = [NSValue valueWithBytes:&anySelector objCType:@encode(SEL)];
-    
+
     XCTAssertTrue([[OCMArg resolveSpecialValues:anySelectorValue] isKindOfClass:[OCMAnyConstraint class]]);
 }
 
@@ -75,7 +75,7 @@
 {
     void *anyPointer = [OCMArg anyPointer];
     NSValue *anyPointerValue = [NSValue valueWithPointer:anyPointer];
-    
+
     XCTAssertTrue([[OCMArg resolveSpecialValues:anyPointerValue] isKindOfClass:[OCMAnyConstraint class]]);
 }
 
