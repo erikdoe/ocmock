@@ -19,6 +19,8 @@
 #import "OCMQuantifier.h"
 
 
+// NB Any new methods in this class should be prefixed with `ocm_` to prevent potential clashes with
+// methods that are being stubbed in mock objects by clients.
 @interface OCMVerifier : OCMRecorder
 
 @property(retain) OCMLocation *location;

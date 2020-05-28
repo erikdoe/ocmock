@@ -65,7 +65,7 @@
     return invocationMatcher;
 }
 
-- (BOOL)wasUsed
+- (BOOL)ocm_wasUsed
 {
     return wasUsed;
 }

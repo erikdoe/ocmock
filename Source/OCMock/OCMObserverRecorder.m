@@ -38,7 +38,7 @@
 	[super dealloc];
 }
 
-- (BOOL)wasUsed
+- (BOOL)ocm_wasUsed
 {
 	return YES; // Needed for macro use, and recorder can only end up in macro state if it was used.
 }

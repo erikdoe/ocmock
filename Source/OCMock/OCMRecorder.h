@@ -19,7 +19,8 @@
 @class OCMockObject;
 @class OCMInvocationMatcher;
 
-
+// NB Any new methods in this class should be prefixed with `ocm_` to prevent potential clashes with
+// methods that are being stubbed in mock objects by clients.
 @interface OCMRecorder : NSProxy
 {
     OCMockObject         *mockObject;
@@ -36,7 +37,7 @@
 - (void)setShouldReturnMockFromInit:(BOOL)flag;
 
 - (OCMInvocationMatcher *)invocationMatcher;
-- (BOOL)wasUsed;
+- (BOOL)ocm_wasUsed;
 
 - (id)classMethod;
 - (id)ignoringNonObjectArgs;
