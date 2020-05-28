@@ -51,6 +51,7 @@
 
 - (void)dealloc
 {
+    [_ocm_location release];
     [invocationMatcher release];
     [super dealloc];
 }

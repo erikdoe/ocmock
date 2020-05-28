@@ -16,13 +16,11 @@
 
 #import <OCMock/OCMRecorder.h>
 
-@class OCMLocation;
 @class OCMQuantifier;
 
 @interface OCMVerifier : OCMRecorder
 
-@property(strong) OCMLocation *location;
-@property(strong) OCMQuantifier *quantifier;
+@property(retain) OCMQuantifier *quantifier;
 
 - (id)withQuantifier:(OCMQuantifier *)quantifier;
 

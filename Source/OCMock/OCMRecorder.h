@@ -16,6 +16,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "OCMLocation.h"
+
 @class OCMockObject;
 @class OCMInvocationMatcher;
 
@@ -27,6 +29,9 @@
     BOOL                  didRecordInvocation;
     BOOL                  shouldReturnMockFromInit;
 }
+
+// Using `ocm_` prefix to minimize clashes with mocked objects using `location` as a property.
+@property(retain) OCMLocation *ocm_location;
 
 - (instancetype)init;
 - (instancetype)initWithMockObject:(OCMockObject *)aMockObject;
