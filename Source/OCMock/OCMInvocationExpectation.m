@@ -15,6 +15,7 @@
  */
 
 #import "OCMInvocationExpectation.h"
+#import "OCMFunctionsPrivate.h"
 #import "NSInvocation+OCMAdditions.h"
 
 
@@ -44,13 +45,20 @@
     if(matchAndReject)
     {
         isSatisfied = NO;
-        [NSException raise:NSInternalInconsistencyException format:@"%@: explicitly disallowed method invoked: %@",
-                [self description], [anInvocation invocationDescription]];
+        NSString *description = [NSString stringWithFormat:@"%@: explicitly disallowed method invoked: %@",
+                                 [self description], [anInvocation invocationDescription]];
+        OCMReportFailure([self location], description);
     }
     else
     {
         isSatisfied = YES;
     }
+}
+
+- (void)dealloc
+{
+    [_location release];
+    [super dealloc];
 }
 
 @end

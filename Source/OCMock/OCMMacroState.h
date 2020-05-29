@@ -35,7 +35,7 @@
 + (void)beginExpectMacro;
 + (OCMStubRecorder *)endExpectMacro;
 
-+ (void)beginRejectMacro;
++ (void)beginRejectMacroAtLocation:(OCMLocation *)aLocation;
 + (OCMStubRecorder *)endRejectMacro;
 
 + (void)beginVerifyMacroAtLocation:(OCMLocation *)aLocation;

@@ -284,10 +284,17 @@
 {
     id mock = OCMClassMock([TestClassForMacroTesting class]);
 
-    OCMReject([mock stringValue]);
+    OCMReject([mock stringValue]); const char *expectedFile = __FILE__; int expectedLine = __LINE__;
 
     XCTAssertNoThrow([mock verify], @"Should have accepted invocation rejected method not being invoked");
-    XCTAssertThrows([mock stringValue], @"Should have complained during rejected method being invoked");
+
+    shouldCaptureFailure = YES;
+    [mock stringValue];
+    shouldCaptureFailure = NO;
+    XCTAssertNotNil(reportedDescription, @"Should have recorded a failure with description.");
+    XCTAssertEqualObjects([NSString stringWithUTF8String:expectedFile], reportedFile, @"Should have reported correct file.");
+    XCTAssertEqual(expectedLine, (int)reportedLine, @"Should have reported correct line");
+
     XCTAssertThrows([mock verify], @"Should have complained about rejected method being invoked");
 }
 

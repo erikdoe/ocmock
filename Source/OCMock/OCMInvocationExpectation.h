@@ -16,11 +16,15 @@
 
 #import "OCMInvocationStub.h"
 
+@class OCMLocation;
+
 @interface OCMInvocationExpectation : OCMInvocationStub
 {
     BOOL matchAndReject;
     BOOL isSatisfied;
 }
+
+@property(retain) OCMLocation *location;
 
 - (void)setMatchAndReject:(BOOL)flag;
 - (BOOL)isMatchAndReject;

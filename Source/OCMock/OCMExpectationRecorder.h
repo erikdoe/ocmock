@@ -18,6 +18,8 @@
 
 @interface OCMExpectationRecorder : OCMStubRecorder
 
+@property(retain) OCMLocation *location;
+
 - (id)never;
 
 @end

@@ -39,6 +39,7 @@
 
 - (id)never
 {
+    [[self expectation] setLocation:[self location]];
     [[self expectation] setMatchAndReject:YES];
     return self;
 }
@@ -52,5 +53,10 @@
     [mockObject addExpectation:[self expectation]];
 }
 
+- (void)dealloc
+{
+    [_location release];
+    [super dealloc];
+}
 
 @end
