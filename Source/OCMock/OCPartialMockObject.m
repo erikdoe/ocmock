@@ -237,7 +237,7 @@
     if(mock == nil)
         [NSException raise:NSInternalInconsistencyException format:@"No partial mock for object %p", self];
 
-	if([mock handleInvocation:anInvocation] == NO)
+    if([mock handleInvocation:anInvocation] == NO)
     {
         [anInvocation setSelector:OCMAliasForOriginalSelector([anInvocation selector])];
         [anInvocation invoke];
