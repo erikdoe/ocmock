@@ -21,8 +21,8 @@
 
 @interface OCMVerifier : OCMRecorder
 
-@property(retain) OCMLocation *location;
-@property(retain) OCMQuantifier *quantifier;
+@property(strong) OCMLocation *location;
+@property(strong) OCMQuantifier *quantifier;
 
 - (instancetype)withQuantifier:(OCMQuantifier *)quantifier;
 

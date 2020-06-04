@@ -20,7 +20,7 @@
 #pragma mark   Helper classes
 
 @interface TestClassWithDynamicProperties : NSObject
-@property(nonatomic, retain) NSDictionary *anObject;
+@property(nonatomic, copy) NSDictionary *anObject;
 @property(nonatomic, assign) NSUInteger aUInt;
 @property(nonatomic, assign) NSInteger __aPrivateInt;
 @property(getter=customGetter, setter=customSetter:) NSDictionary *aCustomProperty;
