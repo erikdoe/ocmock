@@ -27,10 +27,9 @@
 
 - (id)initWithClass:(Class)aClass
 {
-	if(aClass == nil)
-	{
-		[NSException raise:NSInvalidArgumentException format:@"Cannot initialize class mock with Nil class."];
-	}
+	if(aClass == Nil)
+		[NSException raise:NSInvalidArgumentException format:@"Class cannot be Nil."];
+
 	[super init];
 	mockedClass = aClass;
     [self prepareClassForClassMethodMocking];
