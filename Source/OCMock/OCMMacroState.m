@@ -140,7 +140,10 @@ static NSString *const OCMGlobalStateKey = @"OCMGlobalStateKey";
 - (void)dealloc
 {
     [recorder release];
-    NSAssert([NSThread currentThread].threadDictionary[OCMGlobalStateKey] != self, @"Unexpected dealloc while set as the global state");
+    if([NSThread currentThread].threadDictionary[OCMGlobalStateKey] == self)
+    {
+        [NSException raise:NSInternalInconsistencyException format:@"Unexpected dealloc while set as the global state"];
+    }
     [super dealloc];
 }
 

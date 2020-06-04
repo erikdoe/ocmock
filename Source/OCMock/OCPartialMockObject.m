@@ -30,7 +30,10 @@
 
 - (id)initWithObject:(NSObject *)anObject
 {
-    NSParameterAssert(anObject != nil);
+    if(anObject == nil)
+    {
+        [NSException raise:NSInvalidArgumentException format:@"Cannot initialize partial mock with nil object."];
+    }
     Class const class = [self classToSubclassForObject:anObject];
     [self assertClassIsSupported:class];
 	[super initWithClass:class];
