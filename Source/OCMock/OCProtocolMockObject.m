@@ -24,7 +24,9 @@
 
 - (id)initWithProtocol:(Protocol *)aProtocol
 {
-    NSParameterAssert(aProtocol != nil);
+	if(aProtocol == nil)
+		[NSException raise:NSInvalidArgumentException format:@"Protocol cannot be nil."];
+
 	[super init];
 	mockedProtocol = aProtocol;
 	return self;

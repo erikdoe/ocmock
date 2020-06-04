@@ -30,7 +30,9 @@
 
 - (id)initWithObject:(NSObject *)anObject
 {
-    NSParameterAssert(anObject != nil);
+    if(anObject == nil)
+        [NSException raise:NSInvalidArgumentException format:@"Object cannot be nil."];
+
     Class const class = [self classToSubclassForObject:anObject];
     [self assertClassIsSupported:class];
 	[super initWithClass:class];
