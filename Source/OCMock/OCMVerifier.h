@@ -15,9 +15,9 @@
  */
 
 #import "OCMRecorder.h"
-#import "OCMLocation.h"
-#import "OCMQuantifier.h"
 
+@class OCMLocation;
+@class OCMQuantifier;
 
 @interface OCMVerifier : OCMRecorder
 

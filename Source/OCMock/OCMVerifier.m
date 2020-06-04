@@ -17,6 +17,8 @@
 #import "OCMVerifier.h"
 #import "OCMockObject.h"
 #import "OCMInvocationMatcher.h"
+#import "OCMLocation.h"
+#import "OCMQuantifier.h"
 
 
 @implementation OCMVerifier
