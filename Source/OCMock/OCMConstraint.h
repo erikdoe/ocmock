@@ -70,7 +70,8 @@
     BOOL (^block)(id);
 }
 
-- (instancetype)initWithConstraintBlock:(BOOL (^)(id))block;
+- (instancetype)initWithConstraintBlock:(BOOL (^)(id))block NS_DESIGNATED_INITIALIZER;
+- (instancetype)init NS_UNAVAILABLE;
 
 @end
 
