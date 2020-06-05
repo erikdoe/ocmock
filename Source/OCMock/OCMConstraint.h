@@ -18,7 +18,6 @@
 
 @interface OCMConstraint : NSObject
 
-+ (instancetype)constraint;
 - (BOOL)evaluate:(id)value;
 
 // if you are looking for any, isNil, etc, they have moved to OCMArg

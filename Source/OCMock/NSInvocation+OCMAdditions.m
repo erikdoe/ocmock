@@ -18,6 +18,7 @@
 #import "NSInvocation+OCMAdditions.h"
 #import "NSMethodSignature+OCMAdditions.h"
 #import "OCMArg.h"
+#import "OCMConstraint.h"
 #import "OCMFunctionsPrivate.h"
 
 #if(TARGET_OS_OSX && (!defined(__MAC_10_10) || __MAC_OS_X_VERSION_MIN_REQUIRED < __MAC_10_10)) ||                                  \

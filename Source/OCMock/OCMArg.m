@@ -25,7 +25,7 @@
 
 + (id)any
 {
-    return [OCMAnyConstraint constraint];
+    return [[[OCMAnyConstraint alloc] init] autorelease];
 }
 
 + (void *)anyPointer
@@ -45,12 +45,12 @@
 
 + (id)isNil
 {
-    return [OCMIsNilConstraint constraint];
+    return [[OCMIsNilConstraint alloc] init];
 }
 
 + (id)isNotNil
 {
-    return [OCMIsNotNilConstraint constraint];
+    return [[OCMIsNotNilConstraint alloc] init];
 }
 
 + (id)isEqual:(id)value

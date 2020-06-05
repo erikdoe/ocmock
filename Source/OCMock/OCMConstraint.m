@@ -20,11 +20,6 @@
 
 @implementation OCMConstraint
 
-+ (instancetype)constraint
-{
-    return [[[self alloc] init] autorelease];
-}
-
 - (BOOL)evaluate:(id)value
 {
     return NO;
