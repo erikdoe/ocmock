@@ -43,7 +43,8 @@
     // effectively does an strcpy on char* arguments which messes up matching them literally and blows
     // up with anyPointer (in strlen since it's not actually a C string). Also on the off-chance that
     // anInvocation contains self as an argument, -retainArguments would create a retain cycle.
-    [anInvocation retainObjectArgumentsExcludingObject:self];
+    // All of our stub specific constraint options are handled in the constraints themselves.
+    [anInvocation applyConstraintOptionsFromStubInvocation:nil excludingObject:self];
     recordedInvocation = [anInvocation retain];
 }
 

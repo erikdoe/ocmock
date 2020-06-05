@@ -20,6 +20,21 @@
 
 @implementation OCMConstraint
 
+- (instancetype)initWithOptions:(OCMConstraintOptions)options
+{
+  self = [super init];
+  if(self)
+  {
+    OCMConstraintOptions badOptions = (OCMConstraintDoNotRetainInvocationArg | OCMConstraintCopyInvocationArg);
+    if((options & badOptions) == badOptions)
+    {
+      [NSException raise:NSInvalidArgumentException format:@"`OCMConstraintDoNotRetainInvocationArg` and `OCMConstraintCopyInvocationArg` are mutually exclusive."];
+    }
+    _constraintOptions = options;
+  }
+  return self;
+}
+
 - (BOOL)evaluate:(id)value
 {
     return NO;
@@ -28,6 +43,16 @@
 - (id)copyWithZone:(struct _NSZone *)zone __unused
 {
     return [self retain];
+}
+
++ (instancetype)constraintWithSelector:(SEL)aSelector onObject:(id)anObject
+{
+  return [self constraintWithSelector:aSelector onObject:anObject options:OCMConstraintDefaultOptions];
+}
+
++ (instancetype)constraintWithSelector:(SEL)aSelector onObject:(id)anObject withValue:(id)aValue
+{
+  return [self constraintWithSelector:aSelector onObject:anObject withValue:aValue options:OCMConstraintDefaultOptions];
 }
 
 + (NSInvocation *)invocationWithSelector:(SEL)aSelector onObject:(id)anObject
@@ -41,19 +66,19 @@
   return invocation;
 }
 
-+ (instancetype)constraintWithSelector:(SEL)aSelector onObject:(id)anObject
++ (instancetype)constraintWithSelector:(SEL)aSelector onObject:(id)anObject options:(OCMConstraintOptions)options
 {
     NSInvocation *invocation = [self invocationWithSelector:aSelector onObject:anObject];
-    return [[[OCMInvocationConstraint alloc] initWithInvocation:invocation] autorelease];
+    return [[[OCMInvocationConstraint alloc] initWithInvocation:invocation options:options] autorelease];
 }
 
-+ (instancetype)constraintWithSelector:(SEL)aSelector onObject:(id)anObject withValue:(id)aValue
++ (instancetype)constraintWithSelector:(SEL)aSelector onObject:(id)anObject withValue:(id)aValue options:(OCMConstraintOptions)options
 {
     NSInvocation *invocation = [self invocationWithSelector:aSelector onObject:anObject];
     if([[invocation methodSignature] numberOfArguments] < 4)
         [NSException raise:NSInvalidArgumentException format:@"Constraint with value requires selector with two arguments."];
     [invocation setArgument:&aValue atIndex:3];
-    return [[[OCMInvocationConstraint alloc] initWithInvocation:invocation] autorelease];
+    return [[[OCMInvocationConstraint alloc] initWithInvocation:invocation options:options] autorelease];
 }
 
 
@@ -64,6 +89,14 @@
 
 @implementation OCMAnyConstraint
 
+- (instancetype)initWithOptions:(OCMConstraintOptions)options
+{
+
+    self = [super initWithOptions:options];
+    if(self.constraintOptions & OCMConstraintDoNotRetainStubArg)
+        [NSException raise:NSInvalidArgumentException format:@"`OCMConstraintDoNotRetainStubArg` does not make sense for `OCMAnyConstraint`."];
+    return self;
+}
 - (BOOL)evaluate:(id)value
 {
     return YES;
@@ -74,43 +107,30 @@
 
 #pragma mark -
 
-@implementation OCMIsNilConstraint
-
-- (BOOL)evaluate:(id)value
-{
-    return value == nil;
-}
-
-@end
-
-
-#pragma mark -
-
-@implementation OCMIsNotNilConstraint
-
-- (BOOL)evaluate:(id)value
-{
-    return value != nil;
-}
-
-@end
-
-#pragma mark -
-
 @implementation OCMEqualityConstraint
 
-- (instancetype)initWithTestValue:(id)aTestValue
+- (instancetype)initWithTestValue:(id)aTestValue options:(OCMConstraintOptions)options
 {
-    if((self = [super init]))
+    if((self = [super initWithOptions:options]))
     {
-        testValue = [aTestValue retain];
+        if(self.constraintOptions & OCMConstraintDoNotRetainStubArg)
+        {
+            testValue = aTestValue;
+        }
+        else
+        {
+            testValue = [aTestValue retain];
+        }
     }
     return self;
 }
 
 - (void)dealloc
 {
-    [testValue release];
+    if(!(self.constraintOptions & OCMConstraintDoNotRetainStubArg))
+    {
+        [testValue release];
+    }
     [super dealloc];
 }
 
@@ -147,9 +167,10 @@
 
 @implementation OCMInvocationConstraint
 
-- (instancetype)initWithInvocation:(NSInvocation *)anInvocation {
-    if((self = [super init]))
-    {
+- (instancetype)initWithInvocation:(NSInvocation *)anInvocation options:(OCMConstraintOptions)options
+{
+  if((self = [super initWithOptions:options]))
+  {
       NSMethodSignature *signature = [anInvocation methodSignature];
       if([signature numberOfArguments] < 3)
       {
@@ -162,6 +183,10 @@
       if(strcmp([signature methodReturnType], @encode(BOOL)))
       {
           [NSException raise:NSInvalidArgumentException format:@"invocation must return BOOL"];
+      }
+      if (self.constraintOptions & OCMConstraintDoNotRetainStubArg)
+      {
+          [NSException raise:NSInvalidArgumentException format:@"`OCMConstraintDoNotRetainStubArg` does not make sense for `OCMInvocationConstraint`."];
       }
       invocation = [anInvocation retain];
     }
@@ -176,7 +201,7 @@
 
 - (BOOL)evaluate:(id)value
 {
-    [invocation setArgument:&value atIndex:2]; // should test if constraint takes arg
+    [invocation setArgument:&value atIndex:2];
     [invocation invoke];
     BOOL returnValue;
     [invocation getReturnValue:&returnValue];
@@ -189,10 +214,15 @@
 
 @implementation OCMBlockConstraint
 
-- (instancetype)initWithConstraintBlock:(BOOL (^)(id))aBlock
+- (instancetype)initWithOptions:(OCMConstraintOptions)options block:(BOOL (^)(id))aBlock;
 {
-    if((self = [super init]))
+
+    if((self = [super initWithOptions:options]))
     {
+        if(self.constraintOptions & OCMConstraintDoNotRetainStubArg)
+        {
+            [NSException raise:NSInvalidArgumentException format:@"`OCMConstraintDoNotRetainStubArg` does not make sense for `OCMBlockConstraint`."];
+        }
         block = [aBlock copy];
     }
 

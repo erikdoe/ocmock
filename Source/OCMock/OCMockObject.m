@@ -169,13 +169,6 @@
 {
     @synchronized(invocations)
     {
-        // We can't do a normal retain arguments on anInvocation because its target/arguments/return
-        // value could be self. That would produce a retain cycle self->invocations->anInvocation->self.
-        // However we need to retain everything on anInvocation that isn't self because we expect them to
-        // stick around after this method returns. Use our special method to retain just what's needed.
-        // This still doesn't completely prevent retain cycles since any of the arguments could have a
-        // strong reference to self. Those will have to be broken with manual calls to -stopMocking.
-        [anInvocation retainObjectArgumentsExcludingObject:self];
         [invocations addObject:anInvocation];
     }
 }
@@ -404,9 +397,15 @@
 - (BOOL)handleInvocation:(NSInvocation *)anInvocation
 {
     [self assertInvocationsArrayIsPresent];
+    OCMInvocationStub *stub = [self stubForInvocation:anInvocation];
+
+    // We can't do a normal retain arguments on anInvocation because its target/arguments/return
+    // value could be self. That would produce a retain cycle self->invocations->anInvocation->self.
+    // We also need to handle the OCMConstraintOptions that have been specified or implied for our arguments.
+    [anInvocation applyConstraintOptionsFromStubInvocation:[stub recordedInvocation] excludingObject:self];
+
     [self addInvocation:anInvocation];
 
-    OCMInvocationStub *stub = [self stubForInvocation:anInvocation];
     if(stub == nil)
         return NO;
 

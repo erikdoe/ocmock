@@ -25,7 +25,7 @@
 
 + (id)any
 {
-    return [[[OCMAnyConstraint alloc] init] autorelease];
+	  return [self anyWithOptions:OCMArgDefaultOptions];
 }
 
 + (void *)anyPointer
@@ -45,39 +45,80 @@
 
 + (id)isNil
 {
-    return [[OCMIsNilConstraint alloc] init];
+
+	  return [self isNilWithOptions:OCMArgDefaultOptions];
 }
 
 + (id)isNotNil
 {
-    return [[OCMIsNotNilConstraint alloc] init];
+	  return [self isNotNilWithOptions:OCMArgDefaultOptions];
 }
 
 + (id)isEqual:(id)value
 {
-	return [[[OCMIsEqualConstraint alloc] initWithTestValue:value] autorelease];
+    return [self isEqual:value options:OCMArgDefaultOptions];
 }
 
 + (id)isNotEqual:(id)value
 {
-    return [[[OCMIsNotEqualConstraint alloc] initWithTestValue:value] autorelease];
+    return [self isNotEqual:value options:OCMArgDefaultOptions];
 }
 
 + (id)isKindOfClass:(Class)cls
 {
-    return [[[OCMBlockConstraint alloc] initWithConstraintBlock:^BOOL(id obj) {
-        return [obj isKindOfClass:cls];
-    }] autorelease];
+    return [self isKindOfClass:cls options:OCMArgDefaultOptions];
 }
 
 + (id)checkWithSelector:(SEL)selector onObject:(id)anObject
 {
-    return [OCMConstraint constraintWithSelector:selector onObject:anObject];
+    return [self checkWithSelector:selector onObject:anObject options:OCMArgDefaultOptions];
 }
 
 + (id)checkWithBlock:(BOOL (^)(id))block
 {
-    return [[[OCMBlockConstraint alloc] initWithConstraintBlock:block] autorelease];
+    return [self checkWithOptions:OCMArgDefaultOptions withBlock:block];
+}
+
++ (id)anyWithOptions:(OCMArgOptions)options
+{
+    return [[[OCMAnyConstraint alloc] initWithOptions:[self constraintOptionsFromArgOptions:options]] autorelease];
+}
+
++ (id)isNilWithOptions:(OCMArgOptions)options
+{
+    return [[[OCMIsEqualConstraint alloc] initWithTestValue:nil options:[self constraintOptionsFromArgOptions:options]] autorelease];
+}
+
++ (id)isNotNilWithOptions:(OCMArgOptions)options
+{
+    return [[[OCMIsNotEqualConstraint alloc] initWithTestValue:nil options:[self constraintOptionsFromArgOptions:options]] autorelease];
+}
+
++ (id)isEqual:(id)value options:(OCMArgOptions)options
+{
+    return [[[OCMIsEqualConstraint alloc] initWithTestValue:value options:[self constraintOptionsFromArgOptions:options]] autorelease];
+}
+
++ (id)isNotEqual:(id)value options:(OCMArgOptions)options
+{
+    return [[[OCMIsNotEqualConstraint alloc] initWithTestValue:value options:[self constraintOptionsFromArgOptions:options]] autorelease];
+}
+
++ (id)isKindOfClass:(Class)cls options:(OCMArgOptions)options
+{
+    return [[[OCMBlockConstraint alloc] initWithOptions:[self constraintOptionsFromArgOptions:options] block:^BOOL(id obj) {
+          return [obj isKindOfClass:cls];
+      }] autorelease];
+}
+
++ (id)checkWithSelector:(SEL)selector onObject:(id)anObject options:(OCMArgOptions)options
+{
+    return [OCMConstraint constraintWithSelector:selector onObject:anObject options:[self constraintOptionsFromArgOptions:options]];
+}
+
++ (id)checkWithOptions:(OCMArgOptions)options withBlock:(BOOL (^)(id obj))block
+{
+    return [[[OCMBlockConstraint alloc] initWithOptions:[self constraintOptionsFromArgOptions:options] block:block] autorelease];
 }
 
 + (id *)setTo:(id)value
@@ -138,6 +179,15 @@
             return [OCMArg any];
     }
     return value;
+}
+
++ (OCMConstraintOptions)constraintOptionsFromArgOptions:(OCMArgOptions)argOptions
+{
+  OCMConstraintOptions constraintOptions = 0;
+  if(argOptions & OCMArgDoNotRetainStubArg) constraintOptions |= OCMConstraintDoNotRetainStubArg;
+  if(argOptions & OCMArgDoNotRetainInvocationArg) constraintOptions |= OCMConstraintDoNotRetainInvocationArg;
+  if(argOptions & OCMArgCopyInvocationArg) constraintOptions |= OCMConstraintCopyInvocationArg;
+  return constraintOptions;
 }
 
 @end

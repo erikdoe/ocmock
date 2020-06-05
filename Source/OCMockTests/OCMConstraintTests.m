@@ -47,37 +47,20 @@
 
 - (void)testAnyAcceptsAnything
 {
-    OCMConstraint *constraint = [[OCMAnyConstraint alloc] init];
+    OCMConstraint *constraint = [[OCMAnyConstraint alloc] initWithOptions:OCMConstraintDefaultOptions];
     XCTAssertTrue([constraint evaluate:@"foo"], @"Should have accepted a value.");
     XCTAssertTrue([constraint evaluate:@"bar"], @"Should have accepted another value.");
     XCTAssertTrue([constraint evaluate:nil], @"Should have accepted nil.");
-}
-
-- (void)testIsNilAcceptsOnlyNil
-{
-    OCMConstraint *constraint = [[OCMIsNilConstraint alloc] init];
-
-    XCTAssertFalse([constraint evaluate:@"foo"], @"Should not have accepted a value.");
-    XCTAssertTrue([constraint evaluate:nil], @"Should have accepted nil.");
-}
-
-- (void)testIsNotNilAcceptsAnythingButNil
-{
-    OCMConstraint *constraint = [[OCMIsNotNilConstraint alloc] init];
-
-    XCTAssertTrue([constraint evaluate:@"foo"], @"Should have accepted a value.");
-    XCTAssertFalse([constraint evaluate:nil], @"Should not have accepted nil.");
-}
+  }
 
 - (void)testNotEqualAcceptsAnythingButValue
 {
-    OCMIsNotEqualConstraint *constraint = [[OCMIsNotEqualConstraint alloc] initWithTestValue:@"foo"];
-
+    OCMIsNotEqualConstraint *constraint = [[OCMIsNotEqualConstraint alloc] initWithTestValue:@"foo" options:OCMConstraintDefaultOptions];
     XCTAssertFalse([constraint evaluate:@"foo"], @"Should not have accepted value.");
     XCTAssertTrue([constraint evaluate:@"bar"], @"Should have accepted other value.");
     XCTAssertTrue([constraint evaluate:nil], @"Should have accepted nil.");
 
-    constraint = [[OCMIsNotEqualConstraint alloc] initWithTestValue:nil];
+    constraint = [[OCMIsNotEqualConstraint alloc] initWithTestValue:nil options:OCMConstraintDefaultOptions];
 
     XCTAssertTrue([constraint evaluate:@"foo"], @"Should have accepted value.");
     XCTAssertFalse([constraint evaluate:nil], @"Should not have accepted nil.");
@@ -91,7 +74,7 @@
     TestEqualityFake *value = [[TestEqualityFake alloc] init];
     value.isValueEqual = NO;
 
-    OCMIsEqualConstraint *constraint = [[OCMIsEqualConstraint alloc] initWithTestValue:testValue];
+    OCMIsEqualConstraint *constraint = [[OCMIsEqualConstraint alloc] initWithTestValue:testValue options:OCMConstraintDefaultOptions];
     XCTAssertTrue([constraint evaluate:value]);
 }
 
@@ -103,24 +86,23 @@
     TestEqualityFake *value = [[TestEqualityFake alloc] init];
     value.isValueEqual = YES;
 
-    OCMIsNotEqualConstraint *constraint = [[OCMIsNotEqualConstraint alloc] initWithTestValue:testValue];
+    OCMIsNotEqualConstraint *constraint = [[OCMIsNotEqualConstraint alloc] initWithTestValue:testValue options:OCMConstraintDefaultOptions];
     XCTAssertTrue([constraint evaluate:value]);
 }
 
 - (void)testEqualAcceptsNothingButValue
 {
-    OCMIsEqualConstraint *constraint = [[OCMIsEqualConstraint alloc] initWithTestValue:@"foo"];
+    OCMIsEqualConstraint *constraint = [[OCMIsEqualConstraint alloc] initWithTestValue:@"foo" options:OCMConstraintDefaultOptions];
 
     XCTAssertTrue([constraint evaluate:@"foo"], @"Should have accepted value.");
     XCTAssertFalse([constraint evaluate:@"bar"], @"Should not have accepted other value.");
     XCTAssertFalse([constraint evaluate:nil], @"Should not have accepted nil.");
 
-    constraint = [[OCMIsEqualConstraint alloc] initWithTestValue:nil];
+    constraint = [[OCMIsEqualConstraint alloc] initWithTestValue:nil options:OCMConstraintDefaultOptions];
 
     XCTAssertFalse([constraint evaluate:@"foo"], @"Should not have accepted other value.");
     XCTAssertTrue([constraint evaluate:nil], @"Should have accepted nil.");
 }
-
 
 - (BOOL)checkArg:(id)theArg
 {
@@ -171,9 +153,9 @@
 {
     BOOL (^checkForFooBlock)(id) = ^(id value) {
         return [value isEqualToString:@"foo"];
-    };
-
-    OCMBlockConstraint *constraint = [[OCMBlockConstraint alloc] initWithConstraintBlock:checkForFooBlock];
+		};
+	
+    OCMBlockConstraint *constraint = [[OCMBlockConstraint alloc] initWithOptions:OCMConstraintDefaultOptions block:checkForFooBlock];
 
     XCTAssertTrue([constraint evaluate:@"foo"], @"Should have accepted foo.");
     XCTAssertFalse([constraint evaluate:@"bar"], @"Should not have accepted bar.");
@@ -183,11 +165,11 @@
 {
     __block NSString *captured;
     BOOL (^captureArgBlock)(id) = ^(id value) {
-        captured = value;
-        return YES;
-    };
-
-    OCMBlockConstraint *constraint = [[OCMBlockConstraint alloc] initWithConstraintBlock:captureArgBlock];
+			captured = value;
+			return YES;
+		};
+	
+    OCMBlockConstraint *constraint = [[OCMBlockConstraint alloc] initWithOptions:OCMConstraintDefaultOptions block:captureArgBlock];
 
     [constraint evaluate:@"foo"];
     XCTAssertEqualObjects(@"foo", captured, @"Should have captured value from last invocation.");
@@ -197,8 +179,7 @@
 
 - (void)testEvaluateNilBlockReturnsNo
 {
-    OCMBlockConstraint *constraint = [[OCMBlockConstraint alloc] initWithConstraintBlock:nil];
-
+    OCMBlockConstraint *constraint = [[OCMBlockConstraint alloc] initWithOptions:OCMConstraintDefaultOptions block:nil];
     XCTAssertFalse([constraint evaluate:@"foo"]);
 }
 
@@ -210,7 +191,7 @@
     NSInvocation *anInvocation = [NSInvocation invocationWithMethodSignature:[self methodSignatureForSelector:selector]];
     [anInvocation setTarget:self];
     [anInvocation setSelector:selector];
-    constraint = [[OCMInvocationConstraint alloc] initWithInvocation:anInvocation];
+    constraint = [[OCMInvocationConstraint alloc] initWithInvocation:anInvocation options:OCMConstraintDefaultOptions];
   }
   XCTAssertTrue([constraint evaluate:@"foo"]);
 }
@@ -226,7 +207,7 @@
   NSInvocation *anInvocation = [NSInvocation invocationWithMethodSignature:[self methodSignatureForSelector:selector]];
   [anInvocation setTarget:self];
   [anInvocation setSelector:selector];
-  XCTAssertThrowsSpecificNamed([[OCMInvocationConstraint alloc] initWithInvocation:anInvocation], NSException, NSInvalidArgumentException);
+  XCTAssertThrowsSpecificNamed([[OCMInvocationConstraint alloc] initWithInvocation:anInvocation options:OCMConstraintDefaultOptions], NSException, NSInvalidArgumentException);
 }
 
 - (BOOL)aMethodWithInt:(int)anInt
@@ -240,7 +221,7 @@
   NSInvocation *anInvocation = [NSInvocation invocationWithMethodSignature:[self methodSignatureForSelector:selector]];
   [anInvocation setTarget:self];
   [anInvocation setSelector:selector];
-  XCTAssertThrowsSpecificNamed([[OCMInvocationConstraint alloc] initWithInvocation:anInvocation], NSException, NSInvalidArgumentException);
+  XCTAssertThrowsSpecificNamed([[OCMInvocationConstraint alloc] initWithInvocation:anInvocation options:OCMConstraintDefaultOptions], NSException, NSInvalidArgumentException);
 }
 
 - (void)aMethodThatDoesNotReturnBool:(id)anArg
@@ -253,7 +234,12 @@
   NSInvocation *anInvocation = [NSInvocation invocationWithMethodSignature:[self methodSignatureForSelector:selector]];
   [anInvocation setTarget:self];
   [anInvocation setSelector:selector];
-  XCTAssertThrowsSpecificNamed([[OCMInvocationConstraint alloc] initWithInvocation:anInvocation], NSException, NSInvalidArgumentException);
+  XCTAssertThrowsSpecificNamed([[OCMInvocationConstraint alloc] initWithInvocation:anInvocation options:OCMConstraintDefaultOptions], NSException, NSInvalidArgumentException);
+}
+
+- (void)testConstraintThrowsForBadOptions
+{
+  XCTAssertThrowsSpecificNamed([[OCMIsEqualConstraint alloc] initWithTestValue:nil options:OCMConstraintDoNotRetainInvocationArg | OCMConstraintCopyInvocationArg], NSException, NSInvalidArgumentException);
 }
 
 @end

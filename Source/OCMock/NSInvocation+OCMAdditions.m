@@ -54,9 +54,20 @@ static NSString *const OCMArgAnyPointerDescription = @"<[OCMArg anyPointer]>";
 }
 
 
+- (OCMConstraintOptions)getArgumentContraintOptionsForArgumentAtIndex:(NSUInteger)index
+{
+    id argument;
+    [self getArgument:&argument atIndex:index];
+    if(![argument isProxy] && [argument isKindOfClass:[OCMConstraint class]])
+    {
+        return [(OCMConstraint *)argument constraintOptions];
+    }
+    return OCMConstraintDefaultOptions;
+}
+
 static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgumentsKey";
 
-- (void)retainObjectArgumentsExcludingObject:(id)objectToExclude
+- (void)applyConstraintOptionsFromStubInvocation:(NSInvocation *)stubInvocation excludingObject:(id)objectToExclude
 {
     if(objc_getAssociatedObject(self, OCMRetainedObjectArgumentsKey) != nil)
     {
@@ -112,7 +123,21 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
                 }
                 else
                 {
-                    [retainedArguments addObject:argument];
+                    // Conform to the constraintOptions in the stub (if any).
+                    OCMConstraintOptions constraintOptions = [stubInvocation getArgumentContraintOptionsForArgumentAtIndex:index];
+                    if((constraintOptions & OCMConstraintCopyInvocationArg))
+                    {
+                        // Copy not only retains the copy in our array
+                        // but updates the arg in the invocation that we store.
+                        id argCopy = [argument copy];
+                        [retainedArguments addObject:argCopy];
+                        [self setArgument:&argCopy atIndex:index];
+                        [argCopy release];
+                    }
+                    else if(!(constraintOptions & OCMConstraintDoNotRetainInvocationArg))
+                    {
+                        [retainedArguments addObject:argument];
+                    }
                 }
             }
         }

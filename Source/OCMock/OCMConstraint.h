@@ -16,7 +16,21 @@
 
 #import <Foundation/Foundation.h>
 
+// See OCMArgOptions for documentation on options.
+typedef NS_OPTIONS(NSUInteger, OCMConstraintOptions) {
+    OCMConstraintDefaultOptions = 0UL,
+    OCMConstraintDoNotRetainStubArg = (1UL << 0),
+    OCMConstraintDoNotRetainInvocationArg = (1UL << 1),
+    OCMConstraintCopyInvocationArg = (1UL << 2),
+    OCMConstraintNeverRetainArg = OCMConstraintDoNotRetainStubArg | OCMConstraintDoNotRetainInvocationArg,
+};
+
 @interface OCMConstraint : NSObject
+
+@property (readonly) OCMConstraintOptions constraintOptions;
+
+- (instancetype)initWithOptions:(OCMConstraintOptions)options NS_DESIGNATED_INITIALIZER;
+- (instancetype)init NS_UNAVAILABLE;
 
 - (BOOL)evaluate:(id)value;
 
@@ -27,6 +41,8 @@
 + (instancetype)constraintWithSelector:(SEL)aSelector onObject:(id)anObject;
 + (instancetype)constraintWithSelector:(SEL)aSelector onObject:(id)anObject withValue:(id)aValue;
 
++ (instancetype)constraintWithSelector:(SEL)aSelector onObject:(id)anObject options:(OCMConstraintOptions)options;
++ (instancetype)constraintWithSelector:(SEL)aSelector onObject:(id)anObject withValue:(id)aValue options:(OCMConstraintOptions)options;
 
 @end
 
@@ -44,8 +60,8 @@
     id testValue;
 }
 
-- (instancetype)initWithTestValue:(id)testValue NS_DESIGNATED_INITIALIZER;
-- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithTestValue:(id)testValue options:(OCMConstraintOptions)options NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithOptions:(OCMConstraintOptions)options NS_UNAVAILABLE;
 
 @end
 
@@ -60,8 +76,8 @@
     NSInvocation *invocation;
 }
 
-- (instancetype)initWithInvocation:(NSInvocation *)invocation NS_DESIGNATED_INITIALIZER;
-- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithInvocation:(NSInvocation *)invocation options:(OCMConstraintOptions)options NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithOptions:(OCMConstraintOptions)options NS_UNAVAILABLE;
 
 @end
 
@@ -70,8 +86,8 @@
     BOOL (^block)(id);
 }
 
-- (instancetype)initWithConstraintBlock:(BOOL (^)(id))block NS_DESIGNATED_INITIALIZER;
-- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithOptions:(OCMConstraintOptions)options block:(BOOL (^)(id))block NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithOptions:(OCMConstraintOptions)options NS_UNAVAILABLE;
 
 @end
 
