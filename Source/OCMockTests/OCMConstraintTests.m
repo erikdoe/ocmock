@@ -202,4 +202,58 @@
     XCTAssertFalse([constraint evaluate:@"foo"]);
 }
 
+- (void)testEvaluateInvocationRetainsInvocation
+{
+  OCMInvocationConstraint *constraint;
+  @autoreleasepool {
+    SEL selector = @selector(checkArg:);
+    NSInvocation *anInvocation = [NSInvocation invocationWithMethodSignature:[self methodSignatureForSelector:selector]];
+    [anInvocation setTarget:self];
+    [anInvocation setSelector:selector];
+    constraint = [[OCMInvocationConstraint alloc] initWithInvocation:anInvocation];
+  }
+  XCTAssertTrue([constraint evaluate:@"foo"]);
+}
+
+- (BOOL)methodWithNoArgs
+{
+  return YES;
+}
+
+- (void)testEvaluateInvocationThrowsForInvocationForMethodWithoutArgument
+{
+  SEL selector = @selector(methodWithNoArgs);
+  NSInvocation *anInvocation = [NSInvocation invocationWithMethodSignature:[self methodSignatureForSelector:selector]];
+  [anInvocation setTarget:self];
+  [anInvocation setSelector:selector];
+  XCTAssertThrowsSpecificNamed([[OCMInvocationConstraint alloc] initWithInvocation:anInvocation], NSException, NSInvalidArgumentException);
+}
+
+- (BOOL)aMethodWithInt:(int)anInt
+{
+  return YES;
+}
+
+- (void)testEvaluateInvocationThrowsForInvocationForMethodWithoutObjectArgument
+{
+  SEL selector = @selector(aMethodWithInt:);
+  NSInvocation *anInvocation = [NSInvocation invocationWithMethodSignature:[self methodSignatureForSelector:selector]];
+  [anInvocation setTarget:self];
+  [anInvocation setSelector:selector];
+  XCTAssertThrowsSpecificNamed([[OCMInvocationConstraint alloc] initWithInvocation:anInvocation], NSException, NSInvalidArgumentException);
+}
+
+- (void)aMethodThatDoesNotReturnBool:(id)anArg
+{
+}
+
+- (void)testEvaluateInvocationThrowsForInvocationThatDoesNotReturnBool
+{
+  SEL selector = @selector(aMethodThatDoesNotReturnBool:);
+  NSInvocation *anInvocation = [NSInvocation invocationWithMethodSignature:[self methodSignatureForSelector:selector]];
+  [anInvocation setTarget:self];
+  [anInvocation setSelector:selector];
+  XCTAssertThrowsSpecificNamed([[OCMInvocationConstraint alloc] initWithInvocation:anInvocation], NSException, NSInvalidArgumentException);
+}
+
 @end

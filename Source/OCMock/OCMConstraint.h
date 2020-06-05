@@ -58,9 +58,11 @@
 
 @interface OCMInvocationConstraint : OCMConstraint
 {
-@public
     NSInvocation *invocation;
 }
+
+- (instancetype)initWithInvocation:(NSInvocation *)invocation NS_DESIGNATED_INITIALIZER;
+- (instancetype)init NS_UNAVAILABLE;
 
 @end
 

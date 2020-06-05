@@ -16,7 +16,7 @@
 
 #import <limits.h>
 #import "OCMConstraint.h"
-
+#import "OCMFunctions.h"
 
 @implementation OCMConstraint
 
@@ -35,27 +35,30 @@
     return [self retain];
 }
 
++ (NSInvocation *)invocationWithSelector:(SEL)aSelector onObject:(id)anObject
+{
+  NSMethodSignature *signature = [anObject methodSignatureForSelector:aSelector];
+  if(signature == nil)
+    [NSException raise:NSInvalidArgumentException format:@"Unknown selector %@ used in constraint.", NSStringFromSelector(aSelector)];
+  NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+  [invocation setTarget:anObject];
+  [invocation setSelector:aSelector];
+  return invocation;
+}
+
 + (instancetype)constraintWithSelector:(SEL)aSelector onObject:(id)anObject
 {
-    OCMInvocationConstraint *constraint = [OCMInvocationConstraint constraint];
-    NSMethodSignature *signature = [anObject methodSignatureForSelector:aSelector];
-    if(signature == nil)
-        [NSException raise:NSInvalidArgumentException
-                    format:@"Unknown selector %@ used in constraint.", NSStringFromSelector(aSelector)];
-    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-    [invocation setTarget:anObject];
-    [invocation setSelector:aSelector];
-    constraint->invocation = invocation;
-    return constraint;
+    NSInvocation *invocation = [self invocationWithSelector:aSelector onObject:anObject];
+    return [[[OCMInvocationConstraint alloc] initWithInvocation:invocation] autorelease];
 }
 
 + (instancetype)constraintWithSelector:(SEL)aSelector onObject:(id)anObject withValue:(id)aValue
 {
-    OCMInvocationConstraint *constraint = (OCMInvocationConstraint *)[self constraintWithSelector:aSelector onObject:anObject];
-    if([[constraint->invocation methodSignature] numberOfArguments] < 4)
+    NSInvocation *invocation = [self invocationWithSelector:aSelector onObject:anObject];
+    if([[invocation methodSignature] numberOfArguments] < 4)
         [NSException raise:NSInvalidArgumentException format:@"Constraint with value requires selector with two arguments."];
-    [constraint->invocation setArgument:&aValue atIndex:3];
-    return constraint;
+    [invocation setArgument:&aValue atIndex:3];
+    return [[[OCMInvocationConstraint alloc] initWithInvocation:invocation] autorelease];
 }
 
 
@@ -148,6 +151,33 @@
 #pragma mark -
 
 @implementation OCMInvocationConstraint
+
+- (instancetype)initWithInvocation:(NSInvocation *)anInvocation {
+    if((self = [super init]))
+    {
+      NSMethodSignature *signature = [anInvocation methodSignature];
+      if([signature numberOfArguments] < 3)
+      {
+          [NSException raise:NSInvalidArgumentException format:@"invocation must take at least one argument (other than _cmd and self)"];
+      }
+      if(!(OCMIsObjectType([signature getArgumentTypeAtIndex:2])))
+      {
+          [NSException raise:NSInvalidArgumentException format:@"invocation's second argument must be an object type"];
+      }
+      if(strcmp([signature methodReturnType], @encode(BOOL)))
+      {
+          [NSException raise:NSInvalidArgumentException format:@"invocation must return BOOL"];
+      }
+      invocation = [anInvocation retain];
+    }
+    return self;
+}
+
+- (void)dealloc
+{
+    [invocation release];
+    [super dealloc];
+}
 
 - (BOOL)evaluate:(id)value
 {
