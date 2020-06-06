@@ -40,5 +40,9 @@
 	[[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 
+- (NSString *)description
+{
+  return [NSString stringWithFormat:@"[%@ - %p]: Posts `%@`", [self class], self, notification];
+}
 
 @end

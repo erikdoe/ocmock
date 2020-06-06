@@ -36,5 +36,10 @@
     }
     [anInvocation setReturnValue:&returnValue];
 }
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"[%@ - %p]: Returns `%@`", [self class], self, returnValue];
+}
 @end
 
