@@ -24,7 +24,14 @@
 {
     matchAndReject = flag;
     if(matchAndReject)
+    {
         isSatisfied = YES;
+        if([invocationActions count] > 0)
+        {
+            [NSException raise:NSInternalInconsistencyException format:@"%@: reject expectations can't have actions attached to them: %@",
+                [self description], invocationActions];
+        }
+    }
 }
 
 - (BOOL)isMatchAndReject
@@ -39,8 +46,6 @@
 
 - (void)handleInvocation:(NSInvocation *)anInvocation
 {
-   [super handleInvocation:anInvocation];
-
     if(matchAndReject)
     {
         isSatisfied = NO;
@@ -49,8 +54,18 @@
     }
     else
     {
+        [super handleInvocation:anInvocation];
         isSatisfied = YES;
     }
+}
+
+- (void)addInvocationAction:(id)anAction {
+    if(matchAndReject)
+    {
+        [NSException raise:NSInternalInconsistencyException format:@"%@: reject expectations can't have actions attached to them: %@",
+            [self description], anAction];
+    }
+    [super addInvocationAction:anAction];
 }
 
 @end
