@@ -291,6 +291,28 @@
     XCTAssertThrows([mock verify], @"Should have complained about rejected method being invoked");
 }
 
+- (void)testDontAllowAndBlocksOnRejects
+{  
+    NSNotification *notification = [NSNotification notificationWithName:@"Notification" object:nil];
+
+    // Version 3 syntax.
+    id mock = OCMClassMock([TestClassForMacroTesting class]);
+    XCTAssertThrows(OCMReject([mock stringValue]).andPost(notification));
+
+    // Version 2 syntax.
+    mock = OCMClassMock([TestClassForMacroTesting class]);
+    XCTAssertThrows([[[mock reject] andPost:notification] stringValue]);
+
+    // Mixes of version 2 and version 3 syntax.
+    mock = OCMClassMock([TestClassForMacroTesting class]);
+    XCTAssertThrows(OCMExpect([[[mock andPost:notification] never] stringValue]));
+
+    mock = OCMClassMock([TestClassForMacroTesting class]);
+    XCTAssertThrows(OCMExpect([[[mock never] andPost:notification] stringValue]));
+
+    mock = OCMClassMock([TestClassForMacroTesting class]);
+    XCTAssertThrows(OCMExpect([[mock never] stringValue]).andPost(notification));
+}
 
 - (void)testShouldNotReportErrorWhenMethodWasInvoked
 {
