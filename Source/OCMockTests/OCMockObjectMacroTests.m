@@ -291,6 +291,11 @@
     XCTAssertThrows([mock verify], @"Should have complained about rejected method being invoked");
 }
 
+- (void)testThrowsWhenTryingToAddActionToReject
+{
+    id mock = OCMClassMock([TestClassForMacroTesting class]);
+    XCTAssertThrows(OCMReject([mock stringValue]).andReturn(@"Foo"));
+}
 
 - (void)testShouldNotReportErrorWhenMethodWasInvoked
 {
