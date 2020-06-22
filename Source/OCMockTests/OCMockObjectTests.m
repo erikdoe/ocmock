@@ -1082,6 +1082,12 @@ static NSString *TestNotification = @"TestNotification";
     XCTAssertThrows([mock uppercaseString], @"Should have complained about rejected method being called.");
 }
 
+- (void)testThrowsWhenTryingToAddActionToReject
+{
+	mock = [OCMockObject niceMockForClass:[NSString class]];
+	XCTAssertThrows([[[mock reject] andReturn:@"Foo"] stringValue]);
+}
+
 - (void)testUncalledRejectStubDoesNotCountAsExpectation
 {
     mock = [OCMockObject niceMockForClass:[NSString class]];
