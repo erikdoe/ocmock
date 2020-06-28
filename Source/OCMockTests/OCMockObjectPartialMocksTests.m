@@ -60,6 +60,43 @@ static NSUInteger initializeCallCount = 0;
 
 @end
 
+@interface TestClassThatObservesFoo : NSObject
+{
+  id observedObject;
+}
+@end
+
+@implementation TestClassThatObservesFoo
+
+- (instancetype)initWithObject:(id)object
+{
+  if((self = [super init]))
+  {
+    observedObject = object;
+  }
+  return self;
+}
+
+- (void)startObserving
+{
+  [observedObject addObserver:self forKeyPath:@"foo" options:0 context:NULL];
+}
+
+- (void)stopObserving
+{
+  if(observedObject)
+  {
+    [observedObject addObserver:self forKeyPath:@"foo" options:0 context:NULL];
+    observedObject = nil;
+  }
+}
+
+- (void)dealloc
+{
+  [self stopObserving];
+}
+
+@end
 
 @interface TestClassThatCallsSelf : NSObject
 {
@@ -657,5 +694,16 @@ static NSUInteger initializeCallCount = 0;
     }
 }
 
+- (void)testThrowsExceptionWhenAttemptingToTearDownWrongClass
+{
+  TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
+  TestClassThatObservesFoo *observer = [[TestClassThatObservesFoo alloc] initWithObject:realObject];
+  id mock = [OCMockObject partialMockForObject:realObject];
+  [observer startObserving];
+  XCTAssertThrowsSpecificNamed([mock stopMocking], NSException, NSInvalidArgumentException);
+
+  // Must stopObserving or we will throw when the autoreleasepool containing observer releases.
+  [observer stopObserving];
+}
 
 @end
