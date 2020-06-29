@@ -27,9 +27,7 @@
 
 - (id)initWithClass:(Class)aClass
 {
-	if(aClass == Nil)
-		[NSException raise:NSInvalidArgumentException format:@"Class cannot be Nil."];
-
+	[self assertClassIsSupported:aClass];
 	[super init];
 	mockedClass = aClass;
     [self prepareClassForClassMethodMocking];
@@ -52,6 +50,20 @@
 	return mockedClass;
 }
 
+- (void)assertClassIsSupported:(Class)cls {
+    if(cls == Nil)
+    {
+        [NSException raise:NSInvalidArgumentException format:@"Class cannot be Nil."];
+    }
+    if([cls respondsToSelector:@selector(reasonClassDoesNotSupportMocking)])
+    {
+        NSString *reason = [cls reasonClassDoesNotSupportMocking];
+        if(reason != nil)
+        {
+            [NSException raise:NSInvalidArgumentException format:@"Class `%@` does not support mocking: %@", cls, reason];
+        }
+    }
+}
 
 #pragma mark  Extending/overriding superclass behaviour
 

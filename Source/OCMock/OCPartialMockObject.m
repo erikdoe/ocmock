@@ -30,11 +30,7 @@
 
 - (id)initWithObject:(NSObject *)anObject
 {
-    if(anObject == nil)
-        [NSException raise:NSInvalidArgumentException format:@"Object cannot be nil."];
-
     Class const class = [self classToSubclassForObject:anObject];
-    [self assertClassIsSupported:class];
 	[super initWithClass:class];
 	realObject = [anObject retain];
     [self prepareObjectForInstanceMethodMocking];
@@ -55,6 +51,7 @@
 
 - (void)assertClassIsSupported:(Class)class
 {
+    [super assertClassIsSupported:class];
     NSString *classname = NSStringFromClass(class);
     NSString *reason = nil;
     if([classname hasPrefix:@"__NSTagged"] || [classname hasPrefix:@"NSTagged"])

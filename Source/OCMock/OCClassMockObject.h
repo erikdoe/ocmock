@@ -28,4 +28,13 @@
 - (Class)mockedClass;
 - (Class)mockObjectClass;  // since -class returns the mockedClass
 
+- (void)assertClassIsSupported:(Class)cls;
+
+@end
+
+@protocol OCClassMockBlocker
+// If a class does not support mocking, it can implement this method and return a reason.
+// Returning nil implies that mocking is supported, allowing you to optionally support mocking based
+// on runtime conditions.
++ (NSString *)reasonClassDoesNotSupportMocking;
 @end
