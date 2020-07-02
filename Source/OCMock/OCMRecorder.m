@@ -27,7 +27,7 @@
 - (instancetype)init
 {
     // no super, we're inheriting from NSProxy
-    wasUsed = NO;
+    didRecordInvocation = NO;
     shouldReturnMockFromInit = NO;
     return self;
 }
@@ -65,9 +65,9 @@
     return invocationMatcher;
 }
 
-- (BOOL)wasUsed
+- (BOOL)didRecordInvocation
 {
-    return wasUsed;
+    return didRecordInvocation;
 }
 
 
@@ -111,7 +111,7 @@
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
 	[anInvocation setTarget:nil];
-	wasUsed = YES;
+	didRecordInvocation = YES;
     [invocationMatcher setInvocation:anInvocation];
 
     // Code with ARC may retain the receiver of an init method before invoking it. In that case it
@@ -128,7 +128,6 @@
 
 - (void)doesNotRecognizeSelector:(SEL)aSelector __used
 {
-	wasUsed = YES;
     [NSException raise:NSInvalidArgumentException format:@"%@: cannot stub/expect/verify method '%@' because no such method exists in the mocked class.", mockObject, NSStringFromSelector(aSelector)];
 }
 

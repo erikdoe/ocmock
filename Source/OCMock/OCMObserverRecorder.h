@@ -29,6 +29,6 @@
 
 - (BOOL)argument:(id)expectedArg matchesArgument:(id)observedArg;
 
-- (BOOL)wasUsed;
+- (BOOL)didRecordInvocation __used;
 
 @end

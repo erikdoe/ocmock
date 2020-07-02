@@ -40,7 +40,7 @@ static NSString *const OCMGlobalStateKey = @"OCMGlobalStateKey";
     OCMStubRecorder *recorder = [[(OCMStubRecorder *)[globalState recorder] retain] autorelease];
     BOOL didThrow = [globalState invocationDidThrow];
     [threadDictionary removeObjectForKey:OCMGlobalStateKey];
-	if(didThrow == NO && [recorder wasUsed] == NO)
+	if(didThrow == NO && [recorder didRecordInvocation] == NO)
 	{
 		[NSException raise:NSInternalInconsistencyException
 					format:@"Did not record an invocation in OCMStub/OCMExpect/OCMReject.\n"
@@ -106,7 +106,7 @@ static NSString *const OCMGlobalStateKey = @"OCMGlobalStateKey";
 	OCMVerifier *verifier = [[(OCMVerifier *)[globalState recorder] retain] autorelease];
     BOOL didThrow = [globalState invocationDidThrow];
 	[threadDictionary removeObjectForKey:OCMGlobalStateKey];
-	if(didThrow == NO && [verifier wasUsed] == NO)
+	if(didThrow == NO && [verifier didRecordInvocation] == NO)
     {
         [NSException raise:NSInternalInconsistencyException
                     format:@"Did not record an invocation in OCMVerify.\n"

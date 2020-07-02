@@ -24,7 +24,7 @@
 {
     OCMockObject         *mockObject;
     OCMInvocationMatcher *invocationMatcher;
-    BOOL                 wasUsed;
+    BOOL                 didRecordInvocation;
     BOOL                 shouldReturnMockFromInit;
 }
 
@@ -36,7 +36,7 @@
 - (void)setShouldReturnMockFromInit:(BOOL)flag;
 
 - (OCMInvocationMatcher *)invocationMatcher;
-- (BOOL)wasUsed;
+- (BOOL)didRecordInvocation;
 
 - (id)classMethod;
 - (id)ignoringNonObjectArgs;
