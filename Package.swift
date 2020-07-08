@@ -33,7 +33,7 @@ let package = Package(
                     "OCMockLib/OCMockLib-Prefix.pch",
                     "OCMockLibTests/OCMockLibTests-Prefix.pch",
                 ],
-                publicHeadersPath: "OCMock",
+                publicHeadersPath: "Public",
                 cSettings: [
                     .headerSearchPath("./"),
                     .unsafeFlags(["-fno-objc-arc"])
