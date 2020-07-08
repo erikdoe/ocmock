@@ -14,17 +14,17 @@
  *  under the License.
  */
 
-#import <OCMock/OCMockObject.h>
-#import <OCMock/OCMRecorder.h>
-#import <OCMock/OCMVerifier.h>
-#import <OCMock/OCMStubRecorder.h>
-#import <OCMock/OCMConstraint.h>
-#import <OCMock/OCMArg.h>
-#import <OCMock/OCMLocation.h>
-#import <OCMock/OCMQuantifier.h>
-#import <OCMock/OCMMacroState.h>
-#import <OCMock/NSNotificationCenter+OCMAdditions.h>
-#import <OCMock/OCMFunctions.h>
+#import "OCMockObject.h"
+#import "OCMRecorder.h"
+#import "OCMVerifier.h"
+#import "OCMStubRecorder.h"
+#import "OCMConstraint.h"
+#import "OCMArg.h"
+#import "OCMLocation.h"
+#import "OCMQuantifier.h"
+#import "OCMMacroState.h"
+#import "NSNotificationCenter+OCMAdditions.h"
+#import "OCMFunctions.h"
 
 
 #ifdef OCM_DISABLE_SHORT_SYNTAX
