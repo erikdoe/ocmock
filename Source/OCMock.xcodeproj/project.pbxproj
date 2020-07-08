@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		030EF0B614632FD000B04273 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 030EF0B414632FD000B04273 /* InfoPlist.strings */; };
 		031E50581BB4A56300E257C3 /* OCMBoxedReturnValueProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 031E50571BB4A56300E257C3 /* OCMBoxedReturnValueProviderTests.m */; };
 		031E50591BB4A56300E257C3 /* OCMBoxedReturnValueProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 031E50571BB4A56300E257C3 /* OCMBoxedReturnValueProviderTests.m */; };
 		0322DA65191188D100CACAF1 /* OCMockObjectVerifyAfterRunTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0322DA64191188D100CACAF1 /* OCMockObjectVerifyAfterRunTests.m */; };
@@ -461,7 +460,6 @@
 /* Begin PBXFileReference section */
 		030EF0A814632FD000B04273 /* OCMock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OCMock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		030EF0B314632FD000B04273 /* OCMock-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OCMock-Info.plist"; sourceTree = "<group>"; };
-		030EF0B514632FD000B04273 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		030EF0B714632FD000B04273 /* OCMock-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OCMock-Prefix.pch"; sourceTree = "<group>"; };
 		030EF0B814632FD000B04273 /* OCMock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OCMock.h; sourceTree = "<group>"; };
 		030EF0DC14632FF700B04273 /* libOCMock.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libOCMock.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -579,7 +577,6 @@
 		D31108B91828DB8700737925 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D31108BD1828DB8700737925 /* OCMockLibTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OCMockLibTests-Prefix.pch"; sourceTree = "<group>"; };
 		F0B950F11B0080BE00942C38 /* OCMock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OCMock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F0B950F41B0080BE00942C38 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "OCMock iOS/Info.plist"; sourceTree = SOURCE_ROOT; };
 		F0B9510A1B0080D500942C38 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
@@ -689,9 +686,7 @@
 		030EF0B214632FD000B04273 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				F0B950F41B0080BE00942C38 /* Info.plist */,
 				030EF0B314632FD000B04273 /* OCMock-Info.plist */,
-				030EF0B414632FD000B04273 /* InfoPlist.strings */,
 				030EF0B714632FD000B04273 /* OCMock-Prefix.pch */,
 			);
 			name = "Supporting Files";
@@ -1334,7 +1329,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				030EF0B614632FD000B04273 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1680,14 +1674,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		030EF0B414632FD000B04273 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				030EF0B514632FD000B04273 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
 		03565A3618F0566F003AE91E /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
