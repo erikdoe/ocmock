@@ -30,7 +30,7 @@
     if(aProtocol == nil)
         [NSException raise:NSInvalidArgumentException format:@"Protocol cannot be nil."];
 
-    [super init];
+    self = [super init];
     mockedProtocol = aProtocol;
     return self;
 }

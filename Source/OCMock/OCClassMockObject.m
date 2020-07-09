@@ -38,7 +38,7 @@
 - (id)initWithClass:(Class)aClass
 {
     [self assertClassIsSupported:aClass];
-    [super init];
+    self = [super init];
     mockedClass = aClass;
     [self prepareClassForClassMethodMocking];
     return self;
