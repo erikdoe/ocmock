@@ -22,12 +22,12 @@
 #import "OCMFunctionsPrivate.h"
 #import "OCMInvocationStub.h"
 
+@interface OCPartialMockObject ()
+@property (nonatomic) NSObject *realObject;
+@property (nonatomic) NSInvocation *invocationFromMock;
+@end
 
 @implementation OCPartialMockObject
-{
-    NSObject *realObject;
-    NSInvocation *invocationFromMock;
-}
 
 #pragma mark Initialisers, description, accessors, etc.
 
@@ -37,20 +37,15 @@
         [NSException raise:NSInvalidArgumentException format:@"Object cannot be nil."];
     Class const class = [self classToSubclassForObject:anObject];
     [self assertClassIsSupported:class];
-	  self = [super initWithClass:class];
-	  realObject = [anObject retain];
+    self = [super initWithClass:class];
+    self.realObject = [anObject retain];
     [self prepareObjectForInstanceMethodMocking];
     return self;
 }
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"OCPartialMockObject(%@)", NSStringFromClass([self mockedClass])];
-}
-
-- (NSObject *)realObject
-{
-    return realObject;
+    return [NSString stringWithFormat:@"OCPartialMockObject(%@)", NSStringFromClass(self.mockedClass)];
 }
 
 #pragma mark Helper methods
@@ -89,13 +84,13 @@
 
 - (void)stopMocking
 {
-    if(realObject != nil)
+    if(self.realObject != nil)
     {
-        Class partialMockClass = object_getClass(realObject);
-        OCMSetAssociatedMockForObject(nil, realObject);
-        object_setClass(realObject, [self mockedClass]);
-        [realObject release];
-        realObject = nil;
+        Class partialMockClass = object_getClass(self.realObject);
+        OCMSetAssociatedMockForObject(nil, self.realObject);
+        object_setClass(self.realObject, self.mockedClass);
+        [self.realObject release];
+        self.realObject = nil;
         OCMDisposeSubclass(partialMockClass);
     }
     [super stopMocking];
@@ -112,7 +107,7 @@
 {
     // If the mock invokes a method on the real object we end up here a second time, but because
     // the mock has added the invocation already we do not want to add it again.
-    if((invocationFromMock == nil) || ([anInvocation selector] != [invocationFromMock selector]))
+	if((self.invocationFromMock == nil) || ([anInvocation selector] != [self.invocationFromMock selector]))
         [super addInvocation:anInvocation];
 }
 
@@ -127,21 +122,21 @@
     if([anInvocation methodIsInInitFamily])
     {
         targetReceivingInit = [anInvocation target];
-        [realObject retain];
+        [self.realObject retain];
     }
 
-    invocationFromMock = anInvocation;
-    [anInvocation invokeWithTarget:realObject];
-    invocationFromMock = nil;
+    self.invocationFromMock = anInvocation;
+    [anInvocation invokeWithTarget:self.realObject];
+    self.invocationFromMock = nil;
 
     if(targetReceivingInit)
     {
         id returnVal;
         [anInvocation getReturnValue:&returnVal];
-        if(returnVal == realObject)
+        if(returnVal == self.realObject)
         {
             [anInvocation setReturnValue:&self];
-            [realObject release];
+            [self.realObject release];
             [self retain];
         }
         [targetReceivingInit release];
@@ -153,11 +148,11 @@
 
 - (void)prepareObjectForInstanceMethodMocking
 {
-    OCMSetAssociatedMockForObject(self, realObject);
+    OCMSetAssociatedMockForObject(self, self.realObject);
 
     /* dynamically create a subclass and set it as the class of the object */
-    Class subclass = OCMCreateSubclass([self mockedClass], realObject);
-    object_setClass(realObject, subclass);
+    Class subclass = OCMCreateSubclass(self.mockedClass, self.realObject);
+    object_setClass(self.realObject, subclass);
 
     /* point forwardInvocation: of the object to the implementation in the mock */
     Method myForwardMethod = class_getInstanceMethod([self mockObjectClass], @selector(forwardInvocationForRealObject:));
@@ -167,7 +162,7 @@
     /* do the same for forwardingTargetForSelector, remember existing imp with alias selector */
     Method myForwardingTargetMethod = class_getInstanceMethod([self mockObjectClass], @selector(forwardingTargetForSelectorForRealObject:));
     IMP myForwardingTargetIMP = method_getImplementation(myForwardingTargetMethod);
-    IMP originalForwardingTargetIMP = [[self mockedClass] instanceMethodForSelector:@selector(forwardingTargetForSelector:)];
+    IMP originalForwardingTargetIMP = [self.mockedClass instanceMethodForSelector:@selector(forwardingTargetForSelector:)];
     class_addMethod(subclass, @selector(forwardingTargetForSelector:), myForwardingTargetIMP, method_getTypeEncoding(myForwardingTargetMethod));
     class_addMethod(subclass, @selector(ocmock_replaced_forwardingTargetForSelector:), originalForwardingTargetIMP, method_getTypeEncoding(myForwardingTargetMethod));
 
@@ -194,25 +189,25 @@
             // ignore for now
         }
     };
-    [NSObject enumerateMethodsInClass:[self mockedClass] usingBlock:setupForwarderFiltered];
+    [NSObject enumerateMethodsInClass:self.mockedClass usingBlock:setupForwarderFiltered];
 }
 
 - (void)setupForwarderForSelector:(SEL)sel
 {
     SEL aliasSelector = OCMAliasForOriginalSelector(sel);
-    if(class_getInstanceMethod(object_getClass(realObject), aliasSelector) != NULL)
+    if(class_getInstanceMethod(object_getClass(self.realObject), aliasSelector) != NULL)
         return;
 
-    Method originalMethod = class_getInstanceMethod([self mockedClass], sel);
+    Method originalMethod = class_getInstanceMethod(self.mockedClass, sel);
     /* Might be NULL if the selector is forwarded to another class */
     IMP originalIMP = (originalMethod != NULL) ? method_getImplementation(originalMethod) : NULL;
     const char *types = (originalMethod != NULL) ? method_getTypeEncoding(originalMethod) : NULL;
     // TODO: check the fallback implementation is actually sufficient
     if(types == NULL)
-        types = ([[[self mockedClass] instanceMethodSignatureForSelector:sel] fullObjCTypes]);
+        types = ([[self.mockedClass instanceMethodSignatureForSelector:sel] fullObjCTypes]);
 
     Class subclass = object_getClass([self realObject]);
-    IMP forwarderIMP = [[self mockedClass] instanceMethodForwarderForSelector:sel];
+    IMP forwarderIMP = [self.mockedClass instanceMethodForwarderForSelector:sel];
     class_replaceMethod(subclass, sel, forwarderIMP, types);
     class_addMethod(subclass, aliasSelector, originalIMP, types);
 }
@@ -269,7 +264,7 @@
 {
     SEL matcherSel = [[matcher recordedInvocation] selector];
     __block BOOL stubbingMightHelp = NO;
-    [NSObject enumerateMethodsInClass:[self mockedClass] usingBlock:^(Class cls, SEL sel) {
+    [NSObject enumerateMethodsInClass:self.mockedClass usingBlock:^(Class cls, SEL sel) {
         if(sel == matcherSel)
             stubbingMightHelp = OCMIsAppleBaseClass(cls) || OCMIsApplePrivateMethod(cls, sel);
     }];

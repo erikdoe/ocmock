@@ -29,16 +29,16 @@
 #import "OCPartialMockObject.h"
 #import "OCProtocolMockObject.h"
 
+@interface OCMockObject ()
+@property (nonatomic) BOOL isNice;
+@property (nonatomic) BOOL expectationOrderMatters;
+@property (nonatomic) NSMutableArray *stubs;
+@property (nonatomic) NSMutableArray *expectations;
+@property (nonatomic) NSMutableArray *exceptions;
+@property (nonatomic) NSMutableArray *invocations;
+@end
 
 @implementation OCMockObject
-{
-  BOOL            isNice;
-  BOOL            expectationOrderMatters;
-  NSMutableArray *stubs;
-  NSMutableArray *expectations;
-  NSMutableArray *exceptions;
-  NSMutableArray *invocations;
-}
 
 #pragma mark Class initialisation
 
@@ -80,7 +80,7 @@
 
 + (id)_makeNice:(OCMockObject *)mock
 {
-    mock->isNice = YES;
+    mock.isNice = YES;
     return mock;
 }
 
@@ -103,8 +103,8 @@
         return (id)[recorder init];
     }
 
-    // skip initialisation when init is called again, which can happen when stubbing alloc/init
-    if(stubs != nil)
+	  // skip initialisation when init is called again, which can happen when stubbing alloc/init
+    if(self.stubs != nil)
     {
         return self;
     }
@@ -115,20 +115,20 @@
     }
 
     // no [super init], we're inheriting from NSProxy
-    expectationOrderMatters = NO;
-    stubs = [[NSMutableArray alloc] init];
-    expectations = [[NSMutableArray alloc] init];
-    exceptions = [[NSMutableArray alloc] init];
-    invocations = [[NSMutableArray alloc] init];
+    self.expectationOrderMatters = NO;
+    self.stubs = [[NSMutableArray alloc] init];
+    self.expectations = [[NSMutableArray alloc] init];
+    self.exceptions = [[NSMutableArray alloc] init];
+    self.invocations = [[NSMutableArray alloc] init];
     return self;
 }
 
 - (void)dealloc
 {
-    [stubs release];
-    [expectations release];
-    [exceptions release];
-    [invocations release];
+    [self.stubs release];
+    [self.expectations release];
+    [self.exceptions release];
+    [self.invocations release];
     [super dealloc];
 }
 
@@ -140,17 +140,17 @@
 - (void)addStub:(OCMInvocationStub *)aStub
 {
     [self assertInvocationsArrayIsPresent];
-    @synchronized(stubs)
+    @synchronized(self.stubs)
     {
-        [stubs addObject:aStub];
+        [self.stubs addObject:aStub];
     }
 }
 
 - (OCMInvocationStub *)stubForInvocation:(NSInvocation *)anInvocation
 {
-    @synchronized(stubs)
+    @synchronized(self.stubs)
     {
-        for(OCMInvocationStub *stub in stubs)
+        for(OCMInvocationStub *stub in self.stubs)
             if([stub matchesInvocation:anInvocation])
                 return stub;
         return nil;
@@ -159,15 +159,15 @@
 
 - (void)addExpectation:(OCMInvocationExpectation *)anExpectation
 {
-    @synchronized(expectations)
+    @synchronized(self.expectations)
     {
-        [expectations addObject:anExpectation];
+        [self.expectations addObject:anExpectation];
     }
 }
 
 - (void)assertInvocationsArrayIsPresent
 {
-    if(invocations == nil)
+    if(self.invocations == nil)
     {
         [NSException raise:NSInternalInconsistencyException format:@"** Cannot use mock object %@ at %p. This error usually occurs when a mock object is used after stopMocking has been called on it. In most cases it is not necessary to call stopMocking. If you know you have to, please make sure that the mock object is not used afterwards.", [self description], (void *)self];
     }
@@ -175,7 +175,7 @@
 
 - (void)addInvocation:(NSInvocation *)anInvocation
 {
-    @synchronized(invocations)
+    @synchronized(self.invocations)
     {
         // We can't do a normal retain arguments on anInvocation because its target/arguments/return
         // value could be self. That would produce a retain cycle self->invocations->anInvocation->self.
@@ -184,20 +184,13 @@
         // This still doesn't completely prevent retain cycles since any of the arguments could have a
         // strong reference to self. Those will have to be broken with manual calls to -stopMocking.
         [anInvocation retainObjectArgumentsExcludingObject:self];
-        [invocations addObject:anInvocation];
+        [self.invocations addObject:anInvocation];
     }
 }
 
-- (NSArray *)invocations
-{
-    return invocations;
-}
-
-#pragma mark Public API
-
 - (void)setExpectationOrderMatters:(BOOL)flag
 {
-    expectationOrderMatters = flag;
+  _expectationOrderMatters = flag;
 }
 
 - (void)stopMocking
@@ -206,11 +199,11 @@
     // and they can also have a strong reference to self, creating a retain cycle. Get
     // rid of all of the invocations to hopefully let their objects deallocate, and to
     // break any retain cycles involving self.
-    @synchronized(invocations)
+    @synchronized(self.invocations)
     {
-        [invocations removeAllObjects];
-        [invocations autorelease];
-        invocations = nil;
+        [self.invocations removeAllObjects];
+        [self.invocations autorelease];
+      self.invocations = nil;
     }
 }
 
@@ -239,9 +232,9 @@
 - (id)verifyAtLocation:(OCMLocation *)location
 {
     NSMutableArray *unsatisfiedExpectations = [NSMutableArray array];
-    @synchronized(expectations)
+    @synchronized(self.expectations)
     {
-        for(OCMInvocationExpectation *e in expectations)
+        for(OCMInvocationExpectation *e in self.expectations)
         {
             if(![e isSatisfied])
                 [unsatisfiedExpectations addObject:e];
@@ -262,9 +255,9 @@
     }
 
     OCMInvocationExpectation *firstException = nil;
-    @synchronized(exceptions)
+    @synchronized(self.exceptions)
     {
-        firstException = [exceptions.firstObject retain];
+        firstException = [self.exceptions.firstObject retain];
     }
     if(firstException)
     {
@@ -288,10 +281,10 @@
     NSTimeInterval step = 0.01;
     while(delay > 0)
     {
-        @synchronized(expectations)
+        @synchronized(self.expectations)
         {
             BOOL allExpectationsAreMatchAndReject = YES;
-            for(OCMInvocationExpectation *expectation in expectations)
+            for(OCMInvocationExpectation *expectation in self.expectations)
             {
                 if(![expectation isMatchAndReject])
                 {
@@ -326,9 +319,9 @@
 {
     NSUInteger count = 0;
     [self assertInvocationsArrayIsPresent];
-    @synchronized(invocations)
+    @synchronized(self.invocations)
     {
-        for(NSInvocation *invocation in invocations)
+        for(NSInvocation *invocation in self.invocations)
         {
             if([matcher matchesInvocation:invocation])
                 count += 1;
@@ -379,9 +372,9 @@
 
 - (BOOL)handleSelector:(SEL)sel
 {
-    @synchronized(stubs)
+    @synchronized(self.stubs)
     {
-        for(OCMInvocationStub *recorder in stubs)
+        for(OCMInvocationStub *recorder in self.stubs)
             if([recorder matchesSelector:sel])
                 return YES;
     }
@@ -404,9 +397,9 @@
         else
         {
             // add non-stubbed method to list of exceptions to be re-raised in verify
-            @synchronized(exceptions)
+            @synchronized(self.exceptions)
             {
-                [exceptions addObject:e];
+                [self.exceptions addObject:e];
             }
         }
         [e raise];
@@ -416,9 +409,11 @@
 - (BOOL)handleInvocation:(NSInvocation *)anInvocation
 {
     [self assertInvocationsArrayIsPresent];
+
     [self addInvocation:anInvocation];
 
     OCMInvocationStub *stub = [self stubForInvocation:anInvocation];
+
     if(stub == nil)
         return NO;
 
@@ -426,16 +421,16 @@
     [stub retain];
 
     BOOL removeStub = NO;
-    @synchronized(expectations)
+    @synchronized(self.expectations)
     {
-        if([expectations containsObject:stub])
+        if([self.expectations containsObject:stub])
         {
             OCMInvocationExpectation *expectation = [self _nextExpectedInvocation];
-            if(expectationOrderMatters && (expectation != stub))
+            if(self.expectationOrderMatters && (expectation != stub))
             {
                 [NSException raise:NSInternalInconsistencyException
                             format:@"%@: unexpected method invoked: %@\n\texpected:\t%@",
-                            [self description], [stub description], [[expectations objectAtIndex:0] description]];
+                            [self description], [stub description], [[self.expectations objectAtIndex:0] description]];
             }
 
             // We can't check isSatisfied yet, since the stub won't be satisfied until we call
@@ -444,16 +439,16 @@
             // expected methods to be called yet
             if(![(OCMInvocationExpectation *)stub isMatchAndReject])
             {
-                [expectations removeObject:stub];
+                [self.expectations removeObject:stub];
                 removeStub = YES;
             }
         }
     }
     if(removeStub)
     {
-        @synchronized(stubs)
+        @synchronized(self.stubs)
         {
-            [stubs removeObject:stub];
+            [self.stubs removeObject:stub];
         }
     }
 
@@ -472,7 +467,7 @@
 // Must be synchronized on expectations when calling this method.
 - (OCMInvocationExpectation *)_nextExpectedInvocation
 {
-    for(OCMInvocationExpectation *expectation in expectations)
+    for(OCMInvocationExpectation *expectation in self.expectations)
         if(![expectation isMatchAndReject])
             return expectation;
     return nil;
@@ -480,7 +475,7 @@
 
 - (void)handleUnRecordedInvocation:(NSInvocation *)anInvocation
 {
-    if(isNice == NO)
+    if(self.isNice == NO)
     {
         [NSException raise:NSInternalInconsistencyException
                     format:@"%@: unexpected method invoked: %@ %@",
@@ -512,16 +507,16 @@
 {
     NSMutableString *outputString = [NSMutableString string];
     NSArray *stubsCopy = nil;
-    @synchronized(stubs)
+    @synchronized(self.stubs)
     {
-        stubsCopy = [stubs copy];
+        stubsCopy = [self.stubs copy];
     }
     for(OCMStubRecorder *stub in stubsCopy)
     {
         BOOL expectationsContainStub = NO;
-        @synchronized(expectations)
+        @synchronized(self.expectations)
         {
-            expectationsContainStub = [expectations containsObject:stub];
+            expectationsContainStub = [self.expectations containsObject:stub];
         }
 
         NSString *prefix = @"";
