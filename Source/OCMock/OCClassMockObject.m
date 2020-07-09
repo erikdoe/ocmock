@@ -26,11 +26,22 @@
 @end
 
 
+@interface OCClassMockObjectInstanceVars : NSObject
+@property (nonatomic) Class mockedClass;
+@property (nonatomic) Class originalMetaClass;
+@property (nonatomic) Class classCreatedForNewMetaClass;
+@end
+
+@implementation OCClassMockObjectInstanceVars
+@end
+
 @interface OCClassMockObject ()
 @property (nonatomic) Class mockedClass;
 @property (nonatomic) Class originalMetaClass;
 @property (nonatomic) Class classCreatedForNewMetaClass;
 @end
+
+static const char *OCClassMockObjectInstanceVarsKey = "OCClassMockObjectInstanceVarsKey";
 
 @implementation OCClassMockObject
 
@@ -40,6 +51,10 @@
 {
     [self assertClassIsSupported:aClass];
     self = [super init];
+    OCClassMockObjectInstanceVars *vars = [[OCClassMockObjectInstanceVars alloc] init];
+    objc_setAssociatedObject(self, OCClassMockObjectInstanceVarsKey, vars, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    [vars release];
+
     self.mockedClass = aClass;
     [self prepareClassForClassMethodMocking];
     return self;
@@ -54,6 +69,42 @@
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"OCClassMockObject(%@)", NSStringFromClass(self.mockedClass)];
+}
+
+#pragma mark  Setters/Getters
+
+- (OCClassMockObjectInstanceVars *)classMockObjectInstanceVars {
+    return objc_getAssociatedObject(self, OCClassMockObjectInstanceVarsKey);
+}
+
+- (Class)mockedClass
+{
+    return self.classMockObjectInstanceVars.mockedClass;
+}
+
+- (Class)classCreatedForNewMetaClass
+{
+    return self.classMockObjectInstanceVars.classCreatedForNewMetaClass;
+}
+
+- (Class)originalMetaClass
+{
+    return self.classMockObjectInstanceVars.originalMetaClass;
+}
+
+- (void)setMockedClass:(Class)mockedClass
+{
+    self.classMockObjectInstanceVars.mockedClass = mockedClass;
+}
+
+- (void)setClassCreatedForNewMetaClass:(Class)classCreatedForNewMetaClass
+{
+    self.classMockObjectInstanceVars.classCreatedForNewMetaClass = classCreatedForNewMetaClass;
+}
+
+- (void)setOriginalMetaClass:(Class)originalMetaClass
+{
+    self.classMockObjectInstanceVars.originalMetaClass = originalMetaClass;
 }
 
 - (void)assertClassIsSupported:(Class)aClass
@@ -222,7 +273,7 @@
 
 - (Class)class
 {
-    return _mockedClass;
+    return self.mockedClass;
 }
 
 - (BOOL)respondsToSelector:(SEL)selector

@@ -29,6 +29,20 @@
 #import "OCPartialMockObject.h"
 #import "OCProtocolMockObject.h"
 
+@interface OCMockObjectInstanceVars : NSObject
+@property (nonatomic) BOOL isNice;
+@property (nonatomic) BOOL expectationOrderMatters;
+@property (nonatomic, assign) NSMutableArray *stubs;
+@property (nonatomic, assign) NSMutableArray *expectations;
+@property (nonatomic, assign) NSMutableArray *exceptions;
+@property (nonatomic, assign) NSMutableArray *invocations;
+@end
+
+@implementation OCMockObjectInstanceVars
+@end
+
+static const char *OCMockObjectInstanceVarsKey = "OCMockObjectInstanceVarsKey";
+
 @interface OCMockObject ()
 @property (nonatomic) BOOL isNice;
 @property (nonatomic) BOOL expectationOrderMatters;
@@ -103,8 +117,8 @@
         return (id)[recorder init];
     }
 
-	  // skip initialisation when init is called again, which can happen when stubbing alloc/init
-    if(self.stubs != nil)
+	// skip initialisation when init is called again, which can happen when stubbing alloc/init
+    if(self.mockObjectInstanceVars != nil)
     {
         return self;
     }
@@ -113,6 +127,10 @@
     {
         [NSException raise:NSInternalInconsistencyException format:@"*** Cannot create instances of OCMockObject. Please use one of the subclasses."];
     }
+
+    OCMockObjectInstanceVars *vars = [[OCMockObjectInstanceVars alloc] init];
+    objc_setAssociatedObject(self, OCMockObjectInstanceVarsKey, vars, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    [vars release];
 
     // no [super init], we're inheriting from NSProxy
     self.expectationOrderMatters = NO;
@@ -188,10 +206,73 @@
     }
 }
 
-- (void)setExpectationOrderMatters:(BOOL)flag
+# pragma mark  Getters/Setters
+- (OCMockObjectInstanceVars *)mockObjectInstanceVars
 {
-  _expectationOrderMatters = flag;
+    return objc_getAssociatedObject(self, OCMockObjectInstanceVarsKey);
 }
+
+- (BOOL)isNice
+{
+    return self.mockObjectInstanceVars.isNice;
+}
+
+- (BOOL)expectationOrderMatters
+{
+    return self.mockObjectInstanceVars.expectationOrderMatters;
+}
+
+- (NSMutableArray *)stubs
+{
+    return self.mockObjectInstanceVars.stubs;
+}
+
+- (NSMutableArray *)expectations
+{
+    return self.mockObjectInstanceVars.expectations;
+}
+
+- (NSMutableArray *)exceptions
+{
+    return self.mockObjectInstanceVars.exceptions;
+}
+
+- (NSMutableArray *)invocations
+{
+    return self.mockObjectInstanceVars.invocations;
+}
+
+- (void)setIsNice:(BOOL)isNice
+{
+    self.mockObjectInstanceVars.isNice = isNice;
+}
+
+- (void)setExpectationOrderMatters:(BOOL)expectationOrderMatters
+{
+    self.mockObjectInstanceVars.expectationOrderMatters = expectationOrderMatters;
+}
+
+- (void)setStubs:(NSMutableArray *)stubs
+{
+    self.mockObjectInstanceVars.stubs = stubs;
+}
+
+- (void)setExpectations:(NSMutableArray *)expectations
+{
+    self.mockObjectInstanceVars.expectations = expectations;
+}
+
+- (void)setExceptions:(NSMutableArray *)exceptions
+{
+    self.mockObjectInstanceVars.exceptions = exceptions;
+}
+
+- (void)setInvocations:(NSMutableArray *)invocations
+{
+    self.mockObjectInstanceVars.invocations = invocations;
+}
+
+#pragma mark  Public API
 
 - (void)stopMocking
 {
@@ -202,11 +283,10 @@
     @synchronized(self.invocations)
     {
         [self.invocations removeAllObjects];
-        [self.invocations autorelease];
-      self.invocations = nil;
+        [self.invocations release];
+        self.invocations = nil;
     }
 }
-
 
 - (id)stub
 {

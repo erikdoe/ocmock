@@ -22,6 +22,16 @@
 #import "OCMFunctionsPrivate.h"
 #import "OCMInvocationStub.h"
 
+@interface OCPartialMockObjectInstanceVars : NSObject
+@property (nonatomic, assign) NSObject *realObject;
+@property (nonatomic, assign) NSInvocation *invocationFromMock;
+@end
+
+@implementation OCPartialMockObjectInstanceVars
+@end
+
+static const char *OCPartialMockObjectInstanceVarsKey = "OCPartialMockObjectInstanceVarsKey";
+
 @interface OCPartialMockObject ()
 @property (nonatomic) NSObject *realObject;
 @property (nonatomic) NSInvocation *invocationFromMock;
@@ -38,6 +48,9 @@
     Class const class = [self classToSubclassForObject:anObject];
     [self assertClassIsSupported:class];
     self = [super initWithClass:class];
+    OCPartialMockObjectInstanceVars *vars = [[OCPartialMockObjectInstanceVars alloc] init];
+    objc_setAssociatedObject(self, OCPartialMockObjectInstanceVarsKey, vars, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    [vars release];
     self.realObject = [anObject retain];
     [self prepareObjectForInstanceMethodMocking];
     return self;
@@ -48,7 +61,33 @@
     return [NSString stringWithFormat:@"OCPartialMockObject(%@)", NSStringFromClass(self.mockedClass)];
 }
 
-#pragma mark Helper methods
+#pragma mark  Setters/Getters
+
+- (OCPartialMockObjectInstanceVars *)partialMockObjectInstanceVars {
+    return objc_getAssociatedObject(self, OCPartialMockObjectInstanceVarsKey);
+}
+
+- (NSObject *)realObject
+{
+    return self.partialMockObjectInstanceVars.realObject;
+}
+
+- (void)setRealObject:(NSObject *)realObject
+{
+    self.partialMockObjectInstanceVars.realObject = realObject;
+}
+
+- (NSInvocation *)invocationFromMock
+{
+    return self.partialMockObjectInstanceVars.invocationFromMock;
+}
+
+- (void)setInvocationFromMock:(NSInvocation *)invocationFromMock
+{
+    self.partialMockObjectInstanceVars.invocationFromMock = invocationFromMock;
+}
+
+#pragma mark  Helper methods
 
 - (void)assertClassIsSupported:(Class)class
 {

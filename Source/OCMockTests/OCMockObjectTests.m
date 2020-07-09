@@ -16,7 +16,9 @@
 
 #import <XCTest/XCTest.h>
 #import "OCMock/OCMock.h"
-
+#import "OCMBoxedReturnValueProvider.h"
+#import "OCPartialMockObject.h"
+#import "OCClassMockObject.h"
 
 #pragma mark Helper classes and protocols for testing
 
@@ -1157,5 +1159,11 @@ static NSString *TestNotification = @"TestNotification";
     XCTAssertThrows([[OCMockObject alloc] init]);
 }
 
+- (void)testMockObjectsHaveNoInstanceVariables
+{
+  XCTAssertEqual(class_getInstanceSize([NSProxy class]), class_getInstanceSize([OCMockObject class]));
+  XCTAssertEqual(class_getInstanceSize([NSProxy class]), class_getInstanceSize([OCPartialMockObject class]));
+  XCTAssertEqual(class_getInstanceSize([NSProxy class]), class_getInstanceSize([OCClassMockObject class]));
+}
 
 @end
