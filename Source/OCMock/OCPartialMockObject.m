@@ -32,6 +32,11 @@
 
 static const char *OCPartialMockObjectInstanceVarsKey = "OCPartialMockObjectInstanceVarsKey";
 
+// 0xEB chosen intentionally to try and force crashes.
+// It has both the high and low bit set, and 0xEBEBEBEBEB..etc
+// should be recognizable in a debugger as a bad value.
+static uint8_t OCScribbleByte = 0xEB;
+
 @interface OCPartialMockObject ()
 @property (nonatomic) NSObject *realObject;
 @property (nonatomic) NSInvocation *invocationFromMock;
@@ -61,9 +66,29 @@ static const char *OCPartialMockObjectInstanceVarsKey = "OCPartialMockObjectInst
     return [NSString stringWithFormat:@"OCPartialMockObject(%@)", NSStringFromClass(self.mockedClass)];
 }
 
+- (void)scribbleOnMemory:(void *)start ofSize:(size_t)size;
+{
+  for(size_t i = 0; i < size; ++i)
+  {
+    ((uint8_t*)start)[i] = OCScribbleByte;
+  }
+}
+
+- (void)verifyScribbleAt:(void *)start ofSize:(size_t)size;
+{
+  for(size_t i = 0; i < size; ++i)
+  {
+    if(((uint8_t*)start)[i] != OCScribbleByte)
+    {
+      [NSException raise:NSInternalInconsistencyException format:@"The class that partial mock `%@` does internal direct ivar accesses. You must use the real object instead of the mock for all uses other than setting/verifying stubs/expectations etc.", self];
+    }
+  }
+}
+
 #pragma mark  Setters/Getters
 
-- (OCPartialMockObjectInstanceVars *)partialMockObjectInstanceVars {
+- (OCPartialMockObjectInstanceVars *)partialMockObjectInstanceVars
+{
     return objc_getAssociatedObject(self, OCPartialMockObjectInstanceVarsKey);
 }
 

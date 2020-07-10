@@ -25,4 +25,6 @@
 
 - (void)assertClassIsSupported:(Class)aClass;
 
+- (void)scribbleOnMemory:(void *)start ofSize:(size_t)size;
+- (void)verifyScribbleAt:(void *)start ofSize:(size_t)size;
 @end

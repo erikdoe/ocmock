@@ -30,6 +30,8 @@
 @property (nonatomic) Class mockedClass;
 @property (nonatomic) Class originalMetaClass;
 @property (nonatomic) Class classCreatedForNewMetaClass;
+@property (nonatomic) void *classScribbleStart;
+@property (nonatomic) size_t classScribbleSize;
 @end
 
 @implementation OCClassMockObjectInstanceVars
@@ -39,21 +41,36 @@
 @property (nonatomic) Class mockedClass;
 @property (nonatomic) Class originalMetaClass;
 @property (nonatomic) Class classCreatedForNewMetaClass;
+@property (nonatomic) void *classScribbleStart;
+@property (nonatomic) size_t classScribbleSize;
 @end
 
 static const char *OCClassMockObjectInstanceVarsKey = "OCClassMockObjectInstanceVarsKey";
 
 @implementation OCClassMockObject
 
-#pragma mark Initialisers, description, accessors, etc.
+#pragma mark  Initialisers, description, etc.
 
 - (id)initWithClass:(Class)aClass
 {
     [self assertClassIsSupported:aClass];
+
+    size_t allocedSize = class_getInstanceSize(aClass);
+    Class selfClass = object_getClass(self);
+    size_t selfSize = class_getInstanceSize(selfClass);
+    if(allocedSize > selfSize)
+    {
+        self = realloc(self, allocedSize);
+    }
     self = [super init];
+
     OCClassMockObjectInstanceVars *vars = [[OCClassMockObjectInstanceVars alloc] init];
     objc_setAssociatedObject(self, OCClassMockObjectInstanceVarsKey, vars, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     [vars release];
+
+    self.classScribbleSize = allocedSize - selfSize;
+    self.classScribbleStart = (void *)self + selfSize;
+    [self scribbleOnMemory:self.classScribbleStart ofSize:self.classScribbleSize];
 
     self.mockedClass = aClass;
     [self prepareClassForClassMethodMocking];
@@ -71,9 +88,20 @@ static const char *OCClassMockObjectInstanceVarsKey = "OCClassMockObjectInstance
     return [NSString stringWithFormat:@"OCClassMockObject(%@)", NSStringFromClass(self.mockedClass)];
 }
 
+- (void)scribbleOnMemory:(void *)start ofSize:(size_t)size
+{
+  bzero(start, size);
+}
+
+- (void)verifyScribbleAt:(void *)start ofSize:(size_t)size
+{
+  // Default version does no verification
+}
+
 #pragma mark  Setters/Getters
 
-- (OCClassMockObjectInstanceVars *)classMockObjectInstanceVars {
+- (OCClassMockObjectInstanceVars *)classMockObjectInstanceVars
+{
     return objc_getAssociatedObject(self, OCClassMockObjectInstanceVarsKey);
 }
 
@@ -90,6 +118,16 @@ static const char *OCClassMockObjectInstanceVarsKey = "OCClassMockObjectInstance
 - (Class)originalMetaClass
 {
     return self.classMockObjectInstanceVars.originalMetaClass;
+}
+
+- (void *)classScribbleStart
+{
+  return self.classMockObjectInstanceVars.classScribbleStart;
+}
+
+- (size_t)classScribbleSize
+{
+  return self.classMockObjectInstanceVars.classScribbleSize;
 }
 
 - (void)setMockedClass:(Class)mockedClass
@@ -120,6 +158,16 @@ static const char *OCClassMockObjectInstanceVarsKey = "OCClassMockObjectInstance
     }
 }
 
+- (void)setClassScribbleSize:(size_t)classScribbleSize
+{
+    self.classMockObjectInstanceVars.classScribbleSize = classScribbleSize;
+}
+
+- (void)setClassScribbleStart:(void *)classScribbleStart
+{
+    self.classMockObjectInstanceVars.classScribbleStart = classScribbleStart;
+}
+
 #pragma mark Extending/overriding superclass behaviour
 
 - (void)stopMocking
@@ -134,6 +182,7 @@ static const char *OCClassMockObjectInstanceVarsKey = "OCClassMockObjectInstance
         self.classCreatedForNewMetaClass = nil;
     }
     [super stopMocking];
+  	[self verifyScribbleAt:self.classScribbleStart ofSize:self.classScribbleSize];
 }
 
 
