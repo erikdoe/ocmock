@@ -18,14 +18,23 @@
 #import "OCMBoxedReturnValueProvider.h"
 
 @interface OCMBoxedReturnValueProvider(Private)
-- (BOOL)isMethodReturnType:(const char *)returnType compatibleWithValueType:(const char *)valueType;
+- (BOOL)isMethodReturnType:(const char *)returnType compatibleWithValueType:(const char *)valueType value:(const char*)value valueSize:(size_t)valueSize;
 @end
 
 @interface OCMBoxedReturnValueProviderTests : XCTestCase
-
+{
+	char value;
+	size_t valueSize;
+}
 @end
 
 @implementation OCMBoxedReturnValueProviderTests
+
+- (void)setUp {
+	[super setUp];
+	value = 'A';
+	valueSize = 1;
+}
 
 - (void)testCorrectEqualityForCppProperty
 {
@@ -53,12 +62,12 @@
 			"r^{GURL}";
 
 	OCMBoxedReturnValueProvider *boxed = [OCMBoxedReturnValueProvider new];
-	XCTAssertTrue([boxed isMethodReturnType:type1 compatibleWithValueType:type2]);
-	XCTAssertTrue([boxed isMethodReturnType:type1 compatibleWithValueType:type3]);
-	XCTAssertTrue([boxed isMethodReturnType:type2 compatibleWithValueType:type1]);
-	XCTAssertTrue([boxed isMethodReturnType:type2 compatibleWithValueType:type3]);
-	XCTAssertTrue([boxed isMethodReturnType:type3 compatibleWithValueType:type1]);
-	XCTAssertTrue([boxed isMethodReturnType:type3 compatibleWithValueType:type2]);
+	XCTAssertTrue([boxed isMethodReturnType:type1 compatibleWithValueType:type2 value:&value valueSize:valueSize]);
+	XCTAssertTrue([boxed isMethodReturnType:type1 compatibleWithValueType:type3 value:&value valueSize:valueSize]);
+	XCTAssertTrue([boxed isMethodReturnType:type2 compatibleWithValueType:type1 value:&value valueSize:valueSize]);
+	XCTAssertTrue([boxed isMethodReturnType:type2 compatibleWithValueType:type3 value:&value valueSize:valueSize]);
+	XCTAssertTrue([boxed isMethodReturnType:type3 compatibleWithValueType:type1 value:&value valueSize:valueSize]);
+	XCTAssertTrue([boxed isMethodReturnType:type3 compatibleWithValueType:type2 value:&value valueSize:valueSize]);
 }
 
 
@@ -78,7 +87,7 @@
 			"ar> >={__rep=(?={__long=QQ*}{__short=(?=Cc)[23c]}{__raw=[3Q]})}}}}";
 
 	OCMBoxedReturnValueProvider *boxed = [OCMBoxedReturnValueProvider new];
-	XCTAssertTrue([boxed isMethodReturnType:type1 compatibleWithValueType:type2]);
+	XCTAssertTrue([boxed isMethodReturnType:type1 compatibleWithValueType:type2 value:&value valueSize:valueSize]);
 }
 
 
@@ -89,7 +98,7 @@
     const char *type2 = "{CLLocationCoordinate2D=dd}";
 
     OCMBoxedReturnValueProvider *boxed = [OCMBoxedReturnValueProvider new];
-    XCTAssertTrue([boxed isMethodReturnType:type1 compatibleWithValueType:type2]);
+    XCTAssertTrue([boxed isMethodReturnType:type1 compatibleWithValueType:type2 value:&value valueSize:valueSize]);
 
 }
 
@@ -115,7 +124,7 @@
         "pressed_pair<GURL *, std::__1::default_delete<GURL> >=^{GURL}}}}";
 
     OCMBoxedReturnValueProvider *boxed = [OCMBoxedReturnValueProvider new];
-    XCTAssertTrue([boxed isMethodReturnType:type1 compatibleWithValueType:type2]);
+    XCTAssertTrue([boxed isMethodReturnType:type1 compatibleWithValueType:type2 value:&value valueSize:valueSize]);
 
 }
 
