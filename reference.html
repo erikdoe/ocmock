@@ -608,7 +608,6 @@ OCMVerifyAll(mock); // will complain that someMethod has not been called
 
 {% highlight objc %}
 id partialMockForString = OCMPartialMock(@"Foo"); // will throw an exception
-
 NSDate *date = [NSDate dateWithTimeIntervalSince1970:0];
 id partialMockForDate = OCMPartialMock(date); // will throw on some architectures
 {% endhighlight objc %}
@@ -632,13 +631,24 @@ OCMStub([partialMock class]).andReturn(someOtherClass); // will not work
 
 {% highlight objc %}
 id stringMock = OCMClassMock([NSString class]);
-// the following will not work
+/* the following will not have an effect, the method will not be stubbed */
 OCMStub([stringMock stringWithContentsOfFile:[OCMArg any] encoding:NSUTF8StringEncoding error:[OCMArg setTo:nil]]);
 {% endhighlight objc %}
 
 <p>It is not possible to stub or verify class methods on <code>NSString</code> and <code>NSArray</code>. Trying to do so has no effect.
 
 
+<h3 class="numbered">Class methods on NSManagedObject and subclasses of it cannot be stubbed or verified</h3>
+
+{% highlight objc %}
+id mock = OCMClassMock([MyManagedObject class]);
+/* the following will not have an effect, the method will not be stubbed */
+OCMStub([mock someClassMethod]).andReturn(nil);
+{% endhighlight objc %}
+
+<p>It is not possible to stub or verify class methods on <code>NSManagedObject</code> or subclasses of it. Trying to do so has no effect.
+    
+    
 <h3 class="numbered">Methods on NSObject cannot be verified</h3>
 
 {% highlight objc %}
