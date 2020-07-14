@@ -570,7 +570,11 @@
     id mock = OCMClassMock([TestClassForMacroTesting class]);
     @try
     {
+        // The -Wunused-value is a workaround for https://bugs.llvm.org/show_bug.cgi?id=45245
+        _Pragma("clang diagnostic push")
+        _Pragma("clang diagnostic ignored \"-Wunused-value\"")
         OCMVerify([mock init]);
+        _Pragma("clang diagnostic pop")
         XCTFail(@"An exception should have been thrown.");
     }
     @catch(NSException *exception)
