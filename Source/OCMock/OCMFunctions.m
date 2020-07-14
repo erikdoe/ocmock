@@ -338,14 +338,33 @@ BOOL OCMIsNonEscapingBlock(id block)
 
 #pragma mark  Creating classes
 
+static NSString *const OCMSubclassPrefix = @"OCMock-";
+
 Class OCMCreateSubclass(Class class, void *ref)
 {
-    const char *className = [[NSString stringWithFormat:@"%@-%p-%u", NSStringFromClass(class), ref, arc4random()] UTF8String];
+    const char *className = [[NSString stringWithFormat:@"%@%@-%p-%u", OCMSubclassPrefix, NSStringFromClass(class), ref, arc4random()] UTF8String];
     Class subclass = objc_allocateClassPair(class, className, 0);
     objc_registerClassPair(subclass);
     return subclass;
 }
 
+BOOL OCMIsMockSubclass(Class cls)
+{
+    return [NSStringFromClass(cls) hasPrefix:OCMSubclassPrefix];
+}
+
+void OCMDisposeClassPair(Class cls) {
+  if(!OCMIsMockSubclass(cls))
+  {
+    [NSException raise:NSInvalidArgumentException format:@"Not a OCMock class: %@\n"
+     @"The OCMock class has been replaced by another class. "
+     @"This is likely due to KVO or CoreData creating a class after OCMock did, and then OCMock "
+     @"attempting to remove its class because the mock is going out of scope.\n"
+     @"You will need to reorder initialization teardown so that (meta)classes are "
+     @"created/destroyed in the right order.", NSStringFromClass(cls)];
+  }
+  objc_disposeClassPair(cls);
+}
 
 #pragma mark  Alias for renaming real methods
 
