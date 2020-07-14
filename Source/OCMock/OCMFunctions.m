@@ -296,6 +296,24 @@ BOOL OCMEqualTypesAllowingOpaqueStructs(const char *type1, const char *type2)
     }
 }
 
+BOOL OCMIsNilValue(const char *objectCType, const void *value, size_t valueSize)
+{
+    // First, check value itself
+    for(size_t i = 0; i < valueSize; i++)
+        if(((const char *)value)[i] != 0)
+            return NO;
+    
+    // Depending on the compilation settings of the file where the return value gets recorded,
+    // nil and Nil get potentially different encodings. Check all known encodings.
+    if((strcmp(objectCType, @encode(void *))    == 0) ||    // Standard Objective-C
+       (strcmp(objectCType, @encode(int))       == 0) ||    // 32 bit C++ (before nullptr)
+       (strcmp(objectCType, @encode(long long)) == 0) ||    // 64 bit C++ (before nullptr)
+       (strcmp(objectCType, @encode(char *))    == 0))      // C++ with nullptr
+        return YES;
+
+    return NO;
+}
+
 
 BOOL OCMIsAppleBaseClass(Class cls)
 {

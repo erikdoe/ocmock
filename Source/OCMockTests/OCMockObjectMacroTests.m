@@ -195,10 +195,7 @@
 {
     id mock = OCMPartialMock([NSArray arrayWithObject:@"Foo"]);
 
-    OCMExpect([mock lastObject]).andReturn(nil);
-    XCTAssertNil([mock lastObject], @"Should have returned stubbed value");
-
-    OCMExpect([mock lastObject]).andReturn(Nil);
+    OCMStub([mock lastObject]).andReturn(nil);
     XCTAssertNil([mock lastObject], @"Should have returned stubbed value");
 }
 
@@ -206,10 +203,11 @@
 {
     id mock = OCMPartialMock([[TestClassWithClassReturnMethod alloc] init]);
 
-    OCMExpect([mock method]).andReturn(nil);
+    OCMStub([mock method]).andReturn(Nil);
     XCTAssertNil([mock method], @"Should have returned stubbed value");
 
-    OCMExpect([mock method]).andReturn(Nil);
+    // sometimes nil is used where Nil should be used
+    OCMStub([mock method]).andReturn(nil);
     XCTAssertNil([mock method], @"Should have returned stubbed value");
 }
 
