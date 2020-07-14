@@ -63,7 +63,7 @@
     }
     if(classCreatedForNewMetaClass != nil)
     {
-        objc_disposeClassPair(classCreatedForNewMetaClass);
+        OCMDisposeSubclass(classCreatedForNewMetaClass);
         classCreatedForNewMetaClass = nil;
     }
     [super stopMocking];
