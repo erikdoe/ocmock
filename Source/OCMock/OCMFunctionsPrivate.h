@@ -34,7 +34,7 @@ BOOL OCMIsApplePrivateMethod(Class cls, SEL sel);
 
 Class OCMCreateSubclass(Class cls, void *ref);
 BOOL OCMIsMockSubclass(Class cls);
-void OCMDisposeClassPair(Class cls);
+void OCMDisposeSubclass(Class cls);
 
 BOOL OCMIsAliasSelector(SEL selector);
 SEL OCMAliasForOriginalSelector(SEL selector);

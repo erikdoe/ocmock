@@ -336,9 +336,9 @@ BOOL OCMIsNonEscapingBlock(id block)
 }
 
 
-#pragma mark  Creating classes
+#pragma mark  Creating and disposing classes
 
-static NSString *const OCMSubclassPrefix = @"OCMock-";
+static NSString *const OCMSubclassPrefix = @"OCMock_";
 
 Class OCMCreateSubclass(Class class, void *ref)
 {
@@ -353,18 +353,15 @@ BOOL OCMIsMockSubclass(Class cls)
     return [NSStringFromClass(cls) hasPrefix:OCMSubclassPrefix];
 }
 
-void OCMDisposeClassPair(Class cls) {
-  if(!OCMIsMockSubclass(cls))
-  {
-    [NSException raise:NSInvalidArgumentException format:@"Not a OCMock class: %@\n"
-     @"The OCMock class has been replaced by another class. "
-     @"This is likely due to KVO or CoreData creating a class after OCMock did, and then OCMock "
-     @"attempting to remove its class because the mock is going out of scope.\n"
-     @"You will need to reorder initialization teardown so that (meta)classes are "
-     @"created/destroyed in the right order.", NSStringFromClass(cls)];
-  }
-  objc_disposeClassPair(cls);
+void OCMDisposeSubclass(Class cls)
+{
+    if(!OCMIsMockSubclass(cls))
+    {
+        [NSException raise:NSInvalidArgumentException format:@"Not a mock subclass; found %@\nThe subclass dynamically created by OCMock has been replaced by another class. This can happen when KVO or CoreData create their own dynamic subclass after OCMock created its subclass.\nYou will need to reorder initialization and/or teardown so that classes are created and disposed of in the right order.", NSStringFromClass(cls)];
+    }
+    objc_disposeClassPair(cls);
 }
+
 
 #pragma mark  Alias for renaming real methods
 

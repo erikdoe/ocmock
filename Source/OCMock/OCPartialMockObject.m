@@ -93,7 +93,7 @@
         object_setClass(realObject, [self mockedClass]);
         [realObject release];
         realObject = nil;
-        OCMDisposeClassPair(partialMockClass);
+        OCMDisposeSubclass(partialMockClass);
     }
     [super stopMocking];
 }
