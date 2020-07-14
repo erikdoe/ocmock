@@ -62,7 +62,8 @@ static NSUInteger initializeCallCount = 0;
 
 @interface TestClassThatObservesFoo : NSObject
 {
-  id observedObject;
+    @public
+    id observedObject;
 }
 @end
 
@@ -70,33 +71,32 @@ static NSUInteger initializeCallCount = 0;
 
 - (instancetype)initWithObject:(id)object
 {
-  if((self = [super init]))
-  {
-    observedObject = object;
-  }
-  return self;
-}
-
-- (void)startObserving
-{
-  [observedObject addObserver:self forKeyPath:@"foo" options:0 context:NULL];
-}
-
-- (void)stopObserving
-{
-  if(observedObject)
-  {
-    [observedObject addObserver:self forKeyPath:@"foo" options:0 context:NULL];
-    observedObject = nil;
-  }
+    if((self = [super init]))
+        observedObject = object;
+    return self;
 }
 
 - (void)dealloc
 {
-  [self stopObserving];
+    [self stopObserving];
+}
+
+- (void)startObserving
+{
+    [observedObject addObserver:self forKeyPath:@"foo" options:0 context:NULL];
+}
+
+- (void)stopObserving
+{
+    if(observedObject != nil)
+    {
+        [observedObject removeObserver:self forKeyPath:@"foo" context:NULL];
+        observedObject = nil;
+    }
 }
 
 @end
+
 
 @interface TestClassThatCallsSelf : NSObject
 {
@@ -696,14 +696,16 @@ static NSUInteger initializeCallCount = 0;
 
 - (void)testThrowsExceptionWhenAttemptingToTearDownWrongClass
 {
-  TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
-  TestClassThatObservesFoo *observer = [[TestClassThatObservesFoo alloc] initWithObject:realObject];
-  id mock = [OCMockObject partialMockForObject:realObject];
-  [observer startObserving];
-  XCTAssertThrowsSpecificNamed([mock stopMocking], NSException, NSInvalidArgumentException);
-
-  // Must stopObserving or we will throw when the autoreleasepool containing observer releases.
-  [observer stopObserving];
+    TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
+    TestClassThatObservesFoo *observer = [[TestClassThatObservesFoo alloc] initWithObject:realObject];
+    id mock = [OCMockObject partialMockForObject:realObject];
+    [observer startObserving];
+    
+    // If we invoked stopObserving here, then stopMocking would work; but we want to test the error case.
+    XCTAssertThrowsSpecificNamed([mock stopMocking], NSException, NSInvalidArgumentException);
+    
+    // Must reset the object here to avoid any attempt to remove the observer, which would fail.
+    observer->observedObject = nil;
 }
 
 @end
