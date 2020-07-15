@@ -117,15 +117,14 @@ class Builder
         @worker.run("lipo -info #{osxproductdir}/OCMock.framework/OCMock") { |lipo| archs = /re: (.*)/.match(lipo.readline)[1].strip() }
         puts "^^ wrong architecture for macOS framework; found: #{archs}\n\n" unless archs == "x86_64"
         @worker.run("lipo -info #{ioslibproductdir}/libOCMock.a") { |lipo| archs = /re: (.*)/.match(lipo.readline)[1].strip() }
-        puts "^^ wrong architectures for iOS framework; found: #{archs}\n\n" unless archs == "armv7 i386 x86_64 arm64"
+        puts "^^ wrong architectures for iOS library; found: #{archs}\n\n" unless archs == "armv7 i386 x86_64 arm64"
         @worker.run("lipo -info #{iosproductdir}/OCMock.framework/OCMock")  { |lipo| archs = /re: (.*)/.match(lipo.readline)[1].strip() }
-        puts "^^ wrong architectures for iOS library; found: #{archs}\n\n" unless archs == "i386 x86_64 armv7 arm64"
+        puts "^^ wrong architectures for iOS framework; found: #{archs}\n\n" unless archs == "x86_64 i386 armv7 arm64"
         @worker.run("lipo -info #{tvosproductdir}/OCMock.framework/OCMock")  { |lipo| archs = /re: (.*)/.match(lipo.readline)[1].strip() }
         puts "^^ wrong architectures for tvOS framework; found: #{archs}\n\n" unless archs == "x86_64 arm64"
         @worker.run("lipo -info #{watchosproductdir}/OCMock.framework/OCMock")  { |lipo| archs = /re: (.*)/.match(lipo.readline)[1].strip() }
-        puts "^^ wrong architectures for watchOS framework; found: #{archs}\n\n" unless archs == "i386 x86_64 armv7k arm64_32"
+        puts "^^ wrong architectures for watchOS framework; found: #{archs}\n\n" unless archs == "x86_64 i386 armv7k arm64_32"
 
-        
         @worker.run("codesign -dvv #{osxproductdir}/OCMock.framework")
         @worker.run("codesign -dvv #{iosproductdir}/OCMock.framework")       
         @worker.run("codesign -dvv #{tvosproductdir}/OCMock.framework")
