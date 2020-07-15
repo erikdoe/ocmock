@@ -21,39 +21,32 @@ published: true
 		<th width="20%">File</th>
 	</tr>
 	<tr>
-		<td>OCMock 3.6</td>
-		<td>macOS 10.15, iOS 13.2, tvOS 13.2, watchOS 6.1</td>
-		<td>OS X 10.8, iOS 8.0, tvOS 9.0, watchOS 4.0</td>
-		<td>16-Feb-2020</td>
-		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.6/ocmock-3.6.dmg">ocmock-3.6.dmg</a></td>
+		<td>OCMock 3.7</td>
+		<td>macOS 10.15, iOS 13.5, tvOS 13.4, watchOS 6.2</td>
+		<td>OS X 10.9, iOS 8.0, tvOS 9.0, watchOS 4.0</td>
+		<td>15-Jul-2020</td>
+		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.7/ocmock-3.7.dmg">ocmock-3.7.dmg</a></td>
 	</tr>
 	<tr>
 		<td></td>
 		<td colspan="4">
 			Recent changes:
 			<ul>
-					<li>Added support for quantifiers. Please see documentation section 3.3 as well
-						as #302 for details.
-					<li>Added preprocessor macros to disable short syntax (in case of clashes). See
-						section 9.6. for details.
-					<li>Set up dependency management with Carthage. This means that in order to 
-						build OCMock from source you must have Carthage installed on your system.
-						See https://github.com/Carthage/Carthage for details. You do not need to have
-						Carthage installed to use OCMock, and if you want to use OCHamcrest with 
-						OCMock you must make OCHamcrest available in your project, using whatever 
-						dependency management system you use for your project.
-					<li>Added description of mock object to the exception that is thrown when the
-						mock is used after stopMocking was called.
+				<li>Fixed mocking init methods when using ARC. This worked before but could
+  				result in memory related crashes. (Dave MacLachlan)
+				<li>Added support for non-escaping blocks. (Dave MacLachlan)
+				<li>Numerous bug-fixes and improvements to developer experience, e.g. clearer
+  				error messages. (Dave MacLachlan)
 			</ul>
 			<a href="https://github.com/erikdoe/ocmock/blob/master/Source/Changes.txt">more...</a>
 		</td>
 	</tr>
 	<tr>
-		<td>OCMock 3.5</td>
-		<td>macOS 10.14, iOS 13.2, tvOS 13.2, watchOS 6.1</td>
+		<td>OCMock 3.6</td>
+		<td>macOS 10.15, iOS 13.2, tvOS 13.2, watchOS 6.1</td>
 		<td>OS X 10.8, iOS 8.0, tvOS 9.0, watchOS 4.0</td>
-		<td>17-Nov-2019</td>
-		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.5/ocmock-3.5.dmg">ocmock-3.5.dmg</a></td>
+		<td>16-Feb-2020</td>
+		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.6/ocmock-3.6.dmg">ocmock-3.6.dmg</a></td>
 	</tr>
 	<tr>
 		<td>OCMock 2.2.4</td>
