@@ -99,7 +99,6 @@ class Builder
         @worker.run("cp -R #{@env.productdir}/* '/Volumes/#{volumename}'")
         @worker.run("hdiutil eject #{disk_id}")
         @worker.run("hdiutil convert -format UDZO temp.dmg -o #{@env.packagedir}/#{packagename} -imagekey zlib-level=9")
-        @worker.run("hdiutil internet-enable -yes #{@env.packagedir}/#{packagename}")
         @worker.run("rm temp.dmg")
     end           
     
