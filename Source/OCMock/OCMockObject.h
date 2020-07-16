@@ -63,6 +63,7 @@
 
 - (void)addStub:(OCMInvocationStub *)aStub;
 - (void)addExpectation:(OCMInvocationExpectation *)anExpectation;
+- (void)addInvocation:(NSInvocation *)anInvocation;
 
 - (BOOL)handleInvocation:(NSInvocation *)anInvocation;
 - (void)handleUnRecordedInvocation:(NSInvocation *)anInvocation;

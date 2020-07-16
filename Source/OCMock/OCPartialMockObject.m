@@ -105,6 +105,14 @@
         [self setupForwarderForSelector:[[aStub recordedInvocation] selector]];
 }
 
+- (void)addInvocation:(NSInvocation *)anInvocation
+{
+    // If the mock invokes a method on the real object we end up here a second time, but because
+    // the mock has added the invocation already we do not want to add it again.
+    if((invocationFromMock == nil) || ([anInvocation selector] != [invocationFromMock selector]))
+        [super addInvocation:anInvocation];
+}
+
 - (void)handleUnRecordedInvocation:(NSInvocation *)anInvocation
 {
 	// In the case of an init that is called on a mock we must return the mock instance and
@@ -118,12 +126,16 @@
 		targetReceivingInit = [anInvocation target];
 		[realObject retain];
 	}
+
+	invocationFromMock = anInvocation;
 	[anInvocation invokeWithTarget:realObject];
-	if (targetReceivingInit)
+    invocationFromMock = nil;
+
+	if(targetReceivingInit)
 	{
 		id returnVal;
 		[anInvocation getReturnValue:&returnVal];
-		if (returnVal == realObject)
+		if(returnVal == realObject)
 		{
 			[anInvocation setReturnValue:&self];
 			[realObject release];
@@ -245,7 +257,6 @@
         [anInvocation invoke];
     }
 }
-
 
 
 #pragma mark    Verification handling

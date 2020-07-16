@@ -17,6 +17,7 @@
 #import <CoreData/CoreData.h>
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
+#import "OCPartialMockObject.h"
 #import "TestClassWithCustomReferenceCounting.h"
 
 #if TARGET_OS_IPHONE
@@ -170,8 +171,6 @@ static NSUInteger initializeCallCount = 0;
 @end
 
 
-
-
 @interface OCMockObjectPartialMocksTests : XCTestCase
 {
     int numKVOCallbacks;
@@ -208,6 +207,28 @@ static NSUInteger initializeCallCount = 0;
 
 @end
 
+
+#pragma mark   Category for testing
+
+@interface OCPartialMockObject(AccessToInvocationsForTesting)
+
+- (NSArray *)invocationsExcludingInitialize;
+
+@end
+
+@implementation OCPartialMockObject(AccessToInvocationsForTesting)
+
+- (NSArray *)invocationsExcludingInitialize
+{
+	NSMutableArray *filteredInvocations = [[NSMutableArray alloc] init];
+	for(NSInvocation *i in invocations)
+		if([NSStringFromSelector([i selector]) hasSuffix:@"initialize"] == NO)
+			[filteredInvocations addObject:i];
+
+	return filteredInvocations;
+}
+
+@end
 
 
 @implementation OCMockObjectPartialMocksTests
@@ -277,6 +298,64 @@ static NSUInteger initializeCallCount = 0;
    	id mock = [OCMockObject partialMockForObject:realObject];
     [[[mock stub] andReturn:@"stubbed"] categoryMethod];
     XCTAssertEqualObjects(@"stubbed", [realObject categoryMethod], @"Should have stubbed NSObject's method");
+}
+
+
+#pragma mark   Tests for remembering invocations for later verification
+
+- (void)testRecordsInvocationWhenRealObjectIsUsed
+{
+	TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
+	id mock = [OCMockObject partialMockForObject:realObject];
+
+	[realObject foo];
+
+	XCTAssertEqual(1, [[mock invocationsExcludingInitialize] count]);
+}
+
+- (void)testRecordsInvocationWhenMockIsUsed
+{
+	TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
+	id mock = [OCMockObject partialMockForObject:realObject];
+
+	[mock foo];
+
+	XCTAssertEqual(1, [[mock invocationsExcludingInitialize] count]);
+}
+
+- (void)testRecordsInvocationWhenRealObjectIsUsedAndMethodIsStubbed
+{
+	TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
+	id mock = [OCMockObject partialMockForObject:realObject];
+	[[[mock stub] andReturn:@"bar"] foo];
+
+	id res = [realObject foo];
+
+	XCTAssertEqualObjects(@"bar", res);
+	XCTAssertEqual(1, [[mock invocationsExcludingInitialize] count]);
+}
+
+- (void)testRecordsInvocationWhenMockIsUsedAndMethodIsStubbed
+{
+	TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
+	id mock = [OCMockObject partialMockForObject:realObject];
+	[[[mock stub] andReturn:@"bar"] foo];
+
+	id res = [mock foo];
+
+	XCTAssertEqualObjects(@"bar", res);
+	XCTAssertEqual(1, [[mock invocationsExcludingInitialize] count]);
+}
+
+- (void)testRecordsInvocationWhenMockIsUsedAndMethodIsStubbedAndForwardsToRealObject
+{
+	TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
+	id mock = [OCMockObject partialMockForObject:realObject];
+	[[[mock stub] andForwardToRealObject] foo];
+
+	[mock foo];
+
+	XCTAssertEqual(1, [[mock invocationsExcludingInitialize] count]);
 }
 
 
