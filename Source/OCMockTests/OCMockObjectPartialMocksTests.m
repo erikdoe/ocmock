@@ -329,9 +329,8 @@ static NSUInteger initializeCallCount = 0;
 	id mock = [OCMockObject partialMockForObject:realObject];
 	[[[mock stub] andReturn:@"bar"] foo];
 
-	id res = [realObject foo];
+	[realObject foo];
 
-	XCTAssertEqualObjects(@"bar", res);
 	XCTAssertEqual(1, [[mock invocationsExcludingInitialize] count]);
 }
 
@@ -341,9 +340,8 @@ static NSUInteger initializeCallCount = 0;
 	id mock = [OCMockObject partialMockForObject:realObject];
 	[[[mock stub] andReturn:@"bar"] foo];
 
-	id res = [mock foo];
+	[mock foo];
 
-	XCTAssertEqualObjects(@"bar", res);
 	XCTAssertEqual(1, [[mock invocationsExcludingInitialize] count]);
 }
 
