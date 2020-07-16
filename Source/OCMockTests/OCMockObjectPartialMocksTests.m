@@ -208,7 +208,11 @@ static NSUInteger initializeCallCount = 0;
 
 @end
 
+
+
 @implementation OCMockObjectPartialMocksTests
+
+#pragma mark   Test for description
 
 - (void)testDescription
 {
@@ -318,7 +322,7 @@ static NSUInteger initializeCallCount = 0;
 
 - (void)testRefusesToCreatePartialMockForTollFreeBridgedClasses
 {
-    id object = (id)CFBridgingRelease(CFStringCreateWithCString(kCFAllocatorDefault, "foo", kCFStringEncodingASCII));
+    id object = CFBridgingRelease(CFStringCreateWithCString(kCFAllocatorDefault, "foo", kCFStringEncodingASCII));
     XCTAssertThrowsSpecificNamed([OCMockObject partialMockForObject:object],
                                  NSException,
                                  NSInvalidArgumentException,
@@ -507,15 +511,12 @@ static NSUInteger initializeCallCount = 0;
 	   KVO notifications stop functioning.  If we did not do this, the presence of the mock
 	   subclass would cause KVO to crash, at least without further tinkering. */
 	[realObject setMethodInt:45];
-//	STAssertEquals(numKVOCallbacks, 1, @"did not get subclass KVO notification");
 	XCTAssertEqual(numKVOCallbacks, 0, @"got subclass KVO notification");
 	[mock setMethodInt:47];
-//	STAssertEquals(numKVOCallbacks, 2, @"did not get mock KVO notification");
 	XCTAssertEqual(numKVOCallbacks, 0, @"got mock KVO notification");
 
 	[mock stopMocking];
 	XCTAssertEqualObjects([realObject class], origClass, @"Classes different after stopMocking");
-//	STAssertEqualObjects(object_getClass(realObject), kvoClass, @"KVO class different after stopMocking");
 	XCTAssertEqualObjects(object_getClass(realObject), origClass, @"class different after stopMocking");
 
 	[realObject removeObserver:self forKeyPath:@"methodInt" context:MyContext];
