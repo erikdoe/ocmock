@@ -772,18 +772,4 @@ static NSUInteger initializeCallCount = 0;
     }
 }
 
-- (void)testThrowsExceptionWhenAttemptingToTearDownWrongClass
-{
-    TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
-    TestClassThatObservesFoo *observer = [[TestClassThatObservesFoo alloc] initWithObject:realObject];
-    id mock = [OCMockObject partialMockForObject:realObject];
-    [observer startObserving];
-    
-    // If we invoked stopObserving here, then stopMocking would work; but we want to test the error case.
-    XCTAssertThrowsSpecificNamed([mock stopMocking], NSException, NSInvalidArgumentException);
-    
-    // Must reset the object here to avoid any attempt to remove the observer, which would fail.
-    observer->observedObject = nil;
-}
-
 @end

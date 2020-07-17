@@ -20,6 +20,7 @@
 {
 	NSObject		*realObject;
 	NSInvocation	*invocationFromMock;
+	Class classCreatedForPartialMock;
 }
 
 - (id)initWithObject:(NSObject *)anObject;
