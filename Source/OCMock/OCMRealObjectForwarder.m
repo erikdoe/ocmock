@@ -18,6 +18,7 @@
 #import "OCPartialMockObject.h"
 #import "OCMRealObjectForwarder.h"
 #import "OCMFunctionsPrivate.h"
+#import "NSInvocation+OCMAdditions.h"
 
 
 @implementation OCMRealObjectForwarder
@@ -26,7 +27,9 @@
 {
 	id invocationTarget = [anInvocation target];
 
-    [anInvocation setSelector:OCMAliasForOriginalSelector([anInvocation selector])];
+	BOOL isInInitFamily = [anInvocation methodIsInInitFamily];
+	BOOL isInCreateFamily = isInInitFamily ? NO : [anInvocation methodIsInCreateFamily];
+	[anInvocation setSelector:OCMAliasForOriginalSelector([anInvocation selector])];
 	if ([invocationTarget isProxy])
 	{
 	    if (class_getInstanceMethod([invocationTarget mockObjectClass], @selector(realObject)))
@@ -42,6 +45,33 @@
 	}
 
 	[anInvocation invoke];
+	if(isInInitFamily || isInCreateFamily)
+	{
+	    // OCMInvocationStub does some post processing after all of the invocation actions are called
+	    // to make sure that init family and create family calls are handled correctly with regards
+	    // to retain/release. In the case where we are forwarded to a real object, the handling
+	    // that the real object has already done needs to be "undone" so we don't over retain or under
+	    // release.
+	    id returnVal;
+	    [anInvocation getReturnValue:&returnVal];
+	    if (isInCreateFamily)
+	    {
+	        // methods that "create" an object will return it with an extra retain count
+	        // autorelease it so that when OCMInvocationStub retains it that we balance.
+	        [returnVal autorelease];
+	    }
+	    else if(isInInitFamily)
+	    {
+	        // init family methods "consume" self and retain their return value.
+	        // Retain the target (that OCMInvocationStub will release) and autorelease the returnVal
+	        // (that OCMInvocationStub will retain).
+	        [[anInvocation target] retain];
+	        [returnVal autorelease];
+	    } else {
+	        // avoid potential problems with the return value being release too early
+	        [[returnVal retain] autorelease];
+	    }
+	}
 }
 
 

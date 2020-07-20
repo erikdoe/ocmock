@@ -467,6 +467,289 @@ typedef NSString TypedefString;
 	XCTAssertThrowsSpecificNamed([mock initMethodNotCalledJustInit], NSException, NSInvalidArgumentException);
 }
 
+- (void)testInitAndDoDoesntLeakOrCrash
+{
+	__weak id weakObj;
+	__weak id weakMock;
+	@autoreleasepool
+	{
+		TestClassWithInitMethod *obj = OCMClassMock([TestClassWithInitMethod class]);
+		id mock = OCMClassMock([TestClassWithInitMethod class]);
+		OCMStub([mock initMethodNotCalledJustInit]).andDo(^(NSInvocation *invocation) 
+		{
+			[invocation setReturnValue:(void *)&obj];
+		});
+		id local = [mock initMethodNotCalledJustInit];
+		XCTAssertEqual(local, obj);
+		weakObj = local;
+		weakMock = mock;
+		XCTAssertNotNil(weakObj);
+		XCTAssertNotNil(weakMock);
+	}
+	XCTAssertNil(weakObj, @"obj should not be leaked.");
+	XCTAssertNil(weakMock, @"mock should not be leaked.");
+}
+
+- (void)testInitAndDoChangeTargetDoesntLeakOrCrash
+{
+	__weak id weakObj;
+	__weak id weakMock;
+	@autoreleasepool
+	{
+		TestClassWithInitMethod *obj = [TestClassWithInitMethod alloc];
+		id mock = OCMClassMock([TestClassWithInitMethod class]);
+		OCMStub([mock initMethodNotCalledJustInit]).andDo(^(NSInvocation *invocation) 
+		{
+			[invocation setTarget:obj];
+			[invocation invoke];
+		});
+		id local = [mock initMethodNotCalledJustInit];
+		XCTAssertEqual(local, obj);
+		weakObj = local;
+		weakMock = mock;
+		XCTAssertNotNil(weakObj);
+		XCTAssertNotNil(weakMock);
+	}
+	XCTAssertNil(weakObj, @"obj should not be leaked.");
+	XCTAssertNil(weakMock, @"mock should not be leaked.");
+}
+
+- (void)testInitAndForwardToRealObjectDoesntLeak
+{
+	__weak id weakObj;
+	__weak id weakMock;
+	@autoreleasepool
+	{
+		id obj = [[TestClassWithInitMethod alloc] init];
+		id mock = OCMPartialMock(obj);
+		OCMStub([mock initMethodNotCalledJustInit]).andForwardToRealObject();
+		id local = [mock initMethodNotCalledJustInit];
+		XCTAssertEqual(local, obj);
+		weakObj = local;
+		weakMock = mock;
+		XCTAssertNotNil(weakObj);
+		XCTAssertNotNil(weakMock);
+	}
+	XCTAssertNil(weakObj, @"obj should not be leaked.");
+	XCTAssertNil(weakMock, @"mock should not be leaked.");
+}
+
+
+- (void)testAllocAndDoDoesntLeakOrCrash
+{
+	__weak id weakObj;
+	__weak id weakMock;
+	@autoreleasepool
+	{
+		TestClassWithInitMethod *obj = [[TestClassWithInitMethod alloc] init];
+		id mock = OCMClassMock([TestClassWithInitMethod class]);
+		OCMStub([mock alloc]).andDo(^(NSInvocation *invocation) {
+			[invocation setReturnValue:(void *)&obj];
+		});
+		id local = [TestClassWithInitMethod alloc];
+		XCTAssertEqual(local, obj);
+		weakObj = local;
+		weakMock = mock;
+		XCTAssertNotNil(weakObj);
+		XCTAssertNotNil(weakMock);
+	}
+	XCTAssertNil(weakObj, @"obj should not be leaked.");
+	XCTAssertNil(weakMock, @"mock should not be leaked.");
+}
+
+- (void)testAllocAndForwardToRealObjectDoesntLeak
+{
+	__weak id weakObj;
+	__weak id weakMock;
+	@autoreleasepool
+	{
+		id mock = OCMClassMock([TestClassWithInitMethod class]);
+		OCMStub([mock alloc]).andForwardToRealObject();
+		id local = [TestClassWithInitMethod alloc];
+		weakObj = local;
+		weakMock = mock;
+		XCTAssertNotNil(weakObj);
+		XCTAssertNotNil(weakMock);
+	}
+	XCTAssertNil(weakObj, @"obj should not be leaked.");
+	XCTAssertNil(weakMock, @"mock should not be leaked.");
+}
+
+- (void)testAllocStubWithNoReturnValueSetThrowsWhenCalled
+{
+	id mock = OCMClassMock([TestClassWithInitMethod class]);
+	__unused id value = [[mock stub] alloc];
+	XCTAssertThrowsSpecificNamed([mock alloc], NSException, NSInvalidArgumentException);
+}
+
+- (void)testAllocStubWithNoReturnValueSetThrowsWhenCalledWithMacro
+{
+	id mock = OCMClassMock([TestClassWithInitMethod class]);
+	OCMStub([mock alloc]);
+	XCTAssertThrowsSpecificNamed([mock alloc], NSException, NSInvalidArgumentException);
+}
+
+- (void)testNewAndDoDoesntLeakOrCrash
+{
+	__weak id weakObj;
+	__weak id weakMock;
+	@autoreleasepool
+	{
+		TestClassWithInitMethod *obj = [[TestClassWithInitMethod alloc] init];
+		id mock = OCMClassMock([TestClassWithInitMethod class]);
+		OCMStub([mock new]).andDo(^(NSInvocation *invocation) {
+			[invocation setReturnValue:(void *)&obj];
+		});
+		id local = [TestClassWithInitMethod new];
+		XCTAssertEqual(local, obj);
+		weakObj = local;
+		weakMock = mock;
+		XCTAssertNotNil(weakObj);
+		XCTAssertNotNil(weakMock);
+	}
+	XCTAssertNil(weakObj, @"obj should not be leaked.");
+	XCTAssertNil(weakMock, @"mock should not be leaked.");
+}
+
+- (void)testNewAndForwardToRealObjectDoesntLeak {
+	__weak id weakObj;
+	__weak id weakMock;
+	@autoreleasepool
+	{
+		id mock = OCMClassMock([TestClassWithInitMethod class]);
+		OCMStub([mock new]).andForwardToRealObject();
+		id local = [TestClassWithInitMethod new];
+		weakObj = local;
+		weakMock = mock;
+		XCTAssertNotNil(weakObj);
+		XCTAssertNotNil(weakMock);
+	}
+	XCTAssertNil(weakObj, @"obj should not be leaked.");
+	XCTAssertNil(weakMock, @"mock should not be leaked.");
+}
+
+- (void)testNewStubWithNoReturnValueSetThrowsWhenCalled
+{
+	id mock = OCMClassMock([TestClassWithInitMethod class]);
+	__unused id value = [[mock stub] new];
+	XCTAssertThrowsSpecificNamed([mock new], NSException, NSInvalidArgumentException);
+}
+
+- (void)testNewStubWithNoReturnValueSetThrowsWhenCalledWithMacro
+{
+	id mock = OCMClassMock([TestClassWithInitMethod class]);
+	OCMStub([mock new]);
+	XCTAssertThrowsSpecificNamed([mock new], NSException, NSInvalidArgumentException);
+}
+
+- (void)testMutableCopyAndDoDoesntLeakOrCrash
+{
+	__weak id weakObj;
+	__weak id weakMock;
+	@autoreleasepool
+	{
+		TestClassWithInitMethod *obj = [[TestClassWithInitMethod alloc] init];
+		id mock = OCMClassMock([TestClassWithInitMethod class]);
+		OCMStub([mock mutableCopy]).andDo(^(NSInvocation *invocation) {
+			[invocation setReturnValue:(void *)&obj];
+		});
+		id local = [mock mutableCopy];
+		XCTAssertEqual(local, obj);
+		weakObj = local;
+		weakMock = mock;
+		XCTAssertNotNil(weakObj);
+		XCTAssertNotNil(weakMock);
+	}
+	XCTAssertNil(weakObj, @"obj should not be leaked.");
+	XCTAssertNil(weakMock, @"mock should not be leaked.");
+}
+
+- (void)testMutableCopyAndForwardToRealObjectDoesntLeak {
+	__weak id weakObj;
+	__weak id weakMock;
+	@autoreleasepool
+	{
+		id obj = [[NSDictionary alloc] init];
+		id mock = OCMPartialMock(obj);
+		OCMStub([mock mutableCopy]).andForwardToRealObject();
+		id local = [obj mutableCopy];
+		weakObj = local;
+		weakMock = mock;
+		XCTAssertNotNil(weakObj);
+		XCTAssertNotNil(weakMock);
+	}
+	XCTAssertNil(weakObj, @"obj should not be leaked.");
+	XCTAssertNil(weakMock, @"mock should not be leaked.");
+}
+
+- (void)testMutableCopyStubWithNoReturnValueSetThrowsWhenCalled
+{
+	id mock = OCMClassMock([TestClassWithInitMethod class]);
+	__unused id value = [[mock stub] mutableCopy];
+	XCTAssertThrowsSpecificNamed([mock mutableCopy], NSException, NSInvalidArgumentException);
+}
+
+- (void)testMutableCopyStubWithNoReturnValueSetThrowsWhenCalledWithMacro
+{
+	id mock = OCMClassMock([TestClassWithInitMethod class]);
+	OCMStub([mock mutableCopy]);
+	XCTAssertThrowsSpecificNamed([mock mutableCopy], NSException, NSInvalidArgumentException);
+}
+
+- (void)testCopyAndDoDoesntLeakOrCrash
+{
+	__weak id weakObj;
+	__weak id weakMock;
+	@autoreleasepool
+	{
+		TestClassWithInitMethod *obj = [[TestClassWithInitMethod alloc] init];
+		id mock = OCMClassMock([TestClassWithInitMethod class]);
+		OCMStub([mock copy]).andDo(^(NSInvocation *invocation) {
+			[invocation setReturnValue:(void *)&obj];
+		});
+		id local = [mock copy];
+		XCTAssertEqual(local, obj);
+		weakObj = local;
+		weakMock = mock;
+		XCTAssertNotNil(weakObj);
+		XCTAssertNotNil(weakMock);
+	}
+	XCTAssertNil(weakObj, @"obj should not be leaked.");
+	XCTAssertNil(weakMock, @"mock should not be leaked.");
+}
+
+- (void)testCopyAndForwardToRealObjectDoesntLeak {
+	__weak id weakObj;
+	__weak id weakMock;
+	@autoreleasepool
+	{
+		id obj = [[NSMutableDictionary alloc] init];
+		id mock = OCMPartialMock(obj);
+		OCMStub([mock copy]).andForwardToRealObject();
+		id local = [obj copy];
+		weakObj = local;
+		weakMock = mock;
+		XCTAssertNotNil(weakObj);
+		XCTAssertNotNil(weakMock);
+	}
+	XCTAssertNil(weakObj, @"obj should not be leaked.");
+	XCTAssertNil(weakMock, @"mock should not be leaked.");
+}
+
+- (void)testCopyStubWithNoReturnValueSetThrowsWhenCalled
+{
+	id mock = OCMClassMock([TestClassWithInitMethod class]);
+	__unused id value = [[mock stub] copy];
+	XCTAssertThrowsSpecificNamed([mock copy], NSException, NSInvalidArgumentException);
+}
+
+- (void)testCopyStubWithNoReturnValueSetThrowsWhenCalledWithMacro
+{
+	id mock = OCMClassMock([TestClassWithInitMethod class]);
+	OCMStub([mock copy]);
+	XCTAssertThrowsSpecificNamed([mock copy], NSException, NSInvalidArgumentException);
+}
+
 // TODO: Verify intent of this test added in #391
 //- (void)testInitStubWithRejectMacro {
 //  id mock = OCMClassMock([TestClassWithInitMethod class]);

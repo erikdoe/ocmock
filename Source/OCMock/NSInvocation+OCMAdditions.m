@@ -614,5 +614,8 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
 	return [self isMethodFamily:@"new"];
 }
 
+- (BOOL)methodIsInCreateFamily {
+	return [self methodIsInAllocFamily] || [self methodIsInCopyFamily] || [self methodIsInMutableCopyFamily] || [self methodIsInNewFamily];
+}
 
 @end
