@@ -15,6 +15,7 @@
  */
 
 #import <XCTest/XCTest.h>
+#import "OCMFunctions.h"
 #import "OCMFunctionsPrivate.h"
 
 @interface OCMFunctionsTests : XCTestCase
@@ -41,6 +42,17 @@
 - (void)testIsBlockReturnsTrueForBlock
 {
     XCTAssertTrue(OCMIsBlock(^{}));
+}
+
+- (void)testIsMockSubclass
+{
+  Class cls = OCMCreateSubclass([NSString class], "foo");
+  XCTAssertNotNil(cls);
+  XCTAssertTrue(OCMIsMockDirectSubclass(cls));
+  XCTAssertTrue(OCMIsMockSubclass(cls));
+  OCMDisposeSubclass(cls);
+  XCTAssertFalse(OCMIsMockSubclass([NSString class]));
+  XCTAssertFalse(OCMIsMockDirectSubclass([NSString class]));
 }
 
 @end

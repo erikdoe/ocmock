@@ -25,3 +25,8 @@
 
 
 OCMOCK_EXTERN BOOL OCMIsObjectType(const char *objCType);
+
+// Returns yes if cls is a subclass that was created by OCMock.
+// Note that cls should be from `objc_getClass(foo)`, as [foo class] called on a mock
+// will always return the class of the object being mocked, and not the mock class itself.
+OCMOCK_EXTERN BOOL OCMIsMockSubclass(Class cls);

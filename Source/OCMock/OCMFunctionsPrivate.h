@@ -33,7 +33,7 @@ BOOL OCMIsAppleBaseClass(Class cls);
 BOOL OCMIsApplePrivateMethod(Class cls, SEL sel);
 
 Class OCMCreateSubclass(Class cls, void *ref);
-BOOL OCMIsMockSubclass(Class cls);
+BOOL OCMIsMockDirectSubclass(Class cls);
 void OCMDisposeSubclass(Class cls);
 
 BOOL OCMIsAliasSelector(SEL selector);

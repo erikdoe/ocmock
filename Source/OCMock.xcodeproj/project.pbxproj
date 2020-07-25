@@ -761,6 +761,7 @@
 				038599F623807B06002B3ABE /* OCMockObjectInternalTests.m */,
 				2FA2813F93050582D83E1499 /* OCMockObjectRuntimeTests.m */,
 				8BF73E52246CA75E00B9A52C /* OCMNoEscapeBlockTests.m */,
+				8BF6F13124CBCD3D005E6D93 /* OCMFunctionsTests.m */,
 				03B316271463350E0052CD09 /* OCMStubRecorderTests.m */,
 				037ECD5318FAD84100AF0E4C /* OCMInvocationMatcherTests.m */,
 				031E50571BB4A56300E257C3 /* OCMBoxedReturnValueProviderTests.m */,
