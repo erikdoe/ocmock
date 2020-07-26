@@ -87,19 +87,18 @@
 
 - (instancetype)init
 {
+  if(stubs != nil)
+  {
     // check if we are called from inside a macro
     OCMRecorder *recorder = [[OCMMacroState globalState] recorder];
     if(recorder != nil)
     {
-        [recorder setMockObject:self];
+        // this is going to throw
         return (id)[recorder init];
     }
-
     // skip initialisation when init is called again, which can happen when stubbing alloc/init
-    if(stubs != nil)
-    {
-        return self;
-    }
+    return self;
+  }
 
     if([self class] == [OCMockObject class])
     {

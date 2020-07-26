@@ -66,6 +66,27 @@
 
 @end
 
+@interface TestClassWithLazyMock : NSObject
+
+- (id)mock;
+
+@end
+
+@implementation TestClassWithLazyMock
+{
+    id _mock;
+}
+
+- (id)mock
+{
+    if(!_mock)
+    {
+        _mock = OCMClassMock([NSString class]);
+    }
+    return _mock;
+}
+
+@end
 
 // implemented in OCMockObjectClassMethodMockingTests
 
@@ -617,4 +638,10 @@
     }
 }
 
+- (void)testMockGeneratedLazily
+{
+    TestClassWithLazyMock *lazyMock = [[TestClassWithLazyMock alloc] init];
+    OCMStub([[lazyMock mock] lowercaseString]).andReturn(@"bar");
+    XCTAssertEqualObjects([[lazyMock mock] lowercaseString], @"bar");
+}
 @end
