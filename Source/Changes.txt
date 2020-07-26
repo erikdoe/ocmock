@@ -1,7 +1,7 @@
 Listing of notable changes by release. More detail is usually found in the Git
 commit messages and/or the pull requests.
 
-OCMock 3.7.1 (unreleased)
+OCMock 3.7.1 (2020-07-26)
 
 * Fixed a bug that caused double-counting of method invocations on partial
   mocks under certain circumstances.

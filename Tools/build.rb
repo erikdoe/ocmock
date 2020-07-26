@@ -13,7 +13,7 @@ class Builder
       copySource
       buildModules
       signFrameworks "erik@doernenburg.com"
-      createPackage "ocmock-3.7.dmg", "OCMock 3.7"
+      createPackage "ocmock-3.7.1.dmg", "OCMock 3.7.1"
       sanityCheck
       openPackageDir
     end
@@ -47,15 +47,15 @@ class Builder
         @worker.run("mkdir -p #{osxproductdir}")
         @worker.run("cp -R #{@env.symroot}/Release/OCMock.framework #{osxproductdir}")
 
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphoneos13.5 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphonesimulator13.5 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphoneos13.6 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphonesimulator13.6 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
         ioslibproductdir = "#{@env.productdir}/iOS\\ library"                                           
         @worker.run("mkdir -p #{ioslibproductdir}")
         @worker.run("cp -R #{@env.symroot}/Release-iphoneos/OCMock #{ioslibproductdir}")
         @worker.run("lipo -create -output #{ioslibproductdir}/libOCMock.a #{@env.symroot}/Release-iphoneos/libOCMock.a #{@env.symroot}/Release-iphonesimulator/libOCMock.a")
         
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock iOS' -sdk iphoneos13.5 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock iOS' -sdk iphonesimulator13.5 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock iOS' -sdk iphoneos13.6 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock iOS' -sdk iphonesimulator13.6 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
         iosproductdir = "#{@env.productdir}/iOS\\ framework"                                           
         @worker.run("mkdir -p #{iosproductdir}")
         @worker.run("cp -R #{@env.symroot}/Release-iphoneos/OCMock.framework #{iosproductdir}")
