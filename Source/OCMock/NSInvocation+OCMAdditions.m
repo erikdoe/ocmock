@@ -20,7 +20,7 @@
 #import "NSInvocation+OCMAdditions.h"
 #import "OCMFunctionsPrivate.h"
 #import "NSMethodSignature+OCMAdditions.h"
-
+#import "OCMArg.h"
 
 #if (TARGET_OS_OSX && (!defined(__MAC_10_10) || __MAC_OS_X_VERSION_MIN_REQUIRED < __MAC_10_10)) || \
     (TARGET_OS_IPHONE && (!defined(__IPHONE_8_0) || __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_8_0))
@@ -351,6 +351,11 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
 	return [description autorelease];
 }
 
+- (NSString *)anyPointerDescription
+{
+	return @"<Any Pointer>";
+}
+
 - (NSString *)argumentDescriptionAtIndex:(NSInteger)argIndex
 {
 	const char *argType = OCMTypeWithoutQualifiers([[self methodSignature] getArgumentTypeAtIndex:(NSUInteger)argIndex]);
@@ -524,18 +529,32 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
 	void *buffer;
 	
 	[self getArgument:&buffer atIndex:anInt];
-	return [NSString stringWithFormat:@"%p", buffer];
+	if(buffer == [OCMArg anyPointer])
+	{
+		return [self anyPointerDescription];
+	}
+	else
+	{
+		return [NSString stringWithFormat:@"%p", buffer];
+	}
 }
 
 - (NSString *)cStringDescriptionAtIndex:(NSInteger)anInt
 {
-	char buffer[104];
 	char *cStringPtr;
 	
 	[self getArgument:&cStringPtr atIndex:anInt];
-	strlcpy(buffer, cStringPtr, sizeof(buffer));
-	strlcpy(buffer + 100, "...", (sizeof(buffer) - 100));
-	return [NSString stringWithFormat:@"\"%s\"", buffer];
+	if(cStringPtr == [OCMArg anyPointer])
+	{
+		return [self anyPointerDescription];
+	}
+	else
+	{
+		char buffer[104];
+		strlcpy(buffer, cStringPtr, sizeof(buffer));
+		strlcpy(buffer + 100, "...", (sizeof(buffer) - 100));
+		return [NSString stringWithFormat:@"\"%s\"", buffer];
+	}
 }
 
 - (NSString *)selectorDescriptionAtIndex:(NSInteger)anInt

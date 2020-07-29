@@ -16,7 +16,7 @@
 
 #import <XCTest/XCTest.h>
 #import "NSInvocation+OCMAdditions.h"
-
+#import "OCMArg.h"
 
 @implementation NSValue(OCMTestAdditions)
 
@@ -271,6 +271,15 @@
 	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
+- (void)testInvocationDescriptionWithCStringArgumentAnyPointer
+{
+	NSInvocation *invocation = [self invocationForClass:[NSString class] selector:@selector(initWithUTF8String:)];
+	const char *cString = [OCMArg anyPointer];
+	[invocation setArgument:&cString atIndex:2];
+
+	XCTAssertEqualObjects(@"initWithUTF8String:<Any Pointer>", [invocation invocationDescription]);
+}
+
 - (void)testInvocationDescriptionWithSelectorArgument
 {
 	NSInvocation *invocation = [self invocationForClass:[NSString class] selector:@selector(respondsToSelector:)];
@@ -296,6 +305,20 @@
 	XCTAssertTrue([invocationDescription rangeOfString:expected1].length > 0, @"");
 	XCTAssertTrue([invocationDescription rangeOfString:expected2].length > 0, @"");
 }
+
+- (void)testInvocationDescriptionWithPointerArgumentAnyPointer
+{
+	NSInvocation *invocation = [self invocationForClass:[NSData class] selector:@selector(initWithBytes:length:)];
+	const void *bytes = [OCMArg anyPointer];
+	NSUInteger length = 1500;
+	[invocation setArgument:&bytes atIndex:2];
+	[invocation setArgument:&length atIndex:3];
+
+	NSString *expected = [NSString stringWithFormat:@"initWithBytes:<Any Pointer> length:%lu", (unsigned long)length];
+	NSString *invocationDescription = [invocation invocationDescription];
+	XCTAssertEqualObjects(expected, invocationDescription);
+}
+
 
 - (void)testInvocationDescriptionWithNilArgument
 {
