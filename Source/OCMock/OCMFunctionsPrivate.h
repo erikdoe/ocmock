@@ -41,10 +41,10 @@ SEL OCMAliasForOriginalSelector(SEL selector);
 SEL OCMOriginalSelectorForAlias(SEL selector);
 
 void OCMSetAssociatedMockForClass(OCClassMockObject *mock, Class aClass);
-OCClassMockObject *OCMGetAssociatedMockForClass(Class aClass, BOOL includeSuperclasses);
+OCClassMockObject *OCMRetainAssociatedMockForClass(Class aClass, BOOL includeSuperclasses) NS_RETURNS_RETAINED;
 
 void OCMSetAssociatedMockForObject(OCClassMockObject *mock, id anObject);
-OCPartialMockObject *OCMGetAssociatedMockForObject(id anObject);
+OCPartialMockObject *OCMRetainAssociatedMockForObject(id anObject) NS_RETURNS_RETAINED;
 
 void OCMReportFailure(OCMLocation *loc, NSString *description);
 

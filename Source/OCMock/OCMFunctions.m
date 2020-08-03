@@ -402,16 +402,19 @@ void OCMSetAssociatedMockForClass(OCClassMockObject *mock, Class aClass)
     objc_setAssociatedObject(aClass, OCMClassMethodMockObjectKey, mock, OBJC_ASSOCIATION_ASSIGN);
 }
 
-OCClassMockObject *OCMGetAssociatedMockForClass(Class aClass, BOOL includeSuperclasses)
+OCClassMockObject *OCMRetainAssociatedMockForClass(Class aClass, BOOL includeSuperclasses)
 {
-    OCClassMockObject *mock = nil;
     do
     {
-        mock = objc_getAssociatedObject(aClass, OCMClassMethodMockObjectKey);
+        OCClassMockObject *mock = objc_getAssociatedObject(aClass, OCMClassMethodMockObjectKey);
+        if(mock != nil)
+        {
+            return [mock retain];
+        }
         aClass = class_getSuperclass(aClass);
     }
-    while((mock == nil) && (aClass != nil) && includeSuperclasses);
-    return mock;
+    while((aClass != nil) && includeSuperclasses);
+    return nil;
 }
 
 static NSString *const OCMPartialMockObjectKey = @"OCMPartialMockObjectKey";
@@ -423,9 +426,10 @@ void OCMSetAssociatedMockForObject(OCClassMockObject *mock, id anObject)
     objc_setAssociatedObject(anObject, OCMPartialMockObjectKey, mock, OBJC_ASSOCIATION_ASSIGN);
 }
 
-OCPartialMockObject *OCMGetAssociatedMockForObject(id anObject)
+OCPartialMockObject *OCMRetainAssociatedMockForObject(id anObject)
 {
-    return objc_getAssociatedObject(anObject, OCMPartialMockObjectKey);
+    OCPartialMockObject *object = objc_getAssociatedObject(anObject, OCMPartialMockObjectKey);
+    return [object retain];
 }
 
 

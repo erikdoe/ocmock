@@ -218,23 +218,24 @@
 - (Class)classForRealObject
 {
     // in here "self" is a reference to the real object, not the mock
-    OCPartialMockObject *mock = OCMGetAssociatedMockForObject(self);
+    OCPartialMockObject *mock = OCMRetainAssociatedMockForObject(self);
     if(mock == nil)
         [NSException raise:NSInternalInconsistencyException format:@"No partial mock for object %p", self];
-    return [mock mockedClass];
+    Class mockedClass = [mock mockedClass];
+    [mock release];
+    return mockedClass;
 }
 
 
 - (id)forwardingTargetForSelectorForRealObject:(SEL)sel
 {
-	// in here "self" is a reference to the real object, not the mock
-    OCPartialMockObject *mock = OCMGetAssociatedMockForObject(self);
+    // in here "self" is a reference to the real object, not the mock
+    OCPartialMockObject *mock = OCMRetainAssociatedMockForObject(self);
     if(mock == nil)
         [NSException raise:NSInternalInconsistencyException format:@"No partial mock for object %p", self];
-    if([mock handleSelector:sel])
-        return self;
-
-    return [self ocmock_replaced_forwardingTargetForSelector:sel];
+    BOOL handled = [mock handleSelector:sel];
+    [mock release];
+    return handled ? self : [self ocmock_replaced_forwardingTargetForSelector:sel];
 }
 
 //  Make the compiler happy in -forwardingTargetForSelectorForRealObject: because it can't find the message…
@@ -246,8 +247,8 @@
 
 - (void)forwardInvocationForRealObject:(NSInvocation *)anInvocation
 {
-	// in here "self" is a reference to the real object, not the mock
-    OCPartialMockObject *mock = OCMGetAssociatedMockForObject(self);
+    // in here "self" is a reference to the real object, not the mock
+    OCPartialMockObject *mock = OCMRetainAssociatedMockForObject(self);
     if(mock == nil)
         [NSException raise:NSInternalInconsistencyException format:@"No partial mock for object %p", self];
 
@@ -256,6 +257,7 @@
         [anInvocation setSelector:OCMAliasForOriginalSelector([anInvocation selector])];
         [anInvocation invoke];
     }
+    [mock release];
 }
 
 

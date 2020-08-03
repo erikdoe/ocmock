@@ -100,9 +100,12 @@
         return;
 
     /* if there is another mock for this exact class, stop it */
-    id otherMock = OCMGetAssociatedMockForClass(mockedClass, NO);
+    id otherMock = OCMRetainAssociatedMockForClass(mockedClass, NO);
     if(otherMock != nil)
+    {
         [otherMock stopMockingClassMethods];
+        [otherMock release];
+    }
 
     OCMSetAssociatedMockForClass(self, mockedClass);
 
@@ -166,7 +169,7 @@
 - (void)forwardInvocationForClassObject:(NSInvocation *)anInvocation
 {
 	// in here "self" is a reference to the real class, not the mock
-	OCClassMockObject *mock = OCMGetAssociatedMockForClass((Class) self, YES);
+    OCClassMockObject *mock = OCMRetainAssociatedMockForClass((Class) self, YES);
     if(mock == nil)
     {
         [NSException raise:NSInternalInconsistencyException format:@"No mock for class %@", NSStringFromClass((Class)self)];
@@ -176,6 +179,7 @@
         [anInvocation setSelector:OCMAliasForOriginalSelector([anInvocation selector])];
         [anInvocation invoke];
     }
+    [mock release];
 }
 
 - (void)initializeForClassObject
