@@ -30,6 +30,8 @@ static BOOL OCMObjectIsClass(id object) {
 #define object_isClass OCMObjectIsClass
 #endif
 
+static NSString *const OCMArgAnyPointerDescription = @"<[OCMArg anyPointer]>";
+
 
 @implementation NSInvocation(OCMAdditions)
 
@@ -331,6 +333,7 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
 	return nil;
 }
 
+
 - (NSString *)invocationDescription
 {
 	NSMethodSignature *methodSignature = [self methodSignature];
@@ -349,11 +352,6 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
 	}
 	
 	return [description autorelease];
-}
-
-- (NSString *)anyPointerDescription
-{
-	return @"<Any Pointer>";
 }
 
 - (NSString *)argumentDescriptionAtIndex:(NSInteger)argIndex
@@ -385,7 +383,6 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
 	}
 	
 }
-
 
 - (NSString *)objectDescriptionAtIndex:(NSInteger)anInt
 {
@@ -529,14 +526,11 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
 	void *buffer;
 	
 	[self getArgument:&buffer atIndex:anInt];
-	if(buffer == [OCMArg anyPointer])
-	{
-		return [self anyPointerDescription];
-	}
-	else
-	{
-		return [NSString stringWithFormat:@"%p", buffer];
-	}
+	
+    if(buffer == [OCMArg anyPointer])
+		return OCMArgAnyPointerDescription;
+    else
+        return [NSString stringWithFormat:@"%p", buffer];
 }
 
 - (NSString *)cStringDescriptionAtIndex:(NSInteger)anInt
@@ -544,9 +538,10 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
 	char *cStringPtr;
 	
 	[self getArgument:&cStringPtr atIndex:anInt];
+    
 	if(cStringPtr == [OCMArg anyPointer])
 	{
-		return [self anyPointerDescription];
+		return OCMArgAnyPointerDescription;
 	}
 	else
 	{

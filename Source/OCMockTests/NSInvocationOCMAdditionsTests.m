@@ -277,7 +277,7 @@
 	const char *cString = [OCMArg anyPointer];
 	[invocation setArgument:&cString atIndex:2];
 
-	XCTAssertEqualObjects(@"initWithUTF8String:<Any Pointer>", [invocation invocationDescription]);
+	XCTAssertEqualObjects(@"initWithUTF8String:<[OCMArg anyPointer]>", [invocation invocationDescription]);
 }
 
 - (void)testInvocationDescriptionWithSelectorArgument
@@ -314,7 +314,7 @@
 	[invocation setArgument:&bytes atIndex:2];
 	[invocation setArgument:&length atIndex:3];
 
-	NSString *expected = [NSString stringWithFormat:@"initWithBytes:<Any Pointer> length:%lu", (unsigned long)length];
+	NSString *expected = [NSString stringWithFormat:@"initWithBytes:<[OCMArg anyPointer]> length:%lu", (unsigned long)length];
 	NSString *invocationDescription = [invocation invocationDescription];
 	XCTAssertEqualObjects(expected, invocationDescription);
 }
