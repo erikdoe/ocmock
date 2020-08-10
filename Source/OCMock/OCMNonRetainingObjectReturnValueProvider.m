@@ -48,9 +48,7 @@
     }
     else
     {
-        // Return with an autorelease to avoid race condition between when returnValue is
-        // being returned, and when returnValue is received where the mock is torn down
-        // and returnValue is released.
+        // avoid potential problems with the return value being release too early
         returnValue = [[returnValue retain] autorelease];
     }
     [anInvocation setReturnValue:&returnValue];
