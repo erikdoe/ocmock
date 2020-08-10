@@ -46,6 +46,11 @@
         [returnValue retain];
         [[anInvocation target] release];
     }
+    else
+    {
+        // avoid potential problems with the return value being release too early
+        returnValue = [[returnValue retain] autorelease];
+    }
     [anInvocation setReturnValue:&returnValue];
 }
 @end
