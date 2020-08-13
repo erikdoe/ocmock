@@ -54,14 +54,15 @@ typedef NSString TypedefString;
 
 @interface TestDelegate : NSObject
 
-- (void)go;
+- (id)go:(id)sender;
 
 @end
 
 @implementation TestDelegate
 
-- (void)go
+- (id)go:(id)sender
 {
+    return sender;
 }
 
 @end
@@ -77,7 +78,24 @@ typedef NSString TypedefString;
 - (void)run
 {
     TestDelegate *delegate = self.delegate;
-    [delegate go];
+    [delegate go:nil];
+}
+
+@end
+
+
+@interface TestClassThatCallsDelegateOnDealloc : NSObject
+
+@property (nonatomic, weak) TestDelegate *delegate;
+
+@end
+
+@implementation TestClassThatCallsDelegateOnDealloc
+
+- (void)dealloc
+{
+    TestDelegate *delegate = self.delegate;
+    [delegate go:self];
 }
 
 @end
@@ -313,7 +331,7 @@ typedef NSString TypedefString;
 
     [object run];
 
-    OCMVerify([mockDelegate go]);
+    OCMVerify([mockDelegate go:nil]);
     XCTAssertNotNil(object.delegate, @"Should still have delegate");
 }
 
@@ -329,6 +347,16 @@ typedef NSString TypedefString;
     XCTAssertEqual(numClassesBefore, numClassesAfter, @"Should have disposed dynamically generated classes.");
 }
 
+- (void)testHandlesCallingMockWithSelfAsArgumentInDealloc
+{
+    // Note that this test will crash on failure.
+    id mock = [OCMockObject mockForClass:[TestDelegate class]];
+    [[mock expect] go:OCMOCK_ANY];
+    TestClassThatCallsDelegateOnDealloc *foo = [[TestClassThatCallsDelegateOnDealloc alloc] init];
+    foo.delegate = mock;
+    foo = nil;
+    [mock verify];
+}
 
 - (void)testClassesWithResolveMethodsCanBeMocked
 {
