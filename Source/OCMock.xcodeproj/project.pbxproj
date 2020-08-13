@@ -283,6 +283,8 @@
 		8B11D4B82448E2F400247BE2 /* OCMCPlusPlus98Tests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B11D4B62448E2E900247BE2 /* OCMCPlusPlus98Tests.mm */; settings = {COMPILER_FLAGS = "-std=gnu++98"; }; };
 		8B11D4BA2448E53600247BE2 /* OCMCPlusPlus11Tests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B11D4B92448E53600247BE2 /* OCMCPlusPlus11Tests.mm */; settings = {COMPILER_FLAGS = "-std=gnu++11"; }; };
 		8B11D4BB2448E53600247BE2 /* OCMCPlusPlus11Tests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B11D4B92448E53600247BE2 /* OCMCPlusPlus11Tests.mm */; settings = {COMPILER_FLAGS = "-std=gnu++11"; }; };
+		8B3786A824E5BD5600FD1B5B /* OCMFunctionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3786A724E5BD5600FD1B5B /* OCMFunctionsTests.m */; };
+		8B3786A924E5BD6400FD1B5B /* OCMFunctionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3786A724E5BD5600FD1B5B /* OCMFunctionsTests.m */; };
 		8BF73E53246CA75E00B9A52C /* OCMNoEscapeBlockTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF73E52246CA75E00B9A52C /* OCMNoEscapeBlockTests.m */; settings = {COMPILER_FLAGS = "-Xclang -fexperimental-optimized-noescape"; }; };
 		8BF73E54246CA75E00B9A52C /* OCMNoEscapeBlockTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF73E52246CA75E00B9A52C /* OCMNoEscapeBlockTests.m */; settings = {COMPILER_FLAGS = "-Xclang -fexperimental-optimized-noescape"; }; };
 		8DE97C5522B43EE60098C63F /* OCMockObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B3159E146333BF0052CD09 /* OCMockObject.m */; };
@@ -577,6 +579,7 @@
 		817EB1621BD765130047E85A /* OCMock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OCMock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B11D4B62448E2E900247BE2 /* OCMCPlusPlus98Tests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OCMCPlusPlus98Tests.mm; sourceTree = "<group>"; };
 		8B11D4B92448E53600247BE2 /* OCMCPlusPlus11Tests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OCMCPlusPlus11Tests.mm; sourceTree = "<group>"; };
+		8B3786A724E5BD5600FD1B5B /* OCMFunctionsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OCMFunctionsTests.m; sourceTree = "<group>"; };
 		8BF73E52246CA75E00B9A52C /* OCMNoEscapeBlockTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMNoEscapeBlockTests.m; sourceTree = "<group>"; };
 		8DE97CA022B43EE60098C63F /* OCMock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OCMock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A02926811CA0725A00594AAF /* TestObjects.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TestObjects.xcdatamodel; sourceTree = "<group>"; };
@@ -758,6 +761,7 @@
 				031E50571BB4A56300E257C3 /* OCMBoxedReturnValueProviderTests.m */,
 				03B316211463350E0052CD09 /* OCMConstraintTests.m */,
 				8B11D4B62448E2E900247BE2 /* OCMCPlusPlus98Tests.mm */,
+				8B3786A724E5BD5600FD1B5B /* OCMFunctionsTests.m */,
 				8B11D4B92448E53600247BE2 /* OCMCPlusPlus11Tests.mm */,
 				2FA28EDBF243639C57F88A1B /* OCMArgTests.m */,
 				036865631D3571A8005E6BEE /* OCMQuantifierTests.m */,
@@ -1494,6 +1498,7 @@
 			files = (
 				037ECD5418FAD84100AF0E4C /* OCMInvocationMatcherTests.m in Sources */,
 				03565A4418F05721003AE91E /* OCMockObjectProtocolMocksTests.m in Sources */,
+				8B3786A824E5BD5600FD1B5B /* OCMFunctionsTests.m in Sources */,
 				03565A4B18F05721003AE91E /* NSInvocationOCMAdditionsTests.m in Sources */,
 				03565A4618F05721003AE91E /* OCMockObjectHamcrestTests.m in Sources */,
 				3CFBDD771BB3DB200050D9C5 /* TestClassWithCustomReferenceCounting.m in Sources */,
@@ -1609,6 +1614,7 @@
 			files = (
 				3C76716C1BB3EBC500FDC9F4 /* TestClassWithCustomReferenceCounting.m in Sources */,
 				031E50591BB4A56300E257C3 /* OCMBoxedReturnValueProviderTests.m in Sources */,
+				8B3786A924E5BD6400FD1B5B /* OCMFunctionsTests.m in Sources */,
 				03C9CA1E18F05A84006DF94D /* OCMArgTests.m in Sources */,
 				036865651D3571A8005E6BEE /* OCMQuantifierTests.m in Sources */,
 				0322DA66191188D100CACAF1 /* OCMockObjectVerifyAfterRunTests.m in Sources */,

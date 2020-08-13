@@ -878,6 +878,24 @@ static NSString *TestNotification = @"TestNotification";
     XCTAssertEqual(firstParam, mockProtocol, @"Param does not match");
 }
 
+- (void)testBlockConstraintRetainedByStub
+{
+    __block BOOL wasCalled = NO;
+    id mock = OCMClassMock([NSString class]);
+    @autoreleasepool 
+    {
+        // The autorelease pool makes sure that the OCMArg is retained by the stub.
+        // If this test fails it will likely be due to a crash.
+        OCMStub([mock enumerateLinesUsingBlock:([OCMArg invokeBlockWithArgs:@"Happy", [OCMArg defaultValue], nil])]);
+    }
+    [mock enumerateLinesUsingBlock:^(NSString * _Nonnull line, BOOL * _Nonnull stop) 
+    {
+        wasCalled = YES;
+    }];
+    XCTAssertTrue(wasCalled);
+}
+
+
 #pragma mark    accepting expected methods
 
 - (void)testAcceptsExpectedMethod
