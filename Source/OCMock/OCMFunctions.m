@@ -16,9 +16,9 @@
 
 #import <objc/runtime.h>
 #import "OCMFunctionsPrivate.h"
-#import "OCMLocation.h"
 #import "OCClassMockObject.h"
 #import "OCPartialMockObject.h"
+#import "OCMLocation.h"
 
 
 #pragma mark  Known private API

@@ -17,7 +17,6 @@
 #import <Foundation/Foundation.h>
 #import "OCMFunctions.h"
 
-
 @interface OCMLocation : NSObject
 {
     id          testCase;

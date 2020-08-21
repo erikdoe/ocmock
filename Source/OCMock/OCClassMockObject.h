@@ -14,7 +14,7 @@
  *  under the License.
  */
 
-#import <OCMock/OCMockObject.h>
+#import "OCMockObject.h"
 
 @interface OCClassMockObject : OCMockObject 
 {

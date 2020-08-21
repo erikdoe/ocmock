@@ -15,12 +15,10 @@
  */
 
 #import <objc/runtime.h>
-#import <Availability.h>
-#import <TargetConditionals.h>
 #import "NSInvocation+OCMAdditions.h"
+#import "OCMArg.h"
 #import "OCMFunctionsPrivate.h"
 #import "NSMethodSignature+OCMAdditions.h"
-#import "OCMArg.h"
 
 #if (TARGET_OS_OSX && (!defined(__MAC_10_10) || __MAC_OS_X_VERSION_MIN_REQUIRED < __MAC_10_10)) || \
     (TARGET_OS_IPHONE && (!defined(__IPHONE_8_0) || __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_8_0))
