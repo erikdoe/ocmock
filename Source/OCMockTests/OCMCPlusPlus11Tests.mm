@@ -15,7 +15,7 @@
  */
 
 #import <XCTest/XCTest.h>
-#import <OCMock/OCMock.h>
+#import "OCMock.h"
 
 #if !defined(__cplusplus)
 #error This file must be compiled with C++

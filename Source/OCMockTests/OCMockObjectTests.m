@@ -15,8 +15,7 @@
  */
 
 #import <XCTest/XCTest.h>
-#import <OCMock/OCMock.h>
-#import "OCMBoxedReturnValueProvider.h"
+#import "OCMock/OCMock.h"
 
 
 #pragma mark    Helper classes and protocols for testing
@@ -91,13 +90,13 @@ TestOpaque myOpaque;
 
 @interface TestClassWithBlockArgMethod : NSObject
 
-- (void)doStuffWithBlock:(void (^)(void))block andString:(id)aString;
+- (void)doStuffWithBlock:(__unused void (^)(void))block andString:(id)aString;
 
 @end
 
 @implementation TestClassWithBlockArgMethod
 
-- (void)doStuffWithBlock:(void (^)(void))block andString:(id)aString;
+- (void)doStuffWithBlock:(__unused void (^)(void))block andString:(id)aString;
 {
     // stubbed out anyway
 }
@@ -157,13 +156,13 @@ TestOpaque myOpaque;
 
 @interface TestClassWithProtocolBlockArgMethod : NSObject
 
-- (void)doStuffWithBlock:(void (^)(id<TestProtocol> arg))block;
+- (void)doStuffWithBlock:(__unused void (^)(id<TestProtocol> arg))block;
 
 @end
 
 @implementation TestClassWithProtocolBlockArgMethod
 
-- (void)doStuffWithBlock:(void (^)(id<TestProtocol> arg))block;
+- (void)doStuffWithBlock:(__unused void (^)(id<TestProtocol> arg))block;
 {
     // stubbed out anyway
 }
@@ -868,7 +867,7 @@ static NSString *TestNotification = @"TestNotification";
 
     __block BOOL wasCalled = NO;
     __block id<TestProtocol> firstParam;
-    void (^block)(id<TestProtocol> arg) = ^(id<TestProtocol> arg) {
+    void (^block)(id<TestProtocol>) = ^(id<TestProtocol> arg) {
         wasCalled = YES;
         firstParam = arg;
     };

@@ -15,8 +15,9 @@
  */
 
 #import <XCTest/XCTest.h>
-#import <OCMock/OCMock.h>
 #import <objc/runtime.h>
+#import "OCMock.h"
+
 
 #pragma mark   Helper classes
 

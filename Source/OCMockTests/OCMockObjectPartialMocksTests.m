@@ -16,7 +16,7 @@
 
 #import <CoreData/CoreData.h>
 #import <XCTest/XCTest.h>
-#import <OCMock/OCMock.h>
+#import "OCMock.h"
 #import "OCPartialMockObject.h"
 #import "TestClassWithCustomReferenceCounting.h"
 
@@ -26,6 +26,7 @@
 #define NSMakeRect CGRectMake
 #define valueWithRect valueWithCGRect
 #endif
+
 
 #pragma mark   Helper classes
 

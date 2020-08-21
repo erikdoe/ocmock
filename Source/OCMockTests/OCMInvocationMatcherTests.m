@@ -15,9 +15,8 @@
  */
 
 #import <XCTest/XCTest.h>
-#import <OCMock/OCMArg.h>
+#import "OCMock.h"
 #import "OCMInvocationMatcher.h"
-#import "OCClassMockObject.h"
 #import "OCMFunctionsPrivate.h"
 
 

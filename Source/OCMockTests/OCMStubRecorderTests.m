@@ -15,12 +15,11 @@
  */
 
 #import <XCTest/XCTest.h>
-#import "OCMStubRecorder.h"
-#import <OCMock/OCMockObject.h>
+#import "OCMock.h"
 #import "OCMObjectReturnValueProvider.h"
 #import "OCMExceptionReturnValueProvider.h"
-#import "OCMInvocationMatcher.h"
 #import "OCMInvocationStub.h"
+
 
 @interface OCMStubRecorderTests : XCTestCase
 

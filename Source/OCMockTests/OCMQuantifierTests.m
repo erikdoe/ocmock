@@ -15,8 +15,7 @@
  */
 
 #import <XCTest/XCTest.h>
-#import <OCMock/OCMock.h>
-#import "OCMQuantifier.h"
+#import "OCMock.h"
 
 
 @interface TestClassForQuantifiers : NSObject

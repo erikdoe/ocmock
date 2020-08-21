@@ -15,8 +15,8 @@
  */
 
 #import <XCTest/XCTest.h>
-#import "OCMockObject.h"
-#import "OCMStubRecorder.h"
+#import "OCMock.h"
+
 
 @interface TestBaseClassForVerifyAfterRun : NSObject
 

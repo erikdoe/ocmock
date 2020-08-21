@@ -15,7 +15,7 @@
  */
 
 #import <XCTest/XCTest.h>
-#import <OCMock/OCMConstraint.h>
+#import "OCMConstraint.h"
 
 
 @interface OCMConstraintTests : XCTestCase

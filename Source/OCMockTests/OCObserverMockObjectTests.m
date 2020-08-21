@@ -15,7 +15,8 @@
  */
 
 #import <XCTest/XCTest.h>
-#import <OCMock/OCMock.h>
+#import "OCMock.h"
+
 
 static NSString *TestNotificationOne = @"TestNotificationOne";
 

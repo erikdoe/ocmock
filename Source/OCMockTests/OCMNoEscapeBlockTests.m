@@ -15,8 +15,9 @@
  */
 
 #import <XCTest/XCTest.h>
-#import <OCMock/OCMock.h>
+#import "OCMock.h"
 #import "OCMFunctionsPrivate.h"
+
 
 @interface NSString(NoEscapeBlock)
 @end

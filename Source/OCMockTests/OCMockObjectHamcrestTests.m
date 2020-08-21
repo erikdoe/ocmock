@@ -16,7 +16,7 @@
 
 #import <XCTest/XCTest.h>
 #import <OCHamcrest/OCHamcrest.h>
-#import <OCMock/OCMock.h>
+#import "OCMock.h"
 
 
 @interface OCMockObjectHamcrestTests : XCTestCase

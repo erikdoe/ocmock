@@ -15,7 +15,7 @@
  */
 
 #import <XCTest/XCTest.h>
-#import <OCMock/OCMock.h>
+#import "OCMock.h"
 #import "OCClassMockObject.h"
 #import "OCPartialMockObject.h"
 
