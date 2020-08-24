@@ -1,1 +1,0 @@
-#import "../OCMock/OCMockObject.h"

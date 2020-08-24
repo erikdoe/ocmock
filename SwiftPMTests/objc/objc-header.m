@@ -1,29 +1,3 @@
-#import "OCMock.h"
-#import "OCMockObject.h"
-#import "OCMArg.h"
-#import "OCMConstraint.h"
-#import "OCMLocation.h"
-#import "OCMMacroState.h"
-#import "OCMRecorder.h"
-#import "OCMStubRecorder.h"
-#import "OCMFunctions.h"
-#import "OCMVerifier.h"
-#import "OCMQuantifier.h"
-#import "OCMockMacros.h"
-
-#import <OCMock.h>
-#import <OCMockObject.h>
-#import <OCMArg.h>
-#import <OCMConstraint.h>
-#import <OCMLocation.h>
-#import <OCMMacroState.h>
-#import <OCMRecorder.h>
-#import <OCMStubRecorder.h>
-#import <OCMFunctions.h>
-#import <OCMVerifier.h>
-#import <OCMQuantifier.h>
-#import <OCMockMacros.h>
-
 #import <OCMock/OCMock.h>
 #import <OCMock/OCMockObject.h>
 #import <OCMock/OCMArg.h>

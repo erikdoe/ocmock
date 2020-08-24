@@ -27,7 +27,7 @@ let package = Package(
                 "OCMockLib/OCMockLib-Prefix.pch",
                 "OCMockLibTests/OCMockLibTests-Prefix.pch",
             ],
-            publicHeadersPath: "SwiftPackage",
+            publicHeadersPath: ".",
             cSettings: [
                 .headerSearchPath("./"),
                 .unsafeFlags(["-fno-objc-arc"])
