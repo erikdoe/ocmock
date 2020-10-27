@@ -525,3 +525,33 @@
 
 
 @end
+
+id OCMClassMock(Class cls)
+{
+    return [OCMockObject niceMockForClass:cls];
+}
+
+id OCMStrictClassMock(Class cls)
+{
+    return [OCMockObject mockForClass:cls];
+}
+
+id OCMProtocolMock(Protocol *protocol)
+{
+    return [OCMockObject niceMockForProtocol:protocol];
+}
+
+id OCMStrictProtocolMock(Protocol *protocol)
+{
+    return [OCMockObject mockForProtocol:protocol];
+}
+
+id OCMPartialMock(id obj)
+{
+    return [OCMockObject partialMockForObject:obj];
+}
+
+id OCMObserverMock(void)
+{
+    return [OCMockObject observerMock];
+}

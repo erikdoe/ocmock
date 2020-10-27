@@ -19,20 +19,6 @@
 #define OCM_DISABLE_SHORT_QSYNTAX
 #endif
 
-
-#define OCMClassMock(cls) [OCMockObject niceMockForClass:cls]
-
-#define OCMStrictClassMock(cls) [OCMockObject mockForClass:cls]
-
-#define OCMProtocolMock(protocol) [OCMockObject niceMockForProtocol:protocol]
-
-#define OCMStrictProtocolMock(protocol) [OCMockObject mockForProtocol:protocol]
-
-#define OCMPartialMock(obj) [OCMockObject partialMockForObject:obj]
-
-#define OCMObserverMock() [OCMockObject observerMock]
-
-
 #define OCMStub(invocation) \
 ({ \
     _OCMSilenceWarnings( \
