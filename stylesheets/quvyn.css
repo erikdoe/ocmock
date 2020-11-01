@@ -1,0 +1,138 @@
+
+section#content h2.qv-heading,
+section#content h2.qv-editor-heading {
+  border-bottom: none;
+  margin-top: 2em;
+  margin-bottom: 0.75em;
+}
+
+.qv-comment,
+.qv-editor-heading {
+  border-top: 1px solid #DDD;
+  padding-top: 1em;
+}
+
+section#content ul li.qv-comment {
+  list-style-type: none;
+  margin-left: 0;
+  margin-bottom: 2em;
+	min-height: 64px;
+}
+
+.qv-metadata {
+  margin: 0 0 1em 50px;
+}
+
+.qv-avatar {
+	float: left;
+  margin: 0 0 0 -50px;
+}
+
+.qv-avatar img {
+  border-radius: 50%;
+}
+
+.qv-author {
+  padding-top: 5px;
+  font-family: "Helvetica Neue", Helvetica, arial, sans-serif;;
+  font-size: 1.125em;
+  font-weight: bold;
+  line-height: 0.8em;
+}
+
+.qv-timestamp {
+  font-size: 0.75em;
+  font-weight: bold;
+}
+
+.qv-text h2,
+.qv-text-preview h2 {
+  border-bottom: none;
+}
+ 
+.qv-text blockquote,
+.qv-text-preview blockquote {
+	font-style: italic;
+  border-left: #AAA 4px solid;
+  margin: 0.5em 0.2em 0.5em 0.1em;
+	padding: 0 0 0 0.5em;
+}
+
+.qv-text pre,
+.qv-text-preview pre {
+  line-height: 1em;
+}
+
+.qv-editor-help {
+  margin-top: 0;
+  margin-bottom: 1.5em;
+  font-size: 90%;
+}
+
+.qv-input-field {
+  display: block;
+  margin-bottom: 0.5em;
+  width: 20em;
+  padding: 2px 4px;
+  font-size: 1em;
+  color: #555;
+}
+
+.qv-input-field,
+.qv-text-preview {
+  border: #888 solid 1px;
+}
+
+.qv-text-editor {
+  margin-top: 1em;
+}
+
+.qv-tab,
+.qv-submit {
+  font-family: "Helvetica Neue", Helvetica, arial, sans-serif;;
+  font-size: 0.825em;
+  color: #AAA;
+  text-transform: uppercase;
+}
+
+.qv-tab:first-child {
+  padding-left: 0.5em;
+  border-right: #AAA 3px solid; 
+}
+
+.qv-tab {
+  padding: 2px 8px 0px 2px;
+  cursor: pointer;
+}
+
+.qv-active-tab {
+  color: #333;
+}
+
+.qv-tab-content {
+  margin-top: 0.1em;
+}
+
+.qv-tab-content textarea, 
+.qv-tab-content .qv-text-preview {
+    padding: 4px;
+}
+
+.qv-text-preview {
+  overflow: hidden scroll;
+}
+
+.qv-text-preview > p:first-child {
+  margin-top: 0;
+}
+
+.qv-submit-error {
+  margin-top: 0.5em;
+  color: darkred
+}
+
+.qv-submit {
+  margin-top: 1em;
+  padding-top: 4px;
+  color: #333;
+}

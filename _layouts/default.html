@@ -7,11 +7,10 @@ layout: minimal
 		{{ content }}
 
 		{% if page.comments %}
-		<h2>Comments</h2>
-
-		<div id="comments">
-				<p class="loading">Starting commenting system. This can take a moment.
+		<div id="quvyn">
+			<qv-comment-section baseurl="{{ site.quvynurl }}"></qv-comment-section>
 		</div>
+		<script>new Vue({el: "#quvyn"})</script>
 		{% endif %}
 
   </div>
