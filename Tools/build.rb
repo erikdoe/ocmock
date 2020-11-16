@@ -47,33 +47,27 @@ class Builder
         @worker.run("mkdir -p #{osxproductdir}")
         @worker.run("cp -R #{@env.symroot}/Release/OCMock.framework #{osxproductdir}")
 
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphoneos13.6 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphonesimulator13.6 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphoneos14.2 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target OCMockLib -sdk iphonesimulator14.2 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
         ioslibproductdir = "#{@env.productdir}/iOS\\ library"                                           
         @worker.run("mkdir -p #{ioslibproductdir}")
         @worker.run("cp -R #{@env.symroot}/Release-iphoneos/OCMock #{ioslibproductdir}")
         @worker.run("lipo -create -output #{ioslibproductdir}/libOCMock.a #{@env.symroot}/Release-iphoneos/libOCMock.a #{@env.symroot}/Release-iphonesimulator/libOCMock.a")
         
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock iOS' -sdk iphoneos13.6 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock iOS' -sdk iphonesimulator13.6 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock iOS' -sdk iphoneos14.2 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
         iosproductdir = "#{@env.productdir}/iOS\\ framework"                                           
         @worker.run("mkdir -p #{iosproductdir}")
         @worker.run("cp -R #{@env.symroot}/Release-iphoneos/OCMock.framework #{iosproductdir}")
-        @worker.run("lipo -create -output #{iosproductdir}/OCMock.framework/OCMock #{@env.symroot}/Release-iphoneos/OCMock.framework/OCMock #{@env.symroot}/Release-iphonesimulator/OCMock.framework/OCMock")
  
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock tvOS' -sdk appletvos13.4 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock tvOS' -sdk appletvsimulator13.4 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock tvOS' -sdk appletvos14.2 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
         tvosproductdir = "#{@env.productdir}/tvOS"                                           
         @worker.run("mkdir -p #{tvosproductdir}")
         @worker.run("cp -R #{@env.symroot}/Release-appletvos/OCMock.framework #{tvosproductdir}")
-        @worker.run("lipo -create -output #{tvosproductdir}/OCMock.framework/OCMock #{@env.symroot}/Release-appletvos/OCMock.framework/OCMock #{@env.symroot}/Release-appletvsimulator/OCMock.framework/OCMock")
 
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock watchOS' -sdk watchos6.2 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
-        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock watchOS' -sdk watchsimulator6.2 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
+        @worker.run("xcodebuild -project OCMock.xcodeproj -target 'OCMock watchOS' -sdk watchos7.1 OBJROOT=#{@env.objroot} SYMROOT=#{@env.symroot}")
         watchosproductdir = "#{@env.productdir}/watchOS"                                           
         @worker.run("mkdir -p #{watchosproductdir}")
         @worker.run("cp -R #{@env.symroot}/Release-watchos/OCMock.framework #{watchosproductdir}")
-        @worker.run("lipo -create -output #{watchosproductdir}/OCMock.framework/OCMock #{@env.symroot}/Release-watchos/OCMock.framework/OCMock #{@env.symroot}/Release-iphonesimulator/OCMock.framework/OCMock")
     end
     
     def signFrameworks(identity)
@@ -115,15 +109,15 @@ class Builder
 
         archs = nil
         @worker.run("lipo -info #{osxproductdir}/OCMock.framework/OCMock") { |lipo| archs = /re: (.*)/.match(lipo.readline)[1].strip() }
-        puts "^^ wrong architecture for macOS framework; found: #{archs}\n\n" unless archs == "x86_64"
+        puts "^^ wrong architecture for macOS framework; found: #{archs}\n\n" unless archs == "x86_64 arm64"
         @worker.run("lipo -info #{ioslibproductdir}/libOCMock.a") { |lipo| archs = /re: (.*)/.match(lipo.readline)[1].strip() }
         puts "^^ wrong architectures for iOS library; found: #{archs}\n\n" unless archs == "armv7 i386 x86_64 arm64"
         @worker.run("lipo -info #{iosproductdir}/OCMock.framework/OCMock")  { |lipo| archs = /re: (.*)/.match(lipo.readline)[1].strip() }
-        puts "^^ wrong architectures for iOS framework; found: #{archs}\n\n" unless archs == "x86_64 i386 armv7 arm64"
+        puts "^^ wrong architectures for iOS framework; found: #{archs}\n\n" unless archs == "armv7 arm64"
         @worker.run("lipo -info #{tvosproductdir}/OCMock.framework/OCMock")  { |lipo| archs = /re: (.*)/.match(lipo.readline)[1].strip() }
-        puts "^^ wrong architectures for tvOS framework; found: #{archs}\n\n" unless archs == "x86_64 arm64"
+        puts "^^ wrong architectures for tvOS framework; found: #{archs}\n\n" unless archs == "arm64"
         @worker.run("lipo -info #{watchosproductdir}/OCMock.framework/OCMock")  { |lipo| archs = /re: (.*)/.match(lipo.readline)[1].strip() }
-        puts "^^ wrong architectures for watchOS framework; found: #{archs}\n\n" unless archs == "x86_64 i386 armv7k arm64_32"
+        puts "^^ wrong architectures for watchOS framework; found: #{archs}\n\n" unless archs == "armv7k arm64_32"
 
         @worker.run("codesign -dvv #{osxproductdir}/OCMock.framework")
         @worker.run("codesign -dvv #{iosproductdir}/OCMock.framework")       
