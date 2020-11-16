@@ -14,15 +14,15 @@
  *  under the License.
  */
 
-#import "OCMockObject.h"
-#import "OCMockMacros.h"
-#import "OCMRecorder.h"
-#import "OCMVerifier.h"
-#import "OCMStubRecorder.h"
-#import "OCMConstraint.h"
-#import "OCMArg.h"
-#import "OCMLocation.h"
-#import "OCMQuantifier.h"
-#import "OCMMacroState.h"
-#import "NSNotificationCenter+OCMAdditions.h"
-#import "OCMFunctions.h"
+#import <OCMock/OCMockObject.h>
+#import <OCMock/OCMockMacros.h>
+#import <OCMock/OCMRecorder.h>
+#import <OCMock/OCMVerifier.h>
+#import <OCMock/OCMStubRecorder.h>
+#import <OCMock/OCMConstraint.h>
+#import <OCMock/OCMArg.h>
+#import <OCMock/OCMLocation.h>
+#import <OCMock/OCMQuantifier.h>
+#import <OCMock/OCMMacroState.h>
+#import <OCMock/NSNotificationCenter+OCMAdditions.h>
+#import <OCMock/OCMFunctions.h>
