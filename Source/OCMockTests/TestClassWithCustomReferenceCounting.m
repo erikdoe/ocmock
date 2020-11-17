@@ -14,6 +14,7 @@
  *  under the License.
  */
 
+#import <stdatomic.h>
 #import <libkern/OSAtomic.h>
 #import "TestClassWithCustomReferenceCounting.h"
 
@@ -21,7 +22,7 @@
 @implementation TestClassWithCustomReferenceCounting
 {
 #if __LP64__
-    int64_t retainCount;
+    int64_t _Atomic retainCount;
 #else
     int32_t retainCount;
 #endif
@@ -35,7 +36,7 @@
 - (instancetype)retain
 {
 #if __LP64__
-    OSAtomicIncrement64(&retainCount);
+    atomic_fetch_add(&retainCount, 1);
 #else
     OSAtomicIncrement32(&retainCount);
 #endif
@@ -45,7 +46,7 @@
 - (oneway void)release
 {
 #if __LP64__
-    int64_t newRetainCount = OSAtomicDecrement64(&retainCount);
+    int64_t newRetainCount = atomic_fetch_sub(&retainCount, 1);
 #else
     int32_t newRetainCount = OSAtomicDecrement32(&retainCount);
 #endif
