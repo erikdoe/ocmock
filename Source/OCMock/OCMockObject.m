@@ -101,6 +101,11 @@
         return self;
     }
 
+  if([self class] == [OCMockObject class])
+  {
+    [NSException raise:NSInternalInconsistencyException format:@"Error: OCMockObject should not be instantiated directly. Please use an appropriate subclass."];
+  }
+
 	// no [super init], we're inheriting from NSProxy
 	expectationOrderMatters = NO;
 	stubs = [[NSMutableArray alloc] init];
