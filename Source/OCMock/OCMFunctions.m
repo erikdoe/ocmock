@@ -21,8 +21,8 @@
 #import "OCClassMockObject.h"
 #import "OCMFunctionsPrivate.h"
 #import "OCMLocation.h"
-#import "OCPartialMockObject.h"
-
+#import "OCProtocolMockObject.h"
+#import "NSInvocation+OCMAdditions.h"
 
 #pragma mark Known private API
 
@@ -511,4 +511,330 @@ void OCMReportFailure(OCMLocation *loc, NSString *description)
         NSLog(@"%@", description);
         [[NSException exceptionWithName:@"OCMockTestFailure" reason:description userInfo:nil] raise];
     }
+}
+
+NSString *OCMObjCTypeForArgumentType(const char *argType)
+{
+    switch(argType[0])
+    {
+        case '@':  return @"id";
+        case 'B':  return @"BOOL";
+        case 'c':  return @"char";
+        case 'C':  return @"unsigned char";
+        case 's':  return @"short";
+        case 'S':  return @"unsigned short";
+#ifdef __LP64__
+        case 'i':  return @"int";
+        case 'I':  return @"unsigned int";
+        case 'l':  return @"NSInteger";
+        case 'L':  return @"NSUInteger";
+        case 'q':  return @"NSInteger";
+        case 'Q':  return @"NSUInteger";
+#else
+        case 'i':  return @"NSInteger";
+        case 'I':  return @"NSUInteger";
+        case 'l':  return @"NSInteger";
+        case 'L':  return @"NSUInteger";
+        case 'q':  return @"long long";
+        case 'Q':  return @"unsigned long long";
+#endif
+        case 'd':  return @"double";
+        case 'f':  return @"float";
+        case 'D':  return @"long double";
+        case '{':  return @"struct";
+        case '^':
+        {
+            NSString *type = OCMObjCTypeForArgumentType(&argType[1]);
+            return [type stringByAppendingString:@"*"];
+        }
+        case '*':  return @"char *";
+        case 'v':  return @"void";
+        case '#':  return @"Class";
+        case ':':  return @"SEL";
+        default:  return @"<??" @">";  // avoid confusion with trigraphs...
+    }
+}
+
+BOOL OCMIsObjCTypeCompatibleWithValueType(const char *objcType, const char *valueType, const void *value, size_t valueSize)
+{
+    /* Same types are obviously compatible */
+    if(strcmp(objcType, valueType) == 0)
+        return YES;
+
+    /* Object types are deemed compatible with other objects or nil/Nil */
+    if(OCMIsObjectType(objcType))
+    {
+      return OCMIsObjectType(valueType) || OCMIsNilValue(valueType, value, valueSize);
+    }
+
+    return OCMEqualTypesAllowingOpaqueStructs(objcType, valueType);
+}
+
+NSArray<NSString *> *OCMSplitSelectorSegmentIntoWords(NSString *string)
+{
+    // Breaks up a camelcase string fooIsBarIsBam into individual words [foo, Is, Bar, Is, Bam]
+    // Note attempted special case at plurals (words ending with 's' only)
+    string = [string stringByReplacingOccurrencesOfString:@"([A-Z](?=[A-Z][a-rt-z][a-z0-9]{0,1})|[^A-Z](?=[A-Z])|[a-zA-Z](?=[^a-zA-Z0-9]))"
+                                               withString:@"$1 "
+                                                  options:NSRegularExpressionSearch
+                                                    range:NSMakeRange(0, [string length])];
+    return [string componentsSeparatedByString:@" "];
+}
+
+static NSString *OCMParameterNameFromWords(NSArray<NSString *> *words)
+{
+    NSString *name = [words componentsJoinedByString:@""];
+    NSUInteger length = [name length];
+    if(length == 0)
+    {
+        return nil;
+    }
+    BOOL lower = length == 1;
+    if(!lower)
+    {
+        unichar secondChar = [name characterAtIndex:1];
+        lower = secondChar >= 'a' && secondChar <= 'z';
+    }
+    if(lower)
+    {
+        return [NSString stringWithFormat:@"%@%@", [[name substringToIndex:1] lowercaseString], [name substringFromIndex:1]];
+    }
+    return name;
+
+}
+
+NSString *OCMTurnSelectorSegmentIntoParameterName(NSString *selectorSegment)
+{
+    // Trim off any foo_ prefixes for categories and other odd things.
+    // So `gtm_updateWithFoo` becomes `updateWithFoo`.
+    NSRange underscoreRange = [selectorSegment rangeOfString:@"_" options:NSBackwardsSearch];
+    if(underscoreRange.length != 0)
+    {
+        selectorSegment = [selectorSegment substringFromIndex:underscoreRange.location + 1];
+    }
+    NSArray<NSString *> *originalSubStrings = OCMSplitSelectorSegmentIntoWords(selectorSegment);
+    NSUInteger count = [originalSubStrings count];
+    if(count == 0)
+    {
+        return nil;
+    }
+    NSString *firstItem = [originalSubStrings firstObject];
+    if(count == 1)
+    {
+        return firstItem;
+    }
+    // In the case we have a selector segment like `atIndex:`, remove the `prefix`
+    NSArray<NSString *> *subStrings = originalSubStrings;
+    NSArray <NSString *> *prefixesToRemove = @[ @"with", @"from", @"and", @"set", @"for", @"get", @"at", @"of", @"add", @"replace", @"remove", @"to", @"on", @"perform" ];
+    if([prefixesToRemove containsObject:firstItem])
+    {
+        subStrings = [subStrings subarrayWithRange:NSMakeRange(1, [subStrings count] - 1)];
+    }
+    if([subStrings count] == 1)
+    {
+        return OCMParameterNameFromWords(subStrings);
+    }
+
+    // In the case we have textViewWillUpdate (very common for delegate patterns) break off the WillUpdate.
+    NSArray <NSString *> *prefixSplitWords = @[ @"Did", @"Will" ];
+    NSUInteger index = [subStrings indexOfObjectWithOptions:0 passingTest:^BOOL(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        return [prefixSplitWords containsObject:obj];
+    }];
+    if(index != NSNotFound)
+    {
+      subStrings = [subStrings subarrayWithRange:NSMakeRange(0, index)];
+    }
+
+    // In the case we have `updateWithFoo` we usually only want the subject (in this case `Foo`
+    NSArray <NSString *> *suffixSplitWords = @[ @"And", @"With", @"Of", @"At", @"By", @"For", @"From", @"Mutable", @"To", @"That", @"In", @"On", @"Perform" ];
+    index = [subStrings indexOfObjectWithOptions:NSEnumerationReverse passingTest:^BOOL(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        return [suffixSplitWords containsObject:obj];
+    }];
+    if(index != NSNotFound)
+    {
+        subStrings = [subStrings subarrayWithRange:NSMakeRange(index + 1, [subStrings count] - (index + 1))];
+    }
+
+    if([subStrings count] == 0)
+    {
+        subStrings = originalSubStrings;
+    }
+    else if([subStrings count] == 1)
+    {
+        return OCMParameterNameFromWords(subStrings);
+    }
+
+    // Finally if we have `updateWithExtendedViewRect` we usually chop it down to two words that
+    // are usually an adjective and the subject (so viewRect).
+    NSCAssert([subStrings count] > 1, @"Substrings count too low: `%@`", subStrings);
+    subStrings = [subStrings subarrayWithRange:NSMakeRange([subStrings count] - 2, 2)];
+    return OCMParameterNameFromWords(subStrings);
+}
+
+NSArray<NSString *> *OCMParameterNamesFromSelector(SEL selector)
+{
+    NSArray<NSString *> *selStrings = [NSStringFromSelector(selector) componentsSeparatedByString:@":"];
+    NSUInteger count = [selStrings count];
+    if(count <= 1)
+    {
+        return nil;
+    }
+    NSMutableArray<NSString *> *paramStrings = [NSMutableArray arrayWithCapacity:count];
+    NSMutableDictionary<NSString *, NSNumber *> *argMap = [NSMutableDictionary dictionaryWithCapacity:count];
+    [selStrings enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if(idx == count - 1)
+        {
+            return;
+        }
+        NSString *paramName = OCMTurnSelectorSegmentIntoParameterName(obj);
+        if([paramName length] == 0)
+        {
+            paramName = @"arg";
+        }
+        NSNumber *number = argMap[paramName];
+        if(!number)
+        {
+            argMap[paramName] = @0;
+        }
+        else
+        {
+            if([number isEqual:@0])
+            {
+                NSString *newName = [paramName stringByAppendingString:@"0"];
+                [paramStrings replaceObjectAtIndex:[paramStrings indexOfObject:paramName] withObject:newName];
+            }
+            number = @([number intValue] + 1);
+            argMap[paramName] = number;
+            paramName = [paramName stringByAppendingString:[number stringValue]];
+        }
+        [paramStrings addObject:paramName];
+    }];
+    return paramStrings;
+}
+
+NSString *OCMTypeOfObject(id obj)
+{
+    @try
+    {
+        if(!obj)
+        {
+            return @"id";
+        }
+        if(object_isClass(obj))
+        {
+            return @"Class";
+        }
+        Class class = [obj class];
+        if(class == [OCProtocolMockObject class])
+        {
+            return [NSString stringWithFormat:@"id<%@>", NSStringFromProtocol([(OCProtocolMockObject *)obj mockedProtocol])];
+        }
+        if(OCMIsBlock(obj))
+        {
+            return @"BlockType";
+        }
+
+        NSDictionary<id<NSCopying>, NSString *> *kindOfClassMap = @{
+            (id<NSCopying>)[NSArray class]: @"NSArray<ObjectType*> *",
+            (id<NSCopying>)[NSAttributedString class]: @"NSAttributedString *",
+            (id<NSCopying>)[NSData class]: @"NSData *",
+            (id<NSCopying>)[NSDate class]: @"NSDate *",
+            (id<NSCopying>)[NSDictionary class]: @"NSDictionary<KeyType*, ObjectType*> *",
+            (id<NSCopying>)[NSNumber class]: @"NSNumber *",
+            (id<NSCopying>)[NSOrderedSet class]: @"NSOrderedSet<ObjectType*> *",
+            (id<NSCopying>)[NSSet class]: @"NSSet<ObjectType*> *",
+            (id<NSCopying>)[NSString class]: @"NSString *",
+            (id<NSCopying>)[NSTimer class]: @"NSTimer *",
+            (id<NSCopying>)[NSTimeZone class]: @"NSTimeZone *",
+            (id<NSCopying>)[NSURLRequest class]: @"NSURLRequest *",
+        };
+        for(Class key in kindOfClassMap)
+        {
+            if([obj isKindOfClass:key])
+            {
+                return kindOfClassMap[(id<NSCopying>)key];
+            }
+        }
+        NSDictionary<NSString *, NSString *> *conformsToProtocolMap = @{
+            @"OS_dispatch_queue": @"dispatch_queue_t",
+            @"OS_dispatch_data": @"dispatch_data_t",
+            @"OS_dispatch_group": @"dispatch_group_t",
+            @"OS_dispatch_io": @"dispatch_io_t",
+            @"OS_dispatch_queue_attr": @"dispatch_queue_attr_t",
+            @"OS_dispatch_semaphore": @"dispatch_semaphore_t",
+            @"OS_dispatch_source": @"dispatch_source_t",
+        };
+        for(NSString *key in conformsToProtocolMap)
+        {
+            Protocol *protocol = NSProtocolFromString(key);
+            NSCAssert(protocol, @"Unknown protocol %@", key);
+            if([obj conformsToProtocol:protocol])
+            {
+                return conformsToProtocolMap[key];
+            }
+        }
+        return [NSStringFromClass(class) stringByAppendingString:@" *"];
+    }
+    @catch(...) {
+        // Our attempt at introspection caused an exception to be thrown (occurs sometimes with weird
+        // NSProxy set ups). Just return the most generic thing possible, and let the developer sort
+        // this out.
+        return @"id";
+    }
+ }
+
+static NSString *OCMArgSeparator(NSString *arg)
+{
+    NSUInteger length = [arg length];
+    if(length > 0 && [arg characterAtIndex:length - 1] == '*')
+    {
+        // Pointers don't get a space after them.
+        return @"";
+    }
+    return @" ";
+}
+
+NSString *OCMBlockDeclarationForInvocation(NSInvocation *invocation)
+{
+    NSMethodSignature *methodSignature = [invocation methodSignature];
+    NSUInteger numberOfArgs = [methodSignature numberOfArguments];
+    id target = [invocation target];
+    NSString *localSelfType = OCMTypeOfObject(target);
+    const char *returnType = [methodSignature methodReturnType];
+    NSString *convertedReturnType;
+    if([invocation methodIsInCreateFamily] || [invocation methodIsInInitFamily])
+    {
+        convertedReturnType = @"id";
+    }
+    else if(OCMIsObjectType(returnType))
+    {
+        id value;
+        [invocation getReturnValue:&value];
+        convertedReturnType = OCMTypeOfObject(value);
+    }
+    else
+    {
+        convertedReturnType = OCMObjCTypeForArgumentType(returnType);
+    }
+    NSMutableString *declaration = [NSMutableString stringWithFormat:@"^%@(%@%@localSelf", convertedReturnType, localSelfType, OCMArgSeparator(localSelfType)];
+    NSArray<NSString *> *parts = OCMParameterNamesFromSelector([invocation selector]);
+    for(NSUInteger i = 2; i < numberOfArgs; i++)
+    {
+       const char *argType = [methodSignature getArgumentTypeAtIndex:i];
+       NSString *argName = parts[i - 2];
+       NSString *convertedArgType;
+       if(OCMIsObjectType(argType))
+       {
+           id value;
+           [invocation getArgument:&value atIndex:i];
+           convertedArgType = OCMTypeOfObject(value);
+       }
+       else
+       {
+          convertedArgType = OCMObjCTypeForArgumentType(argType);
+       }
+       [declaration appendFormat:@", %@%@%@", convertedArgType, OCMArgSeparator(convertedArgType), argName];
+    }
+    [declaration appendFormat:@") { %@ }", [methodSignature methodReturnLength] > 0 ? @"return ..." : @"..."];
+    return declaration;
 }

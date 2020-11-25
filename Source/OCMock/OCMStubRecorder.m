@@ -89,7 +89,7 @@
     return self;
 }
 
-- (id)andDo:(void (^)(NSInvocation *))aBlock
+- (id)andDo:(id)aBlock
 {
     [[self stub] addInvocationAction:[[[OCMBlockCaller alloc] initWithCallBlock:aBlock] autorelease]];
     return self;
@@ -179,12 +179,12 @@
 
 @dynamic _andDo;
 
-- (OCMStubRecorder * (^)(void (^)(NSInvocation *)))_andDo
+- (OCMStubRecorder *(^)(id))_andDo
 {
-    id (^theBlock)(void (^)(NSInvocation *)) = ^(void (^blockToCall)(NSInvocation *)) {
+    id (^theBlock)(id) = ^ (id blockToCall) {
         return [self andDo:blockToCall];
     };
-    return (id)[[theBlock copy] autorelease];
+    return [[theBlock copy] autorelease];
 }
 
 

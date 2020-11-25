@@ -23,4 +23,6 @@
 
 - (id)initWithProtocol:(Protocol *)aProtocol;
 
+- (Protocol *)mockedProtocol;
+
 @end

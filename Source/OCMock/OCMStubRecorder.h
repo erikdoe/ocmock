@@ -30,7 +30,7 @@
 - (id)andThrow:(NSException *)anException;
 - (id)andPost:(NSNotification *)aNotification;
 - (id)andCall:(SEL)selector onObject:(id)anObject;
-- (id)andDo:(void (^)(NSInvocation *invocation))block;
+- (id)andDo:(id)block;
 - (id)andForwardToRealObject;
 
 #if !TARGET_OS_WATCH
@@ -61,8 +61,9 @@
 #define andCall(anObject, aSelector) _andCall(anObject, aSelector)
 @property (nonatomic, readonly) OCMStubRecorder *(^ _andCall)(id, SEL);
 
+// See [OCMBlockCaller initWithCallBlock] declaration for description of what `aBlock` can be.
 #define andDo(aBlock) _andDo(aBlock)
-@property (nonatomic, readonly) OCMStubRecorder *(^ _andDo)(void (^)(NSInvocation *));
+@property (nonatomic, readonly) OCMStubRecorder *(^ _andDo)(id);
 
 #define andForwardToRealObject() _andForwardToRealObject()
 @property (nonatomic, readonly) OCMStubRecorder *(^ _andForwardToRealObject)(void);

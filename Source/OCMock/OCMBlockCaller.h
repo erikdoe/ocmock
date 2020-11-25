@@ -18,10 +18,24 @@
 
 @interface OCMBlockCaller : NSObject
 {
-    void (^block)(NSInvocation *);
+    id block;
 }
 
-- (id)initWithCallBlock:(void (^)(NSInvocation *))theBlock;
+/*
+ * Call blocks can have one of four types:
+ * a) A simple block ^{ NSLog(@"hi"); }.
+ * b) The new style ^(id localSelf, type0 arg0, type1 arg1) { ... }
+ *    where types and args match the arguments passed to the selector we are
+ *    stubbing.
+ * c) The deprecated style ^(NSInvocation *anInvocation) { ... }. This case
+ *    cannot have a return value. If a return value is desired it must be set
+ *    on `anInvocation`.
+ * d) nil
+ *
+ * If it is (a) or (b) and there is a return value it must match the return type
+ * of the selector. If there is no return value then the method will return 0.
+ */
+- (id)initWithCallBlock:(id)theBlock;
 
 - (void)handleInvocation:(NSInvocation *)anInvocation;
 
