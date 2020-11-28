@@ -88,17 +88,27 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
             {
                 if(OCMIsBlockType(argumentType))
                 {
-                    // Block types need to be copied because they could be stack blocks.
-                    // However, non-escaping blocks have a lifetime that is stack-based and they
-                    // treat copy/release as a no-op. For details see:
-                    // https://reviews.llvm.org/rGdbfa453e4138bb977644929c69d1c71e5e8b4bee
-                    // If we keep a reference to a non-escaping block in retainedArguments, it
-                    // will end up as dangling pointer, resulting in a crash later.
-                    if(OCMIsNonEscapingBlock(argument) == NO)
+                    if (OCMIsBlock(argument))
                     {
-                        id blockArgument = [argument copy];
-                        [retainedArguments addObject:blockArgument];
-                        [blockArgument release];
+                      // Block types need to be copied because they could be stack blocks.
+                      // However, non-escaping blocks have a lifetime that is stack-based and they
+                      // treat copy/release as a no-op. For details see:
+                      // https://reviews.llvm.org/rGdbfa453e4138bb977644929c69d1c71e5e8b4bee
+                      // If we keep a reference to a non-escaping block in retainedArguments, it
+                      // will end up as dangling pointer, resulting in a crash later.
+                      if(OCMIsNonEscapingBlock(argument) == NO)
+                      {
+                          id blockArgument = [argument copy];
+                          [retainedArguments addObject:blockArgument];
+                          [blockArgument release];
+                      }
+                    }
+                    else
+                    {
+                      // The type is a block type, but the value being passed in is not a block.
+                      // This happens in the case of an OCMArgAction or an OCMConstraint. In this
+                      // case we do need to retain.
+                      [retainedArguments addObject:argument];
                     }
                 }
                 else if(OCMIsClassType(argumentType) && object_isClass(argument))
