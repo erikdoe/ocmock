@@ -23,13 +23,24 @@
 
 @implementation OCMFunctionsTests
 
-- (void)testOCMIsBlock
+- (void)testIsBlockReturnsFalseForClass
 {
-  XCTAssertFalse(OCMIsBlock([NSString class]));
-  XCTAssertFalse(OCMIsBlock(@""));
-  XCTAssertFalse(OCMIsBlock([NSString stringWithFormat:@"%d", 42]));
-  XCTAssertFalse(OCMIsBlock(nil));
-  XCTAssertTrue(OCMIsBlock(^{}));
+    XCTAssertFalse(OCMIsBlock([NSString class]));
+}
+
+- (void)testIsBlockReturnsFalseForObject
+{
+    XCTAssertFalse(OCMIsBlock([NSArray array]));
+}
+
+- (void)testIsBlockReturnsFalseForNil
+{
+    XCTAssertFalse(OCMIsBlock(nil));
+}
+
+- (void)testIsBlockReturnsTrueForBlock
+{
+    XCTAssertTrue(OCMIsBlock(^{}));
 }
 
 @end

@@ -339,6 +339,7 @@ BOOL OCMIsBlock(id potentialBlock)
         while([blockClass superclass] != nsObjectClass)
         {
             blockClass = [blockClass superclass];
+            NSCAssert(blockClass != nil, @"Blocks are expected to inherit from NSObject.");
         }
     });
     return [potentialBlock isKindOfClass:blockClass];
