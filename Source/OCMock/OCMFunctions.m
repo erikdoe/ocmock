@@ -328,11 +328,27 @@ BOOL OCMIsApplePrivateMethod(Class cls, SEL sel)
             ([selName hasPrefix:@"_"] || [selName hasSuffix:@"_"]);
 }
 
+BOOL OCMIsBlock(id potentialBlock)
+{
+    static Class blockClass;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^
+    {
+        blockClass = [^{} class];
+        Class nsObjectClass = [NSObject class];
+        while([blockClass superclass] != nsObjectClass)
+        {
+            blockClass = [blockClass superclass];
+            NSCAssert(blockClass != nil, @"Blocks are expected to inherit from NSObject.");
+        }
+    });
+    return [potentialBlock isKindOfClass:blockClass];
+}
 
 BOOL OCMIsNonEscapingBlock(id block)
 {
     struct OCMBlockDef *blockRef = (__bridge struct OCMBlockDef *)block;
-    return (blockRef->flags & OCMBlockIsNoEscape) != 0;
+    return OCMIsBlock(block) && (blockRef->flags & OCMBlockIsNoEscape) != 0;
 }
 
 
