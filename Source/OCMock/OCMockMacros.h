@@ -42,6 +42,7 @@
             invocation; \
         }@catch(...){ \
             [[OCMMacroState globalState] setInvocationDidThrow:YES]; \
+            /* NOLINTNEXTLINE(google-objc-avoid-throwing-exception) */ \
             @throw; \
         }@finally{ \
             recorder = [OCMMacroState endStubMacro]; \
@@ -59,6 +60,7 @@
             invocation; \
         }@catch(...){ \
             [[OCMMacroState globalState] setInvocationDidThrow:YES]; \
+            /* NOLINTNEXTLINE(google-objc-avoid-throwing-exception) */ \
             @throw; \
         }@finally{ \
             recorder = [OCMMacroState endExpectMacro]; \
@@ -76,6 +78,7 @@
             invocation; \
         }@catch(...){ \
             [[OCMMacroState globalState] setInvocationDidThrow:YES]; \
+            /* NOLINTNEXTLINE(google-objc-avoid-throwing-exception) */ \
             @throw; \
         }@finally{ \
             recorder = [OCMMacroState endRejectMacro]; \
@@ -110,6 +113,7 @@
             invocation; \
         }@catch(...){ \
             [[OCMMacroState globalState] setInvocationDidThrow:YES]; \
+            /* NOLINTNEXTLINE(google-objc-avoid-throwing-exception) */ \
             @throw; \
         }@finally{ \
             [OCMMacroState endVerifyMacro]; \
@@ -125,6 +129,7 @@
            invocation; \
         }@catch(...){ \
             [[OCMMacroState globalState] setInvocationDidThrow:YES]; \
+            /* NOLINTNEXTLINE(google-objc-avoid-throwing-exception) */ \
             @throw; \
         }@finally{ \
             [OCMMacroState endVerifyMacro]; \
