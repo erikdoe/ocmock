@@ -1117,7 +1117,11 @@ static NSString *TestNotification = @"TestNotification";
 
 }
 
-- (void)testDirectInstantiationOfOCMockObject
+
+
+#pragma mark    creating mock objects
+
+- (void)testTryingToCreateAnInstanceOfOCMockObjectRaisesAnException
 {
     XCTAssertThrows([[OCMockObject alloc] init]);
 }
