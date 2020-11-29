@@ -29,48 +29,34 @@
 
 	BOOL isInInitFamily = [anInvocation methodIsInInitFamily];
 	BOOL isInCreateFamily = isInInitFamily ? NO : [anInvocation methodIsInCreateFamily];
+
 	[anInvocation setSelector:OCMAliasForOriginalSelector([anInvocation selector])];
-	if ([invocationTarget isProxy])
+	if([invocationTarget isProxy])
 	{
-	    if (class_getInstanceMethod([invocationTarget mockObjectClass], @selector(realObject)))
-	    {
-	        // the method has been invoked on the mock, we need to change the target to the real object
-	        [anInvocation setTarget:[(OCPartialMockObject *)invocationTarget realObject]];
-	    }
-	    else
-	    {
-	        [NSException raise:NSInternalInconsistencyException
-	                    format:@"Method andForwardToRealObject can only be used with partial mocks and class methods."];
-	    }
+	    if(!class_getInstanceMethod([invocationTarget mockObjectClass], @selector(realObject)))
+			[NSException raise:NSInternalInconsistencyException format:@"Method andForwardToRealObject can only be used with partial mocks and class methods."];
+
+		NSObject *realObject = [(OCPartialMockObject *) invocationTarget realObject];
+		[anInvocation setTarget:realObject];
+		if(isInInitFamily)
+		{
+			// The init method of the real object will "consume" self, but because the method was
+			// invoked on the mock and not the real object a corresponding retain is missing; so
+			// we do this here.
+			[realObject retain];
+		}
 	}
 
 	[anInvocation invoke];
+
 	if(isInInitFamily || isInCreateFamily)
 	{
-	    // OCMInvocationStub does some post processing after all of the invocation actions are called
-	    // to make sure that init family and create family calls are handled correctly with regards
-	    // to retain/release. In the case where we are forwarded to a real object, the handling
-	    // that the real object has already done needs to be "undone" so we don't over retain or under
-	    // release.
+	    // After invoking the method on the real object the return value's retain count is correct,
+	    // but because we have a chain of handlers for an invocation and we handle the retain count
+	    // adjustments at the end in the stub, we undo the additional retains here.
 	    id returnVal;
-	    [anInvocation getReturnValue:&returnVal];
-	    if (isInCreateFamily)
-	    {
-	        // methods that "create" an object will return it with an extra retain count
-	        // autorelease it so that when OCMInvocationStub retains it that we balance.
-	        [returnVal autorelease];
-	    }
-	    else if(isInInitFamily)
-	    {
-	        // init family methods "consume" self and retain their return value.
-	        // Retain the target (that OCMInvocationStub will release) and autorelease the returnVal
-	        // (that OCMInvocationStub will retain).
-	        [[anInvocation target] retain];
-	        [returnVal autorelease];
-	    } else {
-	        // avoid potential problems with the return value being release too early
-	        [[returnVal retain] autorelease];
-	    }
+		[anInvocation getReturnValue:&returnVal];
+		[returnVal autorelease];
 	}
 }
 

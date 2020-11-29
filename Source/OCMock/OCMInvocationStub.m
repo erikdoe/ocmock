@@ -65,17 +65,17 @@
 
         [anInvocation getReturnValue:&returnVal];
         if(returnVal == UNSET_RETURN_VALUE_MARKER)
-        {
-            [NSException raise:NSInvalidArgumentException format:@"%@ was stubbed but no return value set. A return value is required for an alloc/copy/new/mutablecopy/init method. If you intended to return nil, make this explicit with .andReturn(nil)", NSStringFromSelector([anInvocation selector])];
-        }
+            [NSException raise:NSInvalidArgumentException format:@"%@ was stubbed but no return value set. A return value is required for all alloc/copy/new/mutablecopy/init methods. If you intended to return nil, make this explicit with .andReturn(nil)", NSStringFromSelector([anInvocation selector])];
+
         if(isInCreateFamily)
         {
             // methods that "create" an object return it with an extra retain count
             [returnVal retain];
         }
-        else if(isInInitFamily)
+        if(isInInitFamily)
         {
-            // init family methods "consume" self and retain their return value. Do the retain first in case the return value and self are the same.
+            // init family methods "consume" self and retain their return value. Do the retain
+            // first in case the return value and self are the same.
             [returnVal retain];
             [target release];
         }

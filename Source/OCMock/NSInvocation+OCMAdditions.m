@@ -594,28 +594,12 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
 	return [self isMethodFamily:@"init"];
 }
 
-- (BOOL)methodIsInAllocFamily
+- (BOOL)methodIsInCreateFamily
 {
-	return [self isMethodFamily:@"alloc"];
-}
-
-- (BOOL)methodIsInCopyFamily
-{
-	return [self isMethodFamily:@"copy"];
-}
-
-- (BOOL)methodIsInMutableCopyFamily
-{
-	return [self isMethodFamily:@"mutableCopy"];
-}
-
-- (BOOL)methodIsInNewFamily
-{
-	return [self isMethodFamily:@"new"];
-}
-
-- (BOOL)methodIsInCreateFamily {
-	return [self methodIsInAllocFamily] || [self methodIsInCopyFamily] || [self methodIsInMutableCopyFamily] || [self methodIsInNewFamily];
+	return [self isMethodFamily:@"alloc"]
+            || [self isMethodFamily:@"copy"]
+            || [self isMethodFamily:@"mutableCopy"]
+            || [self isMethodFamily:@"new"];
 }
 
 @end

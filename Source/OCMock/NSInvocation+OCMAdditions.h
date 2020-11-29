@@ -47,8 +47,6 @@
 - (NSString *)selectorDescriptionAtIndex:(NSInteger)anInt;
 
 - (BOOL)methodIsInInitFamily;
-
-// Create Family is defined as the superset of Alloc/New/Copy/MutableCopy Families
 - (BOOL)methodIsInCreateFamily;
 
 @end
