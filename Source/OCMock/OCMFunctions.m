@@ -15,6 +15,9 @@
  */
 
 #import <objc/runtime.h>
+#if !TARGET_OS_WATCH
+#import <XCTest/XCTest.h>
+#endif
 #import "OCMFunctionsPrivate.h"
 #import "OCClassMockObject.h"
 #import "OCPartialMockObject.h"
@@ -121,51 +124,51 @@ CFNumberType OCMNumberTypeForObjCType(const char *objcType)
 
 static BOOL ParseStructType(const char *type, const char **typeEnd, const char **typeNameEnd, const char **typeEqualSign)
 {
-  if (type[0] != '{' && type[0] != '(')
-      return NO;
+    if (type[0] != '{' && type[0] != '(')
+        return NO;
 
-  *typeNameEnd = NULL;
-  *typeEqualSign = NULL;
+    *typeNameEnd = NULL;
+    *typeEqualSign = NULL;
 
-  const char endChar = type[0] == '{' ? '}' : ')';
-  for (const char* ptr = type + 1; *ptr; ++ptr) {
-      switch (*ptr) {
-          case '(':
-          case '{':
-          {
-              const char *subTypeEnd;
-              const char *subTypeNameEnd;
-              const char *subTypeEqualSign;
-              if (!ParseStructType(ptr, &subTypeEnd, &subTypeNameEnd, &subTypeEqualSign))
-                  return NO;
-              ptr = subTypeEnd;
-              break;
-          }
-          case '=':
-          {
-              if (!*typeEqualSign) {
-                  *typeNameEnd = ptr;
-                  *typeEqualSign = ptr;
-              }
-              break;
-          }
-          case ')':
-          case '}':
-          {
-              if (*ptr == endChar) {
-                  *typeEnd = ptr;
-                  if (!*typeNameEnd)
-                      *typeNameEnd = ptr;
-                  return YES;
-              }
-              break;
-          }
-          default:
-              break;
-      }
-  }
+    const char endChar = type[0] == '{' ? '}' : ')';
+    for (const char* ptr = type + 1; *ptr; ++ptr) {
+        switch (*ptr) {
+            case '(':
+            case '{':
+            {
+                const char *subTypeEnd;
+                const char *subTypeNameEnd;
+                const char *subTypeEqualSign;
+                if (!ParseStructType(ptr, &subTypeEnd, &subTypeNameEnd, &subTypeEqualSign))
+                    return NO;
+                ptr = subTypeEnd;
+                break;
+            }
+            case '=':
+            {
+                if (!*typeEqualSign) {
+                    *typeNameEnd = ptr;
+                    *typeEqualSign = ptr;
+                }
+                break;
+            }
+            case ')':
+            case '}':
+            {
+                if (*ptr == endChar) {
+                    *typeEnd = ptr;
+                    if (!*typeNameEnd)
+                        *typeNameEnd = ptr;
+                    return YES;
+                }
+                break;
+            }
+            default:
+                break;
+        }
+    }
 
-  return NO;
+    return NO;
 }
 
 
@@ -220,8 +223,8 @@ static BOOL OCMEqualTypesAllowingOpaqueStructsInternal(const char *type1, const 
 
             /* If the names are not equal and neither of the names is a question mark, return NO */
             if ((type1NameLen != type2NameLen || strncmp(type1, type2, type1NameLen)) &&
-                !((type1NameLen == 2) && (type1[1] == '?')) && !((type2NameLen == 2) && (type2[1] == '?')) &&
-                !(type1NameLen == 1 || type2NameLen == 1))
+                    !((type1NameLen == 2) && (type1[1] == '?')) && !((type2NameLen == 2) && (type2[1] == '?')) &&
+                    !(type1NameLen == 1 || type2NameLen == 1))
                 return NO;
 
             /* If the same name, and at least one is opaque, that is close enough. */
@@ -302,7 +305,7 @@ BOOL OCMIsNilValue(const char *objectCType, const void *value, size_t valueSize)
     for(size_t i = 0; i < valueSize; i++)
         if(((const char *)value)[i] != 0)
             return NO;
-    
+
     // Depending on the compilation settings of the file where the return value gets recorded,
     // nil and Nil get potentially different encodings. Check all known encodings.
     if((strcmp(objectCType, @encode(void *))    == 0) ||    // Standard Objective-C
@@ -450,7 +453,18 @@ OCPartialMockObject *OCMGetAssociatedMockForObject(id anObject)
 void OCMReportFailure(OCMLocation *loc, NSString *description)
 {
     id testCase = [loc testCase];
-    if((testCase != nil) && [testCase respondsToSelector:@selector(recordFailureWithDescription:inFile:atLine:expected:)])
+#if !TARGET_OS_WATCH
+    if((testCase != nil) && [testCase respondsToSelector:@selector(recordIssue:)])
+    {
+        XCTSourceCodeLocation *xctloc = [[[XCTSourceCodeLocation alloc] initWithFilePath:[loc file] lineNumber:[loc line]] autorelease];
+        XCTSourceCodeContext *xctctx = [[[XCTSourceCodeContext alloc] initWithLocation:xctloc] autorelease];
+        XCTIssue *issue = [[[XCTIssue alloc] initWithType:XCTIssueTypeAssertionFailure compactDescription:description
+                detailedDescription:nil sourceCodeContext:xctctx associatedError:nil attachments:[NSArray array]] autorelease];
+        [testCase recordIssue:issue];
+    }
+    else
+#endif
+         if((testCase != nil) && [testCase respondsToSelector:@selector(recordFailureWithDescription:inFile:atLine:expected:)])
     {
         [testCase recordFailureWithDescription:description inFile:[loc file] atLine:[loc line] expected:NO];
     }

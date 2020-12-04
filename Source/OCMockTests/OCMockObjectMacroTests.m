@@ -82,7 +82,7 @@
     BOOL        shouldCaptureFailure;
     NSString    *reportedDescription;
     NSString    *reportedFile;
-    NSUInteger  reportedLine;
+    NSInteger   reportedLine;
 }
 
 @end
@@ -90,17 +90,17 @@
 
 @implementation OCMockObjectMacroTests
 
-- (void)recordFailureWithDescription:(NSString *)description inFile:(NSString *)file atLine:(NSUInteger)line expected:(BOOL)expected
+- (void)recordIssue:(XCTIssue *)issue
 {
     if(shouldCaptureFailure)
     {
-        reportedDescription = description;
-        reportedFile = file;
-        reportedLine = line;
+        reportedDescription = issue.compactDescription;
+        reportedFile = issue.sourceCodeContext.location.fileURL.path;
+        reportedLine = issue.sourceCodeContext.location.lineNumber;
     }
     else
     {
-        [super recordFailureWithDescription:description inFile:file atLine:line expected:expected];
+        [super recordIssue:issue];
     }
 }
 
@@ -108,13 +108,13 @@
 - (void)testReportsVerifyFailureWithCorrectLocation
 {
     id mock = OCMClassMock([NSString class]);
-    
+
     [[mock expect] lowercaseString];
-    
+
     shouldCaptureFailure = YES;
     OCMVerifyAll(mock); const char *expectedFile = __FILE__; int expectedLine = __LINE__;
     shouldCaptureFailure = NO;
-    
+
     XCTAssertNotNil(reportedDescription, @"Should have recorded a failure with description.");
     XCTAssertEqualObjects([NSString stringWithUTF8String:expectedFile], reportedFile, @"Should have reported correct file.");
     XCTAssertEqual(expectedLine, (int)reportedLine, @"Should have reported correct line");
@@ -123,7 +123,7 @@
 - (void)testReportsIgnoredExceptionsAtVerifyLocation
 {
     id mock = OCMClassMock([NSString class]);
-    
+
     [[mock reject] lowercaseString];
 
     @try
@@ -138,7 +138,7 @@
     shouldCaptureFailure = YES;
     OCMVerifyAll(mock); const char *expectedFile = __FILE__; int expectedLine = __LINE__;
     shouldCaptureFailure = NO;
-    
+
     XCTAssertTrue([reportedDescription rangeOfString:@"ignored"].location != NSNotFound, @"Should have reported ignored exceptions.");
     XCTAssertEqualObjects([NSString stringWithUTF8String:expectedFile], reportedFile, @"Should have reported correct file.");
     XCTAssertEqual(expectedLine, (int)reportedLine, @"Should have reported correct line");
@@ -385,14 +385,14 @@
 - (void)testShouldHintAtPossibleReasonWhenNotUsingMockInMacroThatRequiresMock
 {
     @try
-	{
+    {
         id realObject = [NSMutableArray array];
-		OCMStub([realObject addObject:@"foo"]);
-	}
-	@catch (NSException *e)
-	{
-		XCTAssertTrue([[e reason] containsString:@"The receiver is not a mock object."]);
-	}
+        OCMStub([realObject addObject:@"foo"]);
+    }
+    @catch (NSException *e)
+    {
+        XCTAssertTrue([[e reason] containsString:@"The receiver is not a mock object."]);
+    }
 }
 
 - (void)testShouldThrowExceptionWhenMockingMethodThatCannotBeMocked
@@ -407,15 +407,15 @@
 
 - (void)testShouldHintAtPossibleReasonWhenMockingMethodThatCannotBeMocked
 {
-	@try
-	{
+    @try
+    {
         id mock = OCMClassMock([NSString class]);
-		OCMStub([mock description]);
-	}
-	@catch (NSException *e)
-	{
-		XCTAssertTrue([[e reason] containsString:@"The selector conflicts with a selector implemented by OCMStubRecorder/OCMExpectationRecorder."]);
-	}
+        OCMStub([mock description]);
+    }
+    @catch (NSException *e)
+    {
+        XCTAssertTrue([[e reason] containsString:@"The selector conflicts with a selector implemented by OCMStubRecorder/OCMExpectationRecorder."]);
+    }
 }
 
 - (void)testShouldHintAtPossibleReasonWhenVerifyingMethodThatCannotBeMocked

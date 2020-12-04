@@ -49,7 +49,7 @@
     expectFailure = NO;
 }
 
-- (void)recordFailureWithDescription:(NSString *)description inFile:(NSString *)file atLine:(NSUInteger)line expected:(BOOL)expected
+- (void)recordIssue:(XCTIssue *)issue
 {
     if(expectFailure)
     {
@@ -57,7 +57,7 @@
     }
     else
     {
-        [super recordFailureWithDescription:description inFile:file atLine:line expected:expected];
+        [super recordIssue:issue];
     }
 }
 
