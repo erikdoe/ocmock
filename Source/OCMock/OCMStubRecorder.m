@@ -24,6 +24,9 @@
 #import "OCMNotificationPoster.h"
 #import "OCMRealObjectForwarder.h"
 
+#if !TARGET_OS_WATCH
+#import <XCTest/XCTest.h>
+#endif  // !TARGET_OS_WATCH
 
 @implementation OCMStubRecorder
 
@@ -98,6 +101,15 @@
     return self;
 }
 
+#if !TARGET_OS_WATCH
+- (id)andFulfill:(XCTestExpectation *)expectation
+{
+    return [self andDo:^(NSInvocation *invocation)
+    {
+        [expectation fulfill];
+    }];
+}
+#endif  // !TARGET_OS_WATCH
 
 #pragma mark Finishing recording
 
@@ -193,5 +205,18 @@
     return [[theBlock copy] autorelease];
 }
 
+#if !TARGET_OS_WATCH
+
+@dynamic _andFulfill;
+
+- (OCMStubRecorder * (^)(XCTestExpectation *))_andFulfill
+{
+    id (^theBlock)(XCTestExpectation *) = ^ (XCTestExpectation *expectation)
+    {
+        return [self andFulfill:expectation];
+    };
+    return [[theBlock copy] autorelease];
+}
+#endif  // !TARGET_OS_WATCH
 
 @end

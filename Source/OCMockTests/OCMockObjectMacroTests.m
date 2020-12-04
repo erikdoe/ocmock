@@ -258,6 +258,15 @@
     XCTAssertEqualObjects([mock stringValue], @"TEST_STRING_FROM_TESTCASE", @"Should have called method from test case");
 }
 
+- (void)testFulfillsExpectation
+{
+    id mock = OCMStrictClassMock([NSString class]);
+
+    OCMStub([mock boolValue]).andFulfill([self expectationWithDescription:@"Expectation Called"]).andReturn(YES);
+    XCTAssertTrue([mock boolValue]);
+    [self waitForExpectationsWithTimeout:0 handler:nil];
+}
+
 - (NSString *)stringValueForTesting
 {
     return @"TEST_STRING_FROM_TESTCASE";
@@ -525,6 +534,7 @@
     OCMStub([[mock andThrow:nil] initWithString:OCMOCK_ANY]);
     OCMStub([[mock andPost:nil] initWithString:OCMOCK_ANY]);
     OCMStub([[mock andCall:nil onObject:nil] initWithString:OCMOCK_ANY]);
+    OCMStub([[mock andFulfill:nil] initWithString:OCMOCK_ANY]);
     OCMStub([[mock andDo:nil] initWithString:OCMOCK_ANY]);
     OCMStub([[mock andForwardToRealObject] initWithString:OCMOCK_ANY]);
     OCMExpect([[mock never] initWithString:OCMOCK_ANY]);
