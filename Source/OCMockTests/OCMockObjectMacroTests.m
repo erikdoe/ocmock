@@ -258,20 +258,20 @@
     XCTAssertEqualObjects([mock stringValue], @"TEST_STRING_FROM_TESTCASE", @"Should have called method from test case");
 }
 
-- (void)testFulfillsExpectation
-{
-    id mock = OCMStrictClassMock([NSString class]);
-
-    OCMStub([mock boolValue]).andFulfill([self expectationWithDescription:@"Expectation Called"]).andReturn(YES);
-    XCTAssertTrue([mock boolValue]);
-    [self waitForExpectationsWithTimeout:0 handler:nil];
-}
-
 - (NSString *)stringValueForTesting
 {
     return @"TEST_STRING_FROM_TESTCASE";
 }
 
+- (void)testFulfillsExpectation
+{
+    id mock = OCMStrictClassMock([NSString class]);
+
+    OCMStub([mock boolValue]).andFulfill([self expectationWithDescription:@"Expectation Called"]).andReturn(YES);
+
+    XCTAssertTrue([mock boolValue]);
+    [self waitForExpectationsWithTimeout:0 handler:nil];
+}
 
 - (void)testCanChainPropertyBasedActions
 {

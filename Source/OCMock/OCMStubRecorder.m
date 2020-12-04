@@ -26,7 +26,7 @@
 
 #if !TARGET_OS_WATCH
 #import <XCTest/XCTest.h>
-#endif  // !TARGET_OS_WATCH
+#endif
 
 @implementation OCMStubRecorder
 
@@ -109,7 +109,7 @@
         [expectation fulfill];
     }];
 }
-#endif  // !TARGET_OS_WATCH
+#endif
 
 #pragma mark Finishing recording
 
@@ -134,7 +134,7 @@
         if(OCMIsObjectType([aValue objCType]))
         {
             id objValue = nil;
-            [aValue getValue:&objValue];
+            [aValue getValue:&objValue]; // TODO: deprecated but replacement available in 10.13 only
             return [self andReturn:objValue];
         }
         else
@@ -142,7 +142,7 @@
             return [self andReturnValue:aValue];
         }
     };
-    return [[theBlock copy] autorelease];
+    return (id)[[theBlock copy] autorelease];
 }
 
 
@@ -154,7 +154,7 @@
     {
         return [self andThrow:anException];
     };
-    return [[theBlock copy] autorelease];
+    return (id)[[theBlock copy] autorelease];
 }
 
 
@@ -166,7 +166,7 @@
     {
         return [self andPost:aNotification];
     };
-    return [[theBlock copy] autorelease];
+    return (id)[[theBlock copy] autorelease];
 }
 
 
@@ -178,7 +178,7 @@
     {
         return [self andCall:aSelector onObject:anObject];
     };
-    return [[theBlock copy] autorelease];
+    return (id)[[theBlock copy] autorelease];
 }
 
 
@@ -190,7 +190,7 @@
     {
         return [self andDo:blockToCall];
     };
-    return [[theBlock copy] autorelease];
+    return (id)[[theBlock copy] autorelease];
 }
 
 
@@ -202,7 +202,7 @@
     {
         return [self andForwardToRealObject];
     };
-    return [[theBlock copy] autorelease];
+    return (id)[[theBlock copy] autorelease];
 }
 
 #if !TARGET_OS_WATCH
@@ -215,8 +215,8 @@
     {
         return [self andFulfill:expectation];
     };
-    return [[theBlock copy] autorelease];
+    return (id)[[theBlock copy] autorelease];
 }
-#endif  // !TARGET_OS_WATCH
+#endif
 
 @end

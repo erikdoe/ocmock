@@ -21,7 +21,7 @@
 
 #if !TARGET_OS_WATCH
 @class XCTestExpectation;
-#endif  // !TARGET_OS_WATCH
+#endif
 
 @interface OCMStubRecorder : OCMRecorder
 
@@ -35,7 +35,7 @@
 
 #if !TARGET_OS_WATCH
 - (id)andFulfill:(XCTestExpectation *)expectation;
-#endif  // !TARGET_OS_WATCH
+#endif
 
 @end
 
@@ -69,8 +69,8 @@
 
 #if !TARGET_OS_WATCH
 #define andFulfill(anExpectation) _andFulfill(anExpectation)
-@property(nonatomic, readonly) OCMStubRecorder * (^_andFulfill)(XCTestExpectation *);
-#endif  // !TARGET_OS_WATCH
+@property (nonatomic, readonly) OCMStubRecorder *(^ _andFulfill)(XCTestExpectation *);
+#endif
 
 @property (nonatomic, readonly) OCMStubRecorder *(^ _ignoringNonObjectArgs)(void);
 
