@@ -117,17 +117,6 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
         }
     }
 
-    const char *returnType = [[self methodSignature] methodReturnType];
-    if(OCMIsObjectType(returnType))
-    {
-        id returnValue;
-        [self getReturnValue:&returnValue];
-        if(returnValue != nil)
-        {
-            [NSException raise:NSInternalInconsistencyException format:@"Return values should always be nil from invocations."];
-        }
-    }
-
     objc_setAssociatedObject(self, OCMRetainedObjectArgumentsKey, retainedArguments, OBJC_ASSOCIATION_RETAIN);
     [retainedArguments release];
 }
