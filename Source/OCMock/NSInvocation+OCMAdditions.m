@@ -122,22 +122,9 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
     {
         id returnValue;
         [self getReturnValue:&returnValue];
-        if((returnValue != nil) && (returnValue != objectToExclude))
+        if(returnValue != nil)
         {
-            if(OCMIsBlockType(returnType))
-            {
-                // See above for an explanation
-                if(OCMIsNonEscapingBlock(returnValue) == NO)
-                {
-                    id blockReturnValue = [returnValue copy];
-                    [retainedArguments addObject:blockReturnValue];
-                    [blockReturnValue release];
-                }
-            }
-            else
-            {
-                [retainedArguments addObject:returnValue];
-            }
+            [NSException raise:NSInternalInconsistencyException format:@"Return values should always be nil from invocations."];
         }
     }
 
