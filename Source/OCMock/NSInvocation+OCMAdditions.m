@@ -117,30 +117,6 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
         }
     }
 
-    const char *returnType = [[self methodSignature] methodReturnType];
-    if(OCMIsObjectType(returnType))
-    {
-        id returnValue;
-        [self getReturnValue:&returnValue];
-        if((returnValue != nil) && (returnValue != objectToExclude))
-        {
-            if(OCMIsBlockType(returnType))
-            {
-                // See above for an explanation
-                if(OCMIsNonEscapingBlock(returnValue) == NO)
-                {
-                    id blockReturnValue = [returnValue copy];
-                    [retainedArguments addObject:blockReturnValue];
-                    [blockReturnValue release];
-                }
-            }
-            else
-            {
-                [retainedArguments addObject:returnValue];
-            }
-        }
-    }
-
     objc_setAssociatedObject(self, OCMRetainedObjectArgumentsKey, retainedArguments, OBJC_ASSOCIATION_RETAIN);
     [retainedArguments release];
 }
