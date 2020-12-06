@@ -226,7 +226,10 @@
 
     NSNotification *n = [NSNotification notificationWithName:@"TestNotification" object:nil];
 
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     id observer = OCMObserverMock();
+    #pragma clang diagnostic pop
     [[NSNotificationCenter defaultCenter] addMockObserver:observer name:[n name] object:nil];
     OCMExpect([observer notificationWithName:[n name] object:[OCMArg any]]);
 
@@ -239,7 +242,10 @@
 
 - (void)testNotificationObservingWithUserInfo
 {
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     id observer = OCMObserverMock();
+    #pragma clang diagnostic pop
     [[NSNotificationCenter defaultCenter] addMockObserver:observer name:@"TestNotificationWithInfo" object:nil];
     OCMExpect([observer notificationWithName:@"TestNotificationWithInfo" object:[OCMArg any] userInfo:[OCMArg any]]);
 
