@@ -191,6 +191,23 @@ TestOpaque myOpaque;
 
 @end
 
+@interface TestClassThatMayNotSupportMocking : NSObject
+@end
+
+@implementation TestClassThatMayNotSupportMocking
+static NSString *testClassThatMayNotSupportMockingReason = nil;
+
++ (void)setReason:(NSString *)reason
+{
+	testClassThatMayNotSupportMockingReason = reason;
+}
+
++ (NSString *)reasonClassDoesNotSupportMocking
+{
+	return testClassThatMayNotSupportMockingReason;
+}
+
+@end
 
 static NSString *TestNotification = @"TestNotification";
 
@@ -1117,6 +1134,13 @@ static NSString *TestNotification = @"TestNotification";
 
 }
 
+- (void)testClassThatDoesNotSupportMocking
+{
+    [TestClassThatMayNotSupportMocking setReason:@"Irreconcilable Differences"];
+    XCTAssertThrowsSpecificNamed(OCMClassMock([TestClassThatMayNotSupportMocking class]), NSException, NSInvalidArgumentException);
+    [TestClassThatMayNotSupportMocking setReason:nil];
+    XCTAssertNoThrow(OCMClassMock([TestClassThatMayNotSupportMocking class]));
+}
 
 
 #pragma mark    creating mock objects
