@@ -8,6 +8,7 @@ OCMock 3.8 (unreleased)
   against XCTest; except on watchOS where it's not supported. (Dave MacLachlan)
 * Added two new stub actions to help with debugging. (Dave MacLachlan)
 * Classes can block OCMock from creating mocks. (Dave MacLachlan)
+* Deprecated notification observer mocks. This can now be done with XCTest.
 * Various bug-fixes and improvements to developer experience.
 
 
