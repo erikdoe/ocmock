@@ -74,6 +74,16 @@
 
 @property (nonatomic, readonly) OCMStubRecorder *(^ _ignoringNonObjectArgs)(void);
 
+#define andBreak() _andDo(^(NSInvocation *_invocation)                \
+{                                                                     \
+  __builtin_debugtrap();                                              \
+})                                                                    \
+
+#define andLog(_format, ...) _andDo(^(NSInvocation *_invocation)      \
+{                                                                     \
+  NSLog(_format, ##__VA_ARGS__);                                      \
+})                                                                    \
+
 @end
 
 
