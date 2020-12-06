@@ -19,7 +19,7 @@
 @class OCMLocation;
 
 
-__deprecated_msg("Please use `XCTNSNotificationExpectation` instead.")
+__deprecated_msg("Please use XCTNSNotificationExpectation instead.")
 @interface OCObserverMockObject : NSObject 
 {
 	BOOL		    expectationOrderMatters;
