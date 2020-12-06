@@ -172,13 +172,6 @@ static NSUInteger initializeCallCount = 0;
 @end
 
 
-@interface OCMockObjectPartialMocksTests : XCTestCase
-{
-    int numKVOCallbacks;
-}
-
-@end
-
 @interface OCTestManagedObject : NSManagedObject
 
 @property (nonatomic, copy) NSString *name;
@@ -227,6 +220,15 @@ static NSUInteger initializeCallCount = 0;
 			[filteredInvocations addObject:i];
 
 	return filteredInvocations;
+}
+
+@end
+
+
+
+@interface OCMockObjectPartialMocksTests : XCTestCase
+{
+	int numKVOCallbacks;
 }
 
 @end
@@ -537,69 +539,64 @@ static NSUInteger initializeCallCount = 0;
 
 #pragma mark   Tests for KVO interaction with mocks
 
-/* Starting KVO observations on an already-mocked object generally should work. */
-- (void)testAddingKVOObserverOnPartialMock
+- (void)testAddingObserverAfterCreatingPartialMockShouldWork
 {
-	static char *MyContext;
 	TestClassThatCallsSelf *realObject = [[TestClassThatCallsSelf alloc] init];
-	Class origClass = [realObject class];
 
 	id mock = [OCMockObject partialMockForObject:realObject];
-	Class ourSubclass = object_getClass(realObject);
+	Class mockSubclass = object_getClass(realObject);
 
-	[realObject addObserver:self forKeyPath:@"methodInt" options:NSKeyValueObservingOptionNew context:MyContext];
-	Class kvoClass = object_getClass(realObject);
+	[realObject addObserver:self forKeyPath:@"methodInt" options:NSKeyValueObservingOptionNew context:NULL];
 
-	/* KVO additionally overrides the -class method, but they return the superclass of their special
-	   subclass, which in this case is the special mock subclass */
-	XCTAssertEqualObjects([realObject class], ourSubclass, @"KVO override of class did not return our subclass");
-	XCTAssertFalse(ourSubclass == kvoClass, @"KVO with subclass did not work");
+	Class kvoSublass = object_getClass(realObject);
+	XCTAssertTrue(kvoSublass != mockSubclass, @"Expected KVO to create its own subclass");
+	// The -class method is overriden by KVO to return the actual class the object had before.
+	// That happens to be our mock subclass, which isn't ideal, because it should be the real
+	// class, but for now we simply assert that the behaviour is as expected.
+	XCTAssertEqualObjects([realObject class], mockSubclass, @"Expected class method to return mock subclass");
 
 	[realObject setMethodInt:45];
-	XCTAssertEqual(numKVOCallbacks, 1, @"did not get subclass KVO notification");
+	XCTAssertEqual(numKVOCallbacks, 1, @"Should have received notification via real object");
 	[mock setMethodInt:47];
-	XCTAssertEqual(numKVOCallbacks, 2, @"did not get mock KVO notification");
+	XCTAssertEqual(numKVOCallbacks, 2, @"Should have received notification via partial mock");
 
-	[realObject removeObserver:self forKeyPath:@"methodInt" context:MyContext];
-	XCTAssertEqualObjects([realObject class], origClass, @"Classes different after stopKVO");
-	XCTAssertEqualObjects(object_getClass(realObject), ourSubclass, @"Classes different after stopKVO");
+	[realObject removeObserver:self forKeyPath:@"methodInt" context:NULL];
 
-	[mock stopMocking];
-	XCTAssertEqualObjects([realObject class], origClass, @"Classes different after stopMocking");
-	XCTAssertEqualObjects(object_getClass(realObject), origClass, @"Classes different after stopMocking");
+	XCTAssertEqualObjects(object_getClass(realObject), mockSubclass, @"Class should be mock subclass again");
+	XCTAssertEqualObjects([realObject class], [TestClassThatCallsSelf  class], @"Class method should return real class");
 }
 
-/* Mocking a class which already has KVO observations does not work, but does not crash. */
-- (void)testPartialMockOnKVOObserved
+- (void)testCreatingPartialMockAfterAddingObserverDoesNotCrash
 {
-	static char *MyContext;
 	TestClassThatCallsSelf *realObject = [[TestClassThatCallsSelf alloc] init];
-	Class origClass = [realObject class];
-    
-	[realObject addObserver:self forKeyPath:@"methodInt" options:NSKeyValueObservingOptionNew context:MyContext];
-	Class kvoClass = object_getClass(realObject);
+	Class realClass = [realObject class];
+
+	[realObject addObserver:self forKeyPath:@"methodInt" options:NSKeyValueObservingOptionNew context:NULL];
+	Class kvoSubclass = object_getClass(realObject);
 
 	id mock = [OCMockObject partialMockForObject:realObject];
-	Class ourSubclass = object_getClass(realObject);
-    
-	XCTAssertEqualObjects([realObject class], origClass, @"We did not preserve the original [self class]");
-	XCTAssertFalse(ourSubclass == kvoClass, @"KVO with subclass did not work");
-    
-	/* Due to the way we replace the object's class, the KVO class gets overwritten and
-	   KVO notifications stop functioning.  If we did not do this, the presence of the mock
-	   subclass would cause KVO to crash, at least without further tinkering. */
+	Class mockSubclass = object_getClass(realObject);
+
+	XCTAssertTrue(mockSubclass != kvoSubclass, @"Expected mock to create and set its own subclass");
+	XCTAssertEqualObjects([realObject class], [TestClassThatCallsSelf class], @"Should have returned real class");
+
+	// The implementation replaces the KVO subclass, which means that existing observers no
+	// longer receive notifications. Of course, this is not ideal but so far it's the best
+	// we can do, and so we simply assert that the behaviour is as expected.
 	[realObject setMethodInt:45];
-	XCTAssertEqual(numKVOCallbacks, 0, @"got subclass KVO notification");
+	XCTAssertEqual(numKVOCallbacks, 0, @"Did not expect to receive a notification via real object");
 	[mock setMethodInt:47];
-	XCTAssertEqual(numKVOCallbacks, 0, @"got mock KVO notification");
+	XCTAssertEqual(numKVOCallbacks, 0, @"Did not expect to receive a notification via partial mock");
 
 	[mock stopMocking];
-	XCTAssertEqualObjects([realObject class], origClass, @"Classes different after stopMocking");
-	XCTAssertEqualObjects(object_getClass(realObject), origClass, @"class different after stopMocking");
+	XCTAssertEqualObjects(object_getClass(realObject), realClass, @"Should have restored class");
+	XCTAssertEqualObjects([realObject class], realClass, @"Should have returned real class");
 
-	[realObject removeObserver:self forKeyPath:@"methodInt" context:MyContext];
-	XCTAssertEqualObjects([realObject class], origClass, @"Classes different after stopKVO");
-	XCTAssertEqualObjects(object_getClass(realObject), origClass, @"Classes different after stopKVO");
+	// Given that we have replaced the KVO subclass, we mostly care that there aren't any
+	// crashes when removing observers. We also check that classes are as expected.
+	[realObject removeObserver:self forKeyPath:@"methodInt" context:NULL];
+	XCTAssertEqualObjects(object_getClass(realObject), realClass, @"Should not have changed class");
+	XCTAssertEqualObjects([realObject class], realClass, @"Should not report different class");
 }
 
 

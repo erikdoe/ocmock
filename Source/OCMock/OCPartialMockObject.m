@@ -66,19 +66,15 @@
 
 - (Class)classToSubclassForObject:(id)object
 {
-    /* object_getClass() gives us the actual class backing the object, whereas [object class]
-     * is sometimes overridden, by KVO or CoreData, for example, to return a subclass.
-     *
-     * With KVO, if we replace and subclass the actual class, as returned by object_getClass(),
-     * we lose notifications. So, in that case only, we return the class reported by the class 
-     * method.
-     */
-
     if([object observationInfo] != NULL)
     {
-      NSLog(@"warning: The partial mock of `%@` will not receive the KVO notifications that it is currently registered for `%@`\n"
-            @"If you want this mock to receive KVO notifications, create the mock first, and then register the observations.", object, [object observationInfo]);
-      return [object class];
+        // Special treatment for objects that are observed with KVO. The KVO implementation sets
+        // a subclass for such objects and it overrides the -class method to return the original
+        // class. If we base our subclass on the KVO subclass, as returned by object_getClass(),
+        // crashes will occur. So, we take the real class instead. Unfortunately, this removes
+        // any observers set up before.
+        NSLog(@"Warning: Creating a partial mock for %@. This object has observers, which will now stop receiving KVO notifications. If you want to receive KVO notifications, create the partial mock first, and then register the observer.", object);
+        return [object class];
     }
 
     return object_getClass(object);
