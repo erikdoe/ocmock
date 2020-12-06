@@ -75,7 +75,11 @@
      */
 
     if([object observationInfo] != NULL)
-        return [object class];
+    {
+      NSLog(@"warning: The partial mock of `%@` will not receive the KVO notifications that it is currently registered for `%@`\n"
+            @"If you want this mock to receive KVO notifications, create the mock first, and then register the observations.", object, [object observationInfo]);
+      return [object class];
+    }
 
     return object_getClass(object);
 }
