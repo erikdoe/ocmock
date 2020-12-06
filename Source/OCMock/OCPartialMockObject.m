@@ -29,6 +29,8 @@
 
 - (id)initWithObject:(NSObject *)anObject
 {
+     if(anObject == nil)
+        [NSException raise:NSInvalidArgumentException format:@"Object cannot be nil."];
     Class const class = [self classToSubclassForObject:anObject];
 	[super initWithClass:class];
 	realObject = [anObject retain];

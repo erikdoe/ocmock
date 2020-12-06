@@ -202,9 +202,13 @@ static NSString *testClassThatMayNotSupportMockingReason = nil;
 	testClassThatMayNotSupportMockingReason = reason;
 }
 
-+ (NSString *)reasonClassDoesNotSupportMocking
++ (BOOL)supportsMocking:(NSString **)reasonPtr
 {
-	return testClassThatMayNotSupportMockingReason;
+	if(testClassThatMayNotSupportMockingReason == nil)
+		return YES;
+
+	*reasonPtr = testClassThatMayNotSupportMockingReason;
+	return NO;
 }
 
 @end
@@ -1134,12 +1138,16 @@ static NSString *TestNotification = @"TestNotification";
 
 }
 
-- (void)testClassThatDoesNotSupportMocking
+- (void)testThrowsWhenTryingToMockClassThatSaysItDoesNotSupportMocking
 {
     [TestClassThatMayNotSupportMocking setReason:@"Irreconcilable Differences"];
     XCTAssertThrowsSpecificNamed(OCMClassMock([TestClassThatMayNotSupportMocking class]), NSException, NSInvalidArgumentException);
-    [TestClassThatMayNotSupportMocking setReason:nil];
-    XCTAssertNoThrow(OCMClassMock([TestClassThatMayNotSupportMocking class]));
+}
+
+- (void)testDoesNotThrowWhenClassImplementsMockingSupportMethodButReturnsYes
+{
+	[TestClassThatMayNotSupportMocking setReason:nil];
+	XCTAssertNoThrow(OCMClassMock([TestClassThatMayNotSupportMocking class]));
 }
 
 

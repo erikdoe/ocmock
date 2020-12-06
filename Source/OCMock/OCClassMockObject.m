@@ -21,6 +21,10 @@
 #import "NSMethodSignature+OCMAdditions.h"
 #import "NSObject+OCMAdditions.h"
 
+@interface NSObject(OCMClassMockingSupport)
++ (BOOL)supportsMocking:(NSString **)reason;
+@end
+
 
 @implementation OCClassMockObject
 
@@ -51,18 +55,16 @@
 	return mockedClass;
 }
 
-- (void)assertClassIsSupported:(Class)cls {
-    if(cls == Nil)
-    {
+- (void)assertClassIsSupported:(Class)aClass
+{
+    if(aClass == Nil)
         [NSException raise:NSInvalidArgumentException format:@"Class cannot be Nil."];
-    }
-    if([cls respondsToSelector:@selector(reasonClassDoesNotSupportMocking)])
+
+    if([aClass respondsToSelector:@selector(supportsMocking:)])
     {
-        NSString *reason = [cls reasonClassDoesNotSupportMocking];
-        if(reason != nil)
-        {
-            [NSException raise:NSInvalidArgumentException format:@"Class `%@` does not support mocking: %@", cls, reason];
-        }
+        NSString *reason = nil;
+        if(![aClass supportsMocking:&reason])
+            [NSException raise:NSInvalidArgumentException format:@"Class %@ does not support mocking: %@", aClass, reason];
     }
 }
 
