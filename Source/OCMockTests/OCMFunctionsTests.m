@@ -14,12 +14,27 @@
  *  under the License.
  */
 
+#import <objc/runtime.h>
 #import <XCTest/XCTest.h>
+#import <OCMock/OCMockObject.h>
+#import "OCMFunctions.h"
 #import "OCMFunctionsPrivate.h"
+
+@interface TestClassForFunctions : NSObject
+- (void)setFoo:(NSString *)aString;
+@end
+
+@implementation TestClassForFunctions
+
+- (void)setFoo:(NSString *)aString;
+{
+}
+
+@end
+
 
 @interface OCMFunctionsTests : XCTestCase
 @end
-
 
 @implementation OCMFunctionsTests
 
@@ -41,6 +56,41 @@
 - (void)testIsBlockReturnsTrueForBlock
 {
     XCTAssertTrue(OCMIsBlock(^{}));
+}
+
+- (void)testIsMockSubclassOnlyReturnYesForActualSubclass
+{
+    id object = [TestClassForFunctions new];
+    XCTAssertFalse(OCMIsMockSubclass([object class]));
+
+    id mock = [OCMockObject partialMockForObject:object];
+    XCTAssertTrue(OCMIsMockSubclass(object_getClass(object)));
+
+    // adding a KVO observer creates and sets a subclass of the mock subclass
+    [object addObserver:self forKeyPath:@"foo" options:NSKeyValueObservingOptionNew context:NULL];
+    XCTAssertFalse(OCMIsMockSubclass(object_getClass(object)));
+
+    [object removeObserver:self forKeyPath:@"foo" context:NULL];
+}
+
+- (void)testIsSubclassOfMockSubclassReturnYesForSubclasses
+{
+    id object = [TestClassForFunctions new];
+    XCTAssertFalse(OCMIsMockSubclass([object class]));
+
+    id mock = [OCMockObject partialMockForObject:object];
+    XCTAssertTrue(OCMIsSubclassOfMockClass(object_getClass(object)));
+
+    // adding a KVO observer creates and sets a subclass of the mock subclass
+    [object addObserver:self forKeyPath:@"foo" options:NSKeyValueObservingOptionNew context:NULL];
+    XCTAssertTrue(OCMIsSubclassOfMockClass(object_getClass(object)));
+
+    [object removeObserver:self forKeyPath:@"foo" context:NULL];
+}
+
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
 }
 
 @end
