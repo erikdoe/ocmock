@@ -28,4 +28,6 @@
 - (Class)mockedClass;
 - (Class)mockObjectClass;  // since -class returns the mockedClass
 
+- (void)assertClassIsSupported:(Class)aClass;
+
 @end

@@ -21,6 +21,10 @@
 #import "NSMethodSignature+OCMAdditions.h"
 #import "NSObject+OCMAdditions.h"
 
+@interface NSObject(OCMClassMockingSupport)
++ (BOOL)supportsMocking:(NSString **)reason;
+@end
+
 
 @implementation OCClassMockObject
 
@@ -28,9 +32,7 @@
 
 - (id)initWithClass:(Class)aClass
 {
-	if(aClass == Nil)
-		[NSException raise:NSInvalidArgumentException format:@"Class cannot be Nil."];
-
+	[self assertClassIsSupported:aClass];
 	[super init];
 	mockedClass = aClass;
     [self prepareClassForClassMethodMocking];
@@ -53,6 +55,18 @@
 	return mockedClass;
 }
 
+- (void)assertClassIsSupported:(Class)aClass
+{
+    if(aClass == Nil)
+        [NSException raise:NSInvalidArgumentException format:@"Class cannot be Nil."];
+
+    if([aClass respondsToSelector:@selector(supportsMocking:)])
+    {
+        NSString *reason = nil;
+        if(![aClass supportsMocking:&reason])
+            [NSException raise:NSInvalidArgumentException format:@"Class %@ does not support mocking: %@", aClass, reason];
+    }
+}
 
 #pragma mark  Extending/overriding superclass behaviour
 
