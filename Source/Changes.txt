@@ -5,7 +5,8 @@ OCMock 3.8 (unreleased)
 
 * Added support for ARM-based Macs.
 * Stubs can now fulfill XCTest expectations. This requires OCMock to link
-  against XCTest; except on watchOS where it's not supported (Dave MacLachlan)
+  against XCTest; except on watchOS where it's not supported. (Dave MacLachlan)
+* Added two new stub actions to help with debugging. (Dave MacLachlan)
 * Various bug-fixes and improvements to developer experience.
 
 

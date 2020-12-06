@@ -74,13 +74,11 @@
 
 @property (nonatomic, readonly) OCMStubRecorder *(^ _ignoringNonObjectArgs)(void);
 
-// Break to the debugger when stub/expectation is called
-#define andDebugger() _andDo(^(NSInvocation *_invocation)             \
+#define andBreak() _andDo(^(NSInvocation *_invocation)                \
 {                                                                     \
   __builtin_debugtrap();                                              \
 })                                                                    \
 
-// Log when stub/expectation is called.
 #define andLog(_format, ...) _andDo(^(NSInvocation *_invocation)      \
 {                                                                     \
   NSLog(_format, ##__VA_ARGS__);                                      \
