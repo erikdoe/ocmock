@@ -32,7 +32,7 @@ nosidebar: true
   <li><a href="#mocking-class-methods">Mocking class methods</a>
   <li><a href="#partial-mocks">Partial mocks</a>
   <li><a href="#strict-mocks-and-expectations">Strict mocks and expectations</a>
-  <li><a href="#observer-mocks">Observer mocks</a>
+  <li><a href="#observer-mocks">Observer mocks (deprecated)</a>
   <li><a href="#advanced-topics">Advanced topics</a>
   <li><a href="#limitations">Limitations</a>
 </ol>
@@ -79,7 +79,9 @@ id partialMock = OCMPartialMock(anObject);
 <p>There are some subtleties when using partial mocks. See <a href="#partial-mocks">partial mocks</a> below.  
 
 
-<h3 class="numbered">Observer mocks</h3>
+<h3 class="numbered">Observer mocks (deprecated)</h3>
+
+<p><b>Observer mocks are deprecated as of OCMock 3.8. Please use <a href="https://developer.apple.com/documentation/xctest/xctnsnotificationexpectation?language=objc">XCTNSNotificationExpectation</a> instead.</b>
 
 {% highlight objc %}
 id observerMock = OCMObserverMock();
@@ -192,8 +194,35 @@ OCMStub([mock someMethod]).andDo(nil);
 {% endhighlight objc %}
 
 <p>It is possible to pass <code>nil</code> instead of a block to <code>andDo</code>. This is only useful with partial mocks or when mocking class methods. In these cases using <code>andDo(nil)</code> effectively suppresses the behaviour in the existing class.
-	
-	
+
+
+<h3 class="numbered">Fulfilling XCTest expectations (requires OCMock 3.8 or higher)</h3>
+
+{% highlight objc %}
+OCMStub([mock someMethod]).andFulfill(expectation);
+{% endhighlight objc %}
+
+<p>When the method is invoked an expectation in the XCTest framework is fulfilled. See <a href="https://github.com/erikdoe/ocmock/blob/f2504589d313eda3de52d803f6bc29e90b4ec361/Source/OCMockTests/OCMockObjectMacroTests.m#L272-L280">this test</a> for details.
+      
+    
+<h3 class="numbered">Logging messages (requires OCMock 3.8 or higher)</h3>
+
+{% highlight objc %}
+OCMStub([mock someMethod]).andLog(format, ...);
+{% endhighlight objc %}
+
+<p>When the method is invoked the message constructed from <code>format</code> and the arguments is logged via <code>NSLog</code>. It is likely that you want to use this in a chain, maybe followed by <code>andReturn()</code> or <code>andForwardToRealObject()</code>.
+    
+
+<h3 class="numbered">Breaking into the debugger (requires OCMock 3.8 or higher)</h3>
+
+{% highlight objc %}
+OCMStub([mock someMethod]).andBreak();
+{% endhighlight objc %}
+
+<p>When the method is invoked the debugger is opened as if a breakpoint was hit. The stack will end somewhere in the implementation of OCMock but if you look further up, past the <code>__forwarding__</code> frames, you should be able to see where your code invoked the method.
+    
+
 <h2 id="verifying-interactions" class="numbered">Verifying interactions</h2> 
 
 <h3 class="numbered">Verify-after-running</h3>
@@ -484,7 +513,10 @@ OCMExpect([mock anotherMethod]);
 <p>The mock can be told to verify that expected methods are called in the same order as the expectations are set up. As soon as a method is called that is not next on the &ldquo;expected list&rdquo; the mock will fail fast and throw an exception.
 
 
-<h2 id="observer-mocks" class="numbered">Observer mocks</h2>
+<h2 id="observer-mocks" class="numbered">Observer mocks (deprecated)</h2>
+
+<p><b>Observer mocks are deprecated as of OCMock 3.8. Please use <a href="https://developer.apple.com/documentation/xctest/xctnsnotificationexpectation?language=objc">XCTNSNotificationExpectation</a> instead.</b>
+
 
 <h3 class="numbered">Setup</h3>
 
@@ -574,7 +606,34 @@ OCMStub([partialMock someMethod]).andCall(differentObject, @selector(differentMe
 <p>Defining the preprocessor macro <code>OCM_DISABLE_SHORT_SYNTAX</code> will supress the definition of the short macros. Defining <code>OCM_DISABLE_SHORT_QSYNTAX</code> will only skip the new macros introduced for quantifiers in OCMock 3.6.
 
 
-<h2 id="limitations" class="numbered">Limitations</h2>
+<h3 class="numbered">Stopping creation of mocks for specific classes (requires OCMock 3.8 or higher)</h3>
+
+<p>Some frameworks dynamically alter the classes of objects at runtime. OMock does this to implement partial mocks, and the Foundation framework changes classes as part of the the Key-Value Observing (KVO) mechanism.  When this is not carefully coordinated unexpected behaviour and or crashes may result. OCMock is aware of KVO and carefully avoids conflicts with it. For other frameworks OCMock only offers a mechanism to opt out of mocking in order to avoid unexpected behaviour.
+
+{% highlight objc %}
++ (BOOL)supportsMocking:(NSString **)reason
+{
+    *reason = @"Don't want to be mocked."
+    return NO;
+}
+{% endhighlight objc %}
+
+<p>By implementing the class method shown above a class can opt out of being mocked. When a developer tries to create a mock for such a class an exception will be raised, explaing the problem. It is acceptable that the method returns a different value on separate invocations. This allows it to react to specifc conditions at runtime. The contents of <code>reason</code> are ignored if the method returns <code>YES</code>. 
+
+<p>For all classes that do not implement this method OCMock assumes that mocking is acceptable.
+
+
+<h3 class="numbered">Checking for partial mock (requires OCMock 3.8 or higher)</h3>
+
+<p>In specific cases it might be neccessary to determine whether a partial mock has been created for a given object. This should not be needed in regular tests but it might be neccessary to know for other frameworks that are aware of OCMock.
+
+{% highlight objc %}
+bool isPartialMock = OCMIsSubclassOfMockClass(objc_getClass(someObject));
+{% endhighlight objc %}
+
+<p>As described above in <a href="#partial-mocks">partial mocks</a> OCMock dynamically creates a subclass for each partial mock. It sets the class of the object to that subclass but overrides the <code>class</code> method to return the original class. Using the Objective-C runtime function <code>objc_getClass()</code> it is possible to get hold of the actual class of an object, which might be a dynamically created subclass for a partial mock. The function <code>OCMIsSubclassOfMockClass()</code> returns <code>YES</code> if the class passed as an argument is such a class or a subclass of one.
+
+<h2 id="limitations" class="numbered">Limitations</h2> 
 
 <h3 class="numbered">Only one mock at a time can stub class methods on a given class</h3>
 
