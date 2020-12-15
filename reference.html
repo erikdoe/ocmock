@@ -305,7 +305,7 @@ OCMStub([mock someMethodWithSelectorArgument:[OCMArg anySelector]])
 <p>Adds a stub for the methods which is active for all invocations, no matter what argument is passed. Pointers and selectors require special treatment as shown above. Arguments that are neither objects nor pointers or selectors cannot be ignored using an <i>any</i> placeholder (for details see this <a href="http://www.mulle-kybernetik.com/forum/viewtopic.php?f=4&t=72">forum thread</a>). See just below for a workaround.
 
 
-<h3 class="numbered">Ignoring non-object arguments</h3>
+<h3 class="numbered">Ignoring non-object arguments <span class="minver-tag">requires OCMock 3.5</span></h3>
 
 {% highlight objc %}
 OCMStub([mock someMethodWithIntArgument:0]).ignoringNonObjectArgs();
@@ -539,7 +539,7 @@ OCMVerifyAll(observerMock);
 
 <h2 id="advanced-topics" class="numbered">Advanced topics</h2>
 
-<h3 class="numbered">Failing fast for regular (nice) mocks</h3>
+<h3 class="numbered">Failing fast for regular (nice) mocks <span class="minver-tag">requires OCMock 3.3</span></h3>
 
 <p>On a strict mock object, when a method is called that has not been mocked (using some variant of stub or expect) the mock object will raise an exception. It will <i>fail fast</i>. Regular mock objects simply return the default value for the return type. Regular mocks can be configured on a per-method basis to fail fast:
 
