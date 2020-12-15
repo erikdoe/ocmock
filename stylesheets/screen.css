@@ -94,6 +94,16 @@ p.postdate {
 	border-radius: 2px;
 }
 
+.minver-tag {
+	float: right;
+	font-size: 75%;
+	color: white;
+	background: #FFC249;
+	padding: 2px 4px;
+	border-radius: 2px;
+	vertical-align: 3px;
+}
+
 
 /* main sections formatting */
 
