@@ -1,9 +1,11 @@
 Listing of notable changes by release. More detail is usually found in the Git
 commit messages and/or the pull requests.
 
-OCMock 3.8 (unreleased)
+OCMock 3.8 (2020-12-21)
 
-* Added support for ARM-based Macs.
+* Added support for ARM-based Macs. Unfortunately, this means that the hack to
+  combine the device targets with the simulator targets no longer works. The
+  binary distribution will be simulator only now.
 * Stubs can now fulfill XCTest expectations. This requires OCMock to link
   against XCTest; except on watchOS where it's not supported. (Dave MacLachlan)
 * Added two new stub actions to help with debugging. (Dave MacLachlan)
