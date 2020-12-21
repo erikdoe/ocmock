@@ -63,7 +63,7 @@
     id object = [TestClassForFunctions new];
     XCTAssertFalse(OCMIsMockSubclass([object class]));
 
-    id mock = [OCMockObject partialMockForObject:object];
+    id mock __unused = [OCMockObject partialMockForObject:object];
     XCTAssertTrue(OCMIsMockSubclass(object_getClass(object)));
 
     // adding a KVO observer creates and sets a subclass of the mock subclass
@@ -78,7 +78,7 @@
     id object = [TestClassForFunctions new];
     XCTAssertFalse(OCMIsMockSubclass([object class]));
 
-    id mock = [OCMockObject partialMockForObject:object];
+    id mock __unused = [OCMockObject partialMockForObject:object];
     XCTAssertTrue(OCMIsSubclassOfMockClass(object_getClass(object)));
 
     // adding a KVO observer creates and sets a subclass of the mock subclass
