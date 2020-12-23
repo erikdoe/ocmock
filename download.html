@@ -21,6 +21,35 @@ published: true
 		<th width="20%">File</th>
 	</tr>
 	<tr>
+		<td>OCMock 3.8</td>
+		<td>macOS 11.1, iOS 14.3, tvOS 14.3, watchOS 7.2</td>
+		<td>OS X 10.10, iOS 9.0, tvOS 9.0, watchOS 4.0</td>
+		<td>23-Dec-2020</td>
+		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.8/ocmock-3.8.dmg">ocmock-3.8.dmg</a></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td colspan="4">
+			Recent changes:
+			<ul>
+				<li>Added support for ARM-based Macs. Unfortunately, this means that the hack to
+					combine the device targets with the simulator targets no longer works. The
+					binary distribution will be simulator only now.
+				<li>Stubs can now fulfill XCTest expectations. This requires OCMock to link
+					against XCTest; except on watchOS where it's not supported. (Dave MacLachlan)
+				<li>Added two new stub actions to help with debugging. (Dave MacLachlan)
+				<li>Classes can block OCMock from creating mocks. (Dave MacLachlan)
+				<li>Added function to determine whether a class is a dynamically created mock
+					class or a subclass of one.
+				<li>Deprecated notification observer mocks. This can now be done with XCTest.
+				<li>Various bug-fixes and improvements to developer experience.
+			</ul>
+			More details:
+			<a href="https://github.com/erikdoe/ocmock/blob/master/Source/Changes.txt">change log</a>, 
+			<a href="https://github.com/erikdoe/ocmock/milestone/1?closed=1">milestone</a>
+		</td>
+	</tr>
+	<tr>
 		<td>OCMock 3.7.1</td>
 		<td>macOS 10.15, iOS 13.6, tvOS 13.4, watchOS 6.2</td>
 		<td>OS X 10.9, iOS 8.0, tvOS 9.0, watchOS 4.0</td>
@@ -28,34 +57,9 @@ published: true
 		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.7.1/ocmock-3.7.1.dmg">ocmock-3.7.1.dmg</a></td>
 	</tr>
 	<tr>
-		<td></td>
-		<td colspan="4">
-			Recent changes:
-			<ul>
-				<li>Fixed a bug that caused double-counting of method invocations on partial
-					mocks under certain circumstances.
-			</ul>
-			<a href="https://github.com/erikdoe/ocmock/blob/master/Source/Changes.txt">more...</a>
-		</td>
-	</tr>
-	<tr>
-		<td>OCMock 3.7</td>
-		<td>macOS 10.15, iOS 13.5, tvOS 13.4, watchOS 6.2</td>
-		<td>OS X 10.9, iOS 8.0, tvOS 9.0, watchOS 4.0</td>
-		<td>15-Jul-2020</td>
-		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.7/ocmock-3.7.dmg">ocmock-3.7.dmg</a></td>
-	</tr>
-	<tr>
-		<td>OCMock 3.6</td>
-		<td>macOS 10.15, iOS 13.2, tvOS 13.2, watchOS 6.1</td>
-		<td>OS X 10.8, iOS 8.0, tvOS 9.0, watchOS 4.0</td>
-		<td>16-Feb-2020</td>
-		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.6/ocmock-3.6.dmg">ocmock-3.6.dmg</a></td>
-	</tr>
-	<tr>
 		<td>OCMock 2.2.4</td>
 		<td>OS X 10.9, iOS 7.1</td>
-		<td>OS X 10.6, iOS 5</td>
+		<td>Mac OS X 10.6, iOS 5</td>
 		<td>4-Apr-2014</td>
 		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v2.2.4/ocmock-2.2.4.dmg">ocmock-2.2.4.dmg</a></td>
 	</tr>
