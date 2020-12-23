@@ -17,7 +17,7 @@ def getVersion(productdir)
 end    
 
 def makeDMG(productdir, dmgdir, dmgname, volumename)    
-  tempdmg = "/tmp/ocmock-temp-#{Process.pid}.dmg"
+  tempdmg = "#{dmgdir}/ocmock-temp-#{Process.pid}.dmg"
   finaldmg = "#{dmgdir}/#{dmgname}.dmg"
   run("hdiutil create -size 8m #{tempdmg} -layout NONE") 
   disk_id = nil
@@ -27,7 +27,7 @@ def makeDMG(productdir, dmgdir, dmgname, volumename)
   run("hdid #{tempdmg}") { |hdid| disk_id = hdid.readline.split[0] }
   run("cp -R #{productdir}/* '/Volumes/#{volumename}'")
   run("hdiutil eject #{disk_id}")
-  run("rm #{finaldmg}") { }
+  run("rm -f #{finaldmg}")
   run("hdiutil convert -format UDZO #{tempdmg} -o #{finaldmg} -imagekey zlib-level=9")
   run("rm #{tempdmg}")
 end    

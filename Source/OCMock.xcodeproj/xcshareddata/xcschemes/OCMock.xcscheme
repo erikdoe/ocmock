@@ -39,16 +39,6 @@
                ReferencedContainer = "container:OCMock.xcodeproj">
             </BuildableReference>
          </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "03565A1A18F05626003AE91E"
-               BuildableName = "OCMock Tests.xctest"
-               BlueprintName = "OCMock Tests"
-               ReferencedContainer = "container:OCMock.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -77,6 +67,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "030EF0A714632FD000B04273"
+            BuildableName = "OCMock.framework"
+            BlueprintName = "OCMock"
+            ReferencedContainer = "container:OCMock.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

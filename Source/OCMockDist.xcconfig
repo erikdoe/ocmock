@@ -1,14 +1,15 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-// If you change these here you must also update the makefile
-SYMROOT = ../../../Build
-OBJROOT = ../../../Build/Intermediaries
+#include "OCMockCI.xcconfig"
+
+// If you change this here you must also update the makefile
 DSTROOT = $(SYMROOT)/Product
 
 // Make sure that files are copied to DSTROOT
 SKIP_INSTALL = NO
 
 // Set the codesign identity for distribution
+CODE_SIGN_STYLE = Manual
 TEAM_IDENTIFIER = 28U2VZ7DF8
-CODE_SIGN_IDENTITY = Apple Development: erik@doernenburg.com
+CODE_SIGN_IDENTITY = Apple Development: erik@doernenburg.com (FJTF47J852)

@@ -12,7 +12,10 @@ end
 def checkArchs(path, expected)
   archs = nil
   run("lipo -info \"#{path}\"") { |lipo| archs = /re: (.*)/.match(lipo.readline)[1].strip() }
-  if archs != expected
+  if (expected.split(" ") - archs.split(" ")).count > 0
+    puts "Warning: missing architecture; expected \"#{expected}\", found \"#{archs}\""
+  end
+  if (archs.split(" ") - expected.split(" ")).count > 0
     puts "Warning: unexpected architecture; expected \"#{expected}\", found \"#{archs}\""
   end
 end
@@ -39,7 +42,7 @@ tvosproduct = "#{productdir}/tvOS/OCMock.framework"
 watchosproduct = "#{productdir}/watchOS/OCMock.framework"                                           
 
 checkArchs "#{macosproduct}/OCMock", "x86_64 arm64"
-checkArchs "#{ioslibproduct}", "armv7 i386 x86_64 arm64"
+checkArchs "#{ioslibproduct}", "x86_64 arm64"
 checkArchs "#{iosproduct}/OCMock", "x86_64 arm64"
 checkArchs "#{tvosproduct}/OCMock", "x86_64 arm64"
 checkArchs "#{watchosproduct}/OCMock", "x86_64 arm64"

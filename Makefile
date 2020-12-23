@@ -2,17 +2,17 @@
 #   - ci    used by Travis for continuous integration
 #   - dist  used to build the binary distribution
 #
-# Note that the dist target will checkout the source code to a temporary
-# directory. Any uncommited changes will not affect the build. That said,
-# it will use the locally checked out version of the Xcode configs.
+# Note that the dist target uses git checkout to copy the source into the
+# product directory. This means you should make sure that you don't have 
+# uncommited local changes when building a distribution.
 
-SYMROOT = $(CURDIR)/Build
-DISTDIR = $(SYMROOT)/Product
-XCODECI = xcodebuild -project "$(CURDIR)/Source/OCMock.xcodeproj" -xcconfig "$(CURDIR)/Source/OCMockCI.xcconfig"
-XCODEDIST = xcodebuild -project "$(DISTDIR)/Source/OCMock.xcodeproj" -xcconfig "$(CURDIR)/Source/OCMockDist.xcconfig"
-SHELL = /bin/bash -e -o pipefail
+BUILD_DIR   = $(CURDIR)/Build
+PRODUCT_DIR = $(BUILD_DIR)/Product
+XCODECI     = xcodebuild -project "$(CURDIR)/Source/OCMock.xcodeproj" -xcconfig "$(CURDIR)/Source/OCMockCI.xcconfig"
+XCODEDIST   = xcodebuild -project "$(CURDIR)/Source/OCMock.xcodeproj" -xcconfig "$(CURDIR)/Source/OCMockDist.xcconfig"
+SHELL       = /bin/bash -e -o pipefail
 
-.PHONY: checkout macos ioslib ios tvos watchos
+.PHONY: macos ioslib ios tvos watchos sourcecode product dmg
 	
 clean:
 	rm -rf "$(CURDIR)/Build"
@@ -29,37 +29,37 @@ ci-ios:
 	$(XCODECI) -scheme OCMockLib -destination 'platform=iOS Simulator,OS=latest,name=iPhone 11' test | xcpretty -c
 
 
-dist: clean product dmg
-	
-checkout:
-	@echo "** Checking out source..."
-	mkdir -p "$(DISTDIR)"
-	git archive master | tar -x -C "$(DISTDIR)" Source
-
-macos: checkout
+dist: product sourcecode dmg
+		
+macos:
 	@echo "** Building macOS framework..."
-	$(XCODEDIST) -target OCMock -sdk macosx install INSTALL_PATH="/macOS" | xcpretty -c
-
-ioslib: checkout
+	$(XCODEDIST) -scheme OCMock install INSTALL_PATH="/macOS" | xcpretty -c
+	
+ioslib:
 	@echo "** Building iOS library..."
 	$(XCODEDIST) -target OCMockLib -sdk iphonesimulator install INSTALL_PATH="/iOS library" | xcpretty -c
 
-ios: checkout
+ios:
 	@echo "** Building iOS framework..."
 	$(XCODEDIST) -target "OCMock iOS" -sdk iphonesimulator install INSTALL_PATH="/iOS" | xcpretty -c
 
-tvos: checkout
+tvos:
 	@echo "** Building tvOS framework..."
 	$(XCODEDIST) -target "OCMock tvOS" -sdk appletvsimulator install INSTALL_PATH="/tvOS" | xcpretty -c
 		
-watchos: checkout
+watchos:
 	@echo "** Building watchOS framework..."
-	$(XCODEDIST) -target "OCMock watchOS" -sdk watchsimulator install INSTALL_PATH="/watchOS"| xcpretty -c
+	$(XCODEDIST) -target "OCMock watchOS" -sdk watchsimulator install INSTALL_PATH="/watchOS" | xcpretty -c
+	
+sourcecode:
+	@echo "** Checking out source code..."
+	mkdir -p "$(PRODUCT_DIR)"
+	git archive master | tar -x -C "$(PRODUCT_DIR)" Source
 
 product: macos ioslib ios tvos watchos
-	@echo "** Verifying products..."
-	Tools/distcheck.rb $(DISTDIR)
+	@echo "** Verifying build products..."
+	Tools/buildcheck.rb $(PRODUCT_DIR)
 
 dmg: 
 	@echo "** Creating disk image..."
-	Tools/makedmg.rb $(DISTDIR) $(SYMROOT)
+	Tools/makedmg.rb $(PRODUCT_DIR) $(BUILD_DIR)
