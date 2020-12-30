@@ -25,7 +25,9 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = '10.10'
   s.tvos.deployment_target = '9.0'
   s.watchos.deployment_target = '4.0'
-   
+  s.ios.framework = 'XCTest'
+  s.osx.framework = 'XCTest'
+  s.tvos.framework = 'XCTest'   
   s.public_header_files   = ["OCMock.h", "OCMockObject.h", "OCMArg.h", "OCMConstraint.h", 
                               "OCMLocation.h", "OCMMacroState.h", "OCMRecorder.h", 
                               "OCMStubRecorder.h", "NSNotificationCenter+OCMAdditions.h", 
