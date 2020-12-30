@@ -42,6 +42,10 @@ p {
 	margin-top: 0.715em;
 }
 
+td p {
+	margin-top: 0.2em;
+}
+
 code {
 	font-family: "Menlo", monospace;
 	font-size: 0.857em;

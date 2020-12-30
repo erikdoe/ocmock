@@ -10,7 +10,11 @@ published: true
 
 <h2>Stable Releases</h2>
 
-<p>The disk images countain source code and binaries. Usually the releases can be used on newer systems, too. For example, OCMock 3.1, built with Xcode 6.2 using the OS X 10.10 and iOS 8.2 SDKs, can also be built with Xcode 7 its newer SDKs.
+<p>The disk images contain frameworks for macOS, iOS, tvOS, and watchOS development, a static library for iOS development, and the source code. 
+	
+<p>Usually the releases can be used on newer systems, too. For example, OCMock 3.1, built with Xcode 6.2 using the OS X 10.10 and iOS 8.2 SDKs, can also be built with Xcode 7 and its newer SDKs. 
+	
+<p>However, there is no guarantee that a release of OCMock can be built with versions of Xcode older than the current stable version at release.
     
 <table>
 	<tr>
@@ -21,16 +25,21 @@ published: true
 		<th width="20%">File</th>
 	</tr>
 	<tr>
-		<td>OCMock 3.8</td>
+		<td>OCMock 3.8.1</td>
 		<td>macOS 11.1, iOS 14.3, tvOS 14.3, watchOS 7.2</td>
 		<td>OS X 10.10, iOS 9.0, tvOS 9.0, watchOS 4.0</td>
-		<td>23-Dec-2020</td>
-		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.8/ocmock-3.8.dmg">ocmock-3.8.dmg</a></td>
+		<td>30-Dec-2020</td>
+		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.8.1/ocmock-3.8.1.dmg">ocmock-3.8.1.dmg</a></td>
 	</tr>
 	<tr>
 		<td></td>
 		<td colspan="4">
-			Recent changes:
+			<p>Changes in OCMock 3.8.1:
+			<ul>
+				<li>Restored compatibility with Xcode 11. Please note: support of older versions
+					of Xcode is not guaranteed.
+			</ul>
+			<p>Changes in OCMock 3.8:
 			<ul>
 				<li>Added support for ARM-based Macs. Unfortunately, this means that the hack to
 					combine the device targets with the simulator targets no longer works. The
@@ -44,7 +53,7 @@ published: true
 				<li>Deprecated notification observer mocks. This can now be done with XCTest.
 				<li>Various bug-fixes and improvements to developer experience.
 			</ul>
-			More details:
+			<p>More details:
 			<a href="https://github.com/erikdoe/ocmock/blob/master/Source/Changes.txt">change log</a>, 
 			<a href="https://github.com/erikdoe/ocmock/milestone/1?closed=1">milestone</a>
 		</td>
