@@ -8,7 +8,7 @@
 
 BUILD_DIR   = $(CURDIR)/Build
 PRODUCT_DIR = $(BUILD_DIR)/Product
-XCODECI     = xcodebuild -project "$(CURDIR)/Source/OCMock.xcodeproj" -xcconfig "$(CURDIR)/Source/OCMockCI.xcconfig"
+XCODECI     = xcodebuild -project "$(CURDIR)/Source/OCMock.xcodeproj" -xcconfig "$(CURDIR)/Source/OCMockCI.xcconfig" -destination-timeout 300
 XCODEDIST   = xcodebuild -project "$(CURDIR)/Source/OCMock.xcodeproj" -xcconfig "$(CURDIR)/Source/OCMockDist.xcconfig"
 SHELL       = /bin/bash -e -o pipefail
 

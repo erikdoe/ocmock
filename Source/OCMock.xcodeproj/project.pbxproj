@@ -1427,7 +1427,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Resolve dependencies using Carthage\nif [ ! -d ${PROJECT_DIR}/Carthage/Build ]; then\n    carthage update --platform macOS\nfi\n";
+			shellScript = "# Resolve dependencies using Carthage\nif [ ! -d ${PROJECT_DIR}/Carthage/Build/Mac/OCHamcrest.framework ]; then\n    carthage update --platform macOS\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
