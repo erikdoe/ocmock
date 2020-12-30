@@ -24,6 +24,6 @@
 @property(strong) OCMLocation *location;
 @property(strong) OCMQuantifier *quantifier;
 
-- (instancetype)withQuantifier:(OCMQuantifier *)quantifier;
+- (id)withQuantifier:(OCMQuantifier *)quantifier;
 
 @end
