@@ -19,6 +19,9 @@
 
 
 @implementation OCProtocolMockObject
+{
+    Protocol *mockedProtocol;
+}
 
 #pragma mark Initialisers, description, accessors, etc.
 

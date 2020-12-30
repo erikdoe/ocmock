@@ -24,6 +24,10 @@
 
 
 @implementation OCPartialMockObject
+{
+    NSObject *realObject;
+    NSInvocation *invocationFromMock;
+}
 
 #pragma mark Initialisers, description, accessors, etc.
 
@@ -32,15 +36,16 @@
     if(anObject == nil)
         [NSException raise:NSInvalidArgumentException format:@"Object cannot be nil."];
     Class const class = [self classToSubclassForObject:anObject];
-    [super initWithClass:class];
-    realObject = [anObject retain];
+    [self assertClassIsSupported:class];
+	  self = [super initWithClass:class];
+	  realObject = [anObject retain];
     [self prepareObjectForInstanceMethodMocking];
     return self;
 }
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"OCPartialMockObject(%@)", NSStringFromClass(mockedClass)];
+    return [NSString stringWithFormat:@"OCPartialMockObject(%@)", NSStringFromClass([self mockedClass])];
 }
 
 - (NSObject *)realObject
@@ -151,7 +156,7 @@
     OCMSetAssociatedMockForObject(self, realObject);
 
     /* dynamically create a subclass and set it as the class of the object */
-    Class subclass = OCMCreateSubclass(mockedClass, realObject);
+    Class subclass = OCMCreateSubclass([self mockedClass], realObject);
     object_setClass(realObject, subclass);
 
     /* point forwardInvocation: of the object to the implementation in the mock */
@@ -162,7 +167,7 @@
     /* do the same for forwardingTargetForSelector, remember existing imp with alias selector */
     Method myForwardingTargetMethod = class_getInstanceMethod([self mockObjectClass], @selector(forwardingTargetForSelectorForRealObject:));
     IMP myForwardingTargetIMP = method_getImplementation(myForwardingTargetMethod);
-    IMP originalForwardingTargetIMP = [mockedClass instanceMethodForSelector:@selector(forwardingTargetForSelector:)];
+    IMP originalForwardingTargetIMP = [[self mockedClass] instanceMethodForSelector:@selector(forwardingTargetForSelector:)];
     class_addMethod(subclass, @selector(forwardingTargetForSelector:), myForwardingTargetIMP, method_getTypeEncoding(myForwardingTargetMethod));
     class_addMethod(subclass, @selector(ocmock_replaced_forwardingTargetForSelector:), originalForwardingTargetIMP, method_getTypeEncoding(myForwardingTargetMethod));
 
@@ -189,7 +194,7 @@
             // ignore for now
         }
     };
-    [NSObject enumerateMethodsInClass:mockedClass usingBlock:setupForwarderFiltered];
+    [NSObject enumerateMethodsInClass:[self mockedClass] usingBlock:setupForwarderFiltered];
 }
 
 - (void)setupForwarderForSelector:(SEL)sel
@@ -198,16 +203,16 @@
     if(class_getInstanceMethod(object_getClass(realObject), aliasSelector) != NULL)
         return;
 
-    Method originalMethod = class_getInstanceMethod(mockedClass, sel);
+    Method originalMethod = class_getInstanceMethod([self mockedClass], sel);
     /* Might be NULL if the selector is forwarded to another class */
     IMP originalIMP = (originalMethod != NULL) ? method_getImplementation(originalMethod) : NULL;
     const char *types = (originalMethod != NULL) ? method_getTypeEncoding(originalMethod) : NULL;
     // TODO: check the fallback implementation is actually sufficient
     if(types == NULL)
-        types = ([[mockedClass instanceMethodSignatureForSelector:sel] fullObjCTypes]);
+        types = ([[[self mockedClass] instanceMethodSignatureForSelector:sel] fullObjCTypes]);
 
     Class subclass = object_getClass([self realObject]);
-    IMP forwarderIMP = [mockedClass instanceMethodForwarderForSelector:sel];
+    IMP forwarderIMP = [[self mockedClass] instanceMethodForwarderForSelector:sel];
     class_replaceMethod(subclass, sel, forwarderIMP, types);
     class_addMethod(subclass, aliasSelector, originalIMP, types);
 }
@@ -264,7 +269,7 @@
 {
     SEL matcherSel = [[matcher recordedInvocation] selector];
     __block BOOL stubbingMightHelp = NO;
-    [NSObject enumerateMethodsInClass:mockedClass usingBlock:^(Class cls, SEL sel) {
+    [NSObject enumerateMethodsInClass:[self mockedClass] usingBlock:^(Class cls, SEL sel) {
         if(sel == matcherSel)
             stubbingMightHelp = OCMIsAppleBaseClass(cls) || OCMIsApplePrivateMethod(cls, sel);
     }];

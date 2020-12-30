@@ -25,15 +25,6 @@
 
 
 @interface OCMockObject : NSProxy
-{
-    BOOL            isNice;
-    BOOL            expectationOrderMatters;
-    NSMutableArray *stubs;
-    NSMutableArray *expectations;
-    NSMutableArray *exceptions;
-    NSMutableArray *invocations;
-}
-
 + (id)mockForClass:(Class)aClass;
 + (id)mockForProtocol:(Protocol *)aProtocol;
 + (id)partialMockForObject:(NSObject *)anObject;

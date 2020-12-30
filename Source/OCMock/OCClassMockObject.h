@@ -16,12 +16,7 @@
 
 #import "OCMockObject.h"
 
-@interface OCClassMockObject : OCMockObject
-{
-    Class mockedClass;
-    Class originalMetaClass;
-    Class classCreatedForNewMetaClass;
-}
+@interface OCClassMockObject : OCMockObject 
 
 - (id)initWithClass:(Class)aClass;
 

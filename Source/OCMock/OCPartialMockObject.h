@@ -17,10 +17,6 @@
 #import "OCClassMockObject.h"
 
 @interface OCPartialMockObject : OCClassMockObject
-{
-    NSObject     *realObject;
-    NSInvocation *invocationFromMock;
-}
 
 - (id)initWithObject:(NSObject *)anObject;
 

@@ -31,6 +31,14 @@
 
 
 @implementation OCMockObject
+{
+  BOOL            isNice;
+  BOOL            expectationOrderMatters;
+  NSMutableArray *stubs;
+  NSMutableArray *expectations;
+  NSMutableArray *exceptions;
+  NSMutableArray *invocations;
+}
 
 #pragma mark Class initialisation
 
@@ -180,6 +188,10 @@
     }
 }
 
+- (NSArray *)invocations
+{
+    return invocations;
+}
 
 #pragma mark Public API
 

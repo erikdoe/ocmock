@@ -27,6 +27,11 @@
 
 
 @implementation OCClassMockObject
+{
+    Class mockedClass;
+    Class originalMetaClass;
+    Class classCreatedForNewMetaClass;
+}
 
 #pragma mark Initialisers, description, accessors, etc.
 
