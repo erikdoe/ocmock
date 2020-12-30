@@ -12,7 +12,7 @@ XCODECI     = xcodebuild -project "$(CURDIR)/Source/OCMock.xcodeproj" -xcconfig 
 XCODEDIST   = xcodebuild -project "$(CURDIR)/Source/OCMock.xcodeproj" -xcconfig "$(CURDIR)/Source/OCMockDist.xcconfig"
 SHELL       = /bin/bash -e -o pipefail
 
-.PHONY: macos ioslib ios tvos watchos sourcecode product dmg
+.PHONY: macos ioslib ios tvos watchos sourcecode product dmg carthage
 	
 clean:
 	rm -rf "$(CURDIR)/Build"
@@ -63,3 +63,8 @@ product: macos ioslib ios tvos watchos
 dmg: 
 	@echo "** Creating disk image..."
 	Tools/makedmg.rb $(PRODUCT_DIR) $(BUILD_DIR)
+
+
+carthage:
+	XCODE_XCCONFIG_FILE="$(CURDIR)/Source/Carthage.xcconfig" carthage build --no-skip-current --project-directory "$(CURDIR)/Source"
+	XCODE_XCCONFIG_FILE="$(CURDIR)/Source/Carthage.xcconfig" carthage archive OCMock
