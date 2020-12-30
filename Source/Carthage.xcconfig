@@ -1,0 +1,20 @@
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+// This seems to be necessary now that we link against XCTest, which does
+// not include bitcode. 
+
+ENABLE_BITCODE = NO
+
+// The following is a workaround for an issue with Carthage and Xcode 12.3.
+// https://github.com/Carthage/Carthage/issues/3019#issuecomment-665136323
+//
+// Unlike the description in the Github issue, there is no shell
+// script. You have to make sure that Carthage uses this xcconfig file, e.g.
+//
+// XCODE_XCCONFIG_FILE=Carthage.xcconfig carthage build --no-skip-current
+//
+// As far as I understand this workaround only works for Intel dev machines.
+
+EXCLUDED_ARCHS__EFFECTIVE_PLATFORM_SUFFIX_simulator__NATIVE_ARCH_64_BIT_x86_64__XCODE_1200 = arm64 arm64e armv7 armv7s armv6 armv8
+EXCLUDED_ARCHS = $(inherited) $(EXCLUDED_ARCHS__EFFECTIVE_PLATFORM_SUFFIX_$(EFFECTIVE_PLATFORM_SUFFIX)__NATIVE_ARCH_64_BIT_$(NATIVE_ARCH_64_BIT)__XCODE_$(XCODE_VERSION_MAJOR))
