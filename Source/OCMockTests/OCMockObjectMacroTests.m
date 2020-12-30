@@ -90,6 +90,8 @@
 
 @implementation OCMockObjectMacroTests
 
+#ifdef __IPHONE_14_0 // this is actually a test for Xcode 12; see issue #472
+
 - (void)recordIssue:(XCTIssue *)issue
 {
     if(shouldCaptureFailure)
@@ -104,6 +106,23 @@
     }
 }
 
+#else
+
+- (void)recordFailureWithDescription:(NSString *)description inFile:(NSString *)file atLine:(NSUInteger)line expected:(BOOL)expected
+{
+    if(shouldCaptureFailure)
+    {
+        reportedDescription = description;
+        reportedFile = file;
+        reportedLine = line;
+    }
+    else
+    {
+        [super recordFailureWithDescription:description inFile:file atLine:line expected:expected];
+    }
+}
+
+#endif
 
 - (void)testReportsVerifyFailureWithCorrectLocation
 {

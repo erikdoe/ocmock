@@ -49,6 +49,8 @@
     expectFailure = NO;
 }
 
+#ifdef __IPHONE_14_0 // this is actually a test for Xcode 12; see issue #472
+
 - (void)recordIssue:(XCTIssue *)issue
 {
     if(expectFailure)
@@ -60,6 +62,22 @@
         [super recordIssue:issue];
     }
 }
+
+#else
+
+- (void)recordFailureWithDescription:(NSString *)description inFile:(NSString *)file atLine:(NSUInteger)line expected:(BOOL)expected
+{
+    if(expectFailure)
+    {
+        didRecordFailure = YES;
+    }
+    else
+    {
+        [super recordFailureWithDescription:description inFile:file atLine:line expected:expected];
+    }
+}
+
+#endif
 
 
 - (void)testExactlyThrowsWhenCountTooSmall

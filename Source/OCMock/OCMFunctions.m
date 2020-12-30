@@ -463,6 +463,7 @@ OCPartialMockObject *OCMGetAssociatedMockForObject(id anObject)
 void OCMReportFailure(OCMLocation *loc, NSString *description)
 {
     id testCase = [loc testCase];
+#ifdef __IPHONE_14_0    // this is actually a test for Xcode 12; see issue #472
 #if !TARGET_OS_WATCH
     if((testCase != nil) && [testCase respondsToSelector:@selector(recordIssue:)])
     {
@@ -473,6 +474,7 @@ void OCMReportFailure(OCMLocation *loc, NSString *description)
         [testCase recordIssue:issue];
     }
     else
+#endif
 #endif
          if((testCase != nil) && [testCase respondsToSelector:@selector(recordFailureWithDescription:inFile:atLine:expected:)])
     {

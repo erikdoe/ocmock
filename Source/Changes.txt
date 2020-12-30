@@ -1,6 +1,12 @@
 Listing of notable changes by release. More detail is usually found in the Git
 commit messages and/or the pull requests.
 
+OCMock 3.8.1 (2020-12-30)
+
+* Restored compatibility with Xcode 11. Please note: support of older versions
+  of Xcode is not guaranteed.
+
+
 OCMock 3.8 (2020-12-23)
 
 * Added support for ARM-based Macs. Unfortunately, this means that the hack to
