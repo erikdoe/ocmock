@@ -14,18 +14,15 @@
  *  under the License.
  */
 
+#import <objc/message.h>
 #import <objc/runtime.h>
 #import "NSObject+OCMAdditions.h"
 #import "NSMethodSignature+OCMAdditions.h"
-
 
 @implementation NSObject(OCMAdditions)
 
 + (IMP)instanceMethodForwarderForSelector:(SEL)aSelector
 {
-    // use sel_registerName() and not @selector to avoid warning
-    SEL selectorWithNoImplementation = sel_registerName("methodWhichMustNotExist::::");
-
 #ifndef __arm64__
     static NSMutableDictionary *_OCMReturnTypeCache;
     
@@ -49,10 +46,10 @@
     }
 
     if(needsStructureReturn)
-        return class_getMethodImplementation_stret([NSObject class], selectorWithNoImplementation);
+      return _objc_msgForward_stret;
 #endif
     
-    return class_getMethodImplementation([NSObject class], selectorWithNoImplementation);
+  return _objc_msgForward;
 }
 
 
