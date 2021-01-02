@@ -29,12 +29,20 @@
 
 - (id)initWithObject:(NSObject *)anObject
 {
+  @try
+  {
      if(anObject == nil)
         [NSException raise:NSInvalidArgumentException format:@"Object cannot be nil."];
-    Class const class = [self classToSubclassForObject:anObject];
-	[super initWithClass:class];
-	realObject = [anObject retain];
+     Class const class = [self classToSubclassForObject:anObject];
+	  [super initWithClass:class];
+	  realObject = [anObject retain];
     [self prepareObjectForInstanceMethodMocking];
+  }
+  @catch(NSException *e)
+  {
+      [OCMockObject removeAMockToStop:self];
+      [e raise];
+  }
 	return self;
 }
 

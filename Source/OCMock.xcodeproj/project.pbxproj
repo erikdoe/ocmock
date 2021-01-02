@@ -294,6 +294,8 @@
 		8BF7402124772B0600B9A52C /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03565A1D18F05626003AE91E /* XCTest.framework */; };
 		8BF7402224772B0800B9A52C /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03565A1D18F05626003AE91E /* XCTest.framework */; };
 		8BF7402324772B0800B9A52C /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03565A1D18F05626003AE91E /* XCTest.framework */; };
+		8BC0A67C242D08D800695F71 /* OCMockObjectCleanupTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC0A67B242D08D800695F71 /* OCMockObjectCleanupTests.m */; };
+		8BC0A67D242D08E400695F71 /* OCMockObjectCleanupTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC0A67B242D08D800695F71 /* OCMockObjectCleanupTests.m */; };
 		8DE97C5522B43EE60098C63F /* OCMockObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B3159E146333BF0052CD09 /* OCMockObject.m */; };
 		8DE97C5622B43EE60098C63F /* OCClassMockObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B3158C146333BF0052CD09 /* OCClassMockObject.m */; };
 		8DE97C5722B43EE60098C63F /* OCPartialMockObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B315AA146333BF0052CD09 /* OCPartialMockObject.m */; };
@@ -589,6 +591,7 @@
 		8B11D4B92448E53600247BE2 /* OCMCPlusPlus11Tests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OCMCPlusPlus11Tests.mm; sourceTree = "<group>"; };
 		8B3786A724E5BD5600FD1B5B /* OCMFunctionsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OCMFunctionsTests.m; sourceTree = "<group>"; };
 		8BF73E52246CA75E00B9A52C /* OCMNoEscapeBlockTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMNoEscapeBlockTests.m; sourceTree = "<group>"; };
+		8BC0A67B242D08D800695F71 /* OCMockObjectCleanupTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMockObjectCleanupTests.m; sourceTree = "<group>"; };
 		8DE97CA022B43EE60098C63F /* OCMock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OCMock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A02926811CA0725A00594AAF /* TestObjects.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TestObjects.xcdatamodel; sourceTree = "<group>"; };
 		D31108AD1828DB8700737925 /* OCMockLibTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OCMockLibTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -755,6 +758,7 @@
 				03AC5C1416DF9FA500D82ECD /* OCMockObjectPartialMocksTests.m */,
 				039F91C516EFB493006C3D70 /* OCMockObjectClassMethodMockingTests.m */,
 				2FA286BFBD8B9D068B41E7EF /* OCMockObjectProtocolMocksTests.m */,
+				8BC0A67B242D08D800695F71 /* OCMockObjectCleanupTests.m */,
 				2FA28EE3142412BD601026EF /* OCMockObjectDynamicPropertyMockingTests.m */,
 				03E98D4F18F310EE00522D42 /* OCMockObjectMacroTests.m */,
 				0354D71F16F23AF5001766BB /* OCMockObjectForwardingTargetTests.m */,
@@ -1536,6 +1540,7 @@
 				03565A4218F05721003AE91E /* OCMockObjectPartialMocksTests.m in Sources */,
 				03565A4C18F05721003AE91E /* NSMethodSignatureOCMAdditionsTests.m in Sources */,
 				03565A4818F05721003AE91E /* OCMStubRecorderTests.m in Sources */,
+				8BC0A67C242D08D800695F71 /* OCMockObjectCleanupTests.m in Sources */,
 				03565A4518F05721003AE91E /* OCMockObjectForwardingTargetTests.m in Sources */,
 				2FA28FA53C57236B6DD64E82 /* OCMockObjectRuntimeTests.m in Sources */,
 				8B11D4BA2448E53600247BE2 /* OCMCPlusPlus11Tests.mm in Sources */,
@@ -1652,6 +1657,7 @@
 				D31108CA1828DBD600737925 /* NSInvocationOCMAdditionsTests.m in Sources */,
 				03C9CA1F18F05A8E006DF94D /* NSMethodSignatureOCMAdditionsTests.m in Sources */,
 				03C9CA1D18F05A75006DF94D /* OCMockObjectProtocolMocksTests.m in Sources */,
+				8BC0A67D242D08E400695F71 /* OCMockObjectCleanupTests.m in Sources */,
 				03E98D5118F310EE00522D42 /* OCMockObjectMacroTests.m in Sources */,
 				A06930951CA1BFC900513023 /* TestObjects.xcdatamodeld in Sources */,
 				8B11D4BB2448E53600247BE2 /* OCMCPlusPlus11Tests.mm in Sources */,

@@ -32,10 +32,18 @@
 
 - (id)initWithClass:(Class)aClass
 {
-	[self assertClassIsSupported:aClass];
-	[super init];
-	mockedClass = aClass;
+  @try
+  {
+    [self assertClassIsSupported:aClass];
+    [super init];
+    mockedClass = aClass;
     [self prepareClassForClassMethodMocking];
+  }
+  @catch(NSException *e)
+  {
+      [OCMockObject removeAMockToStop:self];
+      [e raise];
+  }
 	return self;
 }
 
