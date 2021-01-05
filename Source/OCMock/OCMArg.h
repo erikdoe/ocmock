@@ -29,7 +29,30 @@
 + (id)isEqual:(id)value;
 + (id)isNotEqual:(id)value;
 + (id)isKindOfClass:(Class)cls;
+
+// Be cautious using `checkWithSelector:onObject:`. Note that the selector
+// will be executed before the method that is expected is recorded as having
+// been executed. Therefore code like this:
+// ```
+// OCMExpect([foo bar:[OCMArg checkWithBlock:^(id obj) {
+//     [expectation fulfill];
+//     return YES;
+//   }]]);
+// ...
+// [self waitForExpectationsWithTimeout:5 handler:nil];
+// OCMVerify(foo);
+// ```
+// where `[foo bar:]` is executed on a different thread/queue is a race
+// condition between OCMVerify being called before the OCMExpect is marked as
+// having been done because `waitForExpectationsWithTimeout:handler:` may return
+// before `bar:` is recorded as having been executed by `foo`.
+// This will end up being a flaky test that will be a pain to deal with.
+// In general use `and...` methods like `andDo:` or `andFulfill:` for any
+// functionality that has side effects as they are executed after the method
+// is recorded as having been executed.
 + (id)checkWithSelector:(SEL)selector onObject:(id)anObject;
+
+// See warning about `checkWithSelector:onObject:`.
 + (id)checkWithBlock:(BOOL (^)(id obj))block;
 
 // manipulating arguments
