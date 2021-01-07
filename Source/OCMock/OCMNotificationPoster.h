@@ -16,9 +16,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OCMNotificationPoster : NSObject 
+@interface OCMNotificationPoster : NSObject
 {
-	NSNotification *notification;
+    NSNotification *notification;
 }
 
 - (id)initWithNotification:(id)aNotification;

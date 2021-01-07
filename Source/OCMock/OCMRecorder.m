@@ -16,10 +16,10 @@
  */
 
 #import <objc/runtime.h>
-#import "OCMRecorder.h"
+#import "NSInvocation+OCMAdditions.h"
 #import "OCClassMockObject.h"
 #import "OCMInvocationMatcher.h"
-#import "NSInvocation+OCMAdditions.h"
+#import "OCMRecorder.h"
 
 
 @implementation OCMRecorder
@@ -36,7 +36,7 @@
 {
     [self init];
     [self setMockObject:aMockObject];
-	return self;
+    return self;
 }
 
 - (void)setMockObject:(OCMockObject *)aMockObject
@@ -52,7 +52,7 @@
 - (void)dealloc
 {
     [invocationMatcher release];
-	[super dealloc];
+    [super dealloc];
 }
 
 - (NSString *)description
@@ -71,7 +71,7 @@
 }
 
 
-#pragma mark  Modifying the matcher
+#pragma mark Modifying the matcher
 
 - (id)classMethod
 {
@@ -87,7 +87,7 @@
 }
 
 
-#pragma mark  Recording the actual invocation
+#pragma mark Recording the actual invocation
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
@@ -99,7 +99,7 @@
     {
         // if we're a working with a class mock and there is a class method, auto-switch
         if(([object_getClass(mockObject) isSubclassOfClass:[OCClassMockObject class]]) &&
-           ([[(OCClassMockObject *)mockObject mockedClass] respondsToSelector:aSelector]))
+            ([[(OCClassMockObject *)mockObject mockedClass] respondsToSelector:aSelector]))
         {
             [self classMethod];
             signature = [self methodSignatureForSelector:aSelector];
@@ -110,8 +110,8 @@
 
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
-	[anInvocation setTarget:nil];
-	didRecordInvocation = YES;
+    [anInvocation setTarget:nil];
+    didRecordInvocation = YES;
     [invocationMatcher setInvocation:anInvocation];
 
     // Code with ARC may retain the receiver of an init method before invoking it. In that case it
@@ -123,7 +123,7 @@
     {
         id returnValue = shouldReturnMockFromInit ? (id)mockObject : (id)self;
         [anInvocation setReturnValue:&returnValue];
-	}
+    }
 }
 
 - (void)doesNotRecognizeSelector:(SEL)aSelector __used
@@ -141,8 +141,7 @@
 
 - (OCMRecorder *(^)(void))_ignoringNonObjectArgs
 {
-    id (^theBlock)(void) = ^ (void)
-    {
+    id (^theBlock)(void) = ^(void) {
         return [self ignoringNonObjectArgs];
     };
     return [[theBlock copy] autorelease];

@@ -19,20 +19,20 @@
 #import "OCMock.h"
 
 
-#pragma mark   Helper classes
+#pragma mark Helper classes
 
 @interface InternalObject : NSObject
 {
     NSString *_name;
 }
-@property (nonatomic, strong) NSString *name;
+@property(nonatomic, strong) NSString *name;
 @end
 
 @interface PublicObject : NSObject
 {
     InternalObject *_internal;
 };
-@property (nonatomic, strong) NSString *name;
+@property(nonatomic, strong) NSString *name;
 @end
 
 @implementation InternalObject
@@ -49,7 +49,7 @@
 - (instancetype)initWithInternal:(InternalObject *)internal
 {
     self = [super init];
-    if (!self)
+    if(!self)
         return self;
 
     _internal = internal;
@@ -63,7 +63,7 @@
 
 - (id)forwardingTargetForSelector:(SEL)selector
 {
-    if (selector == @selector(name) ||
+    if(selector == @selector(name) ||
         selector == @selector(setName:))
         return _internal;
     return [super forwardingTargetForSelector:selector];
@@ -72,7 +72,7 @@
 + (NSMethodSignature *)instanceMethodSignatureForSelector:(SEL)selector
 {
     NSMethodSignature *signature = [super instanceMethodSignatureForSelector:selector];
-    if (signature)
+    if(signature)
         return signature;
     else
         return [InternalObject instanceMethodSignatureForSelector:selector];
@@ -81,7 +81,7 @@
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)selector
 {
     NSMethodSignature *signature = [super methodSignatureForSelector:selector];
-    if (signature)
+    if(signature)
         return signature;
 
     return [[self forwardingTargetForSelector:selector] methodSignatureForSelector:selector];
@@ -89,7 +89,7 @@
 
 - (BOOL)respondsToSelector:(SEL)selector
 {
-    if ([super respondsToSelector:selector])
+    if([super respondsToSelector:selector])
         return YES;
 
     return [[self forwardingTargetForSelector:selector] respondsToSelector:selector];
@@ -97,7 +97,7 @@
 
 + (BOOL)instancesRespondToSelector:(SEL)selector
 {
-    if (class_respondsToSelector(self, selector))
+    if(class_respondsToSelector(self, selector))
         return YES;
 
     return [InternalObject instancesRespondToSelector:selector];
@@ -116,7 +116,7 @@
 @end
 
 
-#pragma mark    Tests
+#pragma mark Tests
 
 
 @interface OCMockForwardingTargetTests : XCTestCase

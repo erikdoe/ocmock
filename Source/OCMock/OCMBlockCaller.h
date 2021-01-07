@@ -16,9 +16,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OCMBlockCaller : NSObject 
+@interface OCMBlockCaller : NSObject
 {
-	void (^block)(NSInvocation *);
+    void (^block)(NSInvocation *);
 }
 
 - (id)initWithCallBlock:(void (^)(NSInvocation *))theBlock;
@@ -26,4 +26,3 @@
 - (void)handleInvocation:(NSInvocation *)anInvocation;
 
 @end
-

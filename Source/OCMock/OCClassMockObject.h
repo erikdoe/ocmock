@@ -16,17 +16,17 @@
 
 #import "OCMockObject.h"
 
-@interface OCClassMockObject : OCMockObject 
+@interface OCClassMockObject : OCMockObject
 {
-    Class  mockedClass;
-    Class  originalMetaClass;
-    Class  classCreatedForNewMetaClass;
+    Class mockedClass;
+    Class originalMetaClass;
+    Class classCreatedForNewMetaClass;
 }
 
 - (id)initWithClass:(Class)aClass;
 
 - (Class)mockedClass;
-- (Class)mockObjectClass;  // since -class returns the mockedClass
+- (Class)mockObjectClass; // since -class returns the mockedClass
 
 - (void)assertClassIsSupported:(Class)aClass;
 

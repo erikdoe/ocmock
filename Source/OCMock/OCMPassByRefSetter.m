@@ -21,18 +21,18 @@
 
 - (id)initWithValue:(id)aValue
 {
-    if ((self = [super init]))
+    if((self = [super init]))
     {
         value = [aValue retain];
     }
-	
-	return self;
+
+    return self;
 }
 
 - (void)dealloc
 {
-	[value release];
-	[super dealloc];
+    [value release];
+    [super dealloc];
 }
 
 - (void)handleArgument:(id)arg

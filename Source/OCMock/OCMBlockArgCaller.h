@@ -16,7 +16,7 @@
 
 #import "OCMArgAction.h"
 
-@interface OCMBlockArgCaller : OCMArgAction <NSCopying>
+@interface OCMBlockArgCaller : OCMArgAction<NSCopying>
 {
     NSArray *arguments;
 }

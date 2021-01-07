@@ -15,8 +15,8 @@
  */
 
 #import "OCMBoxedReturnValueProvider.h"
-#import "OCMFunctionsPrivate.h"
 #import "NSValue+OCMAdditions.h"
+#import "OCMFunctionsPrivate.h"
 
 
 @implementation OCMBoxedReturnValueProvider
@@ -59,6 +59,5 @@
 
     return OCMEqualTypesAllowingOpaqueStructs(returnType, valueType);
 }
-
 
 @end

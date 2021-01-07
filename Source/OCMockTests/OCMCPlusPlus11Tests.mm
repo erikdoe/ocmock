@@ -33,13 +33,13 @@
 
 - (void)testSetsUpStubReturningNilForIdReturnType
 {
-	id mock = OCMPartialMock([NSArray arrayWithObject:@"Foo"]);
+    id mock = OCMPartialMock([NSArray arrayWithObject:@"Foo"]);
 
-	OCMExpect([mock lastObject]).andReturn(nil);
-	XCTAssertNil([mock lastObject], @"Should have returned stubbed value");
+    OCMExpect([mock lastObject]).andReturn(nil);
+    XCTAssertNil([mock lastObject], @"Should have returned stubbed value");
 
-	OCMExpect([mock lastObject]).andReturn(Nil);
-	XCTAssertNil([mock lastObject], @"Should have returned stubbed value");
+    OCMExpect([mock lastObject]).andReturn(Nil);
+    XCTAssertNil([mock lastObject], @"Should have returned stubbed value");
 }
 
 @end

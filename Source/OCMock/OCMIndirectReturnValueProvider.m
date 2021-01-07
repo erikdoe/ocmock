@@ -21,19 +21,19 @@
 
 - (id)initWithProvider:(id)aProvider andSelector:(SEL)aSelector
 {
-    if ((self = [super init]))
+    if((self = [super init]))
     {
         provider = [aProvider retain];
         selector = aSelector;
     }
-	
-	return self;
+
+    return self;
 }
 
 - (void)dealloc
 {
-	[provider release];
-	[super dealloc];
+    [provider release];
+    [super dealloc];
 }
 
 - (void)handleInvocation:(NSInvocation *)anInvocation
@@ -42,8 +42,8 @@
     SEL originalSelector = [anInvocation selector];
 
     [anInvocation setTarget:provider];
-	[anInvocation setSelector:selector];
-	[anInvocation invoke];
+    [anInvocation setSelector:selector];
+    [anInvocation invoke];
 
     [anInvocation setTarget:originalTarget];
     [anInvocation setSelector:originalSelector];

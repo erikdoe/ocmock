@@ -26,13 +26,13 @@
 
 - (instancetype)initWithTestCase:(id)aTestCase file:(NSString *)aFile line:(NSUInteger)aLine
 {
-    if ((self = [super init]))
+    if((self = [super init]))
     {
         testCase = aTestCase;
         file = [aFile retain];
         line = aLine;
     }
-    
+
     return self;
 }
 
@@ -64,4 +64,3 @@ OCMLocation *OCMMakeLocation(id testCase, const char *fileCString, int line)
 {
     return [OCMLocation locationWithTestCase:testCase file:[NSString stringWithUTF8String:fileCString] line:line];
 }
-

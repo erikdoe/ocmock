@@ -14,8 +14,8 @@
  *  under the License.
  */
 
-#import <OCMock/OCMRecorder.h>
 #import <OCMock/OCMFunctions.h>
+#import <OCMock/OCMRecorder.h>
 
 #import <objc/runtime.h>
 

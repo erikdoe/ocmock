@@ -15,44 +15,44 @@
  */
 
 #import <objc/runtime.h>
-#import "OCClassMockObject.h"
-#import "OCMInvocationStub.h"
-#import "OCMFunctionsPrivate.h"
 #import "NSMethodSignature+OCMAdditions.h"
 #import "NSObject+OCMAdditions.h"
+#import "OCClassMockObject.h"
+#import "OCMFunctionsPrivate.h"
+#import "OCMInvocationStub.h"
 
-@interface NSObject(OCMClassMockingSupport)
+@interface NSObject (OCMClassMockingSupport)
 + (BOOL)supportsMocking:(NSString **)reason;
 @end
 
 
 @implementation OCClassMockObject
 
-#pragma mark  Initialisers, description, accessors, etc.
+#pragma mark Initialisers, description, accessors, etc.
 
 - (id)initWithClass:(Class)aClass
 {
-	[self assertClassIsSupported:aClass];
-	[super init];
-	mockedClass = aClass;
+    [self assertClassIsSupported:aClass];
+    [super init];
+    mockedClass = aClass;
     [self prepareClassForClassMethodMocking];
-	return self;
+    return self;
 }
 
 - (void)dealloc
 {
-	[self stopMocking];
-	[super dealloc];
+    [self stopMocking];
+    [super dealloc];
 }
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"OCClassMockObject(%@)", NSStringFromClass(mockedClass)];
+    return [NSString stringWithFormat:@"OCClassMockObject(%@)", NSStringFromClass(mockedClass)];
 }
 
 - (Class)mockedClass
 {
-	return mockedClass;
+    return mockedClass;
 }
 
 - (void)assertClassIsSupported:(Class)aClass
@@ -68,7 +68,7 @@
     }
 }
 
-#pragma mark  Extending/overriding superclass behaviour
+#pragma mark Extending/overriding superclass behaviour
 
 - (void)stopMocking
 {
@@ -102,14 +102,14 @@
 }
 
 
-#pragma mark  Class method mocking
+#pragma mark Class method mocking
 
 - (void)prepareClassForClassMethodMocking
 {
     /* the runtime and OCMock depend on string and array; we don't intercept methods on them to avoid endless loops */
     if([[mockedClass class] isSubclassOfClass:[NSString class]] || [[mockedClass class] isSubclassOfClass:[NSArray class]])
         return;
-    
+
     /* trying to replace class methods on NSManagedObject and subclasses of it doesn't work; see #339 */
     if([mockedClass isSubclassOfClass:objc_getClass("NSManagedObject")])
         return;
@@ -140,9 +140,11 @@
     class_addMethod(newMetaClass, @selector(forwardInvocation:), myForwardIMP, method_getTypeEncoding(myForwardMethod));
 
     /* adding forwarder for most class methods (instance methods on meta class) to allow for verify after run */
-    NSArray *methodBlackList = @[@"class", @"forwardingTargetForSelector:", @"methodSignatureForSelector:", @"forwardInvocation:", @"isBlock",
-            @"instanceMethodForwarderForSelector:", @"instanceMethodSignatureForSelector:", @"resolveClassMethod:"];
-    [NSObject enumerateMethodsInClass:originalMetaClass usingBlock:^(Class cls, SEL sel) {
+    NSArray *methodBlackList = @[
+        @"class", @"forwardingTargetForSelector:", @"methodSignatureForSelector:", @"forwardInvocation:", @"isBlock",
+        @"instanceMethodForwarderForSelector:", @"instanceMethodSignatureForSelector:", @"resolveClassMethod:"
+    ];
+    void (^setupForwarderFiltered)(Class, SEL) = ^(Class cls, SEL sel) {
         if((cls == object_getClass([NSObject class])) || (cls == [NSObject class]) || (cls == object_getClass(cls)))
             return;
         if(OCMIsApplePrivateMethod(cls, sel))
@@ -157,7 +159,8 @@
         {
             // ignore for now
         }
-    }];
+    };
+    [NSObject enumerateMethodsInClass:originalMetaClass usingBlock:setupForwarderFiltered];
 }
 
 
@@ -180,13 +183,13 @@
 
 - (void)forwardInvocationForClassObject:(NSInvocation *)anInvocation
 {
-	// in here "self" is a reference to the real class, not the mock
-	OCClassMockObject *mock = OCMGetAssociatedMockForClass((Class) self, YES);
+    // in here "self" is a reference to the real class, not the mock
+    OCClassMockObject *mock = OCMGetAssociatedMockForClass((Class)self, YES);
     if(mock == nil)
     {
         [NSException raise:NSInternalInconsistencyException format:@"No mock for class %@", NSStringFromClass((Class)self)];
     }
-	if([mock handleInvocation:anInvocation] == NO)
+    if([mock handleInvocation:anInvocation] == NO)
     {
         [anInvocation setSelector:OCMAliasForOriginalSelector([anInvocation selector])];
         [anInvocation invoke];
@@ -199,7 +202,7 @@
 }
 
 
-#pragma mark  Proxy API
+#pragma mark Proxy API
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
@@ -234,8 +237,10 @@
 - (BOOL)conformsToProtocol:(Protocol *)aProtocol
 {
     Class clazz = mockedClass;
-    while (clazz != nil) {
-        if (class_conformsToProtocol(clazz, aProtocol)) {
+    while(clazz != nil)
+    {
+        if(class_conformsToProtocol(clazz, aProtocol))
+        {
             return YES;
         }
         clazz = class_getSuperclass(clazz);
@@ -246,7 +251,7 @@
 @end
 
 
-#pragma mark  -
+#pragma mark -
 
 /*
  taken from:

@@ -24,10 +24,9 @@
 {
     OCMockObject         *mockObject;
     OCMInvocationMatcher *invocationMatcher;
-    BOOL                 didRecordInvocation;
-    BOOL                 shouldReturnMockFromInit;
+    BOOL                  didRecordInvocation;
+    BOOL                  shouldReturnMockFromInit;
 }
-
 
 - (instancetype)init;
 - (instancetype)initWithMockObject:(OCMockObject *)aMockObject;
@@ -41,12 +40,11 @@
 - (id)classMethod;
 - (id)ignoringNonObjectArgs;
 
-
 @end
 
 @interface OCMRecorder (Properties)
 
 #define ignoringNonObjectArgs() _ignoringNonObjectArgs()
-@property (nonatomic, readonly) OCMRecorder *(^ _ignoringNonObjectArgs)(void);
+@property(nonatomic, readonly) OCMRecorder * (^_ignoringNonObjectArgs)(void);
 
 @end

@@ -19,25 +19,25 @@
 
 @implementation OCMBlockCaller
 
--(id)initWithCallBlock:(void (^)(NSInvocation *))theBlock 
+- (id)initWithCallBlock:(void (^)(NSInvocation *))theBlock
 {
-    if ((self = [super init]))
+    if((self = [super init]))
     {
         block = [theBlock copy];
     }
-    
-	return self;
+
+    return self;
 }
 
--(void)dealloc 
+- (void)dealloc
 {
-	[block release];
-	[super dealloc];
+    [block release];
+    [super dealloc];
 }
 
 - (void)handleInvocation:(NSInvocation *)anInvocation
 {
-    if (block != nil)
+    if(block != nil)
     {
         block(anInvocation);
     }

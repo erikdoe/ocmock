@@ -16,7 +16,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OCMConstraint : NSObject 
+@interface OCMConstraint : NSObject
 
 + (instancetype)constraint;
 - (BOOL)evaluate:(id)value;
@@ -42,23 +42,23 @@
 
 @interface OCMIsNotEqualConstraint : OCMConstraint
 {
-	@public
-	id testValue;
+@public
+    id testValue;
 }
 
 @end
 
 @interface OCMInvocationConstraint : OCMConstraint
 {
-	@public
-	NSInvocation *invocation;
+@public
+    NSInvocation *invocation;
 }
 
 @end
 
 @interface OCMBlockConstraint : OCMConstraint
 {
-	BOOL (^block)(id);
+    BOOL (^block)(id);
 }
 
 - (instancetype)initWithConstraintBlock:(BOOL (^)(id))block;

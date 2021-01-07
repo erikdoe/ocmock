@@ -21,7 +21,7 @@
 
 @implementation NSMethodSignature(OCMAdditions)
 
-#pragma mark    Signatures for dynamic properties
+#pragma mark Signatures for dynamic properties
 
 + (NSMethodSignature *)signatureForDynamicPropertyAccessedWithSelector:(SEL)selector inClass:(Class)aClass
 {
@@ -29,7 +29,7 @@
     objc_property_t property = [self propertyMatchingSelector:selector inClass:aClass isGetter:&isGetter];
     if(property == NULL)
         return nil;
-    
+
     const char *propertyAttributesString = property_getAttributes(property);
     NSArray *propertyAttributes = [[NSString stringWithCString:propertyAttributesString
                                                       encoding:NSASCIIStringEncoding] componentsSeparatedByString:@","];
@@ -49,7 +49,7 @@
     NSRange r = [typeStr rangeOfString:@"\""]; // incomplete workaround to deal with structs
     if(r.location != NSNotFound)
         typeStr = [typeStr substringToIndex:r.location];
-    
+
     NSString *sigStringFormat = isGetter ? @"%@@:" : @"v@:%@";
     const char *sigCString = [[NSString stringWithFormat:sigStringFormat, typeStr] cStringUsingEncoding:NSASCIIStringEncoding];
     return [NSMethodSignature signatureWithObjCTypes:sigCString];
@@ -59,7 +59,7 @@
 + (objc_property_t)propertyMatchingSelector:(SEL)selector inClass:(Class)aClass isGetter:(BOOL *)isGetterPtr
 {
     NSString *propertyName = NSStringFromSelector(selector);
-    
+
     // first try selector as is aassuming it's a getter
     objc_property_t property = class_getProperty(aClass, [propertyName cStringUsingEncoding:NSASCIIStringEncoding]);
     if(property != NULL)
@@ -83,18 +83,18 @@
             return property;
         }
     }
-    
+
     // search through properties with custom getter/setter that corresponds to selector
     unsigned int propertiesCount = 0;
     objc_property_t *allProperties = class_copyPropertyList(aClass, &propertiesCount);
-    for(unsigned int i = 0 ; i < propertiesCount; i++)
+    for(unsigned int i = 0; i < propertiesCount; i++)
     {
         NSArray *propertyAttributes = [[NSString stringWithCString:property_getAttributes(allProperties[i])
-                                                 encoding:NSASCIIStringEncoding] componentsSeparatedByString:@","];
+                                                          encoding:NSASCIIStringEncoding] componentsSeparatedByString:@","];
         for(NSString *attribute in propertyAttributes)
         {
             if(([attribute hasPrefix:@"G"] || [attribute hasPrefix:@"S"]) &&
-                    [[attribute substringFromIndex:1] isEqualToString:propertyName])
+                [[attribute substringFromIndex:1] isEqualToString:propertyName])
             {
                 *isGetterPtr = ![attribute hasPrefix:@"S"];
                 property = allProperties[i];
@@ -109,7 +109,7 @@
 }
 
 
-#pragma mark    Signatures for blocks
+#pragma mark Signatures for blocks
 
 + (NSMethodSignature *)signatureForBlock:(id)block
 {
@@ -118,7 +118,7 @@
      * https://github.com/ebf/CTObjectiveCRuntimeAdditions/tree/master/CTObjectiveCRuntimeAdditions/CTObjectiveCRuntimeAdditions
      */
 
-    struct OCMBlockDef *blockRef = (__bridge struct OCMBlockDef *) block;
+    struct OCMBlockDef *blockRef = (__bridge struct OCMBlockDef *)block;
 
     if(!(blockRef->flags & OCMBlockDescriptionFlagsHasSignature))
         return nil;
@@ -132,12 +132,12 @@
         signatureLocation += sizeof(void (*)(void *src));
     }
 
-    const char *signature = (*(const char **) signatureLocation);
+    const char *signature = (*(const char **)signatureLocation);
     return [NSMethodSignature signatureWithObjCTypes:signature];
 }
 
 
-#pragma mark    Extended attributes
+#pragma mark Extended attributes
 
 - (BOOL)usesSpecialStructureReturn
 {
@@ -167,7 +167,7 @@
 {
     NSMutableString *typeString = [NSMutableString string];
     [typeString appendFormat:@"%s", [self methodReturnType]];
-    for (NSUInteger i=0; i<[self numberOfArguments]; i++)
+    for(NSUInteger i = 0; i < [self numberOfArguments]; i++)
         [typeString appendFormat:@"%s", [self getArgumentTypeAtIndex:i]];
     return typeString;
 }

@@ -18,7 +18,7 @@
 #import "OCMock.h"
 
 
-#pragma mark   Helper classes
+#pragma mark Helper classes
 
 @interface TestClassWithDynamicProperties : NSObject
 @property(nonatomic, copy) NSDictionary *anObject;
@@ -43,12 +43,12 @@
 
 @implementation OCMockObjectDynamicPropertyMockingTests
 
-#pragma mark   Tests stubbing dynamic properties
+#pragma mark Tests stubbing dynamic properties
 
 - (void)testCanStubDynamicPropertiesWithIdType
 {
     id mock = [OCMockObject mockForClass:[TestClassWithDynamicProperties class]];
-    NSDictionary *testDict = @{@"test-key" : @"test-value"};
+    NSDictionary *testDict = @{ @"test-key" : @"test-value" };
     [[[mock stub] andReturn:testDict] anObject];
     XCTAssertEqualObjects(testDict, [mock anObject]);
 }
@@ -72,7 +72,7 @@
 - (void)testCanStubDynamicPropertiesWithCustomGetter
 {
     id mock = [OCMockObject mockForClass:[TestClassWithDynamicProperties class]];
-    NSDictionary *testDict = @{@"test-key" : @"test-value"};
+    NSDictionary *testDict = @{ @"test-key" : @"test-value" };
     [[[mock stub] andReturn:testDict] customGetter];
     XCTAssertEqualObjects(testDict, [mock customGetter]);
 }
@@ -80,7 +80,7 @@
 - (void)testCanMockSetterForDynamicProperty
 {
     id mock = [OCMockObject mockForClass:[TestClassWithDynamicProperties class]];
-    NSDictionary *dummyObject = @{@"test-key" : @"test-value"};
+    NSDictionary *dummyObject = @{ @"test-key" : @"test-value" };
 
     [[mock expect] setAnObject:dummyObject];
     [mock setAnObject:dummyObject];
@@ -90,12 +90,11 @@
 - (void)testCanMockSetterForDynamicPropertyWithCustomSetter
 {
     id mock = [OCMockObject mockForClass:[TestClassWithDynamicProperties class]];
-    NSDictionary *dummyObject = @{@"test-key" : @"test-value"};
+    NSDictionary *dummyObject = @{ @"test-key" : @"test-value" };
 
     [[mock expect] customSetter:dummyObject];
     [mock customSetter:dummyObject];
     [mock verify];
-
 }
 
 @end

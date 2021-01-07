@@ -14,9 +14,9 @@
  *  under the License.
  */
 
-#import <objc/runtime.h>
-#import <XCTest/XCTest.h>
 #import <OCMock/OCMockObject.h>
+#import <XCTest/XCTest.h>
+#import <objc/runtime.h>
 #import "OCMFunctions.h"
 #import "OCMFunctionsPrivate.h"
 
@@ -55,7 +55,7 @@
 
 - (void)testIsBlockReturnsTrueForBlock
 {
-    XCTAssertTrue(OCMIsBlock(^{}));
+    XCTAssertTrue(OCMIsBlock(^ { }));
 }
 
 - (void)testIsMockSubclassOnlyReturnYesForActualSubclass

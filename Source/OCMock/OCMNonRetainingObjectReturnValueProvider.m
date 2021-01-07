@@ -14,16 +14,16 @@
  *  under the License.
  */
 
+#import "NSInvocation+OCMAdditions.h"
 #import "OCMNonRetainingObjectReturnValueProvider.h"
 #import "OCMFunctions.h"
-#import "NSInvocation+OCMAdditions.h"
 
 
 @implementation OCMNonRetainingObjectReturnValueProvider
 
 - (instancetype)initWithValue:(id)aValue
 {
-    if ((self = [super init]))
+    if((self = [super init]))
         returnValue = aValue;
     return self;
 }
@@ -37,4 +37,3 @@
     [anInvocation setReturnValue:&returnValue];
 }
 @end
-

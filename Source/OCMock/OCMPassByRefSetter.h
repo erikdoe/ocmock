@@ -18,7 +18,7 @@
 
 @interface OCMPassByRefSetter : OCMArgAction
 {
-	id value;
+    id value;
 }
 
 - (id)initWithValue:(id)value;

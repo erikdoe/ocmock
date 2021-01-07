@@ -18,13 +18,13 @@
 #if !TARGET_OS_WATCH
 #import <XCTest/XCTest.h>
 #endif
-#import "OCMFunctionsPrivate.h"
 #import "OCClassMockObject.h"
-#import "OCPartialMockObject.h"
+#import "OCMFunctionsPrivate.h"
 #import "OCMLocation.h"
+#import "OCPartialMockObject.h"
 
 
-#pragma mark  Known private API
+#pragma mark Known private API
 
 @interface NSException(OCMKnownExceptionMethods)
 + (NSException *)failureInFile:(NSString *)file atLine:(int)line withDescription:(NSString *)formatString, ...;
@@ -36,7 +36,7 @@
 @end
 
 
-#pragma mark  Functions related to ObjC type system
+#pragma mark Functions related to ObjC type system
 
 const char *OCMTypeWithoutQualifiers(const char *objCType)
 {
@@ -54,7 +54,7 @@ static BOOL OCMIsUnqualifiedClassType(const char *unqualifiedObjCType)
 
 static BOOL OCMIsUnqualifiedBlockType(const char *unqualifiedObjCType)
 {
-    char blockType[] = @encode(void(^)(void));
+    char blockType[] = @encode(void (^)(void));
     if(strcmp(unqualifiedObjCType, blockType) == 0)
         return YES;
 
@@ -102,7 +102,7 @@ BOOL OCMIsObjectType(const char *objCType)
 
 CFNumberType OCMNumberTypeForObjCType(const char *objcType)
 {
-    switch (objcType[0])
+    switch(objcType[0])
     {
         case 'c': return kCFNumberCharType;
         case 'C': return kCFNumberCharType;
@@ -117,36 +117,39 @@ CFNumberType OCMNumberTypeForObjCType(const char *objcType)
         case 'Q': return kCFNumberLongLongType;
         case 'f': return kCFNumberFloatType;
         case 'd': return kCFNumberDoubleType;
-        default:  return 0;
+        default: return 0;
     }
 }
 
 
 static BOOL ParseStructType(const char *type, const char **typeEnd, const char **typeNameEnd, const char **typeEqualSign)
 {
-    if (type[0] != '{' && type[0] != '(')
+    if(type[0] != '{' && type[0] != '(')
         return NO;
 
     *typeNameEnd = NULL;
     *typeEqualSign = NULL;
 
     const char endChar = type[0] == '{' ? '}' : ')';
-    for (const char* ptr = type + 1; *ptr; ++ptr) {
-        switch (*ptr) {
+    for(const char *ptr = type + 1; *ptr; ++ptr)
+    {
+        switch(*ptr)
+        {
             case '(':
             case '{':
             {
                 const char *subTypeEnd;
                 const char *subTypeNameEnd;
                 const char *subTypeEqualSign;
-                if (!ParseStructType(ptr, &subTypeEnd, &subTypeNameEnd, &subTypeEqualSign))
+                if(!ParseStructType(ptr, &subTypeEnd, &subTypeNameEnd, &subTypeEqualSign))
                     return NO;
                 ptr = subTypeEnd;
                 break;
             }
             case '=':
             {
-                if (!*typeEqualSign) {
+                if(!*typeEqualSign)
+                {
                     *typeNameEnd = ptr;
                     *typeEqualSign = ptr;
                 }
@@ -155,9 +158,10 @@ static BOOL ParseStructType(const char *type, const char **typeEnd, const char *
             case ')':
             case '}':
             {
-                if (*ptr == endChar) {
+                if(*ptr == endChar)
+                {
                     *typeEnd = ptr;
-                    if (!*typeNameEnd)
+                    if(!*typeNameEnd)
                         *typeNameEnd = ptr;
                     return YES;
                 }
@@ -192,24 +196,24 @@ static BOOL OCMEqualTypesAllowingOpaqueStructsInternal(const char *type1, const 
     type1 = OCMTypeWithoutQualifiers(type1);
     type2 = OCMTypeWithoutQualifiers(type2);
 
-    switch (type1[0])
+    switch(type1[0])
     {
         case '{':
         case '(':
         {
-            if (type2[0] != type1[0])
+            if(type2[0] != type1[0])
                 return NO;
 
             const char *type1End;
             const char *type1NameEnd;
             const char *type1EqualSign;
-            if (!ParseStructType(type1, &type1End, &type1NameEnd, &type1EqualSign))
+            if(!ParseStructType(type1, &type1End, &type1NameEnd, &type1EqualSign))
                 return NO;
 
             const char *type2End;
             const char *type2NameEnd;
             const char *type2EqualSign;
-            if (!ParseStructType(type2, &type2End, &type2NameEnd, &type2EqualSign))
+            if(!ParseStructType(type2, &type2End, &type2NameEnd, &type2EqualSign))
                 return NO;
 
             /* Opaque types either don't have an equals sign (just the name and the end brace), or
@@ -222,37 +226,40 @@ static BOOL OCMEqualTypesAllowingOpaqueStructsInternal(const char *type1, const 
             intptr_t type2NameLen = type2NameEnd - type2;
 
             /* If the names are not equal and neither of the names is a question mark, return NO */
-            if ((type1NameLen != type2NameLen || strncmp(type1, type2, type1NameLen)) &&
-                    !((type1NameLen == 2) && (type1[1] == '?')) && !((type2NameLen == 2) && (type2[1] == '?')) &&
-                    !(type1NameLen == 1 || type2NameLen == 1))
+            if((type1NameLen != type2NameLen || strncmp(type1, type2, type1NameLen)) &&
+                !((type1NameLen == 2) && (type1[1] == '?')) && !((type2NameLen == 2) && (type2[1] == '?')) &&
+                !(type1NameLen == 1 || type2NameLen == 1))
                 return NO;
 
             /* If the same name, and at least one is opaque, that is close enough. */
-            if (type1Opaque || type2Opaque)
+            if(type1Opaque || type2Opaque)
                 return YES;
 
             /* Otherwise, compare all the elements.  Use NSGetSizeAndAlignment to walk through the struct elements. */
             type1 = type1EqualSign + 1;
             type2 = type2EqualSign + 1;
-            while (type1 != type1End && *type1)
+            while(type1 != type1End && *type1)
             {
-                if (!OCMEqualTypesAllowingOpaqueStructs(type1, type2))
+                if(!OCMEqualTypesAllowingOpaqueStructs(type1, type2))
                     return NO;
 
-                if (*type1 != '{' && *type1 != '(') {
+                if(*type1 != '{' && *type1 != '(')
+                {
                     type1 = NSGetSizeAndAlignment(type1, NULL, NULL);
                     type2 = NSGetSizeAndAlignment(type2, NULL, NULL);
-                } else {
+                }
+                else
+                {
                     const char *subType1End;
                     const char *subType1NameEnd;
                     const char *subType1EqualSign;
-                    if (!ParseStructType(type1, &subType1End, &subType1NameEnd, &subType1EqualSign))
+                    if(!ParseStructType(type1, &subType1End, &subType1NameEnd, &subType1EqualSign))
                         return NO;
 
                     const char *subType2End;
                     const char *subType2NameEnd;
                     const char *subType2EqualSign;
-                    if (!ParseStructType(type2, &subType2End, &subType2NameEnd, &subType2EqualSign))
+                    if(!ParseStructType(type2, &subType2End, &subType2NameEnd, &subType2EqualSign))
                         return NO;
 
                     type1 = subType1End + 1;
@@ -263,7 +270,7 @@ static BOOL OCMEqualTypesAllowingOpaqueStructsInternal(const char *type1, const 
         }
         case '^':
             /* for a pointer, make sure the other is a pointer, then recursively compare the rest */
-            if (type2[0] != type1[0])
+            if(type2[0] != type1[0])
                 return NO;
             return OCMEqualTypesAllowingOpaqueStructs(type1 + 1, type2 + 1);
 
@@ -276,8 +283,8 @@ static BOOL OCMEqualTypesAllowingOpaqueStructsInternal(const char *type1, const 
         default:
         {
             // Move the type pointers past the current types, then compare that region
-            const char *afterType1 =  NSGetSizeAndAlignment(type1, NULL, NULL);
-            const char *afterType2 =  NSGetSizeAndAlignment(type2, NULL, NULL);
+            const char *afterType1 = NSGetSizeAndAlignment(type1, NULL, NULL);
+            const char *afterType2 = NSGetSizeAndAlignment(type2, NULL, NULL);
             intptr_t type1Len = afterType1 - type1;
             intptr_t type2Len = afterType2 - type2;
 
@@ -292,7 +299,7 @@ BOOL OCMEqualTypesAllowingOpaqueStructs(const char *type1, const char *type2)
     {
         return OCMEqualTypesAllowingOpaqueStructsInternal(type1, type2);
     }
-    @catch (NSException *e)
+    @catch(NSException *e)
     {
         /* Probably a bitfield or something that NSGetSizeAndAlignment chokes on, oh well */
         return NO;
@@ -328,15 +335,14 @@ BOOL OCMIsApplePrivateMethod(Class cls, SEL sel)
     NSString *className = NSStringFromClass(cls);
     NSString *selName = NSStringFromSelector(sel);
     return ([className hasPrefix:@"NS"] || [className hasPrefix:@"UI"]) &&
-            ([selName hasPrefix:@"_"] || [selName hasSuffix:@"_"]);
+        ([selName hasPrefix:@"_"] || [selName hasSuffix:@"_"]);
 }
 
 BOOL OCMIsBlock(id potentialBlock)
 {
     static Class blockClass;
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^
-    {
+    dispatch_once(&onceToken, ^{
         blockClass = [^{} class];
         Class nsObjectClass = [NSObject class];
         while([blockClass superclass] != nsObjectClass)
@@ -355,7 +361,7 @@ BOOL OCMIsNonEscapingBlock(id block)
 }
 
 
-#pragma mark  Creating and disposing classes
+#pragma mark Creating and disposing classes
 
 static NSString *const OCMSubclassPrefix = @"OCMock_";
 
@@ -392,7 +398,7 @@ BOOL OCMIsSubclassOfMockClass(Class cls)
 }
 
 
-#pragma mark  Alias for renaming real methods
+#pragma mark Alias for renaming real methods
 
 static NSString *const OCMRealMethodAliasPrefix = @"ocmock_replaced_";
 static const char *const OCMRealMethodAliasPrefixCString = "ocmock_replaced_";
@@ -420,7 +426,7 @@ SEL OCMOriginalSelectorForAlias(SEL selector)
 }
 
 
-#pragma mark  Wrappers around associative references
+#pragma mark Wrappers around associative references
 
 static NSString *const OCMClassMethodMockObjectKey = @"OCMClassMethodMockObjectKey";
 
@@ -458,12 +464,12 @@ OCPartialMockObject *OCMGetAssociatedMockForObject(id anObject)
 }
 
 
-#pragma mark  Functions related to IDE error reporting
+#pragma mark Functions related to IDE error reporting
 
 void OCMReportFailure(OCMLocation *loc, NSString *description)
 {
     id testCase = [loc testCase];
-#ifdef __IPHONE_14_0    // this is actually a test for Xcode 12; see issue #472
+#ifdef __IPHONE_14_0 // this is actually a test for Xcode 12; see issue #472
 #if !TARGET_OS_WATCH
     if((testCase != nil) && [testCase respondsToSelector:@selector(recordIssue:)])
     {
@@ -499,12 +505,10 @@ void OCMReportFailure(OCMLocation *loc, NSString *description)
         NSLog(@"%@:%lu %@", [loc file], (unsigned long)[loc line], description);
         NSString *reason = [NSString stringWithFormat:@"%@:%lu %@", [loc file], (unsigned long)[loc line], description];
         [[NSException exceptionWithName:@"OCMockTestFailure" reason:reason userInfo:nil] raise];
-
     }
     else
     {
         NSLog(@"%@", description);
         [[NSException exceptionWithName:@"OCMockTestFailure" reason:description userInfo:nil] raise];
     }
-
 }

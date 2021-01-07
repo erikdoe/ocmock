@@ -16,12 +16,11 @@
 
 #import "OCMockObject.h"
 
-@interface OCProtocolMockObject : OCMockObject 
+@interface OCProtocolMockObject : OCMockObject
 {
-	Protocol	*mockedProtocol;
+    Protocol *mockedProtocol;
 }
 
 - (id)initWithProtocol:(Protocol *)aProtocol;
 
 @end
-

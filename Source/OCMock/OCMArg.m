@@ -25,12 +25,12 @@
 
 + (id)any
 {
-	return [OCMAnyConstraint constraint];
+    return [OCMAnyConstraint constraint];
 }
 
 + (void *)anyPointer
 {
-	return (void *)0x01234567;
+    return (void *)0x01234567;
 }
 
 + (id __autoreleasing *)anyObjectRef
@@ -45,12 +45,12 @@
 
 + (id)isNil
 {
-	return [OCMIsNilConstraint constraint];
+    return [OCMIsNilConstraint constraint];
 }
 
 + (id)isNotNil
 {
-	return [OCMIsNotNilConstraint constraint];
+    return [OCMIsNotNilConstraint constraint];
 }
 
 + (id)isEqual:(id)value
@@ -60,36 +60,36 @@
 
 + (id)isNotEqual:(id)value
 {
-	OCMIsNotEqualConstraint *constraint = [OCMIsNotEqualConstraint constraint];
-	constraint->testValue = value;
-	return constraint;
+    OCMIsNotEqualConstraint *constraint = [OCMIsNotEqualConstraint constraint];
+    constraint->testValue = value;
+    return constraint;
 }
 
 + (id)isKindOfClass:(Class)cls
 {
-	return [[[OCMBlockConstraint alloc] initWithConstraintBlock:^BOOL(id obj) {
+    return [[[OCMBlockConstraint alloc] initWithConstraintBlock:^BOOL(id obj) {
         return [obj isKindOfClass:cls];
     }] autorelease];
 }
 
 + (id)checkWithSelector:(SEL)selector onObject:(id)anObject
 {
-	return [OCMConstraint constraintWithSelector:selector onObject:anObject];
+    return [OCMConstraint constraintWithSelector:selector onObject:anObject];
 }
 
 + (id)checkWithBlock:(BOOL (^)(id))block
 {
-	return [[[OCMBlockConstraint alloc] initWithConstraintBlock:block] autorelease];
+    return [[[OCMBlockConstraint alloc] initWithConstraintBlock:block] autorelease];
 }
 
 + (id *)setTo:(id)value
 {
-	return (id *)[[[OCMPassByRefSetter alloc] initWithValue:value] autorelease];
+    return (id *)[[[OCMPassByRefSetter alloc] initWithValue:value] autorelease];
 }
 
 + (void *)setToValue:(NSValue *)value
 {
-	return (id *)[[[OCMPassByRefSetter alloc] initWithValue:value] autorelease];
+    return (id *)[[[OCMPassByRefSetter alloc] initWithValue:value] autorelease];
 }
 
 + (id)invokeBlock
@@ -97,9 +97,8 @@
     return [[[OCMBlockArgCaller alloc] init] autorelease];
 }
 
-+ (id)invokeBlockWithArgs:(id)first,... NS_REQUIRES_NIL_TERMINATION
++ (id)invokeBlockWithArgs:(id)first, ... NS_REQUIRES_NIL_TERMINATION
 {
-    
     NSMutableArray *params = [NSMutableArray array];
     va_list args;
     if(first)
@@ -114,7 +113,6 @@
         va_end(args);
     }
     return [[[OCMBlockArgCaller alloc] initWithBlockArguments:params] autorelease];
-    
 }
 
 + (id)defaultValue
@@ -125,15 +123,15 @@
 
 + (id)resolveSpecialValues:(NSValue *)value
 {
-	const char *type = [value objCType];
-	if(type[0] == '^')
-	{
-		void *pointer = [value pointerValue];
-		if(pointer == (void *)0x01234567)
-			return [OCMArg any];
-		if((pointer != NULL) && (object_getClass((id)pointer) == [OCMPassByRefSetter class]))
-			return (id)pointer;
-	}
+    const char *type = [value objCType];
+    if(type[0] == '^')
+    {
+        void *pointer = [value pointerValue];
+        if(pointer == (void *)0x01234567)
+            return [OCMArg any];
+        if((pointer != NULL) && (object_getClass((id)pointer) == [OCMPassByRefSetter class]))
+            return (id)pointer;
+    }
     else if(type[0] == ':')
     {
         SEL selector;
@@ -141,7 +139,7 @@
         if(selector == NSSelectorFromString(@"aSelectorThatMatchesAnySelector"))
             return [OCMArg any];
     }
-	return value;
+    return value;
 }
 
 @end

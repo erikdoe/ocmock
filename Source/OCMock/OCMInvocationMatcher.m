@@ -15,15 +15,15 @@
  */
 
 #import <objc/runtime.h>
+#import "NSInvocation+OCMAdditions.h"
 #import "OCMInvocationMatcher.h"
 #import "OCMArg.h"
 #import "OCMConstraint.h"
-#import "OCMPassByRefSetter.h"
 #import "OCMFunctionsPrivate.h"
-#import "NSInvocation+OCMAdditions.h"
+#import "OCMPassByRefSetter.h"
 
 
-@interface NSObject(HCMatcherDummy)
+@interface NSObject (HCMatcherDummy)
 - (BOOL)matches:(id)item;
 @end
 
@@ -76,8 +76,7 @@
 {
     if(sel == [recordedInvocation selector])
         return YES;
-    if(OCMIsAliasSelector(sel) &&
-       OCMOriginalSelectorForAlias(sel) == [recordedInvocation selector])
+    if(OCMIsAliasSelector(sel) && OCMOriginalSelectorForAlias(sel) == [recordedInvocation selector])
         return YES;
 
     return NO;
@@ -131,11 +130,9 @@
         }
         else
         {
-            if(([recordedArg class] == [NSNumber class]) &&
-                    ([(NSNumber*)recordedArg compare:(NSNumber*)passedArg] != NSOrderedSame))
+            if(([recordedArg class] == [NSNumber class]) && ([(NSNumber *)recordedArg compare:(NSNumber *)passedArg] != NSOrderedSame))
                 return NO;
-            if(([recordedArg isEqual:passedArg] == NO) &&
-                    !((recordedArg == nil) && (passedArg == nil)))
+            if(([recordedArg isEqual:passedArg] == NO) && !((recordedArg == nil) && (passedArg == nil)))
                 return NO;
         }
     }

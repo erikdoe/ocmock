@@ -23,7 +23,7 @@
 
 static NSString *const OCMGlobalStateKey = @"OCMGlobalStateKey";
 
-#pragma mark  Methods to begin/end macros
+#pragma mark Methods to begin/end macros
 
 + (void)beginStubMacro
 {
@@ -40,14 +40,14 @@ static NSString *const OCMGlobalStateKey = @"OCMGlobalStateKey";
     OCMStubRecorder *recorder = [[(OCMStubRecorder *)[globalState recorder] retain] autorelease];
     BOOL didThrow = [globalState invocationDidThrow];
     [threadDictionary removeObjectForKey:OCMGlobalStateKey];
-	if(didThrow == NO && [recorder didRecordInvocation] == NO)
-	{
-		[NSException raise:NSInternalInconsistencyException
-					format:@"Did not record an invocation in OCMStub/OCMExpect/OCMReject.\n"
-						   @"Possible causes are:\n"
-						   @"- The receiver is not a mock object.\n"
-						   @"- The selector conflicts with a selector implemented by OCMStubRecorder/OCMExpectationRecorder."];
-	}
+    if(didThrow == NO && [recorder didRecordInvocation] == NO)
+    {
+        [NSException raise:NSInternalInconsistencyException
+                    format:@"Did not record an invocation in OCMStub/OCMExpect/OCMReject.\n"
+                           @"Possible causes are:\n"
+                           @"- The receiver is not a mock object.\n"
+                           @"- The selector conflicts with a selector implemented by OCMStubRecorder/OCMExpectationRecorder."];
+    }
     return recorder;
 }
 
@@ -101,12 +101,12 @@ static NSString *const OCMGlobalStateKey = @"OCMGlobalStateKey";
 
 + (void)endVerifyMacro
 {
-	NSMutableDictionary *threadDictionary = [NSThread currentThread].threadDictionary;
-	OCMMacroState *globalState = threadDictionary[OCMGlobalStateKey];
-	OCMVerifier *verifier = [[(OCMVerifier *)[globalState recorder] retain] autorelease];
+    NSMutableDictionary *threadDictionary = [NSThread currentThread].threadDictionary;
+    OCMMacroState *globalState = threadDictionary[OCMGlobalStateKey];
+    OCMVerifier *verifier = [[(OCMVerifier *)[globalState recorder] retain] autorelease];
     BOOL didThrow = [globalState invocationDidThrow];
-	[threadDictionary removeObjectForKey:OCMGlobalStateKey];
-	if(didThrow == NO && [verifier didRecordInvocation] == NO)
+    [threadDictionary removeObjectForKey:OCMGlobalStateKey];
+    if(didThrow == NO && [verifier didRecordInvocation] == NO)
     {
         [NSException raise:NSInternalInconsistencyException
                     format:@"Did not record an invocation in OCMVerify.\n"
@@ -117,7 +117,7 @@ static NSString *const OCMGlobalStateKey = @"OCMGlobalStateKey";
 }
 
 
-#pragma mark  Accessing global state
+#pragma mark Accessing global state
 
 + (OCMMacroState *)globalState
 {
@@ -125,7 +125,7 @@ static NSString *const OCMGlobalStateKey = @"OCMGlobalStateKey";
 }
 
 
-#pragma mark  Init, dealloc, accessors
+#pragma mark Init, dealloc, accessors
 
 - (id)initWithRecorder:(OCMRecorder *)aRecorder
 {
@@ -133,7 +133,7 @@ static NSString *const OCMGlobalStateKey = @"OCMGlobalStateKey";
     {
         recorder = [aRecorder retain];
     }
-    
+
     return self;
 }
 
@@ -167,7 +167,7 @@ static NSString *const OCMGlobalStateKey = @"OCMGlobalStateKey";
 }
 
 
-#pragma mark  Changing the recorder
+#pragma mark Changing the recorder
 
 - (void)switchToClassMethod
 {

@@ -43,7 +43,12 @@ This project adheres to the [Contributor Covenant 1.2](http://contributor-covena
 
 Please remember that OCMock has been around for 10+ years. Some of the coding conventions used in OCMock may contradict modern guidelines. However, in the interest of keeping the codebase consistent, please respect the conventions used. In particular:
 
-* Opening and closing braces always go on a separate line.
+* Use four spaces for indentation.
+* Opening and closing braces always go on a separate line (except with blocks).
 * No spaces between keywords like `if` and `for` and the following bracket.
 * No underscores for instance variables.
 * OCMock itself (framework and library) does not use ARC; retains and releases must be sent manually. The unit tests, however, do use ARC.
+
+The repository contains a `.clang-format` file in the actual source directory. This should get you mostly there. Please apply the formatting defined in the config file only to code you add or modify. Please do not apply the formatting to entire files as there are still some inconsistencies in parts of the codebase and certain cases are not formatted correctly by clang-format.
+
+

@@ -16,10 +16,10 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OCMIndirectReturnValueProvider : NSObject 
+@interface OCMIndirectReturnValueProvider : NSObject
 {
-	id	provider;
-	SEL	selector;
+    id  provider;
+    SEL selector;
 }
 
 - (id)initWithProvider:(id)aProvider andSelector:(SEL)aSelector;

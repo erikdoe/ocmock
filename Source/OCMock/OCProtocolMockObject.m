@@ -20,25 +20,25 @@
 
 @implementation OCProtocolMockObject
 
-#pragma mark  Initialisers, description, accessors, etc.
+#pragma mark Initialisers, description, accessors, etc.
 
 - (id)initWithProtocol:(Protocol *)aProtocol
 {
-	if(aProtocol == nil)
-		[NSException raise:NSInvalidArgumentException format:@"Protocol cannot be nil."];
+    if(aProtocol == nil)
+        [NSException raise:NSInvalidArgumentException format:@"Protocol cannot be nil."];
 
-	[super init];
-	mockedProtocol = aProtocol;
-	return self;
+    [super init];
+    mockedProtocol = aProtocol;
+    return self;
 }
 
 - (NSString *)description
 {
-    const char* name = protocol_getName(mockedProtocol);
+    const char *name = protocol_getName(mockedProtocol);
     return [NSString stringWithFormat:@"OCProtocolMockObject(%s)", name];
 }
 
-#pragma mark  Proxy API
+#pragma mark Proxy API
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {

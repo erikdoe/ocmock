@@ -14,76 +14,76 @@
  *  under the License.
  */
 
+#import "NSInvocation+OCMAdditions.h"
 #import "OCMockObject.h"
 #import "OCClassMockObject.h"
-#import "OCProtocolMockObject.h"
-#import "OCPartialMockObject.h"
-#import "OCObserverMockObject.h"
 #import "OCMExceptionReturnValueProvider.h"
 #import "OCMExpectationRecorder.h"
+#import "OCMFunctionsPrivate.h"
 #import "OCMInvocationExpectation.h"
 #import "OCMLocation.h"
 #import "OCMMacroState.h"
 #import "OCMQuantifier.h"
 #import "OCMVerifier.h"
-#import "OCMFunctionsPrivate.h"
-#import "NSInvocation+OCMAdditions.h"
+#import "OCObserverMockObject.h"
+#import "OCPartialMockObject.h"
+#import "OCProtocolMockObject.h"
 
 
 @implementation OCMockObject
 
-#pragma mark  Class initialisation
+#pragma mark Class initialisation
 
 + (void)initialize
 {
-	if([[NSInvocation class] instanceMethodSignatureForSelector:@selector(getArgumentAtIndexAsObject:)] == NULL)
-		[NSException raise:NSInternalInconsistencyException format:@"** Expected method not present; the method getArgumentAtIndexAsObject: is not implemented by NSInvocation. If you see this exception it is likely that you are using the static library version of OCMock and your project is not configured correctly to load categories from static libraries. Did you forget to add the -ObjC linker flag?"];
+    if([[NSInvocation class] instanceMethodSignatureForSelector:@selector(getArgumentAtIndexAsObject:)] == NULL)
+        [NSException raise:NSInternalInconsistencyException format:@"** Expected method not present; the method getArgumentAtIndexAsObject: is not implemented by NSInvocation. If you see this exception it is likely that you are using the static library version of OCMock and your project is not configured correctly to load categories from static libraries. Did you forget to add the -ObjC linker flag?"];
 }
 
 
-#pragma mark  Factory methods
+#pragma mark Factory methods
 
 + (id)mockForClass:(Class)aClass
 {
-	return [[[OCClassMockObject alloc] initWithClass:aClass] autorelease];
+    return [[[OCClassMockObject alloc] initWithClass:aClass] autorelease];
 }
 
 + (id)mockForProtocol:(Protocol *)aProtocol
 {
-	return [[[OCProtocolMockObject alloc] initWithProtocol:aProtocol] autorelease];
+    return [[[OCProtocolMockObject alloc] initWithProtocol:aProtocol] autorelease];
 }
 
 + (id)partialMockForObject:(NSObject *)anObject
 {
-	return [[[OCPartialMockObject alloc] initWithObject:anObject] autorelease];
+    return [[[OCPartialMockObject alloc] initWithObject:anObject] autorelease];
 }
 
 
 + (id)niceMockForClass:(Class)aClass
 {
-	return [self _makeNice:[self mockForClass:aClass]];
+    return [self _makeNice:[self mockForClass:aClass]];
 }
 
 + (id)niceMockForProtocol:(Protocol *)aProtocol
 {
-	return [self _makeNice:[self mockForProtocol:aProtocol]];
+    return [self _makeNice:[self mockForProtocol:aProtocol]];
 }
 
 
 + (id)_makeNice:(OCMockObject *)mock
 {
-	mock->isNice = YES;
-	return mock;
+    mock->isNice = YES;
+    return mock;
 }
 
 
 + (id)observerMock
 {
-	return [[[OCObserverMockObject alloc] init] autorelease];
+    return [[[OCObserverMockObject alloc] init] autorelease];
 }
 
 
-#pragma mark  Initialisers, description, accessors, etc.
+#pragma mark Initialisers, description, accessors, etc.
 
 - (instancetype)init
 {
@@ -95,7 +95,7 @@
         return (id)[recorder init];
     }
 
-	// skip initialisation when init is called again, which can happen when stubbing alloc/init
+    // skip initialisation when init is called again, which can happen when stubbing alloc/init
     if(stubs != nil)
     {
         return self;
@@ -106,27 +106,27 @@
         [NSException raise:NSInternalInconsistencyException format:@"*** Cannot create instances of OCMockObject. Please use one of the subclasses."];
     }
 
-	// no [super init], we're inheriting from NSProxy
-	expectationOrderMatters = NO;
-	stubs = [[NSMutableArray alloc] init];
-	expectations = [[NSMutableArray alloc] init];
-	exceptions = [[NSMutableArray alloc] init];
+    // no [super init], we're inheriting from NSProxy
+    expectationOrderMatters = NO;
+    stubs = [[NSMutableArray alloc] init];
+    expectations = [[NSMutableArray alloc] init];
+    exceptions = [[NSMutableArray alloc] init];
     invocations = [[NSMutableArray alloc] init];
     return self;
 }
 
 - (void)dealloc
 {
-	[stubs release];
-	[expectations release];
-	[exceptions release];
+    [stubs release];
+    [expectations release];
+    [exceptions release];
     [invocations release];
-	[super dealloc];
+    [super dealloc];
 }
 
 - (NSString *)description
 {
-	return @"OCMockObject";
+    return @"OCMockObject";
 }
 
 - (void)addStub:(OCMInvocationStub *)aStub
@@ -181,7 +181,7 @@
 }
 
 
-#pragma mark  Public API
+#pragma mark Public API
 
 - (void)setExpectationOrderMatters:(BOOL)flag
 {
@@ -205,7 +205,7 @@
 
 - (id)stub
 {
-	return [[[OCMStubRecorder alloc] initWithMockObject:self] autorelease];
+    return [[[OCMStubRecorder alloc] initWithMockObject:self] autorelease];
 }
 
 - (id)expect
@@ -215,7 +215,7 @@
 
 - (id)reject
 {
-	return [[self expect] never];
+    return [[self expect] never];
 }
 
 
@@ -236,18 +236,18 @@
         }
     }
 
-	if([unsatisfiedExpectations count] == 1)
-	{
+    if([unsatisfiedExpectations count] == 1)
+    {
         NSString *description = [NSString stringWithFormat:@"%@: expected method was not invoked: %@",
-         [self description], [[unsatisfiedExpectations objectAtIndex:0] description]];
+                                          [self description], [[unsatisfiedExpectations objectAtIndex:0] description]];
         OCMReportFailure(location, description);
-	}
-	else if([unsatisfiedExpectations count] > 0)
-	{
-		NSString *description = [NSString stringWithFormat:@"%@: %@ expected methods were not invoked: %@",
-         [self description], @([unsatisfiedExpectations count]), [self _stubDescriptions:YES]];
+    }
+    else if([unsatisfiedExpectations count] > 0)
+    {
+        NSString *description = [NSString stringWithFormat:@"%@: %@ expected methods were not invoked: %@",
+                                          [self description], @([unsatisfiedExpectations count]), [self _stubDescriptions:YES]];
         OCMReportFailure(location, description);
-	}
+    }
 
     OCMInvocationExpectation *firstException = nil;
     @synchronized(exceptions)
@@ -255,11 +255,11 @@
         firstException = [exceptions.firstObject retain];
     }
     if(firstException)
-	{
+    {
         NSString *description = [NSString stringWithFormat:@"%@: %@ (This is a strict mock failure that was ignored when it actually occurred.)",
-         [self description], [firstException description]];
+                                          [self description], [firstException description]];
         OCMReportFailure(location, description);
-	}
+    }
     [firstException release];
 
     return [[[OCMVerifier alloc] initWithMockObject:self] autorelease];
@@ -342,11 +342,11 @@
     }
 
     return [NSString stringWithFormat:@"%@: Method `%@` was %@; but was expected %@.",
-            [self description], [matcher description], actualDescription, [quantifier description]];
+                     [self description], [matcher description], actualDescription, [quantifier description]];
 }
 
 
-#pragma mark  Handling invocations
+#pragma mark Handling invocations
 
 - (id)forwardingTargetForSelector:(SEL)aSelector
 {
@@ -421,8 +421,9 @@
             OCMInvocationExpectation *expectation = [self _nextExpectedInvocation];
             if(expectationOrderMatters && (expectation != stub))
             {
-                [NSException raise:NSInternalInconsistencyException format:@"%@: unexpected method invoked: %@\n\texpected:\t%@",
-                             [self description], [stub description], [[expectations objectAtIndex:0] description]];
+                [NSException raise:NSInternalInconsistencyException
+                            format:@"%@: unexpected method invoked: %@\n\texpected:\t%@",
+                            [self description], [stub description], [[expectations objectAtIndex:0] description]];
             }
 
             // We can't check isSatisfied yet, since the stub won't be satisfied until we call
@@ -467,11 +468,12 @@
 
 - (void)handleUnRecordedInvocation:(NSInvocation *)anInvocation
 {
-	if(isNice == NO)
-	{
-		[NSException raise:NSInternalInconsistencyException format:@"%@: unexpected method invoked: %@ %@",
-                        [self description], [anInvocation invocationDescription], [self _stubDescriptions:NO]];
-	}
+    if(isNice == NO)
+    {
+        [NSException raise:NSInternalInconsistencyException
+                    format:@"%@: unexpected method invoked: %@ %@",
+                    [self description], [anInvocation invocationDescription], [self _stubDescriptions:NO]];
+    }
 }
 
 - (void)doesNotRecognizeSelector:(SEL)aSelector __unused
@@ -479,22 +481,24 @@
     if([OCMMacroState globalState] != nil)
     {
         // we can't do anything clever with the macro state because we must raise an exception here
-        [NSException raise:NSInvalidArgumentException format:@"%@: Cannot stub/expect/verify method '%@' because no such method exists in the mocked class.",
-                        [self description], NSStringFromSelector(aSelector)];
+        [NSException raise:NSInvalidArgumentException
+                    format:@"%@: Cannot stub/expect/verify method '%@' because no such method exists in the mocked class.",
+                    [self description], NSStringFromSelector(aSelector)];
     }
     else
     {
-        [NSException raise:NSInvalidArgumentException format:@"-[%@ %@]: unrecognized selector sent to instance %p",
-                        [self description], NSStringFromSelector(aSelector), (void *)self];
+        [NSException raise:NSInvalidArgumentException
+                    format:@"-[%@ %@]: unrecognized selector sent to instance %p",
+                    [self description], NSStringFromSelector(aSelector), (void *)self];
     }
 }
 
 
-#pragma mark  Helper methods
+#pragma mark Helper methods
 
 - (NSString *)_stubDescriptions:(BOOL)onlyExpectations
 {
-	NSMutableString *outputString = [NSMutableString string];
+    NSMutableString *outputString = [NSMutableString string];
     NSArray *stubsCopy = nil;
     @synchronized(stubs)
     {
@@ -508,24 +512,24 @@
             expectationsContainStub = [expectations containsObject:stub];
         }
 
-		NSString *prefix = @"";
+        NSString *prefix = @"";
 
-		if(onlyExpectations)
-		{
-			if(expectationsContainStub == NO)
-				continue;
-		}
-		else
-		{
-			if(expectationsContainStub)
-				prefix = @"expected:\t";
-			else
-				prefix = @"stubbed:\t";
-		}
-		[outputString appendFormat:@"\n\t%@%@", prefix, [stub description]];
-	}
+        if(onlyExpectations)
+        {
+            if(expectationsContainStub == NO)
+                continue;
+        }
+        else
+        {
+            if(expectationsContainStub)
+                prefix = @"expected:\t";
+            else
+                prefix = @"stubbed:\t";
+        }
+        [outputString appendFormat:@"\n\t%@%@", prefix, [stub description]];
+    }
     [stubsCopy release];
-	return outputString;
+    return outputString;
 }
 
 

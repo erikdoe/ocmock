@@ -52,7 +52,6 @@ BOOL OCMIsBlock(id potentialBlock);
 BOOL OCMIsNonEscapingBlock(id block);
 
 
-
 struct OCMBlockDef
 {
     void *isa; // initialized to &_NSConcreteStackBlock or &_NSConcreteGlobalBlock
@@ -76,4 +75,3 @@ enum
     OCMBlockDescriptionFlagsHasCopyDispose = (1 << 25),
     OCMBlockDescriptionFlagsHasSignature   = (1 << 30)
 };
-

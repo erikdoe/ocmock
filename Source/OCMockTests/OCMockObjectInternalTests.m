@@ -18,11 +18,11 @@
 #import "OCMock.h"
 
 
-#pragma mark    Helper classes
+#pragma mark Helper classes
 
 @interface TestClassForInternalTests : NSObject
 
-@property (nonatomic, copy) NSString *title;
+@property(nonatomic, copy) NSString *title;
 
 - (void)doStuffWithClass:(Class)aClass;
 
@@ -40,14 +40,13 @@
 @end
 
 
-
 @interface OCMockObjectInternalTests : XCTestCase
 
 @end
 
 @implementation OCMockObjectInternalTests
 
-#pragma mark    Tests
+#pragma mark Tests
 
 - (void)testReRaisesFailFastExceptionsOnVerify
 {
@@ -77,13 +76,13 @@
         // expected
     }
     XCTAssertNoThrow([mock verify], @"Should not have reraised stubbed exception.");
-
 }
 
 - (void)testAndThrowDoesntLeak
 {
     __weak NSException *exception = nil;
-    @autoreleasepool {
+    @autoreleasepool
+    {
         id mock = [OCMockObject partialMockForObject:[NSProcessInfo processInfo]];
         exception = [NSException exceptionWithName:NSGenericException
                                             reason:nil
@@ -95,12 +94,14 @@
         {
             [[NSProcessInfo processInfo] arguments];
         }
-        @catch (NSException *ex)
+        @catch(NSException *ex)
         {
             threw = YES;
         }
         XCTAssertTrue(threw);
-        [mock verify]; [mock stopMocking]; mock = nil;
+        [mock verify];
+        [mock stopMocking];
+        mock = nil;
     }
 
     XCTAssertNil(exception, @"The exception should have been released by now");
@@ -136,7 +137,10 @@
     __block int count = 0;
 
     id mock = [OCMockObject mockForClass:[NSString class]];
-    [[mock stub] hasSuffix:[OCMArg checkWithBlock:^(id value) { count++; return YES; }]];
+    [[mock stub] hasSuffix:[OCMArg checkWithBlock:^(id value) {
+        count++;
+        return YES;
+    }]];
 
     [mock hasSuffix:@"foo"];
     [mock hasSuffix:@"bar"];
@@ -179,7 +183,8 @@
 {
 
     id mockWithClassMethod = OCMClassMock([TestClassForInternalTests class]);
-    @autoreleasepool {
+    @autoreleasepool
+    {
         [[mockWithClassMethod stub] doStuffWithClass:[OCMArg any]];
     }
     XCTAssertNoThrow([mockWithClassMethod doStuffWithClass:[NSString class]]);
@@ -190,7 +195,8 @@
 {
     __weak id weakArgument;
     id mock = OCMClassMock([TestClassForInternalTests class]);
-    @autoreleasepool {
+    @autoreleasepool
+    {
         NSMutableString *title = [NSMutableString new];
         weakArgument = title;
         [mock setTitle:title];
@@ -206,10 +212,13 @@
     [mock title];
     [mock stopMocking];
 
-    @try {
+    @try
+    {
         [[mock verify] title];
         XCTFail(@"Should have thrown an NSInternalInconsistencyException when attempting to verify after stopMocking.");
-    } @catch (NSException *ex) {
+    }
+    @catch(NSException *ex)
+    {
         XCTAssertEqualObjects(ex.name, NSInternalInconsistencyException);
         XCTAssertTrue([ex.reason containsString:[mock description]]);
     }
@@ -221,10 +230,13 @@
 
     [mock stopMocking];
 
-    @try {
+    @try
+    {
         [mock title];
         XCTFail(@"Should have thrown an NSInternalInconsistencyException when attempting to use after stopMocking.");
-    } @catch (NSException *ex) {
+    }
+    @catch(NSException *ex)
+    {
         XCTAssertEqualObjects(ex.name, NSInternalInconsistencyException);
         XCTAssertTrue([ex.reason containsString:[mock description]]);
     }

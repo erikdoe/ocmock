@@ -15,10 +15,10 @@
  */
 
 #import <XCTest/XCTest.h>
-#import "OCMock.h"
-#import "OCMObjectReturnValueProvider.h"
 #import "OCMExceptionReturnValueProvider.h"
 #import "OCMInvocationStub.h"
+#import "OCMObjectReturnValueProvider.h"
+#import "OCMock.h"
 
 
 @interface OCMStubRecorderTests : XCTestCase
@@ -63,7 +63,6 @@
 
     XCTAssertEqual((NSUInteger)1, [actionList count], @"Should have added one action.");
     XCTAssertEqualObjects([OCMExceptionReturnValueProvider class], [[actionList objectAtIndex:0] class], @"Should have added correct action.");
-
 }
 
 @end

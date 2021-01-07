@@ -15,14 +15,14 @@
  */
 
 #import <XCTest/XCTest.h>
-#import "OCMock.h"
 #import "OCMFunctionsPrivate.h"
+#import "OCMock.h"
 
 
-@interface NSString(NoEscapeBlock)
+@interface NSString (NoEscapeBlock)
 @end
 
-@implementation NSString(NoEscapeBlock)
+@implementation NSString (NoEscapeBlock)
 
 - (void)methodWithNoEscapeBlock:(void(NS_NOESCAPE ^)(void))block
 {

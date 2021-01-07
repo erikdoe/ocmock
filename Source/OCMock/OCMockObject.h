@@ -26,12 +26,12 @@
 
 @interface OCMockObject : NSProxy
 {
-	BOOL			isNice;
-	BOOL			expectationOrderMatters;
-	NSMutableArray	*stubs;
-	NSMutableArray	*expectations;
-	NSMutableArray	*exceptions;
-    NSMutableArray  *invocations;
+    BOOL            isNice;
+    BOOL            expectationOrderMatters;
+    NSMutableArray *stubs;
+    NSMutableArray *expectations;
+    NSMutableArray *exceptions;
+    NSMutableArray *invocations;
 }
 
 + (id)mockForClass:(Class)aClass;
@@ -75,4 +75,3 @@
 - (NSString *)descriptionForVerificationFailureWithMatcher:(OCMInvocationMatcher *)matcher quantifier:(OCMQuantifier *)quantifier invocationCount:(NSUInteger)count;
 
 @end
-

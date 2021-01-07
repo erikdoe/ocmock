@@ -28,7 +28,7 @@
 #endif
 
 
-#pragma mark   Helper classes
+#pragma mark Helper classes
 
 @interface TestClassWithSimpleMethod : NSObject
 + (NSUInteger)initializeCallCount;
@@ -57,14 +57,13 @@ static NSUInteger initializeCallCount = 0;
 
 - (void)bar:(id)someArgument // maybe we should make it explicit that the arg is retainable
 {
-
 }
 
 @end
 
 @interface TestClassThatObservesFoo : NSObject
 {
-    @public
+@public
     id observedObject;
 }
 @end
@@ -118,30 +117,30 @@ static NSUInteger initializeCallCount = 0;
 
 - (NSString *)method1
 {
-	id retVal = [self method2];
-	return retVal;
+    id retVal = [self method2];
+    return retVal;
 }
 
 - (NSString *)method2
 {
-	return @"Foo";
+    return @"Foo";
 }
 
 
 - (NSRect)methodRect1
 {
-	NSRect retVal = [self methodRect2];
-	return retVal;
+    NSRect retVal = [self methodRect2];
+    return retVal;
 }
 
 - (NSRect)methodRect2
 {
-	return NSMakeRect(10, 10, 10, 10);
+    return NSMakeRect(10, 10, 10, 10);
 }
 
 - (int)methodInt
 {
-	return methodInt;
+    return methodInt;
 }
 
 - (void)methodVoid
@@ -150,19 +149,19 @@ static NSUInteger initializeCallCount = 0;
 
 - (void)setMethodInt:(int)anInt
 {
-	methodInt = anInt;
+    methodInt = anInt;
 }
 
 @end
 
 
-@interface NSObject(OCMCategoryForTesting)
+@interface NSObject (OCMCategoryForTesting)
 
 - (NSString *)categoryMethod;
 
 @end
 
-@implementation NSObject(OCMCategoryForTesting)
+@implementation NSObject (OCMCategoryForTesting)
 
 - (NSString *)categoryMethod
 {
@@ -174,11 +173,11 @@ static NSUInteger initializeCallCount = 0;
 
 @interface OCTestManagedObject : NSManagedObject
 
-@property (nonatomic, copy) NSString *name;
-@property (nonatomic, assign) int32_t sortOrder;
+@property(nonatomic, copy) NSString *name;
+@property(nonatomic, assign) int32_t sortOrder;
 
-@property (nonatomic, strong) OCTestManagedObject *toOneRelationship;
-@property (nonatomic, strong) NSSet *toManyRelationship;
+@property(nonatomic, strong) OCTestManagedObject *toOneRelationship;
+@property(nonatomic, strong) NSSet *toManyRelationship;
 
 @end
 
@@ -202,33 +201,32 @@ static NSUInteger initializeCallCount = 0;
 @end
 
 
-#pragma mark   Category for testing
+#pragma mark Category for testing
 
-@interface OCPartialMockObject(AccessToInvocationsForTesting)
+@interface OCPartialMockObject (AccessToInvocationsForTesting)
 
 - (NSArray *)invocationsExcludingInitialize;
 
 @end
 
-@implementation OCPartialMockObject(AccessToInvocationsForTesting)
+@implementation OCPartialMockObject (AccessToInvocationsForTesting)
 
 - (NSArray *)invocationsExcludingInitialize
 {
-	NSMutableArray *filteredInvocations = [[NSMutableArray alloc] init];
-	for(NSInvocation *i in invocations)
-		if([NSStringFromSelector([i selector]) hasSuffix:@"initialize"] == NO)
-			[filteredInvocations addObject:i];
+    NSMutableArray *filteredInvocations = [[NSMutableArray alloc] init];
+    for(NSInvocation *i in invocations)
+        if([NSStringFromSelector([i selector]) hasSuffix:@"initialize"] == NO)
+            [filteredInvocations addObject:i];
 
-	return filteredInvocations;
+    return filteredInvocations;
 }
 
 @end
 
 
-
 @interface OCMockObjectPartialMocksTests : XCTestCase
 {
-	int numKVOCallbacks;
+    int numKVOCallbacks;
 }
 
 @end
@@ -236,7 +234,7 @@ static NSUInteger initializeCallCount = 0;
 
 @implementation OCMockObjectPartialMocksTests
 
-#pragma mark   Test for description
+#pragma mark Test for description
 
 - (void)testDescription
 {
@@ -245,21 +243,21 @@ static NSUInteger initializeCallCount = 0;
     XCTAssertEqualObjects([mock description], @"OCPartialMockObject(TestClassWithSimpleMethod)");
 }
 
-#pragma mark   Tests for stubbing with partial mocks
+#pragma mark Tests for stubbing with partial mocks
 
 - (void)testStubsMethodsOnPartialMock
 {
-	TestClassWithSimpleMethod *object = [[TestClassWithSimpleMethod alloc] init];
-	id mock = [OCMockObject partialMockForObject:object];
-	[[[mock stub] andReturn:@"hi"] foo];
-	XCTAssertEqualObjects(@"hi", [mock foo], @"Should have returned stubbed value");
+    TestClassWithSimpleMethod *object = [[TestClassWithSimpleMethod alloc] init];
+    id mock = [OCMockObject partialMockForObject:object];
+    [[[mock stub] andReturn:@"hi"] foo];
+    XCTAssertEqualObjects(@"hi", [mock foo], @"Should have returned stubbed value");
 }
 
 - (void)testForwardsUnstubbedMethodsCallsToRealObjectOnPartialMock
 {
-	TestClassWithSimpleMethod *object = [[TestClassWithSimpleMethod alloc] init];
-	id mock = [OCMockObject partialMockForObject:object];
-	XCTAssertEqualObjects(@"Foo", [mock foo], @"Should have returned value from real object.");
+    TestClassWithSimpleMethod *object = [[TestClassWithSimpleMethod alloc] init];
+    id mock = [OCMockObject partialMockForObject:object];
+    XCTAssertEqualObjects(@"Foo", [mock foo], @"Should have returned value from real object.");
 }
 
 //- (void)testForwardsUnstubbedMethodsCallsToRealObjectOnPartialMockForTollFreeBridgedClasses
@@ -270,24 +268,24 @@ static NSUInteger initializeCallCount = 0;
 
 - (void)testStubsMethodOnRealObjectReference
 {
-	TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
-	id mock = [OCMockObject partialMockForObject:realObject];
-	[[[mock stub] andReturn:@"TestFoo"] foo];
-	XCTAssertEqualObjects(@"TestFoo", [realObject foo], @"Should have stubbed method.");
+    TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
+    id mock = [OCMockObject partialMockForObject:realObject];
+    [[[mock stub] andReturn:@"TestFoo"] foo];
+    XCTAssertEqualObjects(@"TestFoo", [realObject foo], @"Should have stubbed method.");
 }
 
 - (void)testCallsToSelfInRealObjectAreShadowedByPartialMock
 {
-	TestClassThatCallsSelf *realObject = [[TestClassThatCallsSelf alloc] init];
-	id mock = [OCMockObject partialMockForObject:realObject];
-	[[[mock stub] andReturn:@"FooFoo"] method2];
-	XCTAssertEqualObjects(@"FooFoo", [mock method1], @"Should have called through to stubbed method.");
+    TestClassThatCallsSelf *realObject = [[TestClassThatCallsSelf alloc] init];
+    id mock = [OCMockObject partialMockForObject:realObject];
+    [[[mock stub] andReturn:@"FooFoo"] method2];
+    XCTAssertEqualObjects(@"FooFoo", [mock method1], @"Should have called through to stubbed method.");
 }
 
 - (void)testCallsToSelfInRealObjectStructReturnAreShadowedByPartialMock
 {
-	TestClassThatCallsSelf *realObject = [[TestClassThatCallsSelf alloc] init];
-	id mock = [OCMockObject partialMockForObject:realObject];
+    TestClassThatCallsSelf *realObject = [[TestClassThatCallsSelf alloc] init];
+    id mock = [OCMockObject partialMockForObject:realObject];
     [[[mock stub] andReturnValue:OCMOCK_VALUE(NSZeroRect)] methodRect2];
 #if TARGET_OS_IPHONE
 #define NSEqualRects CGRectEqualToRect
@@ -298,81 +296,81 @@ static NSUInteger initializeCallCount = 0;
 - (void)testInvocationsOfNSObjectCategoryMethodsCanBeStubbed
 {
     TestClassThatCallsSelf *realObject = [[TestClassThatCallsSelf alloc] init];
-   	id mock = [OCMockObject partialMockForObject:realObject];
+    id mock = [OCMockObject partialMockForObject:realObject];
     [[[mock stub] andReturn:@"stubbed"] categoryMethod];
     XCTAssertEqualObjects(@"stubbed", [realObject categoryMethod], @"Should have stubbed NSObject's method");
 }
 
 
-#pragma mark   Tests for remembering invocations for later verification
+#pragma mark Tests for remembering invocations for later verification
 
 - (void)testRecordsInvocationWhenRealObjectIsUsed
 {
-	TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
-	id mock = [OCMockObject partialMockForObject:realObject];
+    TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
+    id mock = [OCMockObject partialMockForObject:realObject];
 
-	[realObject foo];
+    [realObject foo];
 
-	XCTAssertEqual(1, [[mock invocationsExcludingInitialize] count]);
+    XCTAssertEqual(1, [[mock invocationsExcludingInitialize] count]);
 }
 
 - (void)testRecordsInvocationWhenMockIsUsed
 {
-	TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
-	id mock = [OCMockObject partialMockForObject:realObject];
+    TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
+    id mock = [OCMockObject partialMockForObject:realObject];
 
-	[mock foo];
+    [mock foo];
 
-	XCTAssertEqual(1, [[mock invocationsExcludingInitialize] count]);
+    XCTAssertEqual(1, [[mock invocationsExcludingInitialize] count]);
 }
 
 - (void)testRecordsInvocationWhenRealObjectIsUsedAndMethodIsStubbed
 {
-	TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
-	id mock = [OCMockObject partialMockForObject:realObject];
-	[[[mock stub] andReturn:@"bar"] foo];
+    TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
+    id mock = [OCMockObject partialMockForObject:realObject];
+    [[[mock stub] andReturn:@"bar"] foo];
 
-	[realObject foo];
+    [realObject foo];
 
-	XCTAssertEqual(1, [[mock invocationsExcludingInitialize] count]);
+    XCTAssertEqual(1, [[mock invocationsExcludingInitialize] count]);
 }
 
 - (void)testRecordsInvocationWhenMockIsUsedAndMethodIsStubbed
 {
-	TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
-	id mock = [OCMockObject partialMockForObject:realObject];
-	[[[mock stub] andReturn:@"bar"] foo];
+    TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
+    id mock = [OCMockObject partialMockForObject:realObject];
+    [[[mock stub] andReturn:@"bar"] foo];
 
-	[mock foo];
+    [mock foo];
 
-	XCTAssertEqual(1, [[mock invocationsExcludingInitialize] count]);
+    XCTAssertEqual(1, [[mock invocationsExcludingInitialize] count]);
 }
 
 - (void)testRecordsInvocationWhenMockIsUsedAndMethodIsStubbedAndForwardsToRealObject
 {
-	TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
-	id mock = [OCMockObject partialMockForObject:realObject];
-	[[[mock stub] andForwardToRealObject] foo];
+    TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
+    id mock = [OCMockObject partialMockForObject:realObject];
+    [[[mock stub] andForwardToRealObject] foo];
 
-	[mock foo];
+    [mock foo];
 
-	XCTAssertEqual(1, [[mock invocationsExcludingInitialize] count]);
+    XCTAssertEqual(1, [[mock invocationsExcludingInitialize] count]);
 }
 
 
-#pragma mark   Tests for behaviour when setting up partial mocks
+#pragma mark Tests for behaviour when setting up partial mocks
 
 - (void)testPartialMockClassOverrideReportsOriginalClass
 {
-	TestClassThatCallsSelf *realObject = [[TestClassThatCallsSelf alloc] init];
-	Class origClass = [realObject class];
-	id mock = [OCMockObject partialMockForObject:realObject];
-	XCTAssertEqualObjects([realObject class], origClass, @"Override of -class method did not work");
-	XCTAssertEqualObjects([mock class], origClass, @"Mock proxy -class method did not work");
-	XCTAssertFalse(origClass == object_getClass(realObject), @"Subclassing did not work");
-	[mock stopMocking];
-	XCTAssertEqualObjects([realObject class], origClass, @"Classes different after stopMocking");
-	XCTAssertEqualObjects(object_getClass(realObject), origClass, @"Classes different after stopMocking");
+    TestClassThatCallsSelf *realObject = [[TestClassThatCallsSelf alloc] init];
+    Class origClass = [realObject class];
+    id mock = [OCMockObject partialMockForObject:realObject];
+    XCTAssertEqualObjects([realObject class], origClass, @"Override of -class method did not work");
+    XCTAssertEqualObjects([mock class], origClass, @"Mock proxy -class method did not work");
+    XCTAssertFalse(origClass == object_getClass(realObject), @"Subclassing did not work");
+    [mock stopMocking];
+    XCTAssertEqualObjects([realObject class], origClass, @"Classes different after stopMocking");
+    XCTAssertEqualObjects(object_getClass(realObject), origClass, @"Classes different after stopMocking");
 }
 
 - (void)testInitializeIsNotCalledOnMockedClass
@@ -440,192 +438,192 @@ static NSUInteger initializeCallCount = 0;
 
 - (void)testSettingUpSecondPartialMockForSameClassDoesNotAffectInstanceMethods
 {
-	TestClassWithSimpleMethod *object1 = [[TestClassWithSimpleMethod alloc] init];
-	TestClassWithSimpleMethod *object2 = [[TestClassWithSimpleMethod alloc] init];
+    TestClassWithSimpleMethod *object1 = [[TestClassWithSimpleMethod alloc] init];
+    TestClassWithSimpleMethod *object2 = [[TestClassWithSimpleMethod alloc] init];
 
-	TestClassWithSimpleMethod *mock1 = OCMPartialMock(object1);
-	XCTAssertEqualObjects(@"Foo", [object1 foo]);
+    TestClassWithSimpleMethod *mock1 = OCMPartialMock(object1);
+    XCTAssertEqualObjects(@"Foo", [object1 foo]);
 
-	TestClassWithSimpleMethod *mock2 = OCMPartialMock(object2);
-	XCTAssertEqualObjects(@"Foo", [object1 foo]);
-	XCTAssertEqualObjects(@"Foo", [object2 foo]);
+    TestClassWithSimpleMethod *mock2 = OCMPartialMock(object2);
+    XCTAssertEqualObjects(@"Foo", [object1 foo]);
+    XCTAssertEqualObjects(@"Foo", [object2 foo]);
 
-	XCTAssertEqualObjects(@"Foo", [mock1 foo]);
-	XCTAssertEqualObjects(@"Foo", [mock2 foo]);
+    XCTAssertEqualObjects(@"Foo", [mock1 foo]);
+    XCTAssertEqualObjects(@"Foo", [mock2 foo]);
 }
 
 - (void)testSettingUpSecondPartialMockForSameClassDoesNotAffectStubs
 {
-	TestClassWithSimpleMethod *object1 = [[TestClassWithSimpleMethod alloc] init];
-	TestClassWithSimpleMethod *object2 = [[TestClassWithSimpleMethod alloc] init];
+    TestClassWithSimpleMethod *object1 = [[TestClassWithSimpleMethod alloc] init];
+    TestClassWithSimpleMethod *object2 = [[TestClassWithSimpleMethod alloc] init];
 
-	TestClassWithSimpleMethod *mock1 = OCMPartialMock(object1);
-	XCTAssertEqualObjects(@"Foo", [object1 foo]);
-	OCMStub([mock1 foo]).andReturn(@"Bar");
-	XCTAssertEqualObjects(@"Bar", [object1 foo]);
+    TestClassWithSimpleMethod *mock1 = OCMPartialMock(object1);
+    XCTAssertEqualObjects(@"Foo", [object1 foo]);
+    OCMStub([mock1 foo]).andReturn(@"Bar");
+    XCTAssertEqualObjects(@"Bar", [object1 foo]);
 
-	TestClassWithSimpleMethod *mock2 = OCMPartialMock(object2);
-	XCTAssertEqualObjects(@"Bar", [object1 foo]);
-	XCTAssertEqualObjects(@"Foo", [object2 foo]);
+    TestClassWithSimpleMethod *mock2 = OCMPartialMock(object2);
+    XCTAssertEqualObjects(@"Bar", [object1 foo]);
+    XCTAssertEqualObjects(@"Foo", [object2 foo]);
 
-	XCTAssertEqualObjects(@"Bar", [mock1 foo]);
-	XCTAssertEqualObjects(@"Foo", [mock2 foo]);
+    XCTAssertEqualObjects(@"Bar", [mock1 foo]);
+    XCTAssertEqualObjects(@"Foo", [mock2 foo]);
 }
 
 
-#pragma mark   Tests for Core Data interaction with mocks
+#pragma mark Tests for Core Data interaction with mocks
 
 - (void)testMockingManagedObject
 {
     // Set up the Core Data stack for the test.
-    
-    NSManagedObjectModel *const model = [NSManagedObjectModel mergedModelFromBundles:@[[NSBundle bundleForClass:self.class]]];
+
+    NSManagedObjectModel *const model = [NSManagedObjectModel mergedModelFromBundles:@[ [NSBundle bundleForClass:self.class] ]];
     NSEntityDescription *const entity = model.entitiesByName[NSStringFromClass([OCTestManagedObject class])];
     NSPersistentStoreCoordinator *const coordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
     [coordinator addPersistentStoreWithType:NSInMemoryStoreType configuration:nil URL:nil options:nil error:NULL];
     NSManagedObjectContext *const context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-    
+
     // Create and mock a real core data object.
-    
+
     OCTestManagedObject *const realObject = [[OCTestManagedObject alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
     OCTestManagedObject *const partialMock = [OCMockObject partialMockForObject:realObject];
-    
+
     // Verify the subclassing behaviour is as we expect.
-    
+
     Class const runtimeObjectClass = object_getClass(realObject);
     Class const reportedClass = [realObject class];
-    
+
     // Core Data generates a dynamic subclass at runtime to implement modeled proprerties.
     // It will look something like "OCTestManagedObject_OCTestManagedObject_".
     XCTAssertTrue([runtimeObjectClass isSubclassOfClass:reportedClass]);
     XCTAssertNotEqual(runtimeObjectClass, reportedClass);
-    
+
     // Verify accessors and setters for attributes work as expected.
-    
+
     partialMock.name = @"OCMock";
     partialMock.sortOrder = 120;
-    
+
     XCTAssertEqualObjects(partialMock.name, @"OCMock");
     XCTAssertEqual(partialMock.sortOrder, 120);
-    
+
     partialMock.name = nil;
     partialMock.sortOrder = 0;
-    
+
     XCTAssertNil(partialMock.name);
     XCTAssertEqual(partialMock.sortOrder, 0);
-    
+
     // Verify to-many relationships work as expected.
-    
+
     OCTestManagedObject *const realObject2 = [[OCTestManagedObject alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
     OCTestManagedObject *const realObject3 = [[OCTestManagedObject alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
-    
+
     [partialMock addToManyRelationshipObject:realObject2];
-    
+
     XCTAssertEqualObjects(partialMock.toManyRelationship, [NSSet setWithObject:realObject2]);
     XCTAssertEqualObjects(realObject2.toManyRelationship, [NSSet setWithObject:realObject]);
-    
+
     partialMock.toOneRelationship = realObject3;
-    
+
     XCTAssertEqualObjects(partialMock.toOneRelationship, realObject3);
     XCTAssertEqualObjects(realObject3.toOneRelationship, realObject);
-    
+
     // Verify saving the context works as expected.
-    
+
     NSError *saveError = nil;
     [context save:&saveError];
-    
+
     XCTAssertNil(saveError);
 }
 
-#pragma mark   Tests for KVO interaction with mocks
+#pragma mark Tests for KVO interaction with mocks
 
 - (void)testAddingObserverAfterCreatingPartialMockShouldWork
 {
-	TestClassThatCallsSelf *realObject = [[TestClassThatCallsSelf alloc] init];
+    TestClassThatCallsSelf *realObject = [[TestClassThatCallsSelf alloc] init];
 
-	id mock = [OCMockObject partialMockForObject:realObject];
-	Class mockSubclass = object_getClass(realObject);
+    id mock = [OCMockObject partialMockForObject:realObject];
+    Class mockSubclass = object_getClass(realObject);
 
-	[realObject addObserver:self forKeyPath:@"methodInt" options:NSKeyValueObservingOptionNew context:NULL];
+    [realObject addObserver:self forKeyPath:@"methodInt" options:NSKeyValueObservingOptionNew context:NULL];
 
-	Class kvoSublass = object_getClass(realObject);
-	XCTAssertTrue(kvoSublass != mockSubclass, @"Expected KVO to create its own subclass");
-	// The -class method is overriden by KVO to return the actual class the object had before.
-	// That happens to be our mock subclass, which isn't ideal, because it should be the real
-	// class, but for now we simply assert that the behaviour is as expected.
-	XCTAssertEqualObjects([realObject class], mockSubclass, @"Expected class method to return mock subclass");
+    Class kvoSublass = object_getClass(realObject);
+    XCTAssertTrue(kvoSublass != mockSubclass, @"Expected KVO to create its own subclass");
+    // The -class method is overriden by KVO to return the actual class the object had before.
+    // That happens to be our mock subclass, which isn't ideal, because it should be the real
+    // class, but for now we simply assert that the behaviour is as expected.
+    XCTAssertEqualObjects([realObject class], mockSubclass, @"Expected class method to return mock subclass");
 
-	[realObject setMethodInt:45];
-	XCTAssertEqual(numKVOCallbacks, 1, @"Should have received notification via real object");
-	[mock setMethodInt:47];
-	XCTAssertEqual(numKVOCallbacks, 2, @"Should have received notification via partial mock");
+    [realObject setMethodInt:45];
+    XCTAssertEqual(numKVOCallbacks, 1, @"Should have received notification via real object");
+    [mock setMethodInt:47];
+    XCTAssertEqual(numKVOCallbacks, 2, @"Should have received notification via partial mock");
 
-	[realObject removeObserver:self forKeyPath:@"methodInt" context:NULL];
+    [realObject removeObserver:self forKeyPath:@"methodInt" context:NULL];
 
-	XCTAssertEqualObjects(object_getClass(realObject), mockSubclass, @"Class should be mock subclass again");
-	XCTAssertEqualObjects([realObject class], [TestClassThatCallsSelf  class], @"Class method should return real class");
+    XCTAssertEqualObjects(object_getClass(realObject), mockSubclass, @"Class should be mock subclass again");
+    XCTAssertEqualObjects([realObject class], [TestClassThatCallsSelf class], @"Class method should return real class");
 }
 
 - (void)testCreatingPartialMockAfterAddingObserverDoesNotCrash
 {
-	TestClassThatCallsSelf *realObject = [[TestClassThatCallsSelf alloc] init];
-	Class realClass = [realObject class];
+    TestClassThatCallsSelf *realObject = [[TestClassThatCallsSelf alloc] init];
+    Class realClass = [realObject class];
 
-	[realObject addObserver:self forKeyPath:@"methodInt" options:NSKeyValueObservingOptionNew context:NULL];
-	Class kvoSubclass = object_getClass(realObject);
+    [realObject addObserver:self forKeyPath:@"methodInt" options:NSKeyValueObservingOptionNew context:NULL];
+    Class kvoSubclass = object_getClass(realObject);
 
-	id mock = [OCMockObject partialMockForObject:realObject];
-	Class mockSubclass = object_getClass(realObject);
+    id mock = [OCMockObject partialMockForObject:realObject];
+    Class mockSubclass = object_getClass(realObject);
 
-	XCTAssertTrue(mockSubclass != kvoSubclass, @"Expected mock to create and set its own subclass");
-	XCTAssertEqualObjects([realObject class], [TestClassThatCallsSelf class], @"Should have returned real class");
+    XCTAssertTrue(mockSubclass != kvoSubclass, @"Expected mock to create and set its own subclass");
+    XCTAssertEqualObjects([realObject class], [TestClassThatCallsSelf class], @"Should have returned real class");
 
-	// The implementation replaces the KVO subclass, which means that existing observers no
-	// longer receive notifications. Of course, this is not ideal but so far it's the best
-	// we can do, and so we simply assert that the behaviour is as expected.
-	[realObject setMethodInt:45];
-	XCTAssertEqual(numKVOCallbacks, 0, @"Did not expect to receive a notification via real object");
-	[mock setMethodInt:47];
-	XCTAssertEqual(numKVOCallbacks, 0, @"Did not expect to receive a notification via partial mock");
+    // The implementation replaces the KVO subclass, which means that existing observers no
+    // longer receive notifications. Of course, this is not ideal but so far it's the best
+    // we can do, and so we simply assert that the behaviour is as expected.
+    [realObject setMethodInt:45];
+    XCTAssertEqual(numKVOCallbacks, 0, @"Did not expect to receive a notification via real object");
+    [mock setMethodInt:47];
+    XCTAssertEqual(numKVOCallbacks, 0, @"Did not expect to receive a notification via partial mock");
 
-	[mock stopMocking];
-	XCTAssertEqualObjects(object_getClass(realObject), realClass, @"Should have restored class");
-	XCTAssertEqualObjects([realObject class], realClass, @"Should have returned real class");
+    [mock stopMocking];
+    XCTAssertEqualObjects(object_getClass(realObject), realClass, @"Should have restored class");
+    XCTAssertEqualObjects([realObject class], realClass, @"Should have returned real class");
 
-	// Given that we have replaced the KVO subclass, we mostly care that there aren't any
-	// crashes when removing observers. We also check that classes are as expected.
-	[realObject removeObserver:self forKeyPath:@"methodInt" context:NULL];
-	XCTAssertEqualObjects(object_getClass(realObject), realClass, @"Should not have changed class");
-	XCTAssertEqualObjects([realObject class], realClass, @"Should not report different class");
+    // Given that we have replaced the KVO subclass, we mostly care that there aren't any
+    // crashes when removing observers. We also check that classes are as expected.
+    [realObject removeObserver:self forKeyPath:@"methodInt" context:NULL];
+    XCTAssertEqualObjects(object_getClass(realObject), realClass, @"Should not have changed class");
+    XCTAssertEqualObjects([realObject class], realClass, @"Should not report different class");
 }
 
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	numKVOCallbacks++;
+    numKVOCallbacks++;
 }
 
 
-#pragma mark   Tests for end of stubbing with partial mocks
+#pragma mark Tests for end of stubbing with partial mocks
 
 - (void)testReturnsToRealImplementationWhenExpectedCallOccurred
 {
     TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
-   	id mock = [OCMockObject partialMockForObject:realObject];
-   	[[[mock expect] andReturn:@"TestFoo"] foo];
-   	XCTAssertEqualObjects(@"TestFoo", [realObject foo], @"Should have stubbed method.");
-   	XCTAssertEqualObjects(@"Foo", [realObject foo], @"Should have 'unstubbed' method.");
+    id mock = [OCMockObject partialMockForObject:realObject];
+    [[[mock expect] andReturn:@"TestFoo"] foo];
+    XCTAssertEqualObjects(@"TestFoo", [realObject foo], @"Should have stubbed method.");
+    XCTAssertEqualObjects(@"Foo", [realObject foo], @"Should have 'unstubbed' method.");
 }
 
 - (void)testRestoresObjectWhenStopped
 {
-	TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
-	id mock = [OCMockObject partialMockForObject:realObject];
-	[[[mock stub] andReturn:@"TestFoo"] foo];
-	XCTAssertEqualObjects(@"TestFoo", [realObject foo], @"Should have stubbed method.");
-	XCTAssertEqualObjects(@"TestFoo", [realObject foo], @"Should have stubbed method.");
-	[mock stopMocking];
-	XCTAssertEqualObjects(@"Foo", [realObject foo], @"Should have 'unstubbed' method.");
+    TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
+    id mock = [OCMockObject partialMockForObject:realObject];
+    [[[mock stub] andReturn:@"TestFoo"] foo];
+    XCTAssertEqualObjects(@"TestFoo", [realObject foo], @"Should have stubbed method.");
+    XCTAssertEqualObjects(@"TestFoo", [realObject foo], @"Should have stubbed method.");
+    [mock stopMocking];
+    XCTAssertEqualObjects(@"Foo", [realObject foo], @"Should have 'unstubbed' method.");
 }
 
 - (void)testArgumentsGetReleasedAfterStopMocking
@@ -633,7 +631,8 @@ static NSUInteger initializeCallCount = 0;
     __weak id weakArgument;
     TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
     id mock = OCMPartialMock(realObject);
-    @autoreleasepool {
+    @autoreleasepool
+    {
         NSObject *argument = [NSObject new];
         weakArgument = argument;
         [mock bar:argument];
@@ -643,36 +642,36 @@ static NSUInteger initializeCallCount = 0;
 }
 
 
-#pragma mark   Tests for explicit forward to real object with partial mocks
+#pragma mark Tests for explicit forward to real object with partial mocks
 
 - (void)testForwardsToRealObjectWhenSetUpAndCalledOnMock
 {
-	TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
-	id mock = [OCMockObject partialMockForObject:realObject];
-    
-	[[[mock expect] andForwardToRealObject] foo];
-	XCTAssertEqual(@"Foo", [mock foo], @"Should have called method on real object.");
-    
-	[mock verify];
+    TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
+    id mock = [OCMockObject partialMockForObject:realObject];
+
+    [[[mock expect] andForwardToRealObject] foo];
+    XCTAssertEqual(@"Foo", [mock foo], @"Should have called method on real object.");
+
+    [mock verify];
 }
 
 - (void)testForwardsToRealObjectWhenSetUpAndCalledOnRealObject
 {
-	TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
-	id mock = [OCMockObject partialMockForObject:realObject];
-	
-	[[[mock expect] andForwardToRealObject] foo];
-	XCTAssertEqual(@"Foo", [realObject foo], @"Should have called method on real object.");
-	
-	[mock verify];
+    TestClassWithSimpleMethod *realObject = [[TestClassWithSimpleMethod alloc] init];
+    id mock = [OCMockObject partialMockForObject:realObject];
+
+    [[[mock expect] andForwardToRealObject] foo];
+    XCTAssertEqual(@"Foo", [realObject foo], @"Should have called method on real object.");
+
+    [mock verify];
 }
 
 - (void)testReturnValueFromRealObjectShouldBeReturnedEvenWithPrecedingAndCall
 {
-  TestClassThatCallsSelf *object = [[TestClassThatCallsSelf alloc] init];
-  OCMockObject *mock = OCMPartialMock(object);
-  [[[[mock stub] andCall:@selector(firstReturnValueMethod) onObject:self] andForwardToRealObject] method2];
-  XCTAssertEqualObjects([object method2], @"Foo", @"Should have returned value from real object.");
+    TestClassThatCallsSelf *object = [[TestClassThatCallsSelf alloc] init];
+    OCMockObject *mock = OCMPartialMock(object);
+    [[[[mock stub] andCall:@selector(firstReturnValueMethod) onObject:self] andForwardToRealObject] method2];
+    XCTAssertEqualObjects([object method2], @"Foo", @"Should have returned value from real object.");
 }
 
 - (NSString *)firstReturnValueMethod
@@ -691,20 +690,20 @@ static NSUInteger initializeCallCount = 0;
 }
 
 
-#pragma mark   Tests for method swizzling with partial mocks
+#pragma mark Tests for method swizzling with partial mocks
 
 - (NSString *)differentMethodInDifferentClass
 {
-	return @"swizzled!";
+    return @"swizzled!";
 }
 
 - (void)testImplementsMethodSwizzling
 {
-	// using partial mocks and the indirect return value provider
-	TestClassThatCallsSelf *foo = [[TestClassThatCallsSelf alloc] init];
-	id mock = [OCMockObject partialMockForObject:foo];
-	[[[mock stub] andCall:@selector(differentMethodInDifferentClass) onObject:self] method1];
-	XCTAssertEqualObjects(@"swizzled!", [foo method1], @"Should have returned value from different method");
+    // using partial mocks and the indirect return value provider
+    TestClassThatCallsSelf *foo = [[TestClassThatCallsSelf alloc] init];
+    id mock = [OCMockObject partialMockForObject:foo];
+    [[[mock stub] andCall:@selector(differentMethodInDifferentClass) onObject:self] method1];
+    XCTAssertEqualObjects(@"swizzled!", [foo method1], @"Should have returned value from different method");
 }
 
 
@@ -714,20 +713,20 @@ static NSUInteger initializeCallCount = 0;
 
 - (void)testMethodSwizzlingWorksForVoidReturns
 {
-	TestClassThatCallsSelf *foo = [[TestClassThatCallsSelf alloc] init];
-	id mock = [OCMockObject partialMockForObject:foo];
-	[[[mock stub] andCall:@selector(aMethodWithVoidReturn) onObject:self] methodVoid];
-	XCTAssertNoThrow([foo method1], @"Should have worked.");
+    TestClassThatCallsSelf *foo = [[TestClassThatCallsSelf alloc] init];
+    id mock = [OCMockObject partialMockForObject:foo];
+    [[[mock stub] andCall:@selector(aMethodWithVoidReturn) onObject:self] methodVoid];
+    XCTAssertNoThrow([foo method1], @"Should have worked.");
 }
 
 
-#pragma mark	Tests for exception messages
+#pragma mark Tests for exception messages
 
 - (void)testVerifyFailureIncludesHintForPartialMockMethodsThatDontGetForwarderInstalled
 {
-	TestClassThatCallsSelf *realObject = [[TestClassThatCallsSelf alloc] init];
-	id mock = [OCMockObject partialMockForObject:realObject];
-	[realObject categoryMethod];
+    TestClassThatCallsSelf *realObject = [[TestClassThatCallsSelf alloc] init];
+    id mock = [OCMockObject partialMockForObject:realObject];
+    [realObject categoryMethod];
     @try
     {
         [[mock verify] categoryMethod];
@@ -741,17 +740,16 @@ static NSUInteger initializeCallCount = 0;
 
 - (void)testDoesNotIncludeHintWhenMockIsNotPartialMock
 {
-	id mock = [OCMockObject niceMockForClass:[TestClassThatCallsSelf class]];
-	@try
-	{
-		[[mock verify] categoryMethod];
-		XCTFail(@"An exception should have been thrown.");
-	}
-	@catch(NSException *e)
-	{
-		XCTAssertFalse([[e reason] containsString:@"Adding a stub"]);
-	}
-
+    id mock = [OCMockObject niceMockForClass:[TestClassThatCallsSelf class]];
+    @try
+    {
+        [[mock verify] categoryMethod];
+        XCTFail(@"An exception should have been thrown.");
+    }
+    @catch(NSException *e)
+    {
+        XCTAssertFalse([[e reason] containsString:@"Adding a stub"]);
+    }
 }
 
 - (void)testDoesNotIncludeHintWhenStubbingIsNotGoingToHelp
@@ -762,7 +760,6 @@ static NSUInteger initializeCallCount = 0;
     {
         [[mock verify] method2];
         XCTFail(@"An exception should have been thrown.");
-
     }
     @catch(NSException *e)
     {
@@ -776,10 +773,10 @@ static NSUInteger initializeCallCount = 0;
     TestClassThatObservesFoo *observer = [[TestClassThatObservesFoo alloc] initWithObject:realObject];
     id mock = [OCMockObject partialMockForObject:realObject];
     [observer startObserving];
-    
+
     // If we invoked stopObserving here, then stopMocking would work; but we want to test the error case.
     XCTAssertThrowsSpecificNamed([mock stopMocking], NSException, NSInvalidArgumentException);
-    
+
     // Must reset the object here to avoid any attempt to remove the observer, which would fail.
     observer->observedObject = nil;
 }

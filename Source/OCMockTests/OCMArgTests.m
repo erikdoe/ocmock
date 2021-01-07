@@ -51,35 +51,35 @@
 - (void)testIsKindOfClassCheck
 {
     OCMBlockConstraint *constraint = [OCMArg isKindOfClass:[NSString class]];
-    
-	XCTAssertTrue([constraint evaluate:@"foo"], @"Should have accepted \"foo\".");
-	XCTAssertFalse([constraint evaluate:[NSArray array]], @"Should not have accepted other value.");
-	XCTAssertFalse([constraint evaluate:nil], @"Should not have accepted nil.");
+
+    XCTAssertTrue([constraint evaluate:@"foo"], @"Should have accepted \"foo\".");
+    XCTAssertFalse([constraint evaluate:[NSArray array]], @"Should not have accepted other value.");
+    XCTAssertFalse([constraint evaluate:nil], @"Should not have accepted nil.");
 }
 
--(void)testResolvesSpecialAnySelectorToAnyConstraint
+- (void)testResolvesSpecialAnySelectorToAnyConstraint
 {
     SEL anySelector = [OCMArg anySelector];
     NSValue *anySelectorValue = [NSValue valueWithBytes:&anySelector objCType:@encode(SEL)];
-    
+
     XCTAssertTrue([[OCMArg resolveSpecialValues:anySelectorValue] isKindOfClass:[OCMAnyConstraint class]]);
 }
 
--(void)testDoesNotTreatOtherSelectorsAsSpecialValue
+- (void)testDoesNotTreatOtherSelectorsAsSpecialValue
 {
     NSValue *arbitrary = [NSValue value:NSSelectorFromString(@"someSelector") withObjCType:@encode(SEL)];
     XCTAssertEqual([OCMArg resolveSpecialValues:arbitrary], arbitrary, @"Should have returned selector as is.");
 }
 
--(void)testResolvesSpecialAnyPointerToAnyConstraint
+- (void)testResolvesSpecialAnyPointerToAnyConstraint
 {
     void *anyPointer = [OCMArg anyPointer];
     NSValue *anyPointerValue = [NSValue valueWithPointer:anyPointer];
-    
+
     XCTAssertTrue([[OCMArg resolveSpecialValues:anyPointerValue] isKindOfClass:[OCMAnyConstraint class]]);
 }
 
--(void)testResolvesPassByRefSetterValueToSetterInstance
+- (void)testResolvesPassByRefSetterValueToSetterInstance
 {
     NSNumber *value = @1;
     OCMPassByRefSetter *setter = [[OCMPassByRefSetter alloc] initWithValue:value];

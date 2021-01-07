@@ -25,7 +25,7 @@
 
 @interface OCMMacroState : NSObject
 {
-    id recorder;
+    id   recorder;
     BOOL invocationDidThrow;
 }
 

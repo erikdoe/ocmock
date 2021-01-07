@@ -26,7 +26,7 @@
 - (void)addMockObserver:(OCObserverMockObject *)notificationObserver name:(NSString *)notificationName object:(id)notificationSender
 {
     [notificationObserver autoRemoveFromCenter:self];
-	[self addObserver:notificationObserver selector:@selector(handleNotification:) name:notificationName object:notificationSender];
+    [self addObserver:notificationObserver selector:@selector(handleNotification:) name:notificationName object:notificationSender];
 }
 
 #pragma clang diagnostic pop

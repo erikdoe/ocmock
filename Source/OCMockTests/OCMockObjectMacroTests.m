@@ -22,7 +22,7 @@
 - (NSString *)stringValue;
 @end
 
-@interface TestClassForMacroTesting : NSObject <TestProtocolForMacroTesting>
+@interface TestClassForMacroTesting : NSObject<TestProtocolForMacroTesting>
 
 @end
 
@@ -38,13 +38,14 @@
 
 @interface TestClassWithDecimalReturnMethod : NSObject
 
-- (NSDecimalNumber*)method;
+- (NSDecimalNumber *)method;
 
 @end
 
 @implementation TestClassWithDecimalReturnMethod
 
-- (NSDecimalNumber*)method {
+- (NSDecimalNumber *)method
+{
     return nil;
 }
 
@@ -66,7 +67,6 @@
 @end
 
 
-
 // implemented in OCMockObjectClassMethodMockingTests
 
 @interface TestClassWithClassMethods : NSObject
@@ -76,13 +76,12 @@
 @end
 
 
-
 @interface OCMockObjectMacroTests : XCTestCase
 {
-    BOOL        shouldCaptureFailure;
-    NSString    *reportedDescription;
-    NSString    *reportedFile;
-    NSInteger   reportedLine;
+    BOOL shouldCaptureFailure;
+    NSString *reportedDescription;
+    NSString *reportedFile;
+    NSInteger reportedLine;
 }
 
 @end
@@ -149,7 +148,7 @@
     {
         [mock lowercaseString];
     }
-    @catch (NSException *exception)
+    @catch(NSException *exception)
     {
         // ignore; the mock will rethrow this in verify
     }
@@ -245,10 +244,10 @@
 
     NSNotification *n = [NSNotification notificationWithName:@"TestNotification" object:nil];
 
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     id observer = OCMObserverMock();
-    #pragma clang diagnostic pop
+#pragma clang diagnostic pop
     [[NSNotificationCenter defaultCenter] addMockObserver:observer name:[n name] object:nil];
     OCMExpect([observer notificationWithName:[n name] object:[OCMArg any]]);
 
@@ -261,14 +260,14 @@
 
 - (void)testNotificationObservingWithUserInfo
 {
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     id observer = OCMObserverMock();
-    #pragma clang diagnostic pop
+#pragma clang diagnostic pop
     [[NSNotificationCenter defaultCenter] addMockObserver:observer name:@"TestNotificationWithInfo" object:nil];
     OCMExpect([observer notificationWithName:@"TestNotificationWithInfo" object:[OCMArg any] userInfo:[OCMArg any]]);
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"TestNotificationWithInfo" object:self userInfo:@{ @"foo": @"bar" }];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"TestNotificationWithInfo" object:self userInfo:@{ @"foo" : @"bar" }];
 
     OCMVerifyAll(observer);
 }
@@ -303,8 +302,7 @@
     id mock = OCMPartialMock([[TestClassForMacroTesting alloc] init]);
 
     __block BOOL didCallBlock = NO;
-    void (^theBlock)(NSInvocation *) = ^(NSInvocation *invocation)
-    {
+    void (^theBlock)(NSInvocation *) = ^(NSInvocation *invocation) {
         didCallBlock = YES;
     };
 
@@ -414,7 +412,7 @@
         id realObject = [NSMutableArray array];
         OCMStub([realObject addObject:@"foo"]);
     }
-    @catch (NSException *e)
+    @catch(NSException *e)
     {
         XCTAssertTrue([[e reason] containsString:@"The receiver is not a mock object."]);
     }
@@ -437,7 +435,7 @@
         id mock = OCMClassMock([NSString class]);
         OCMStub([mock description]);
     }
-    @catch (NSException *e)
+    @catch(NSException *e)
     {
         XCTAssertTrue([[e reason] containsString:@"The selector conflicts with a selector implemented by OCMStubRecorder/OCMExpectationRecorder."]);
     }
@@ -450,7 +448,7 @@
         id mock = OCMClassMock([NSString class]);
         OCMVerify([mock description]);
     }
-    @catch (NSException *e)
+    @catch(NSException *e)
     {
         XCTAssertTrue([[e reason] containsString:@"The selector conflicts with a selector implemented by OCMVerifier."]);
     }

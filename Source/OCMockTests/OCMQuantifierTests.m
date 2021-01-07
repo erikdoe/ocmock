@@ -35,8 +35,8 @@
 
 @interface OCMQuantifierTests : XCTestCase
 {
-    BOOL    expectFailure;
-    BOOL    didRecordFailure;
+    BOOL expectFailure;
+    BOOL didRecordFailure;
 }
 
 @end
@@ -114,30 +114,30 @@
 - (void)testAtLeastThrowsWhenMinimumCountIsNotReached
 {
     id mock = OCMClassMock([TestClassForQuantifiers class]);
-    
+
     [mock doStuff];
-    
+
     XCTAssertThrows([[[mock verify] withQuantifier:[OCMQuantifier atLeast:2]] doStuff]);
 }
 
 - (void)testAtLeastMatchesMinimumCount
 {
     id mock = OCMClassMock([TestClassForQuantifiers class]);
-    
+
     [mock doStuff];
     [mock doStuff];
-    
+
     [[[mock verify] withQuantifier:[OCMQuantifier atLeast:2]] doStuff];
 }
 
 - (void)testAtLeastMatchesMoreThanMinimumCount
 {
     id mock = OCMClassMock([TestClassForQuantifiers class]);
-    
+
     [mock doStuff];
     [mock doStuff];
     [mock doStuff];
-    
+
     [[[mock verify] withQuantifier:[OCMQuantifier atLeast:2]] doStuff];
 }
 
@@ -150,7 +150,7 @@
 - (void)testAtMostMatchesUpToMaximumCount
 {
     id mock = OCMClassMock([TestClassForQuantifiers class]);
-    
+
     [mock doStuff];
 
     [[[mock verify] withQuantifier:[OCMQuantifier atMost:1]] doStuff];
@@ -159,10 +159,10 @@
 - (void)testAtMostThrowsWhenMaximumCountIsExceeded
 {
     id mock = OCMClassMock([TestClassForQuantifiers class]);
-    
+
     [mock doStuff];
     [mock doStuff];
-    
+
     XCTAssertThrows([[[mock verify] withQuantifier:[OCMQuantifier atMost:1]] doStuff]);
 }
 
@@ -175,7 +175,7 @@
 - (void)testNeverThrowsWhenInvocationsOccurred
 {
     id mock = OCMClassMock([TestClassForQuantifiers class]);
-    
+
     [mock doStuff];
 
     XCTAssertThrows([[[mock verify] withQuantifier:[OCMQuantifier never]] doStuff]);
@@ -200,4 +200,3 @@
 }
 
 @end
-

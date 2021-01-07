@@ -14,8 +14,8 @@
  *  under the License.
  */
 
-#import "OCMInvocationExpectation.h"
 #import "NSInvocation+OCMAdditions.h"
+#import "OCMInvocationExpectation.h"
 
 
 @implementation OCMInvocationExpectation
@@ -29,7 +29,7 @@
 
 - (BOOL)isMatchAndReject
 {
-  return matchAndReject;
+    return matchAndReject;
 }
 
 - (BOOL)isSatisfied
@@ -61,7 +61,6 @@
         isSatisfied = YES;
     }
 }
-
 
 
 @end

@@ -14,8 +14,8 @@
  *  under the License.
  */
 
-#import <stdatomic.h>
 #import <libkern/OSAtomic.h>
+#import <stdatomic.h>
 #import "TestClassWithCustomReferenceCounting.h"
 
 
@@ -50,7 +50,7 @@
 #else
     int32_t newRetainCount = OSAtomicDecrement32(&retainCount);
 #endif
-    if (newRetainCount == -1)
+    if(newRetainCount == -1)
         [self dealloc];
 }
 

@@ -15,13 +15,13 @@
  */
 
 #import "OCMExpectationRecorder.h"
-#import "OCMockObject.h"
 #import "OCMInvocationExpectation.h"
+#import "OCMockObject.h"
 
 
 @implementation OCMExpectationRecorder
 
-#pragma mark  Initialisers, description, accessors, etc.
+#pragma mark Initialisers, description, accessors, etc.
 
 - (id)init
 {

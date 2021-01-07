@@ -23,8 +23,8 @@ static NSString *TestNotificationOne = @"TestNotificationOne";
 
 @interface OCObserverMockObjectTest : XCTestCase
 {
-	NSNotificationCenter *center;
-	id mock;
+    NSNotificationCenter *center;
+    id mock;
 }
 
 @end
@@ -34,129 +34,127 @@ static NSString *TestNotificationOne = @"TestNotificationOne";
 
 - (void)setUp
 {
-	center = [[NSNotificationCenter alloc] init];
-  #pragma clang diagnostic push
-  #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-	mock = [OCMockObject observerMock];
-  #pragma clang diagnostic pop
+    center = [[NSNotificationCenter alloc] init];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    mock = [OCMockObject observerMock];
+#pragma clang diagnostic pop
 }
 
 - (void)testAcceptsExpectedNotification
 {
-	[center addMockObserver:mock name:TestNotificationOne object:nil];
+    [center addMockObserver:mock name:TestNotificationOne object:nil];
     [[mock expect] notificationWithName:TestNotificationOne object:[OCMArg any]];
-    
+
     [center postNotificationName:TestNotificationOne object:self];
-	
+
     [mock verify];
 }
 
 - (void)testAcceptsExpectedNotificationWithSpecifiedObjectAndUserInfo
 {
-	[center addMockObserver:mock name:TestNotificationOne object:nil];
-	NSDictionary *info = @{@"key": @"foo"};
+    [center addMockObserver:mock name:TestNotificationOne object:nil];
+    NSDictionary *info = @{ @"key" : @"foo" };
     [[mock expect] notificationWithName:TestNotificationOne object:self userInfo:info];
-    
+
     [center postNotificationName:TestNotificationOne object:self userInfo:info];
-	
+
     [mock verify];
 }
 
 - (void)testAcceptsNotificationsInAnyOrder
 {
-	[center addMockObserver:mock name:TestNotificationOne object:nil];
-	[[mock expect] notificationWithName:TestNotificationOne object:self];
+    [center addMockObserver:mock name:TestNotificationOne object:nil];
+    [[mock expect] notificationWithName:TestNotificationOne object:self];
     [[mock expect] notificationWithName:TestNotificationOne object:[OCMArg any]];
-	
-	[center postNotificationName:TestNotificationOne object:[NSString string]];
-	[center postNotificationName:TestNotificationOne object:self];
+
+    [center postNotificationName:TestNotificationOne object:[NSString string]];
+    [center postNotificationName:TestNotificationOne object:self];
 }
 
 - (void)testAcceptsNotificationsInCorrectOrderWhenOrderMatters
 {
-	[mock setExpectationOrderMatters:YES];
+    [mock setExpectationOrderMatters:YES];
 
-	[center addMockObserver:mock name:TestNotificationOne object:nil];
-	[[mock expect] notificationWithName:TestNotificationOne object:self];
+    [center addMockObserver:mock name:TestNotificationOne object:nil];
+    [[mock expect] notificationWithName:TestNotificationOne object:self];
     [[mock expect] notificationWithName:TestNotificationOne object:[OCMArg any]];
-	
-	[center postNotificationName:TestNotificationOne object:self];
-	[center postNotificationName:TestNotificationOne object:[NSString string]];
+
+    [center postNotificationName:TestNotificationOne object:self];
+    [center postNotificationName:TestNotificationOne object:[NSString string]];
 }
 
 - (void)testRaisesExceptionWhenSequenceIsWrongAndOrderMatters
 {
-	[mock setExpectationOrderMatters:YES];
-	
-	[center addMockObserver:mock name:TestNotificationOne object:nil];
-	[[mock expect] notificationWithName:TestNotificationOne object:self];
+    [mock setExpectationOrderMatters:YES];
+
+    [center addMockObserver:mock name:TestNotificationOne object:nil];
+    [[mock expect] notificationWithName:TestNotificationOne object:self];
     [[mock expect] notificationWithName:TestNotificationOne object:[OCMArg any]];
-	
-	XCTAssertThrows([center postNotificationName:TestNotificationOne object:[NSString string]], @"Should have complained about sequence.");
+
+    XCTAssertThrows([center postNotificationName:TestNotificationOne object:[NSString string]], @"Should have complained about sequence.");
 }
 
 - (void)testRaisesEvenThoughOverlappingExpectationsCouldHaveBeenSatisfied
 {
-	// this test demonstrates a shortcoming, not a feature
-	[center addMockObserver:mock name:TestNotificationOne object:nil];
+    // this test demonstrates a shortcoming, not a feature
+    [center addMockObserver:mock name:TestNotificationOne object:nil];
     [[mock expect] notificationWithName:TestNotificationOne object:[OCMArg any]];
-	[[mock expect] notificationWithName:TestNotificationOne object:self];
-	
-	[center postNotificationName:TestNotificationOne object:self];
-	XCTAssertThrows([center postNotificationName:TestNotificationOne object:[NSString string]]);
+    [[mock expect] notificationWithName:TestNotificationOne object:self];
+
+    [center postNotificationName:TestNotificationOne object:self];
+    XCTAssertThrows([center postNotificationName:TestNotificationOne object:[NSString string]]);
 }
 
 - (void)testRaisesExceptionWhenUnexpectedNotificationIsReceived
 {
-	[center addMockObserver:mock name:TestNotificationOne object:nil];
-	
+    [center addMockObserver:mock name:TestNotificationOne object:nil];
+
     XCTAssertThrows([center postNotificationName:TestNotificationOne object:self]);
 }
 
 - (void)testRaisesWhenNotificationWithWrongObjectIsReceived
 {
-	[center addMockObserver:mock name:TestNotificationOne object:nil];
+    [center addMockObserver:mock name:TestNotificationOne object:nil];
     [[mock expect] notificationWithName:TestNotificationOne object:self];
-	
-	XCTAssertThrows([center postNotificationName:TestNotificationOne object:[NSString string]]);
+
+    XCTAssertThrows([center postNotificationName:TestNotificationOne object:[NSString string]]);
 }
 
 - (void)testRaisesWhenNotificationWithWrongUserInfoIsReceived
 {
-	[center addMockObserver:mock name:TestNotificationOne object:nil];
-    [[mock expect] notificationWithName:TestNotificationOne object:self 
-							   userInfo:@{@"key": @"foo"}];
-	XCTAssertThrows([center postNotificationName:TestNotificationOne object:[NSString string] 
-									   userInfo:@{@"key": @"bar"}]);
+    [center addMockObserver:mock name:TestNotificationOne object:nil];
+    [[mock expect] notificationWithName:TestNotificationOne object:self userInfo:@{ @"key" : @"foo" }];
+    XCTAssertThrows([center postNotificationName:TestNotificationOne object:[NSString string] userInfo:@{ @"key" : @"bar" }]);
 }
 
 - (void)testRaisesOnVerifyWhenExpectedNotificationIsNotSent
 {
-	[center addMockObserver:mock name:TestNotificationOne object:nil];
+    [center addMockObserver:mock name:TestNotificationOne object:nil];
     [[mock expect] notificationWithName:TestNotificationOne object:[OCMArg any]];
 
-	XCTAssertThrows([mock verify]);
+    XCTAssertThrows([mock verify]);
 }
 
 - (void)testRaisesOnVerifyWhenNotAllNotificationsWereSent
 {
-	[center addMockObserver:mock name:TestNotificationOne object:nil];
+    [center addMockObserver:mock name:TestNotificationOne object:nil];
     [[mock expect] notificationWithName:TestNotificationOne object:[OCMArg any]];
-	[[mock expect] notificationWithName:TestNotificationOne object:self];
+    [[mock expect] notificationWithName:TestNotificationOne object:self];
 
-	[center postNotificationName:TestNotificationOne object:self];
-	XCTAssertThrows([mock verify]);
+    [center postNotificationName:TestNotificationOne object:self];
+    XCTAssertThrows([mock verify]);
 }
 
 - (void)testChecksNotificationNamesCorrectly
 {
     NSString *notificationName = @"MyNotification";
-    
+
     [center addMockObserver:mock name:notificationName object:nil];
     [[mock expect] notificationWithName:[notificationName mutableCopy] object:[OCMArg any]];
-    
+
     [center postNotificationName:notificationName object:self];
-    
+
     [mock verify];
 }
 

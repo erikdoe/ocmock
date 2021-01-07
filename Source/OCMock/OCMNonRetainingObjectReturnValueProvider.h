@@ -18,7 +18,7 @@
 
 @interface OCMNonRetainingObjectReturnValueProvider : NSObject
 {
-    id	returnValue;
+    id returnValue;
 }
 
 - (instancetype)initWithValue:(id)aValue;

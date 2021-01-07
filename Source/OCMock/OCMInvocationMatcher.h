@@ -19,8 +19,8 @@
 @interface OCMInvocationMatcher : NSObject
 {
     NSInvocation *recordedInvocation;
-    BOOL         recordedAsClassMethod;
-    BOOL         ignoreNonObjectArgs;
+    BOOL          recordedAsClassMethod;
+    BOOL          ignoreNonObjectArgs;
 }
 
 - (void)setInvocation:(NSInvocation *)anInvocation;

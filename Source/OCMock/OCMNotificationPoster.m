@@ -21,23 +21,23 @@
 
 - (id)initWithNotification:(id)aNotification
 {
-    if ((self = [super init]))
+    if((self = [super init]))
     {
         notification = [aNotification retain];
     }
-	
-	return self;
+
+    return self;
 }
 
 - (void)dealloc
 {
-	[notification release];
-	[super dealloc];
+    [notification release];
+    [super dealloc];
 }
 
 - (void)handleInvocation:(NSInvocation *)anInvocation
 {
-	[[NSNotificationCenter defaultCenter] postNotification:notification];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 
 

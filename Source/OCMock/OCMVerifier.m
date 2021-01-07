@@ -15,10 +15,10 @@
  */
 
 #import "OCMVerifier.h"
-#import "OCMockObject.h"
 #import "OCMInvocationMatcher.h"
 #import "OCMLocation.h"
 #import "OCMQuantifier.h"
+#import "OCMockObject.h"
 
 
 @implementation OCMVerifier
@@ -27,11 +27,11 @@
 {
     if(invocationMatcher != nil)
         [NSException raise:NSInternalInconsistencyException format:@"** Method init invoked twice on verifier. Are you trying to verify the init method? This is currently not supported."];
-    if ((self = [super init]))
+    if((self = [super init]))
     {
         invocationMatcher = [[OCMInvocationMatcher alloc] init];
     }
-    
+
     return self;
 }
 
@@ -49,9 +49,9 @@
 
 - (void)dealloc
 {
-	[_location release];
+    [_location release];
     [_quantifier release];
-	[super dealloc];
+    [super dealloc];
 }
 
 @end

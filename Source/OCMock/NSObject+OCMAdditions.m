@@ -15,8 +15,8 @@
  */
 
 #import <objc/runtime.h>
-#import "NSObject+OCMAdditions.h"
 #import "NSMethodSignature+OCMAdditions.h"
+#import "NSObject+OCMAdditions.h"
 
 
 @implementation NSObject(OCMAdditions)
@@ -28,7 +28,7 @@
 
 #ifndef __arm64__
     static NSMutableDictionary *_OCMReturnTypeCache;
-    
+
     if(_OCMReturnTypeCache == nil)
         _OCMReturnTypeCache = [[NSMutableDictionary alloc] init];
 
@@ -51,10 +51,9 @@
     if(needsStructureReturn)
         return class_getMethodImplementation_stret([NSObject class], selectorWithNoImplementation);
 #endif
-    
+
     return class_getMethodImplementation([NSObject class], selectorWithNoImplementation);
 }
-
 
 + (void)enumerateMethodsInClass:(Class)aClass usingBlock:(void (^)(Class cls, SEL sel))aBlock
 {
@@ -72,6 +71,5 @@
         free(methodList);
     }
 }
-
 
 @end

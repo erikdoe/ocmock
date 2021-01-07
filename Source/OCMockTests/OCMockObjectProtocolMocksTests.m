@@ -18,9 +18,7 @@
 #import "OCMock.h"
 
 
-// --------------------------------------------------------------------------------------
-//	Helper classes and protocols for testing
-// --------------------------------------------------------------------------------------
+#pragma mark Helper classes and protocols for testing
 
 @protocol TestProtocol
 + (NSString *)stringValueClassMethod;
@@ -30,7 +28,8 @@
 - (void)voidWithArgument:(id)argument;
 @end
 
-@interface InterfaceForTypedef : NSObject {
+@interface InterfaceForTypedef : NSObject
+{
     int prop1;
     NSObject *prop2;
 }
@@ -40,14 +39,13 @@
 @end
 
 typedef InterfaceForTypedef TypedefInterface;
-typedef InterfaceForTypedef* PointerTypedefInterface;
+typedef InterfaceForTypedef *PointerTypedefInterface;
 
 @protocol ProtocolWithTypedefs
-- (TypedefInterface*)typedefReturnValue1;
+- (TypedefInterface *)typedefReturnValue1;
 - (PointerTypedefInterface)typedefReturnValue2;
-- (void)typedefParameter:(TypedefInterface*)parameter;
+- (void)typedefParameter:(TypedefInterface *)parameter;
 @end
-
 
 
 @interface OCMockObjectProtocolMocksTests : XCTestCase
@@ -57,9 +55,7 @@ typedef InterfaceForTypedef* PointerTypedefInterface;
 
 @implementation OCMockObjectProtocolMocksTests
 
-// --------------------------------------------------------------------------------------
-//	Tests
-// --------------------------------------------------------------------------------------
+#pragma mark Tests
 
 - (void)testCanMockFormalProtocol
 {
@@ -107,19 +103,22 @@ typedef InterfaceForTypedef* PointerTypedefInterface;
     XCTAssertFalse([mock respondsToSelector:@selector(testDoesNotRespondToInvalidProtocolSelector)]);
 }
 
-- (void)testWithTypedefReturnType {
+- (void)testWithTypedefReturnType
+{
     id mock = [OCMockObject mockForProtocol:@protocol(ProtocolWithTypedefs)];
     XCTAssertNoThrow([[[mock stub] andReturn:[TypedefInterface new]] typedefReturnValue1], @"Should accept a typedefed return-type");
     XCTAssertNoThrow([mock typedefReturnValue1]);
 }
 
-- (void)testWithTypedefPointerReturnType {
+- (void)testWithTypedefPointerReturnType
+{
     id mock = [OCMockObject mockForProtocol:@protocol(ProtocolWithTypedefs)];
     XCTAssertNoThrow([[[mock stub] andReturn:[TypedefInterface new]] typedefReturnValue2], @"Should accept a typedefed return-type");
     XCTAssertNoThrow([mock typedefReturnValue2]);
 }
 
-- (void)testWithTypedefParameter {
+- (void)testWithTypedefParameter
+{
     id mock = [OCMockObject mockForProtocol:@protocol(ProtocolWithTypedefs)];
     XCTAssertNoThrow([[mock stub] typedefParameter:nil], @"Should accept a typedefed parameter-type");
     XCTAssertNoThrow([mock typedefParameter:nil]);
@@ -157,7 +156,8 @@ typedef InterfaceForTypedef* PointerTypedefInterface;
 {
     __weak id weakArgument;
     id mock = OCMProtocolMock(@protocol(TestProtocol));
-    @autoreleasepool {
+    @autoreleasepool
+    {
         NSObject *argument = [NSObject new];
         weakArgument = argument;
         [mock voidWithArgument:argument];

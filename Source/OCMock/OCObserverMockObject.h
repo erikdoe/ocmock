@@ -20,11 +20,11 @@
 
 
 __deprecated_msg("Please use XCTNSNotificationExpectation instead.")
-@interface OCObserverMockObject : NSObject 
+    @interface OCObserverMockObject : NSObject
 {
-	BOOL		    expectationOrderMatters;
-    NSMutableArray  *recorders;
-    NSMutableArray  *centers;
+    BOOL            expectationOrderMatters;
+    NSMutableArray *recorders;
+    NSMutableArray *centers;
 }
 
 - (void)setExpectationOrderMatters:(BOOL)flag;

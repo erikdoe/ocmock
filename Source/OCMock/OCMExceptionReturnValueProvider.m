@@ -24,7 +24,7 @@ NSString *OCMStubbedException = @"OCMStubbedException";
 
 - (void)handleInvocation:(NSInvocation *)anInvocation
 {
-	[[NSException exceptionWithName:OCMStubbedException reason:@"Exception stubbed in test." userInfo:@{ @"exception": returnValue }] raise];
+    [[NSException exceptionWithName:OCMStubbedException reason:@"Exception stubbed in test." userInfo:@{ @"exception" : returnValue }] raise];
 }
 
 @end
