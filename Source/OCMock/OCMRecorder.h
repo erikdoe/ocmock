@@ -24,7 +24,6 @@
 {
     OCMockObject         *mockObject;
     OCMInvocationMatcher *invocationMatcher;
-    BOOL                  didRecordInvocation;
     BOOL                  shouldReturnMockFromInit;
 }
 

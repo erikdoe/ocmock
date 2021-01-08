@@ -454,6 +454,27 @@
     }
 }
 
+- (void)testShouldThrowExceptionWhenInvocationsOccurAfterMockRecorded
+{
+  @try
+  {
+    id mock = OCMClassMock([NSUUID class]);
+    OCMExpect([mock UUID]).andReturn(mock);
+
+    // Exception should be thrown on this line because we don't want to record [mock UUID],
+    // we want to record UUIDString.
+    OCMExpect([[mock UUID] UUIDString]).andReturn(@"Hello");
+    [NSUUID UUID];
+    [NSUUID UUID];
+    OCMVerifyAll(mock);
+    XCTFail(@"Should never be reached");
+  }
+  @catch(NSException *e)
+  {
+      XCTAssertTrue([[e reason] containsString:@"but recorder has already recorded a stub for"],
+                    @"Caught Exception: `%@`", [e reason]);
+  }
+}
 
 - (void)testCanExplicitlySelectClassMethodForStubs
 {
