@@ -58,7 +58,7 @@ def write_banner(outfile, year)
  *  under the License.
  */
   EOS
-  years = (year != "2020") ? "#{year}-2020" : year
+  years = (year != "2021") ? "#{year}-2021" : year
   banner.gsub!(/%YEARS%/, years)
   outfile.write(banner)
 end
