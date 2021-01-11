@@ -41,7 +41,7 @@
     NSMethodSignature *signature = [anObject methodSignatureForSelector:aSelector];
     if(signature == nil)
         [NSException raise:NSInvalidArgumentException
-                    format:@"Unkown selector %@ used in constraint.", NSStringFromSelector(aSelector)];
+                    format:@"Unknown selector %@ used in constraint.", NSStringFromSelector(aSelector)];
     NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
     [invocation setTarget:anObject];
     [invocation setSelector:aSelector];
