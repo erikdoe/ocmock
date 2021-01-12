@@ -40,7 +40,12 @@
 
 const char *OCMTypeWithoutQualifiers(const char *objCType)
 {
-    while(strchr("rnNoORV", objCType[0]) != NULL)
+    // In certain cases byref appears to just pass the "R" and not the "@" that I would expect. This
+    // is likely a bug in the compiler since byref is basically a dead keyword at this point. That
+    // being said, this will protect us, and returns what would be the expected type.
+    if(strcmp(objCType, "R") == 0)
+        return "@";
+    while(objCType[0] && strchr("rnNoORV", objCType[0]) != NULL)
         objCType += 1;
     return objCType;
 }

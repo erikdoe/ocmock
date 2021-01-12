@@ -32,11 +32,94 @@
 
 @end
 
+@interface TestClassForSpecialEncodings : NSObject
+@end
+
+@implementation TestClassForSpecialEncodings
+
+// Method declarations for testing old style Distributed Object (DO) type qualifiers.
+- (void)methodWithInOut:(inout char *)foo
+{
+}
+
+- (void)methodWithConst:(const char *)foo
+{
+}
+
+- (void)methodWithIn:(in char *)foo
+{
+}
+
+- (void)methodWithOut:(out char *)foo
+{
+}
+
+- (void)methodWithByCopy:(bycopy id)foo
+{
+}
+
+- (void)methodWithOutByCopy:(out bycopy id *)foo
+{
+}
+
+- (void)methodWithByRef:(byref id)foo
+{
+}
+
+- (oneway void)methodWithOneway
+{
+}
+
+@end
 
 @interface OCMFunctionsTests : XCTestCase
 @end
 
 @implementation OCMFunctionsTests
+
+- (void)testObjCTypeWithoutQualifiers
+{
+    struct
+    {
+        SEL selector;
+        const char *expected;
+    } selectorExpectedMap[] =
+    {
+        {@selector(methodWithInOut:), "*"},  {@selector(methodWithConst:), "*"},
+        {@selector(methodWithIn:), "*"},     {@selector(methodWithOut:), "*"},
+        {@selector(methodWithByCopy:), "@"}, {@selector(methodWithOutByCopy:), "^@"},
+        {@selector(methodWithByRef:), "@"},
+    };
+
+    Class classWithSpecialEncodings = [TestClassForSpecialEncodings class];
+    for(int i = 0; i < sizeof(selectorExpectedMap) / sizeof(selectorExpectedMap[0]); ++i)
+    {
+        SEL selector = selectorExpectedMap[i].selector;
+        Method method = class_getInstanceMethod(classWithSpecialEncodings, selector);
+        XCTAssertNotEqual(method, NULL);
+        char *encoding = method_copyArgumentType(method, 2);
+        XCTAssertNotEqual(encoding, NULL);
+        NSString *expectedString = [NSString stringWithUTF8String:selectorExpectedMap[i].expected];
+        XCTAssertNotEqualObjects(expectedString, [NSString stringWithUTF8String:encoding],
+                                 @"Selector: `%s` Encoding: `%s`", sel_getName(selector), encoding);
+        XCTAssertEqualObjects(expectedString,
+                              [NSString stringWithUTF8String:OCMTypeWithoutQualifiers(encoding)],
+                              @"Selector: `%s` Encoding: `%s`", sel_getName(selector), encoding);
+        free(encoding);
+    }
+
+    SEL selector = @selector(methodWithOneway);
+    Method method = class_getInstanceMethod(classWithSpecialEncodings, selector);
+    XCTAssertNotEqual(method, NULL);
+    char *encoding = method_copyReturnType(method);
+    XCTAssertNotEqual(encoding, NULL);
+    XCTAssertNotEqualObjects(@"v", [NSString stringWithUTF8String:encoding],
+                             @"Selector: `%s` Encoding: `%s`", sel_getName(selector), encoding);
+    XCTAssertEqualObjects(@"v",
+                          [NSString stringWithUTF8String:OCMTypeWithoutQualifiers(encoding)],
+                          @"Selector: `%s` Encoding: `%s`", sel_getName(selector), encoding);
+    free(encoding);
+}
 
 - (void)testIsBlockReturnsFalseForClass
 {
