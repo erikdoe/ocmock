@@ -34,67 +34,75 @@
 #define OCMObserverMock() [OCMockObject observerMock]
 
 
-#define OCMStub(invocation) \
+#define OCMStubWithStateClass(MacroStateClass, invocation) \
 ({ \
     _OCMSilenceWarnings( \
-        [OCMMacroState beginStubMacro]; \
+        [MacroStateClass beginStubMacro]; \
         OCMStubRecorder *recorder = nil; \
         @try{ \
             invocation; \
         }@catch(...){ \
-            [[OCMMacroState globalState] setInvocationDidThrow:YES]; \
+            [[MacroStateClass globalState] setInvocationDidThrow:YES]; \
             /* NOLINTNEXTLINE(google-objc-avoid-throwing-exception) */ \
             @throw; \
         }@finally{ \
-            recorder = [OCMMacroState endStubMacro]; \
+            recorder = [MacroStateClass endStubMacro]; \
         } \
         recorder; \
     ); \
 })
 
-#define OCMExpect(invocation) \
+#define OCMStub(invocation) OCMStubWithStateClass(OCMMacroState, invocation)
+
+#define OCMExpectWithStateClass(MacroStateClass, invocation) \
 ({ \
     _OCMSilenceWarnings( \
-        [OCMMacroState beginExpectMacro]; \
+        [MacroStateClass beginExpectMacro]; \
         OCMStubRecorder *recorder = nil; \
         @try{ \
             invocation; \
         }@catch(...){ \
-            [[OCMMacroState globalState] setInvocationDidThrow:YES]; \
+            [[MacroStateClass globalState] setInvocationDidThrow:YES]; \
             /* NOLINTNEXTLINE(google-objc-avoid-throwing-exception) */ \
             @throw; \
         }@finally{ \
-            recorder = [OCMMacroState endExpectMacro]; \
+            recorder = [MacroStateClass endExpectMacro]; \
         } \
         recorder; \
     ); \
 })
 
-#define OCMReject(invocation) \
+#define OCMExpect(invocation) OCMExpectWithStateClass(OCMMacroState, invocation)
+
+#define OCMRejectWithStateClass(MacroStateClass, invocation) \
 ({ \
     _OCMSilenceWarnings( \
-        [OCMMacroState beginRejectMacro]; \
+        [MacroStateClass beginRejectMacro]; \
         OCMStubRecorder *recorder = nil; \
         @try{ \
             invocation; \
         }@catch(...){ \
-            [[OCMMacroState globalState] setInvocationDidThrow:YES]; \
+            [[MacroStateClass globalState] setInvocationDidThrow:YES]; \
             /* NOLINTNEXTLINE(google-objc-avoid-throwing-exception) */ \
             @throw; \
         }@finally{ \
-            recorder = [OCMMacroState endRejectMacro]; \
+            recorder = [MacroStateClass endRejectMacro]; \
         } \
         recorder; \
     ); \
 })
 
+#define OCMReject(invocation) OCMRejectWithStateClass(OCMMacroState, invocation)
 
 
-#define OCMClassMethod(invocation) \
+
+#define OCMClassMethodWithStateClass(MacroStateClass, invocation) \
     _OCMSilenceWarnings( \
-        [[OCMMacroState globalState] switchToClassMethod]; \
+        [[MacroStateClass globalState] switchToClassMethod]; \
         invocation; \
     );
+
+#define OCMClassMethod(invocation) OCMClassMethodWithStateClass(OCMMacroState, invocation)
 
 
 #ifndef OCM_DISABLE_SHORT_SYNTAX
@@ -106,37 +114,42 @@
 
 #define OCMVerifyAllWithDelay(mock, delay) [(OCMockObject *)mock verifyWithDelay:delay atLocation:OCMMakeLocation(self, __FILE__, __LINE__)]
 
-#define _OCMVerify(invocation) \
+#define _OCMVerifyWithStateClass(MacroStateClass, invocation) \
 ({ \
     _OCMSilenceWarnings( \
-        [OCMMacroState beginVerifyMacroAtLocation:OCMMakeLocation(self, __FILE__, __LINE__)]; \
+        [MacroStateClass beginVerifyMacroAtLocation:OCMMakeLocation(self, __FILE__, __LINE__)]; \
         @try{ \
             invocation; \
         }@catch(...){ \
-            [[OCMMacroState globalState] setInvocationDidThrow:YES]; \
+            [[MacroStateClass globalState] setInvocationDidThrow:YES]; \
             /* NOLINTNEXTLINE(google-objc-avoid-throwing-exception) */ \
             @throw; \
         }@finally{ \
-            [OCMMacroState endVerifyMacro]; \
+            [MacroStateClass endVerifyMacro]; \
         } \
     ); \
 })
 
-#define _OCMVerifyWithQuantifier(quantifier, invocation) \
+#define _OCMVerify(invocation) _OCMVerifyWithStateClass(OCMMacroState, invocation)
+
+
+#define _OCMVerifyWithQuantifierAndStateClass(MacroStateClass, quantifier, invocation) \
 ({ \
     _OCMSilenceWarnings( \
-        [OCMMacroState beginVerifyMacroAtLocation:OCMMakeLocation(self, __FILE__, __LINE__) withQuantifier:quantifier]; \
+        [MacroStateClass beginVerifyMacroAtLocation:OCMMakeLocation(self, __FILE__, __LINE__) withQuantifier:quantifier]; \
         @try{ \
            invocation; \
         }@catch(...){ \
-            [[OCMMacroState globalState] setInvocationDidThrow:YES]; \
+            [[MacroStateClass globalState] setInvocationDidThrow:YES]; \
             /* NOLINTNEXTLINE(google-objc-avoid-throwing-exception) */ \
             @throw; \
         }@finally{ \
-            [OCMMacroState endVerifyMacro]; \
+            [MacroStateClass endVerifyMacro]; \
         } \
     ); \
 })
+
+#define _OCMVerifyWithQuantifier(quantifier, invocation) _OCMVerifyWithQuantifierAndStateClass(OCMMacroState, quantifier, invocation)
 
 // explanation for macros below here: https://stackoverflow.com/questions/3046889/optional-parameters-with-c-macros
 
