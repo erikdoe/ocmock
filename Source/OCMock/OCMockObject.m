@@ -92,7 +92,11 @@
     if(recorder != nil)
     {
         [recorder setMockObject:self];
+#ifndef __clang_analyzer__
+        // after discussion in https://github.com/erikdoe/ocmock/issues/456,
+        // the discussion has concluded this is an analyzer false-positive
         return (id)[recorder init];
+#endif
     }
 
     // skip initialisation when init is called again, which can happen when stubbing alloc/init
