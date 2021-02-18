@@ -140,7 +140,7 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
         else if(OCMNumberTypeForObjCType(typeEncoding))
         {
             NSUInteger argSize;
-            NSGetSizeAndAlignment(typeEncoding, NULL, &argSize);
+            NSGetSizeAndAlignment(typeEncoding, &argSize, NULL);
             void *argBuffer = calloc(1, argSize);
             [self setArgument:argBuffer atIndex:idx];
             free(argBuffer);
