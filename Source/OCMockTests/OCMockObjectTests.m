@@ -903,7 +903,6 @@ static NSString *TestNotification = @"TestNotification";
 - (void)testBlockConstraintRetainedByStub
 {
     __block BOOL wasCalled = NO;
-    id mock = OCMClassMock([NSString class]);
     @autoreleasepool
     {
         // The autorelease pool makes sure that the OCMArg is retained by the stub.
