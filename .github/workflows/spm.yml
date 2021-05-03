@@ -9,8 +9,6 @@ jobs:
     runs-on: macOS-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Xcode 12
-      run: sudo xcode-select -s /Applications/Xcode_12_beta.app/Contents/Developer
     - name: Build
       run: swift build
     - name: Run
