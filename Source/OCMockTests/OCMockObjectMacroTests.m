@@ -134,7 +134,7 @@
     shouldCaptureFailure = NO;
 
     XCTAssertNotNil(reportedDescription, @"Should have recorded a failure with description.");
-    XCTAssertEqualObjects([NSString stringWithUTF8String:expectedFile], reportedFile, @"Should have reported correct file.");
+    XCTAssertTrue([reportedFile hasSuffix:[NSString stringWithUTF8String:expectedFile]], @"Should have reported correct file.");
     XCTAssertEqual(expectedLine, (int)reportedLine, @"Should have reported correct line");
 }
 
@@ -158,7 +158,7 @@
     shouldCaptureFailure = NO;
 
     XCTAssertTrue([reportedDescription rangeOfString:@"ignored"].location != NSNotFound, @"Should have reported ignored exceptions.");
-    XCTAssertEqualObjects([NSString stringWithUTF8String:expectedFile], reportedFile, @"Should have reported correct file.");
+    XCTAssertTrue([reportedFile hasSuffix:[NSString stringWithUTF8String:expectedFile]], @"Should have reported correct file.");
     XCTAssertEqual(expectedLine, (int)reportedLine, @"Should have reported correct line");
 }
 
@@ -173,7 +173,7 @@
     shouldCaptureFailure = NO;
 
     XCTAssertNotNil(reportedDescription, @"Should have recorded a failure with description.");
-    XCTAssertEqualObjects([NSString stringWithUTF8String:expectedFile], reportedFile, @"Should have reported correct file.");
+    XCTAssertTrue([reportedFile hasSuffix:[NSString stringWithUTF8String:expectedFile]], @"Should have reported correct file.");
     XCTAssertEqual(expectedLine, (int)reportedLine, @"Should have reported correct line");
 }
 
@@ -380,7 +380,7 @@
     shouldCaptureFailure = NO;
 
     XCTAssertNotNil(reportedDescription, @"Should have recorded a failure with description.");
-    XCTAssertEqualObjects([NSString stringWithUTF8String:expectedFile], reportedFile, @"Should have reported correct file.");
+    XCTAssertTrue([reportedFile hasSuffix:[NSString stringWithUTF8String:expectedFile]], @"Should have reported correct file.");
     XCTAssertEqual(expectedLine, (int)reportedLine, @"Should have reported correct line");
 }
 
