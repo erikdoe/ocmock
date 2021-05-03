@@ -354,5 +354,14 @@
     XCTAssertFalse([invocation methodIsInInitFamily]);
 }
 
+- (void)testSetsDefaultValuesForNumberTypesWhenCreatingBlockInvocations
+{
+    void (^block)(NSInteger) = ^void (NSInteger aNumber) { /* do nothing */ };
+    NSInvocation *invocation = [NSInvocation invocationForBlock:block withArguments:@[[NSNull null]]];
+
+    NSInteger arg = -1;
+    [invocation getArgument:&arg atIndex:1];
+    XCTAssertEqual(0, arg);
+}
 
 @end
