@@ -35,11 +35,11 @@ end
 productdir = ARGV[0]
 abort "Error: no product directory specified" if productdir == nil
 
-macosproduct = "#{productdir}/macOS/OCMock.framework"                                        
-ioslibproduct = "#{productdir}/iOS library/libocmock.a"                                           
-iosproduct = "#{productdir}/iOS/OCMock.framework"                                           
-tvosproduct = "#{productdir}/tvOS/OCMock.framework"                                           
-watchosproduct = "#{productdir}/watchOS/OCMock.framework"                                           
+macosproduct = "#{productdir}/macOS/OCMock.framework"
+ioslibproduct = "#{productdir}/iOS library/libocmock.a"
+iosproduct = "#{productdir}/iOS/OCMock.framework"
+tvosproduct = "#{productdir}/tvOS/OCMock.framework"
+watchosproduct = "#{productdir}/watchOS/OCMock.framework"
 
 checkArchs "#{macosproduct}/OCMock", "x86_64 arm64"
 checkArchs "#{ioslibproduct}", "x86_64 arm64"
