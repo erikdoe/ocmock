@@ -50,6 +50,7 @@ checkArchs "#{watchosproduct}/OCMock", "x86_64 arm64"
 authority = "Apple Development: erik@doernenburg.com (FJTF47J852)"
 
 checkAuthority macosproduct, authority
-checkAuthority iosproduct, authority
-checkAuthority tvosproduct, authority
-checkAuthority watchosproduct, authority
+# Commented out for now because Apple discourages signing in these cases
+#checkAuthority iosproduct, authority
+#checkAuthority tvosproduct, authority
+#checkAuthority watchosproduct, authority
