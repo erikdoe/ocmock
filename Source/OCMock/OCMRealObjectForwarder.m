@@ -42,16 +42,14 @@
         {
             // The init method of the real object will "consume" self, but because the method was
             // invoked on the mock and not the real object a corresponding retain is missing; so
-            // we do this here.
+            // we do this here. The analyzer doesn't understand this; see #456 for details.
+#ifndef __clang_analyzer__
             [realObject retain];
+#endif
         }
     }
 
-#ifndef __clang_analyzer__
-    // after discussion in https://github.com/erikdoe/ocmock/issues/456,
-    // the discussion has concluded this is an analyzer false-positive
     [anInvocation invoke];
-#endif
 
     if(isInInitFamily || isInCreateFamily)
     {

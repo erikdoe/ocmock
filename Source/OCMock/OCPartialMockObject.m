@@ -140,8 +140,7 @@
             [self retain];
         }
 #ifndef __clang_analyzer__
-        // after discussion in https://github.com/erikdoe/ocmock/issues/456,
-        // the discussion has concluded this is an analyzer false-positive
+        // see #456 for details
         [targetReceivingInit release];
 #endif
     }
