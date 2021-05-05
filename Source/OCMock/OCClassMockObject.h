@@ -16,12 +16,7 @@
 
 #import "OCMockObject.h"
 
-@interface OCClassMockObject : OCMockObject
-{
-    Class mockedClass;
-    Class originalMetaClass;
-    Class classCreatedForNewMetaClass;
-}
+@interface OCClassMockObject : OCMockObject 
 
 - (id)initWithClass:(Class)aClass;
 
@@ -30,4 +25,6 @@
 
 - (void)assertClassIsSupported:(Class)aClass;
 
+- (void)scribbleOnMemory:(void *)start ofSize:(size_t)size;
+- (void)verifyScribbleAt:(void *)start ofSize:(size_t)size;
 @end

@@ -205,6 +205,7 @@ static NSUInteger initializeCallCount = 0;
 
 @interface OCPartialMockObject (AccessToInvocationsForTesting)
 
+- (NSArray *)invocations;
 - (NSArray *)invocationsExcludingInitialize;
 
 @end
@@ -214,10 +215,9 @@ static NSUInteger initializeCallCount = 0;
 - (NSArray *)invocationsExcludingInitialize
 {
     NSMutableArray *filteredInvocations = [[NSMutableArray alloc] init];
-    for(NSInvocation *i in invocations)
+    for(NSInvocation *i in [self invocations])
         if([NSStringFromSelector([i selector]) hasSuffix:@"initialize"] == NO)
             [filteredInvocations addObject:i];
-
     return filteredInvocations;
 }
 

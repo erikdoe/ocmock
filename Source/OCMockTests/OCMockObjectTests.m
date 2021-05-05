@@ -16,7 +16,9 @@
 
 #import <XCTest/XCTest.h>
 #import "OCMock/OCMock.h"
-
+#import "OCMBoxedReturnValueProvider.h"
+#import "OCPartialMockObject.h"
+#import "OCClassMockObject.h"
 
 #pragma mark Helper classes and protocols for testing
 
@@ -210,6 +212,23 @@ static NSString *testClassThatMayNotSupportMockingReason = nil;
 
     *reasonPtr = testClassThatMayNotSupportMockingReason;
     return NO;
+}
+
+@end
+
+@interface TestClassLargeClass : NSObject
+{
+  int foo[4096];
+}
+@end
+
+@implementation TestClassLargeClass
+
+- (void)dirtyInstanceVariables:(TestClassLargeClass *)cls
+{
+  for(int i = 0; i < 4096; ++i) {
+    cls->foo[i] = i;
+  }
 }
 
 @end
@@ -1156,5 +1175,33 @@ static NSString *TestNotification = @"TestNotification";
     XCTAssertThrows([[OCMockObject alloc] init]);
 }
 
+- (void)testMockObjectsHaveNoInstanceVariables
+{
+  XCTAssertEqual(class_getInstanceSize([NSProxy class]), class_getInstanceSize([OCMockObject class]));
+  XCTAssertEqual(class_getInstanceSize([NSProxy class]), class_getInstanceSize([OCPartialMockObject class]));
+  XCTAssertEqual(class_getInstanceSize([NSProxy class]), class_getInstanceSize([OCClassMockObject class]));
+}
+
+- (void)testClassMockAllowsDirectMemoryAccess
+{
+  TestClassLargeClass *one = [[TestClassLargeClass alloc] init];
+  id mockOne = OCMClassMock([TestClassLargeClass class]);
+  [one dirtyInstanceVariables:mockOne];
+}
+
+- (void)performDirectMemoryAccess
+{
+  @autoreleasepool {
+    TestClassLargeClass *one = [[TestClassLargeClass alloc] init];
+    TestClassLargeClass *two = [[TestClassLargeClass alloc] init];
+    id mockTwo = OCMPartialMock(two);
+    [one dirtyInstanceVariables:mockTwo];
+  }
+}
+
+- (void)testPartialClassMockDoesNotAllowDirectMemoryAccess
+{
+  XCTAssertThrowsSpecificNamed([self performDirectMemoryAccess], NSException, NSInternalInconsistencyException);
+}
 
 @end

@@ -26,15 +26,53 @@
 @end
 
 
+@interface OCClassMockObjectInstanceVars : NSObject
+@property (nonatomic) Class mockedClass;
+@property (nonatomic) Class originalMetaClass;
+@property (nonatomic) Class classCreatedForNewMetaClass;
+@property (nonatomic) void *classScribbleStart;
+@property (nonatomic) size_t classScribbleSize;
+@end
+
+@implementation OCClassMockObjectInstanceVars
+@end
+
+@interface OCClassMockObject ()
+@property (nonatomic) Class mockedClass;
+@property (nonatomic) Class originalMetaClass;
+@property (nonatomic) Class classCreatedForNewMetaClass;
+@property (nonatomic) void *classScribbleStart;
+@property (nonatomic) size_t classScribbleSize;
+@end
+
+static const char *OCClassMockObjectInstanceVarsKey = "OCClassMockObjectInstanceVarsKey";
+
 @implementation OCClassMockObject
 
-#pragma mark Initialisers, description, accessors, etc.
+#pragma mark  Initialisers, description, etc.
 
 - (id)initWithClass:(Class)aClass
 {
     [self assertClassIsSupported:aClass];
-    [super init];
-    mockedClass = aClass;
+
+    size_t allocedSize = class_getInstanceSize(aClass);
+    Class selfClass = object_getClass(self);
+    size_t selfSize = class_getInstanceSize(selfClass);
+    if(allocedSize > selfSize)
+    {
+        self = realloc(self, allocedSize);
+    }
+    self = [super init];
+
+    OCClassMockObjectInstanceVars *vars = [[OCClassMockObjectInstanceVars alloc] init];
+    objc_setAssociatedObject(self, OCClassMockObjectInstanceVarsKey, vars, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    [vars release];
+
+    self.classScribbleSize = allocedSize - selfSize;
+    self.classScribbleStart = (void *)self + selfSize;
+    [self scribbleOnMemory:self.classScribbleStart ofSize:self.classScribbleSize];
+
+    self.mockedClass = aClass;
     [self prepareClassForClassMethodMocking];
     return self;
 }
@@ -47,12 +85,64 @@
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"OCClassMockObject(%@)", NSStringFromClass(mockedClass)];
+    return [NSString stringWithFormat:@"OCClassMockObject(%@)", NSStringFromClass(self.mockedClass)];
+}
+
+- (void)scribbleOnMemory:(void *)start ofSize:(size_t)size
+{
+  bzero(start, size);
+}
+
+- (void)verifyScribbleAt:(void *)start ofSize:(size_t)size
+{
+  // Default version does no verification
+}
+
+#pragma mark  Setters/Getters
+
+- (OCClassMockObjectInstanceVars *)classMockObjectInstanceVars
+{
+    return objc_getAssociatedObject(self, OCClassMockObjectInstanceVarsKey);
 }
 
 - (Class)mockedClass
 {
-    return mockedClass;
+    return self.classMockObjectInstanceVars.mockedClass;
+}
+
+- (Class)classCreatedForNewMetaClass
+{
+    return self.classMockObjectInstanceVars.classCreatedForNewMetaClass;
+}
+
+- (Class)originalMetaClass
+{
+    return self.classMockObjectInstanceVars.originalMetaClass;
+}
+
+- (void *)classScribbleStart
+{
+  return self.classMockObjectInstanceVars.classScribbleStart;
+}
+
+- (size_t)classScribbleSize
+{
+  return self.classMockObjectInstanceVars.classScribbleSize;
+}
+
+- (void)setMockedClass:(Class)mockedClass
+{
+    self.classMockObjectInstanceVars.mockedClass = mockedClass;
+}
+
+- (void)setClassCreatedForNewMetaClass:(Class)classCreatedForNewMetaClass
+{
+    self.classMockObjectInstanceVars.classCreatedForNewMetaClass = classCreatedForNewMetaClass;
+}
+
+- (void)setOriginalMetaClass:(Class)originalMetaClass
+{
+    self.classMockObjectInstanceVars.originalMetaClass = originalMetaClass;
 }
 
 - (void)assertClassIsSupported:(Class)aClass
@@ -68,28 +158,39 @@
     }
 }
 
+- (void)setClassScribbleSize:(size_t)classScribbleSize
+{
+    self.classMockObjectInstanceVars.classScribbleSize = classScribbleSize;
+}
+
+- (void)setClassScribbleStart:(void *)classScribbleStart
+{
+    self.classMockObjectInstanceVars.classScribbleStart = classScribbleStart;
+}
+
 #pragma mark Extending/overriding superclass behaviour
 
 - (void)stopMocking
 {
-    if(originalMetaClass != nil)
+    if(self.originalMetaClass != nil)
     {
         [self stopMockingClassMethods];
     }
-    if(classCreatedForNewMetaClass != nil)
+    if(self.classCreatedForNewMetaClass != nil)
     {
-        OCMDisposeSubclass(classCreatedForNewMetaClass);
-        classCreatedForNewMetaClass = nil;
+        OCMDisposeSubclass(self.classCreatedForNewMetaClass);
+        self.classCreatedForNewMetaClass = nil;
     }
     [super stopMocking];
+  	[self verifyScribbleAt:self.classScribbleStart ofSize:self.classScribbleSize];
 }
 
 
 - (void)stopMockingClassMethods
 {
-    OCMSetAssociatedMockForClass(nil, mockedClass);
-    object_setClass(mockedClass, originalMetaClass);
-    originalMetaClass = nil;
+    OCMSetAssociatedMockForClass(nil, self.mockedClass);
+    object_setClass(self.mockedClass, self.originalMetaClass);
+  self.originalMetaClass = nil;
     /* created meta class will be disposed later because partial mocks create another subclass depending on it */
 }
 
@@ -107,24 +208,24 @@
 - (void)prepareClassForClassMethodMocking
 {
     /* the runtime and OCMock depend on string and array; we don't intercept methods on them to avoid endless loops */
-    if([[mockedClass class] isSubclassOfClass:[NSString class]] || [[mockedClass class] isSubclassOfClass:[NSArray class]])
+    if([[self.mockedClass class] isSubclassOfClass:[NSString class]] || [[self.mockedClass class] isSubclassOfClass:[NSArray class]])
         return;
 
     /* trying to replace class methods on NSManagedObject and subclasses of it doesn't work; see #339 */
-    if([mockedClass isSubclassOfClass:objc_getClass("NSManagedObject")])
+    if([self.mockedClass isSubclassOfClass:objc_getClass("NSManagedObject")])
         return;
 
     /* if there is another mock for this exact class, stop it */
-    id otherMock = OCMGetAssociatedMockForClass(mockedClass, NO);
+    id otherMock = OCMGetAssociatedMockForClass(self.mockedClass, NO);
     if(otherMock != nil)
         [otherMock stopMockingClassMethods];
 
-    OCMSetAssociatedMockForClass(self, mockedClass);
+    OCMSetAssociatedMockForClass(self, self.mockedClass);
 
     /* dynamically create a subclass and use its meta class as the meta class for the mocked class */
-    classCreatedForNewMetaClass = OCMCreateSubclass(mockedClass, mockedClass);
-    originalMetaClass = object_getClass(mockedClass);
-    id newMetaClass = object_getClass(classCreatedForNewMetaClass);
+    self.classCreatedForNewMetaClass = OCMCreateSubclass(self.mockedClass, self.mockedClass);
+  self.originalMetaClass = object_getClass(self.mockedClass);
+    id newMetaClass = object_getClass(self.classCreatedForNewMetaClass);
 
     /* create a dummy initialize method */
     Method myDummyInitializeMethod = class_getInstanceMethod([self mockObjectClass], @selector(initializeForClassObject));
@@ -132,7 +233,7 @@
     IMP myDummyInitializeIMP = method_getImplementation(myDummyInitializeMethod);
     class_addMethod(newMetaClass, @selector(initialize), myDummyInitializeIMP, initializeTypes);
 
-    object_setClass(mockedClass, newMetaClass); // only after dummy initialize is installed (iOS9)
+    object_setClass(self.mockedClass, newMetaClass); // only after dummy initialize is installed (iOS9)
 
     /* point forwardInvocation: of the object to the implementation in the mock */
     Method myForwardMethod = class_getInstanceMethod([self mockObjectClass], @selector(forwardInvocationForClassObject:));
@@ -160,22 +261,22 @@
             // ignore for now
         }
     };
-    [NSObject enumerateMethodsInClass:originalMetaClass usingBlock:setupForwarderFiltered];
+    [NSObject enumerateMethodsInClass:self.originalMetaClass usingBlock:setupForwarderFiltered];
 }
 
 
 - (void)setupForwarderForClassMethodSelector:(SEL)selector
 {
     SEL aliasSelector = OCMAliasForOriginalSelector(selector);
-    if(class_getClassMethod(mockedClass, aliasSelector) != NULL)
+    if(class_getClassMethod(self.mockedClass, aliasSelector) != NULL)
         return;
 
-    Method originalMethod = class_getClassMethod(mockedClass, selector);
+    Method originalMethod = class_getClassMethod(self.mockedClass, selector);
     IMP originalIMP = method_getImplementation(originalMethod);
     const char *types = method_getTypeEncoding(originalMethod);
 
-    Class metaClass = object_getClass(mockedClass);
-    IMP forwarderIMP = [originalMetaClass instanceMethodForwarderForSelector:selector];
+    Class metaClass = object_getClass(self.mockedClass);
+    IMP forwarderIMP = [self.originalMetaClass instanceMethodForwarderForSelector:selector];
     class_addMethod(metaClass, aliasSelector, originalIMP, types);
     class_replaceMethod(metaClass, selector, forwarderIMP, types);
 }
@@ -206,10 +307,10 @@
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
-    NSMethodSignature *signature = [mockedClass instanceMethodSignatureForSelector:aSelector];
+    NSMethodSignature *signature = [self.mockedClass instanceMethodSignatureForSelector:aSelector];
     if(signature == nil)
     {
-        signature = [NSMethodSignature signatureForDynamicPropertyAccessedWithSelector:aSelector inClass:mockedClass];
+        signature = [NSMethodSignature signatureForDynamicPropertyAccessedWithSelector:aSelector inClass:self.mockedClass];
     }
     return signature;
 }
@@ -221,25 +322,25 @@
 
 - (Class)class
 {
-    return mockedClass;
+    return self.mockedClass;
 }
 
 - (BOOL)respondsToSelector:(SEL)selector
 {
-    return [mockedClass instancesRespondToSelector:selector];
+    return [self.mockedClass instancesRespondToSelector:selector];
 }
 
 - (BOOL)isKindOfClass:(Class)aClass
 {
-    return [mockedClass isSubclassOfClass:aClass];
+    return [self.mockedClass isSubclassOfClass:aClass];
 }
 
 - (BOOL)conformsToProtocol:(Protocol *)aProtocol
 {
-    Class clazz = mockedClass;
+    Class clazz = self.mockedClass;
     while(clazz != nil)
     {
-        if(class_conformsToProtocol(clazz, aProtocol))
+        if (class_conformsToProtocol(clazz, aProtocol))
         {
             return YES;
         }
@@ -274,52 +375,52 @@
 
 - (BOOL)isNSValue__
 {
-    return [mockedClass isSubclassOfClass:[NSValue class]];
+    return [self.mockedClass isSubclassOfClass:[NSValue class]];
 }
 
 - (BOOL)isNSTimeZone__
 {
-    return [mockedClass isSubclassOfClass:[NSTimeZone class]];
+    return [self.mockedClass isSubclassOfClass:[NSTimeZone class]];
 }
 
 - (BOOL)isNSSet__
 {
-    return [mockedClass isSubclassOfClass:[NSSet class]];
+    return [self.mockedClass isSubclassOfClass:[NSSet class]];
 }
 
 - (BOOL)isNSOrderedSet__
 {
-    return [mockedClass isSubclassOfClass:[NSOrderedSet class]];
+    return [self.mockedClass isSubclassOfClass:[NSOrderedSet class]];
 }
 
 - (BOOL)isNSNumber__
 {
-    return [mockedClass isSubclassOfClass:[NSNumber class]];
+    return [self.mockedClass isSubclassOfClass:[NSNumber class]];
 }
 
 - (BOOL)isNSDate__
 {
-    return [mockedClass isSubclassOfClass:[NSDate class]];
+    return [self.mockedClass isSubclassOfClass:[NSDate class]];
 }
 
 - (BOOL)isNSString__
 {
-    return [mockedClass isSubclassOfClass:[NSString class]];
+    return [self.mockedClass isSubclassOfClass:[NSString class]];
 }
 
 - (BOOL)isNSDictionary__
 {
-    return [mockedClass isSubclassOfClass:[NSDictionary class]];
+    return [self.mockedClass isSubclassOfClass:[NSDictionary class]];
 }
 
 - (BOOL)isNSData__
 {
-    return [mockedClass isSubclassOfClass:[NSData class]];
+    return [self.mockedClass isSubclassOfClass:[NSData class]];
 }
 
 - (BOOL)isNSArray__
 {
-    return [mockedClass isSubclassOfClass:[NSArray class]];
+    return [self.mockedClass isSubclassOfClass:[NSArray class]];
 }
 
 @end
