@@ -92,7 +92,10 @@
     if(recorder != nil)
     {
         [recorder setMockObject:self];
+#ifndef __clang_analyzer__
+        // see #456 for details
         return (id)[recorder init];
+#endif
     }
 
     // skip initialisation when init is called again, which can happen when stubbing alloc/init

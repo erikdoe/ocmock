@@ -139,7 +139,10 @@
             [realObject release];
             [self retain];
         }
+#ifndef __clang_analyzer__
+        // see #456 for details
         [targetReceivingInit release];
+#endif
     }
 }
 
