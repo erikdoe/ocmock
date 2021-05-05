@@ -77,7 +77,11 @@
             // init family methods "consume" self and retain their return value. Do the retain
             // first in case the return value and self are the same.
             [returnVal retain];
+#ifndef __clang_analyzer__
+            // after discussion in https://github.com/erikdoe/ocmock/issues/456,
+            // the discussion has concluded this is an analyzer false-positive
             [target release];
+#endif
         }
     }
     else
