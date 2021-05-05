@@ -74,16 +74,14 @@
 
 @implementation TestClassWithLazyMock
 {
-    id _mock;
+    id mock;
 }
 
 - (id)mock
 {
-    if(!_mock)
-    {
-        _mock = OCMClassMock([NSString class]);
-    }
-    return _mock;
+    if(mock == nil)
+        mock = OCMClassMock([NSString class]);
+    return mock;
 }
 
 @end
@@ -641,7 +639,7 @@
 - (void)testMockGeneratedLazily
 {
     TestClassWithLazyMock *lazyMock = [[TestClassWithLazyMock alloc] init];
-    OCMStub([[lazyMock mock] lowercaseString]).andReturn(@"bar");
-    XCTAssertEqualObjects([[lazyMock mock] lowercaseString], @"bar");
+    XCTAssertNoThrow(OCMStub([[lazyMock mock] lowercaseString]).andReturn(@"bar"));
 }
+
 @end
