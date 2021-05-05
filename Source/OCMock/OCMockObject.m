@@ -87,20 +87,22 @@
 
 - (instancetype)init
 {
-    // check if we are called from inside a macro
-    OCMRecorder *recorder = [[OCMMacroState globalState] recorder];
-    if(recorder != nil)
-    {
-        [recorder setMockObject:self];
-#ifndef __clang_analyzer__
-        // see #456 for details
-        return (id)[recorder init];
-#endif
-    }
-
-    // skip initialisation when init is called again, which can happen when stubbing alloc/init
+    // Check whether init is called a second time, which can happen when stubbing alloc/init. Note
+    // that you only really stub the alloc method. Init cannot be stubbed. Invocations of init
+    // will always end up here, and we return self. If init is invoked inside a macro that's an
+    // error, which will be detected in the init method of the recorder.
     if(stubs != nil)
     {
+        // check if we are called from inside a macro
+        OCMRecorder *recorder = [[OCMMacroState globalState] recorder];
+        if(recorder != nil)
+        {
+            [recorder setMockObject:self];
+#ifndef __clang_analyzer__
+            // see #456 for details
+            return (id)[recorder init];
+#endif
+        }
         return self;
     }
 

@@ -66,6 +66,25 @@
 
 @end
 
+@interface TestClassWithLazyMock : NSObject
+
+- (id)mock;
+
+@end
+
+@implementation TestClassWithLazyMock
+{
+    id mock;
+}
+
+- (id)mock
+{
+    if(mock == nil)
+        mock = OCMClassMock([NSString class]);
+    return mock;
+}
+
+@end
 
 // implemented in OCMockObjectClassMethodMockingTests
 
@@ -615,6 +634,12 @@
         XCTAssertEqualObjects(exception.name, NSInternalInconsistencyException);
         XCTAssertTrue([exception.reason containsString:@"Method init invoked twice on verifier"]);
     }
+}
+
+- (void)testMockGeneratedLazily
+{
+    TestClassWithLazyMock *lazyMock = [[TestClassWithLazyMock alloc] init];
+    XCTAssertNoThrow(OCMStub([[lazyMock mock] lowercaseString]).andReturn(@"bar"));
 }
 
 @end
