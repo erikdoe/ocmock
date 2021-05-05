@@ -301,12 +301,6 @@ static NSUInteger initializeCallCount = 0;
     XCTAssertEqualObjects(@"stubbed", [realObject categoryMethod], @"Should have stubbed NSObject's method");
 }
 
-- (void)testMocksAProxy
-{
-    id proxy = [NSProxy alloc];
-    XCTAssertThrows([OCMockObject partialMockForObject:proxy]);
-}
-
 #pragma mark Tests for remembering invocations for later verification
 
 - (void)testRecordsInvocationWhenRealObjectIsUsed
@@ -429,6 +423,13 @@ static NSUInteger initializeCallCount = 0;
 {
     XCTAssertThrows(OCMPartialMock(nil));
 }
+
+- (void)testRefusesToCreatePartialMockForProxy
+{
+    id proxy = [NSProxy alloc];
+    XCTAssertThrows([OCMockObject partialMockForObject:proxy]);
+}
+
 
 - (void)testPartialMockOfCustomReferenceCountingObject
 {
