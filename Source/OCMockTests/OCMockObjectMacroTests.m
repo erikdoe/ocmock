@@ -89,7 +89,7 @@
 
 @implementation OCMockObjectMacroTests
 
-#ifdef __IPHONE_14_0 // this is actually a test for Xcode 12; see issue #472
+#if defined(__IPHONE_14_0) && !defined(OCM_DISABLE_XCTEST_SUPPORT) // this is actually a test for Xcode 12; see issue #472
 
 - (void)recordIssue:(XCTIssue *)issue
 {
@@ -287,6 +287,8 @@
     return @"TEST_STRING_FROM_TESTCASE";
 }
 
+#ifndef OCM_DISABLE_XCTEST_SUPPORT
+
 - (void)testFulfillsExpectation
 {
     id mock = OCMStrictClassMock([NSString class]);
@@ -296,6 +298,8 @@
     XCTAssertTrue([mock boolValue]);
     [self waitForExpectationsWithTimeout:0 handler:nil];
 }
+
+#endif
 
 - (void)testCanChainPropertyBasedActions
 {
@@ -557,7 +561,9 @@
     OCMStub([[mock andThrow:nil] initWithString:OCMOCK_ANY]);
     OCMStub([[mock andPost:nil] initWithString:OCMOCK_ANY]);
     OCMStub([[mock andCall:nil onObject:nil] initWithString:OCMOCK_ANY]);
+#ifndef OCM_DISABLE_XCTEST_SUPPORT
     OCMStub([[mock andFulfill:nil] initWithString:OCMOCK_ANY]);
+#endif
     OCMStub([[mock andDo:nil] initWithString:OCMOCK_ANY]);
     OCMStub([[mock andForwardToRealObject] initWithString:OCMOCK_ANY]);
     OCMExpect([[mock never] initWithString:OCMOCK_ANY]);

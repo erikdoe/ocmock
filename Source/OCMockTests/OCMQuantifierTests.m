@@ -49,7 +49,7 @@
     expectFailure = NO;
 }
 
-#ifdef __IPHONE_14_0 // this is actually a test for Xcode 12; see issue #472
+#if defined(__IPHONE_14_0) && !defined(OCM_DISABLE_XCTEST_SUPPORT) // this is actually a test for Xcode 12; see issue #472
 
 - (void)recordIssue:(XCTIssue *)issue
 {
