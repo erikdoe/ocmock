@@ -40,8 +40,8 @@
 
 const char *OCMTypeWithoutQualifiers(const char *objCType)
 {
-    // In certain cases byref appears to just pass the "R" and not the "@" that I would expect. This
-    // is likely a bug in the compiler since byref is basically a dead keyword at this point. That
+    // In certain cases byref appears to just pass the "R" and not the "@" as expected. This is
+    // likely a bug in the compiler since byref is basically a dead keyword at this point. That
     // being said, this will protect us, and returns what would be the expected type.
     if(strcmp(objCType, "R") == 0)
         return "@";
