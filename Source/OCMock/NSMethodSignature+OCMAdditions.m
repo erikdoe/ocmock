@@ -178,4 +178,9 @@
     return [[self fullTypeString] UTF8String];
 }
 
+- (BOOL)isMethodReturnTypeCompatibleWithValueType:(const char *)valueType value:(const void *)value valueSize:(size_t)valueSize
+{
+    return OCMIsObjCTypeCompatibleWithValueType([self methodReturnType], valueType, value, valueSize);
+}
+
 @end

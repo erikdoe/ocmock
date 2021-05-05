@@ -19,8 +19,6 @@
 #import "OCMArg.h"
 #import "OCMArgAction.h"
 
-#define UNSET_RETURN_VALUE_MARKER ((id)0x01234567)
-
 
 @implementation OCMInvocationStub
 
@@ -58,13 +56,18 @@
     BOOL isInCreateFamily = isInInitFamily ? NO : [anInvocation methodIsInCreateFamily];
     if(isInInitFamily || isInCreateFamily)
     {
-        id returnVal = UNSET_RETURN_VALUE_MARKER;
-        [anInvocation setReturnValue:&returnVal];
+        // Put a unique value in the invocation so that we can verify that the invocation
+        // changed it.
+        id unsetReturnMarker = [NSUUID UUID];
+        [anInvocation setReturnValue:&unsetReturnMarker];
 
         [self invokeActionsForInvocation:anInvocation];
 
+        id returnVal;
         [anInvocation getReturnValue:&returnVal];
-        if(returnVal == UNSET_RETURN_VALUE_MARKER)
+
+        // Intentional Pointer comparison being done here.
+        if(returnVal == unsetReturnMarker)
             [NSException raise:NSInvalidArgumentException format:@"%@ was stubbed but no return value set. A return value is required for all alloc/copy/new/mutablecopy/init methods. If you intended to return nil, make this explicit with .andReturn(nil)", NSStringFromSelector([anInvocation selector])];
 
         if(isInCreateFamily)

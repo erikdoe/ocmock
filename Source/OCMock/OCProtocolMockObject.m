@@ -62,4 +62,10 @@
     return ([self methodSignatureForSelector:selector] != nil);
 }
 
+
+- (Protocol *)mockedProtocol
+{
+    return mockedProtocol;
+}
+
 @end

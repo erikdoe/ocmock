@@ -16,8 +16,7 @@
 
 #import "OCMBoxedReturnValueProvider.h"
 #import "NSValue+OCMAdditions.h"
-#import "OCMFunctionsPrivate.h"
-
+#import "NSMethodSignature+OCMAdditions.h"
 
 @implementation OCMBoxedReturnValueProvider
 
@@ -28,11 +27,11 @@
     NSGetSizeAndAlignment([returnValueAsNSValue objCType], &valueSize, NULL);
     char valueBuffer[valueSize];
     [returnValueAsNSValue getValue:valueBuffer];
+    NSMethodSignature *signature = [anInvocation methodSignature];
+    const char *returnType = [signature methodReturnType];
+    const char *returnValueType = [returnValueAsNSValue objCType];
 
-    const char *returnType = [[anInvocation methodSignature] methodReturnType];
-
-    if([self isMethodReturnType:returnType compatibleWithValueType:[returnValueAsNSValue objCType]
-                value:valueBuffer valueSize:valueSize])
+    if([signature isMethodReturnTypeCompatibleWithValueType:returnValueType value:valueBuffer valueSize:valueSize])
     {
         [anInvocation setReturnValue:valueBuffer];
     }
@@ -43,21 +42,8 @@
     else
     {
         [NSException raise:NSInvalidArgumentException
-                    format:@"Return value cannot be used for method; method signature declares '%s' but value is '%s'.", returnType, [returnValueAsNSValue objCType]];
+                    format:@"Return value cannot be used for method; method signature declares '%s' but value is '%s'.", returnType, returnValueType];
     }
-}
-
-- (BOOL)isMethodReturnType:(const char *)returnType compatibleWithValueType:(const char *)valueType value:(const void *)value valueSize:(size_t)valueSize
-{
-    /* Same types are obviously compatible */
-    if(strcmp(returnType, valueType) == 0)
-        return YES;
-
-    /* Special treatment for nil and Nil */
-    if(strcmp(returnType, @encode(id)) == 0 || strcmp(returnType, @encode(Class)) == 0)
-        return OCMIsNilValue(valueType, value, valueSize);
-
-    return OCMEqualTypesAllowingOpaqueStructs(returnType, valueType);
 }
 
 @end

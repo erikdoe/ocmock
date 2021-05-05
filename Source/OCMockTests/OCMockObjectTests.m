@@ -716,8 +716,7 @@ static NSString *TestNotification = @"TestNotification";
     XCTAssertThrows([[[mock expect] andForwardToRealObject] name], @"Should have raised and exception.");
 }
 
-
-#pragma mark returning values in pass-by-reference arguments
+#pragma mark returning values in pass-by-reference argument
 
 - (void)testReturnsValuesInPassByReferenceArguments
 {
@@ -1156,5 +1155,121 @@ static NSString *TestNotification = @"TestNotification";
     XCTAssertThrows([[OCMockObject alloc] init]);
 }
 
+
+#pragma mark andDo Tests
+
+- (void)testAndDoBlockNilArgument
+{
+    OCMStub([mock stringByAppendingString:OCMOCK_ANY]).andDo(nil);
+    XCTAssertNil([mock stringByAppendingString:@"foo"]);
+}
+
+- (void)testAndDoSimpleBlockWithNoReturnValue
+{
+    __block int counter = 0;
+    OCMStub([mock stringByAppendingString:OCMOCK_ANY]).andDo(^{ counter = 1; });
+    XCTAssertNil([mock stringByAppendingString:@"foo"]);
+    XCTAssertEqual(counter, 1);
+}
+
+- (void)testAndDoSimpleBlockWithGoodReturnValue
+{
+    OCMStub([mock stringByAppendingString:OCMOCK_ANY]).andDo(^{ return @"bar"; });
+    XCTAssertEqualObjects([mock stringByAppendingString:@"foo"], @"bar");
+}
+
+- (void)testAndDoSimpleBlockWithNilReturnValue
+{
+    OCMStub([mock stringByAppendingString:OCMOCK_ANY]).andDo(^{ return nil; });
+    XCTAssertNil([mock stringByAppendingString:@"foo"]);
+}
+
+- (void)testAndDoSimpleBlockWithBadReturnValue
+{
+    OCMStub([mock stringByAppendingString:OCMOCK_ANY]).andDo(^{ return 1; });
+    XCTAssertThrows([mock stringByAppendingString:@"foo"]);
+}
+
+- (void)testAndDoNSInvocationBlockWithReturnValue
+{
+    OCMStub([mock stringByAppendingString:OCMOCK_ANY]).andDo(^(NSInvocation *invocation) {
+        return nil;
+    });
+    XCTAssertThrows([mock stringByAppendingString:@"foo"]);
+}
+
+- (void)testAndDoNSInvocationBlockWithNoReturnValue
+{
+    OCMStub([mock stringByAppendingString:OCMOCK_ANY]).andDo(^(NSInvocation *invocation) {
+    });
+    XCTAssertNil([mock stringByAppendingString:@"foo"]);
+}
+
+- (void)testAndDoNSInvocationBlockWithSetReturnValue
+{
+    OCMStub([mock stringByAppendingString:OCMOCK_ANY]).andDo(^(NSInvocation *invocation) {
+        __autoreleasing NSString *returnValue = @"bar";
+        [invocation setReturnValue:&returnValue];
+    });
+    XCTAssertEqualObjects([mock stringByAppendingString:@"foo"], @"bar");
+}
+
+- (void)testAndDoBlockWithReturnValue
+{
+    OCMStub([mock stringByAppendingString:OCMOCK_ANY]).andDo(^(NSString *localSelf, NSString *append) {
+        return @"bar";
+    });
+    XCTAssertEqualObjects([mock stringByAppendingString:@"foo"], @"bar");
+}
+
+- (void)testAndDoBlockWithNilReturnValue
+{
+    OCMStub([mock stringByAppendingString:OCMOCK_ANY]).andDo(^(NSString *localSelf, NSString *append) {
+        XCTAssertEqual(localSelf, self->mock);
+        XCTAssertEqualObjects(append, @"foo");
+        return nil;
+    });
+    XCTAssertNil([mock stringByAppendingString:@"foo"]);
+}
+
+- (void)testAndDoBlockWithNoReturnValue
+{
+    OCMStub([mock stringByAppendingString:OCMOCK_ANY]).andDo(^(NSString *localSelf, NSString *append) {
+        XCTAssertEqual(localSelf, self->mock);
+        XCTAssertEqualObjects(append, @"foo");
+    });
+    XCTAssertNil([mock stringByAppendingString:@"foo"]);
+}
+
+- (void)testAndDoBlockWithWrongReturnType
+{
+    OCMStub([mock stringByAppendingString:OCMOCK_ANY]).andDo(^(NSString *localSelf, NSString *append) {
+        XCTAssertEqual(localSelf, self->mock);
+        XCTAssertEqualObjects(append, @"foo");
+        return 2;
+    });
+    XCTAssertThrows([mock stringByAppendingString:@"foo"]);
+}
+
+- (void)testAndDoBlockWithWrongArgumentType
+{
+    OCMStub([mock stringByAppendingString:OCMOCK_ANY]).andDo(^(NSString *localSelf, int append) {
+    });
+    XCTAssertThrows([mock stringByAppendingString:@"foo"]);
+}
+
+- (void)testAndDoBlockWithTooManyArguments
+{
+    OCMStub([mock stringByAppendingString:OCMOCK_ANY]).andDo(^(NSString *localSelf, NSString *append, int anInt) {
+    });
+    XCTAssertThrows([mock stringByAppendingString:@"foo"]);
+}
+
+- (void)testAndDoBlockWithNotEnoughArguments
+{
+    OCMStub([mock stringByAppendingString:OCMOCK_ANY]).andDo(^(NSString *localSelf) {
+    });
+    XCTAssertThrows([mock stringByAppendingString:@"foo"]);
+}
 
 @end

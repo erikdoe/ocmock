@@ -26,4 +26,8 @@
 - (NSString *)fullTypeString;
 - (const char *)fullObjCTypes;
 
+// True if the return type of the method is "compatible" with the valueType and value.
+// Compatible is defined the same as `OCMIsObjCTypeCompatibleWithValueType`.
+- (BOOL)isMethodReturnTypeCompatibleWithValueType:(const char *)valueType value:(const void *)value valueSize:(size_t)valueSize;
+
 @end

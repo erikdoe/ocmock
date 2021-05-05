@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		031E50581BB4A56300E257C3 /* OCMBoxedReturnValueProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 031E50571BB4A56300E257C3 /* OCMBoxedReturnValueProviderTests.m */; };
-		031E50591BB4A56300E257C3 /* OCMBoxedReturnValueProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 031E50571BB4A56300E257C3 /* OCMBoxedReturnValueProviderTests.m */; };
 		0322DA65191188D100CACAF1 /* OCMockObjectVerifyAfterRunTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0322DA64191188D100CACAF1 /* OCMockObjectVerifyAfterRunTests.m */; };
 		0322DA66191188D100CACAF1 /* OCMockObjectVerifyAfterRunTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0322DA64191188D100CACAF1 /* OCMockObjectVerifyAfterRunTests.m */; };
 		0322DA6919118B4600CACAF1 /* OCMVerifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 0322DA6719118B4600CACAF1 /* OCMVerifier.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -477,7 +475,6 @@
 		030EF0B814632FD000B04273 /* OCMock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OCMock.h; sourceTree = "<group>"; };
 		030EF0DC14632FF700B04273 /* libOCMock.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libOCMock.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		030EF0E114632FF700B04273 /* OCMockLib-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OCMockLib-Prefix.pch"; sourceTree = "<group>"; };
-		031E50571BB4A56300E257C3 /* OCMBoxedReturnValueProviderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMBoxedReturnValueProviderTests.m; sourceTree = "<group>"; };
 		0322DA64191188D100CACAF1 /* OCMockObjectVerifyAfterRunTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMockObjectVerifyAfterRunTests.m; sourceTree = "<group>"; };
 		0322DA6719118B4600CACAF1 /* OCMVerifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMVerifier.h; sourceTree = "<group>"; };
 		0322DA6819118B4600CACAF1 /* OCMVerifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMVerifier.m; sourceTree = "<group>"; };
@@ -765,7 +762,6 @@
 				8BF73E52246CA75E00B9A52C /* OCMNoEscapeBlockTests.m */,
 				03B316271463350E0052CD09 /* OCMStubRecorderTests.m */,
 				037ECD5318FAD84100AF0E4C /* OCMInvocationMatcherTests.m */,
-				031E50571BB4A56300E257C3 /* OCMBoxedReturnValueProviderTests.m */,
 				03B316211463350E0052CD09 /* OCMConstraintTests.m */,
 				8B11D4B62448E2E900247BE2 /* OCMCPlusPlus98Tests.mm */,
 				8B11D4B92448E53600247BE2 /* OCMCPlusPlus11Tests.mm */,
@@ -1544,7 +1540,6 @@
 				8BF73E53246CA75E00B9A52C /* OCMNoEscapeBlockTests.m in Sources */,
 				8B11D4B72448E2E900247BE2 /* OCMCPlusPlus98Tests.mm in Sources */,
 				2FA28AB33F01A7D980F2C705 /* OCMockObjectDynamicPropertyMockingTests.m in Sources */,
-				031E50581BB4A56300E257C3 /* OCMBoxedReturnValueProviderTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1637,7 +1632,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3C76716C1BB3EBC500FDC9F4 /* TestClassWithCustomReferenceCounting.m in Sources */,
-				031E50591BB4A56300E257C3 /* OCMBoxedReturnValueProviderTests.m in Sources */,
 				8B3786A924E5BD6400FD1B5B /* OCMFunctionsTests.m in Sources */,
 				03C9CA1E18F05A84006DF94D /* OCMArgTests.m in Sources */,
 				036865651D3571A8005E6BEE /* OCMQuantifierTests.m in Sources */,

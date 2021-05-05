@@ -51,6 +51,8 @@ void OCMReportFailure(OCMLocation *loc, NSString *description);
 BOOL OCMIsBlock(id potentialBlock);
 BOOL OCMIsNonEscapingBlock(id block);
 
+NSString *OCMObjCTypeForArgumentType(const char *argType);
+BOOL OCMIsObjCTypeCompatibleWithValueType(const char *objcType, const char *valueType, const void *value, size_t valueSize);
 
 struct OCMBlockDef
 {
@@ -75,3 +77,43 @@ enum
     OCMBlockDescriptionFlagsHasCopyDispose = (1 << 25),
     OCMBlockDescriptionFlagsHasSignature   = (1 << 30)
 };
+
+/*
+ * This attempts to generate a decent replacement string for old style ^(NSInvocation *) {} blocks.
+ * It analyzes the method signature and the arguments passed to the invocation to attempt to
+ * determine argument types and good names for the arguments.
+ */
+NSString *OCMBlockDeclarationForInvocation(NSInvocation *invocation);
+
+/*
+ * Return a suggested list of parameter names for a selector.
+ * For example if the selector was `initWithName:forDog:` it would return `@[ @"name", @"dog" ]`.
+ * If a good name cannot be determined, it will be `arg`. If there are multiple names that are the
+ * same, they will be suffixed with a number, so selector `initWithThings::::` would return
+ * `@[ @"things", @"arg0", @"arg1", @"arg2" ]`
+ * Note this all works on heuristics based on standard Apple naming conventions. It doesn't
+ * guarantee perfection.
+ */
+NSArray<NSString *> *OCMParameterNamesFromSelector(SEL selector);
+
+/*
+ * Given a selector segment like `initWithName`, splits it into words: `@[ @"init", @"With", @"Name" ]`
+ * Normally splits on capital letters, but attemps to keep acronyms together, and plurals correct.
+ * So `initWithURLsStartingWithHTTPAssumingTheyAreWebBased:` becomes
+ * @[ @"init", @"With, @"URLs", @"Starting", @"With", @"HTTP", @"Assuming", @"They", @"Are", @"Web", @"Based"]
+ * Doesn't have to be perfect, as it is a best effort to generate good API names.
+ */
+NSArray<NSString *> *OCMSplitSelectorSegmentIntoWords(NSString *string);
+
+/*
+ * Given a selector segment such as `initWithBigName:` attempts to deduce an
+ * Objective C style parameter name for the segment (in this case `bigName`).
+ * If it can't deal with it, returns an empty string.
+ */
+NSString *OCMTurnSelectorSegmentIntoParameterName(NSString *);
+
+/*
+ * Attempts to deduce a type for `obj` that could be put in a declaration
+ * for a method containing obj. This is a best effort.
+ */
+NSString *OCMTypeOfObject(id obj);
