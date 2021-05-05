@@ -1156,5 +1156,4 @@ static NSString *TestNotification = @"TestNotification";
     XCTAssertThrows([[OCMockObject alloc] init]);
 }
 
-
 @end
