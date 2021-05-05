@@ -26,6 +26,9 @@ let package = Package(
                 "OCMockLibTests/OCMockLibTests-Info.plist",
                 "OCMockLib/OCMockLib-Prefix.pch",
                 "OCMockLibTests/OCMockLibTests-Prefix.pch",
+                "Carthage.xcconfig",
+                "OCMockDist.xcconfig",
+                "OCMockCI.xcconfig",
             ],
             publicHeadersPath: ".",
             cSettings: [

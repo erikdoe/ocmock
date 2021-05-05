@@ -68,3 +68,9 @@ dmg:
 carthage:
 	XCODE_XCCONFIG_FILE="$(CURDIR)/Source/Carthage.xcconfig" carthage build --no-skip-current --project-directory "$(CURDIR)/Source"
 	XCODE_XCCONFIG_FILE="$(CURDIR)/Source/Carthage.xcconfig" carthage archive OCMock
+
+swiftpm:
+	echo "Testing Swift Package Manager Distribution"
+	swift build
+	swift test
+
