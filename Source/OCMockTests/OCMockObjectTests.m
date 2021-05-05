@@ -214,6 +214,18 @@ static NSString *testClassThatMayNotSupportMockingReason = nil;
 
 @end
 
+@interface TestClassThatInheritsFromNSProxy : NSProxy
+@end
+
+@implementation TestClassThatInheritsFromNSProxy
+
+- (NSString *)foo
+{
+    return @"foo";
+}
+
+@end
+
 static NSString *TestNotification = @"TestNotification";
 
 
@@ -1156,5 +1168,11 @@ static NSString *TestNotification = @"TestNotification";
     XCTAssertThrows([[OCMockObject alloc] init]);
 }
 
+- (void)testSupportsNSProxyBaseClasses
+{
+  id mock = OCMClassMock([TestClassThatInheritsFromNSProxy class]);
+  OCMStub([mock foo]).andReturn(@"bar");
+  XCTAssertEqualObjects([mock foo], @"bar");
+}
 
 @end

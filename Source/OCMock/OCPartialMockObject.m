@@ -31,6 +31,8 @@
 {
     if(anObject == nil)
         [NSException raise:NSInvalidArgumentException format:@"Object cannot be nil."];
+    if([anObject isProxy])
+        [NSException raise:NSInvalidArgumentException format:@"OCMock does not support partially mocking subclasses of NSProxy."];
     Class const class = [self classToSubclassForObject:anObject];
     [super initWithClass:class];
     realObject = [anObject retain];
