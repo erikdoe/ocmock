@@ -98,10 +98,7 @@
         if(recorder != nil)
         {
             [recorder setMockObject:self];
-#ifndef __clang_analyzer__
-            // see #456 for details
-            return (id)[recorder init];
-#endif
+            return (id)[[recorder retain] init];
         }
         return self;
     }
