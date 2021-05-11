@@ -12,13 +12,13 @@ XCODECI     = xcodebuild -project "$(CURDIR)/Source/OCMock.xcodeproj" -xcconfig 
 XCODEDIST   = xcodebuild -project "$(CURDIR)/Source/OCMock.xcodeproj" -xcconfig "$(CURDIR)/Source/OCMockDist.xcconfig"
 SHELL       = /bin/bash -e -o pipefail
 
-.PHONY: macos ioslib ios tvos watchos sourcecode product dmg carthage
+.PHONY: macos ioslib ios tvos watchos sourcecode product dmg swiftpm carthage
 	
 clean:
 	rm -rf "$(CURDIR)/Build"
 
 
-ci: ci-macos ci-ios
+ci: ci-macos ci-ios swiftpm
 
 ci-macos:
 	@echo "Building macOS framework and running tests..."
@@ -65,6 +65,14 @@ dmg:
 	Tools/makedmg.rb $(PRODUCT_DIR) $(BUILD_DIR)
 
 
+swiftpm:
+	echo "** Testing Swift Package Manager Distribution"
+	swift build
+	swift test
+
+
 carthage:
 	XCODE_XCCONFIG_FILE="$(CURDIR)/Source/Carthage.xcconfig" carthage build --no-skip-current --project-directory "$(CURDIR)/Source"
 	XCODE_XCCONFIG_FILE="$(CURDIR)/Source/Carthage.xcconfig" carthage archive OCMock
+
+
