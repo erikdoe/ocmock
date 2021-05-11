@@ -19,7 +19,7 @@
 
 #import <objc/runtime.h>
 
-#if !TARGET_OS_WATCH
+#if !TARGET_OS_WATCH && !defined(OCM_DISABLE_XCTEST_SUPPORT)
 @class XCTestExpectation;
 #endif
 
@@ -33,7 +33,7 @@
 - (id)andDo:(void (^)(NSInvocation *invocation))block;
 - (id)andForwardToRealObject;
 
-#if !TARGET_OS_WATCH
+#if !TARGET_OS_WATCH && !defined(OCM_DISABLE_XCTEST_SUPPORT)
 - (id)andFulfill:(XCTestExpectation *)expectation;
 #endif
 
@@ -67,7 +67,7 @@
 #define andForwardToRealObject() _andForwardToRealObject()
 @property (nonatomic, readonly) OCMStubRecorder *(^ _andForwardToRealObject)(void);
 
-#if !TARGET_OS_WATCH
+#if !TARGET_OS_WATCH && !defined(OCM_DISABLE_XCTEST_SUPPORT)
 #define andFulfill(anExpectation) _andFulfill(anExpectation)
 @property (nonatomic, readonly) OCMStubRecorder *(^ _andFulfill)(XCTestExpectation *);
 #endif
@@ -85,6 +85,3 @@
 })                                                                    \
 
 @end
-
-
-
