@@ -24,7 +24,7 @@
 #import "OCMNotificationPoster.h"
 #import "OCMRealObjectForwarder.h"
 
-#if !TARGET_OS_WATCH && !defined(OCM_DISABLE_XCTEST_SUPPORT)
+#if !defined(OCM_DISABLE_XCTEST_FEATURES)
 #import <XCTest/XCTest.h>
 #endif
 
@@ -101,7 +101,7 @@
     return self;
 }
 
-#if !TARGET_OS_WATCH && !defined(OCM_DISABLE_XCTEST_SUPPORT)
+#if !defined(OCM_DISABLE_XCTEST_FEATURES)
 - (id)andFulfill:(XCTestExpectation *)expectation
 {
     return [self andDo:^(NSInvocation *invocation) {
@@ -198,7 +198,7 @@
     return (id)[[theBlock copy] autorelease];
 }
 
-#if !TARGET_OS_WATCH && !defined(OCM_DISABLE_XCTEST_SUPPORT)
+#if !defined(OCM_DISABLE_XCTEST_FEATURES)
 
 @dynamic _andFulfill;
 

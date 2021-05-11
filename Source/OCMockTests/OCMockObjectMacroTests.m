@@ -108,7 +108,7 @@
 
 @implementation OCMockObjectMacroTests
 
-#if defined(__IPHONE_14_0) && !defined(OCM_DISABLE_XCTEST_SUPPORT) // this is actually a test for Xcode 12; see issue #472
+#if defined(__IPHONE_14_0) && !defined(OCM_DISABLE_XCTEST_FEATURES) // this is actually a test for Xcode 12; see issue #472
 
 - (void)recordIssue:(XCTIssue *)issue
 {
@@ -306,7 +306,7 @@
     return @"TEST_STRING_FROM_TESTCASE";
 }
 
-#ifndef OCM_DISABLE_XCTEST_SUPPORT
+#ifndef OCM_DISABLE_XCTEST_FEATURES
 
 - (void)testFulfillsExpectation
 {
@@ -580,7 +580,7 @@
     OCMStub([[mock andThrow:nil] initWithString:OCMOCK_ANY]);
     OCMStub([[mock andPost:nil] initWithString:OCMOCK_ANY]);
     OCMStub([[mock andCall:nil onObject:nil] initWithString:OCMOCK_ANY]);
-#ifndef OCM_DISABLE_XCTEST_SUPPORT
+#ifndef OCM_DISABLE_XCTEST_FEATURES
     OCMStub([[mock andFulfill:nil] initWithString:OCMOCK_ANY]);
 #endif
     OCMStub([[mock andDo:nil] initWithString:OCMOCK_ANY]);
