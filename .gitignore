@@ -2,5 +2,6 @@
 xcuserdata
 *.xcworkspace
 .idea
+.build
 build
 Carthage
