@@ -15,7 +15,7 @@
  */
 
 #import <objc/runtime.h>
-#if !TARGET_OS_WATCH
+#if !defined(OCM_DISABLE_XCTEST_FEATURES)
 #import <XCTest/XCTest.h>
 #endif
 #import "OCClassMockObject.h"
@@ -475,7 +475,7 @@ void OCMReportFailure(OCMLocation *loc, NSString *description)
 {
     id testCase = [loc testCase];
 #ifdef __IPHONE_14_0 // this is actually a test for Xcode 12; see issue #472
-#if !TARGET_OS_WATCH
+#if !defined(OCM_DISABLE_XCTEST_FEATURES)
     if((testCase != nil) && [testCase respondsToSelector:@selector(recordIssue:)])
     {
         XCTSourceCodeLocation *xctloc = [[[XCTSourceCodeLocation alloc] initWithFilePath:[loc file] lineNumber:[loc line]] autorelease];
