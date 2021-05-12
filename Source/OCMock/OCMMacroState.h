@@ -29,13 +29,13 @@
     BOOL invocationDidThrow;
 }
 
-+ (void)beginStubMacro;
++ (void)beginStubMacroAtLocation:(OCMLocation *)aLocation;
 + (OCMStubRecorder *)endStubMacro;
 
-+ (void)beginExpectMacro;
++ (void)beginExpectMacroAtLocation:(OCMLocation *)aLocation;
 + (OCMStubRecorder *)endExpectMacro;
 
-+ (void)beginRejectMacro;
++ (void)beginRejectMacroAtLocation:(OCMLocation *)aLocation;
 + (OCMStubRecorder *)endRejectMacro;
 
 + (void)beginVerifyMacroAtLocation:(OCMLocation *)aLocation;

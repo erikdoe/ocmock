@@ -37,7 +37,7 @@
 #define OCMStub(invocation) \
 ({ \
     _OCMSilenceWarnings( \
-        [OCMMacroState beginStubMacro]; \
+        [OCMMacroState beginStubMacroAtLocation:OCMMakeLocation(nil, __FILE__, __LINE__)]; \
         OCMStubRecorder *recorder = nil; \
         @try{ \
             invocation; \
@@ -55,7 +55,7 @@
 #define OCMExpect(invocation) \
 ({ \
     _OCMSilenceWarnings( \
-        [OCMMacroState beginExpectMacro]; \
+        [OCMMacroState beginExpectMacroAtLocation:OCMMakeLocation(nil, __FILE__, __LINE__)]; \
         OCMStubRecorder *recorder = nil; \
         @try{ \
             invocation; \
@@ -73,7 +73,7 @@
 #define OCMReject(invocation) \
 ({ \
     _OCMSilenceWarnings( \
-        [OCMMacroState beginRejectMacro]; \
+        [OCMMacroState beginRejectMacroAtLocation:OCMMakeLocation(nil, __FILE__, __LINE__)]; \
         OCMStubRecorder *recorder = nil; \
         @try{ \
             invocation; \

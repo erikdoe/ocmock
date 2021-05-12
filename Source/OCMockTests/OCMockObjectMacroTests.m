@@ -477,6 +477,54 @@
     }
 }
 
+- (void)testStubExpectAndRejectShouldCaptureFileAndLineNumbers
+{
+    NSString *expectedFile = [NSString stringWithUTF8String:__FILE__];
+    int expectedLine;
+    BOOL caughtException = NO;
+    id realObject = [NSMutableArray array];
+
+    @try
+    {
+         caughtException = NO;
+         expectedLine = __LINE__; OCMStub([realObject addObject:@"foo"]);
+    }
+    @catch (NSException *e)
+    {
+        XCTAssertTrue([[e reason] containsString:expectedFile], @"`%@` should contain `%@`", [e reason], expectedFile);
+        XCTAssertTrue([[e reason] containsString:[[NSNumber numberWithInt:expectedLine] stringValue]], @"`%@` should contain `%d`", [e reason], expectedLine);
+        caughtException = YES;
+    }
+    XCTAssertTrue(caughtException);
+
+    @try
+    {
+        caughtException = NO;
+        expectedLine = __LINE__; OCMExpect([realObject addObject:@"foo"]);
+    }
+    @catch (NSException *e)
+    {
+        XCTAssertTrue([[e reason] containsString:expectedFile], @"`%@` should contain `%@`", [e reason], expectedFile);
+        XCTAssertTrue([[e reason] containsString:[[NSNumber numberWithInt:expectedLine] stringValue]], @"`%@` should contain `%d`", [e reason], expectedLine);
+        caughtException = YES;
+    }
+    XCTAssertTrue(caughtException);
+
+    @try
+    {
+         caughtException = NO;
+         expectedLine = __LINE__; OCMReject([realObject addObject:@"foo"]);
+    }
+    @catch (NSException *e)
+    {
+        XCTAssertTrue([[e reason] containsString:expectedFile], @"`%@` should contain `%@`", [e reason], expectedFile);
+        XCTAssertTrue([[e reason] containsString:[[NSNumber numberWithInt:expectedLine] stringValue]], @"`%@` should contain `%d`", [e reason], expectedLine);
+        caughtException = YES;
+    }
+    XCTAssertTrue(caughtException);
+
+}
+
 
 - (void)testCanExplicitlySelectClassMethodForStubs
 {
