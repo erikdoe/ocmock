@@ -575,7 +575,6 @@
     // used and we're now making sure that a return value is specified for init methods.
     id mock = OCMClassMock([NSString class]);
     OCMStub([[mock andReturn:nil] initWithString:OCMOCK_ANY]);
-    OCMStub([[mock ignoringNonObjectArgs] initWithString:OCMOCK_ANY]);
     OCMStub([[mock andReturnValue:nil] initWithString:OCMOCK_ANY]);
     OCMStub([[mock andThrow:nil] initWithString:OCMOCK_ANY]);
     OCMStub([[mock andPost:nil] initWithString:OCMOCK_ANY]);
@@ -590,7 +589,7 @@
     _OCMVerify([(id)[mock withQuantifier:nil] initWithString:OCMOCK_ANY]);
 
     // Test multiple levels of recorder methods.
-    OCMStub([[[[mock ignoringNonObjectArgs] andReturn:nil] andThrow:nil] initWithString:OCMOCK_ANY]);
+    OCMStub([[[mock andReturn:nil] andThrow:nil] initWithString:OCMOCK_ANY]);
 }
 
 - (void)testStubMacroPassesExceptionThrough
