@@ -16,10 +16,36 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OCMArg : NSObject
+// Options for controlling how OCMArgs function.
+typedef NS_OPTIONS(NSUInteger, OCMArgOptions) {
+    // The OCMArg will retain/release the value passed to it, and invocations on a stub that has
+    // arguments that the OCMArg is constraining will retain the values passed to them for the
+    // arguments being constrained by the OCMArg.
+    OCMArgDefaultOptions = 0UL,
 
+    // The OCMArg will not retain/release the value passed to it. Is only applicable for
+    // `isEqual:options:` and `isNotEqual:options`. The caller is responsible for making sure that the
+    // arg is valid for the required lifetime. Note that unless `OCMArgDoNotRetainInvocationArg` is
+    // also specified, invocations of the stub that the OCMArg arg is constraining will retain values
+    // passed to them for the arguments being constrained by the OCMArg. `OCMArgNeverRetainArg` is
+    // usually what you want to use.
+    OCMArgDoNotRetainStubArg = (1UL << 0),
+
+    // Invocations on a stub that has arguments that the OCMArg is constraining will retain/release
+    // the values passed to them for the arguments being constrained by the OCMArg.
+    OCMArgDoNotRetainInvocationArg = (1UL << 1),
+
+    // Invocations on a stub that has arguments that the OCMArg is constraining will copy/release
+    // the values passed to them for the arguments being constrained by the OCMArg.
+    OCMArgCopyInvocationArg = (1UL << 2),
+
+    OCMArgNeverRetainArg = OCMArgDoNotRetainStubArg | OCMArgDoNotRetainInvocationArg,
+};
+
+@interface OCMArg : NSObject
 // constraining arguments
 
+// constrain using OCMArgDefaultOptions
 + (id)any;
 + (SEL)anySelector;
 + (void *)anyPointer;
@@ -31,6 +57,15 @@
 + (id)isKindOfClass:(Class)cls;
 + (id)checkWithSelector:(SEL)selector onObject:(id)anObject;
 + (id)checkWithBlock:(BOOL (^)(id obj))block;
+
++ (id)anyWithOptions:(OCMArgOptions)options;
++ (id)isNilWithOptions:(OCMArgOptions)options;
++ (id)isNotNilWithOptions:(OCMArgOptions)options;
++ (id)isEqual:(id)value options:(OCMArgOptions)options;
++ (id)isNotEqual:(id)value options:(OCMArgOptions)options;
++ (id)isKindOfClass:(Class)cls options:(OCMArgOptions)options;
++ (id)checkWithSelector:(SEL)selector onObject:(id)anObject options:(OCMArgOptions)options;
++ (id)checkWithOptions:(OCMArgOptions)options withBlock:(BOOL (^)(id obj))block;
 
 // manipulating arguments
 

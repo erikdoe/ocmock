@@ -16,9 +16,22 @@
 
 #import <Foundation/Foundation.h>
 
+// See OCMArgOptions for documentation on options.
+typedef NS_OPTIONS(NSUInteger, OCMConstraintOptions) {
+    OCMConstraintDefaultOptions = 0UL,
+    OCMConstraintDoNotRetainStubArg = (1UL << 0),
+    OCMConstraintDoNotRetainInvocationArg = (1UL << 1),
+    OCMConstraintCopyInvocationArg = (1UL << 2),
+    OCMConstraintNeverRetainArg = OCMConstraintDoNotRetainStubArg | OCMConstraintDoNotRetainInvocationArg,
+};
+
 @interface OCMConstraint : NSObject
 
-+ (instancetype)constraint;
+@property (readonly) OCMConstraintOptions constraintOptions;
+
+- (instancetype)initWithOptions:(OCMConstraintOptions)options NS_DESIGNATED_INITIALIZER;
+- (instancetype)init NS_UNAVAILABLE;
+
 - (BOOL)evaluate:(id)value;
 
 // if you are looking for any, isNil, etc, they have moved to OCMArg
@@ -28,6 +41,8 @@
 + (instancetype)constraintWithSelector:(SEL)aSelector onObject:(id)anObject;
 + (instancetype)constraintWithSelector:(SEL)aSelector onObject:(id)anObject withValue:(id)aValue;
 
++ (instancetype)constraintWithSelector:(SEL)aSelector onObject:(id)anObject options:(OCMConstraintOptions)options;
++ (instancetype)constraintWithSelector:(SEL)aSelector onObject:(id)anObject withValue:(id)aValue options:(OCMConstraintOptions)options;
 
 @end
 
@@ -40,19 +55,29 @@
 @interface OCMIsNotNilConstraint : OCMConstraint
 @end
 
-@interface OCMIsNotEqualConstraint : OCMConstraint
+@interface OCMEqualityConstraint : OCMConstraint
 {
-@public
     id testValue;
 }
 
+- (instancetype)initWithTestValue:(id)testValue options:(OCMConstraintOptions)options NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithOptions:(OCMConstraintOptions)options NS_UNAVAILABLE;
+
+@end
+
+@interface OCMIsEqualConstraint : OCMEqualityConstraint
+@end
+
+@interface OCMIsNotEqualConstraint : OCMEqualityConstraint
 @end
 
 @interface OCMInvocationConstraint : OCMConstraint
 {
-@public
     NSInvocation *invocation;
 }
+
+- (instancetype)initWithInvocation:(NSInvocation *)invocation options:(OCMConstraintOptions)options NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithOptions:(OCMConstraintOptions)options NS_UNAVAILABLE;
 
 @end
 
@@ -61,7 +86,8 @@
     BOOL (^block)(id);
 }
 
-- (instancetype)initWithConstraintBlock:(BOOL (^)(id))block;
+- (instancetype)initWithOptions:(OCMConstraintOptions)options block:(BOOL (^)(id))block NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithOptions:(OCMConstraintOptions)options NS_UNAVAILABLE;
 
 @end
 

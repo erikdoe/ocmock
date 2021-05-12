@@ -101,4 +101,50 @@
     XCTAssertEqual([OCMArg resolveSpecialValues:nonObjectPointerValue], nonObjectPointerValue, @"Should have returned value as is.");
 }
 
+- (void)testIsEqualDoesNotRetainArgumentWithOCMArgDoNotRetainStubArg
+{
+  __weak id value;
+  OCMConstraint *constraint;
+  @autoreleasepool {
+    value = [NSArray arrayWithObject:self];
+    constraint = [OCMArg isEqual:value options:OCMArgDoNotRetainStubArg];
+  }
+  XCTAssertNil(value);
+}
+
+- (void)testIsEqualDoesRetainArgumentWithOCMArgDefaultOptions
+{
+  __weak id value;
+  OCMConstraint *constraint;
+  @autoreleasepool {
+    value = [NSArray arrayWithObject:self];
+    constraint = [OCMArg isEqual:value];
+    
+  }
+  XCTAssertNotNil(value);
+}
+
+- (void)testIsNotEqualDoesNotRetainArgumentWithOCMArgDoNotRetainStubArg
+{
+  __weak id value;
+  OCMConstraint *constraint;
+  @autoreleasepool {
+    value = [NSArray arrayWithObject:self];
+    constraint = [OCMArg isNotEqual:value options:OCMArgDoNotRetainStubArg];
+  }
+  XCTAssertNil(value);
+}
+
+- (void)testIsNotEqualDoesRetainArgumentWithOCMArgDefaultOptions
+{
+  __weak id value;
+  OCMConstraint *constraint;
+  @autoreleasepool {
+    value = [NSArray arrayWithObject:self];
+    constraint = [OCMArg isNotEqual:value];
+    
+  }
+  XCTAssertNotNil(value);
+}
+
 @end
