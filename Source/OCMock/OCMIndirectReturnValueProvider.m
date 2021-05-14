@@ -49,4 +49,9 @@
     [anInvocation setSelector:originalSelector];
 }
 
+- (NSString *)description
+{
+  return [NSString stringWithFormat:@"[%@ - %p]: Calls `%@` on `%@`", [self class], self, NSStringFromSelector(selector), provider];
+}
+
 @end
