@@ -20,14 +20,14 @@
 #import "OCClassMockObject.h"
 #import "OCMInvocationMatcher.h"
 #import "OCMRecorder.h"
-
+#import "OCMFunctionsPrivate.h"
+#import "OCMMacroState.h"
 
 @implementation OCMRecorder
 
 - (instancetype)init
 {
     // no super, we're inheriting from NSProxy
-    didRecordInvocation = NO;
     shouldReturnMockFromInit = NO;
     return self;
 }
@@ -67,7 +67,7 @@
 
 - (BOOL)didRecordInvocation
 {
-    return didRecordInvocation;
+    return [invocationMatcher recordedInvocation] != nil;
 }
 
 
@@ -86,11 +86,22 @@
     return self;
 }
 
+- (BOOL)currentlyRecordingInMacro
+{
+    return [[OCMMacroState globalState] recorder] == self;
+}
 
 #pragma mark Recording the actual invocation
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
+    if([self didRecordInvocation] && [self currentlyRecordingInMacro])
+    {
+        [NSException raise:NSInvalidArgumentException
+                    format:@"Recorder attempting to record `%s` but recorder has already recorded a stub for: `%@`. "
+                           @"Are there multiple invocations on mocks in a single macro?",
+                           sel_getName(aSelector), [self description]];
+    }
     if([invocationMatcher recordedAsClassMethod])
         return [[(OCClassMockObject *)mockObject mockedClass] methodSignatureForSelector:aSelector];
 
@@ -110,18 +121,32 @@
 
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
+    NSAssert(!([self didRecordInvocation] && [self currentlyRecordingInMacro]),
+             @"Should not be recording multiple stubs. This should've been prevented in `-methodSignatureForSelector`.");
     [anInvocation setTarget:nil];
-    didRecordInvocation = YES;
     [invocationMatcher setInvocation:anInvocation];
 
-    // Code with ARC may retain the receiver of an init method before invoking it. In that case it
-    // relies on the init method returning an object it can release. So, we must set the correct
-    // return value here. Normally, the correct return value is the recorder but sometimes it's the
-    // mock. The decision is easier to make in the mock, which is why the mock sets a flag in the
-    // recorder and we simply use the flag here.
-    if([anInvocation methodIsInInitFamily])
+    // If the method returns an object, we want to return a recorder so that we can trap the case
+    // where multiple invocations are possibly being recorded in a single OCMStub/OCMExpect macro.
+    // (this is caught in -methodSignatureForSelector).
+    if(OCMIsObjectType([[anInvocation methodSignature] methodReturnType]))
     {
-        id returnValue = shouldReturnMockFromInit ? (id)mockObject : (id)self;
+        id returnValue = self;
+        // Code with ARC may retain the receiver of an init method before invoking it. In that case it
+        // relies on the init method returning an object it can release. So, we must set the correct
+        // return value here. Normally, the correct return value is the recorder but sometimes it's the
+        // mock. The decision is easier to make in the mock, which is why the mock sets a flag in the
+        // recorder and we simply use the flag here.
+        if(shouldReturnMockFromInit && [anInvocation methodIsInInitFamily])
+        {
+            returnValue = mockObject;
+        }
+        else if ([anInvocation methodIsInCreateFamily])
+        {
+            // In the case of mocking a create method (new, alloc, copy, mutableCopy) we need to
+            // add a retain count to keep ARC happy. This will appear as a leak in non-arc code.
+            [returnValue retain];
+        }
         [anInvocation setReturnValue:&returnValue];
     }
 }
