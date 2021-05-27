@@ -117,10 +117,10 @@
 
 - (void)dealloc
 {
+    [self stopMocking];
     [stubs release];
     [expectations release];
     [exceptions release];
-    [invocations release];
     [super dealloc];
 }
 
