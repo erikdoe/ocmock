@@ -16,7 +16,6 @@ let package = Package(
             dependencies: [],
             path: "Source",
             exclude: [
-                "Carthage/",
                 "Changes.txt",
                 "OCMock/OCMock-Info.plist",
                 "OCMock/OCMock-Prefix.pch",
