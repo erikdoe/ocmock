@@ -87,8 +87,15 @@
 
 - (void)stopMockingClassMethods
 {
-    OCMSetAssociatedMockForClass(nil, mockedClass);
-    object_setClass(mockedClass, originalMetaClass);
+    // Synchronize around mockedClass to try and prevent class methods on other
+    // threads being called while the class is being torn down.
+    // See prepareClassForClassMethodMocking and forwardInvocationForClassObject
+    // for other locations that are synchronized on this.
+    @synchronized(mockedClass)
+    {
+        OCMSetAssociatedMockForClass(nil, mockedClass);
+        object_setClass(mockedClass, originalMetaClass);
+    }
     originalMetaClass = nil;
     /* created meta class will be disposed later because partial mocks create another subclass depending on it */
 }
@@ -119,48 +126,54 @@
     if(otherMock != nil)
         [otherMock stopMockingClassMethods];
 
-    OCMSetAssociatedMockForClass(self, mockedClass);
 
     /* dynamically create a subclass and use its meta class as the meta class for the mocked class */
     classCreatedForNewMetaClass = OCMCreateSubclass(mockedClass, mockedClass);
     originalMetaClass = object_getClass(mockedClass);
     id newMetaClass = object_getClass(classCreatedForNewMetaClass);
-
     /* create a dummy initialize method */
     Method myDummyInitializeMethod = class_getInstanceMethod([self mockObjectClass], @selector(initializeForClassObject));
     const char *initializeTypes = method_getTypeEncoding(myDummyInitializeMethod);
     IMP myDummyInitializeIMP = method_getImplementation(myDummyInitializeMethod);
     class_addMethod(newMetaClass, @selector(initialize), myDummyInitializeIMP, initializeTypes);
 
-    object_setClass(mockedClass, newMetaClass); // only after dummy initialize is installed (iOS9)
+    // Synchronize around mockedClass to try and prevent class methods on other
+    // threads being called while the class is being set up.
+    // See forwardInvocationForClassObject and stopMockingClassMethods for other
+    // locations that are synchronized on this.
+    @synchronized(mockedClass)
+    {
+        object_setClass(mockedClass, newMetaClass); // only after dummy initialize is installed (iOS9)
+        OCMSetAssociatedMockForClass(self, mockedClass);
 
-    /* point forwardInvocation: of the object to the implementation in the mock */
-    Method myForwardMethod = class_getInstanceMethod([self mockObjectClass], @selector(forwardInvocationForClassObject:));
-    IMP myForwardIMP = method_getImplementation(myForwardMethod);
-    class_addMethod(newMetaClass, @selector(forwardInvocation:), myForwardIMP, method_getTypeEncoding(myForwardMethod));
+        /* point forwardInvocation: of the object to the implementation in the mock */
+        Method myForwardMethod = class_getInstanceMethod([self mockObjectClass], @selector(forwardInvocationForClassObject:));
+        IMP myForwardIMP = method_getImplementation(myForwardMethod);
+        class_addMethod(newMetaClass, @selector(forwardInvocation:), myForwardIMP, method_getTypeEncoding(myForwardMethod));
 
-    /* adding forwarder for most class methods (instance methods on meta class) to allow for verify after run */
-    NSArray *methodBlackList = @[
-        @"class", @"forwardingTargetForSelector:", @"methodSignatureForSelector:", @"forwardInvocation:", @"isBlock",
-        @"instanceMethodForwarderForSelector:", @"instanceMethodSignatureForSelector:", @"resolveClassMethod:"
-    ];
-    void (^setupForwarderFiltered)(Class, SEL) = ^(Class cls, SEL sel) {
-        if((cls == object_getClass([NSObject class])) || (cls == [NSObject class]) || (cls == object_getClass(cls)))
-            return;
-        if(OCMIsApplePrivateMethod(cls, sel))
-            return;
-        if([methodBlackList containsObject:NSStringFromSelector(sel)])
-            return;
-        @try
-        {
-            [self setupForwarderForClassMethodSelector:sel];
-        }
-        @catch(NSException *e)
-        {
-            // ignore for now
-        }
-    };
-    [NSObject enumerateMethodsInClass:originalMetaClass usingBlock:setupForwarderFiltered];
+        /* adding forwarder for most class methods (instance methods on meta class) to allow for verify after run */
+        NSArray *methodBlackList = @[
+            @"class", @"forwardingTargetForSelector:", @"methodSignatureForSelector:", @"forwardInvocation:", @"isBlock",
+            @"instanceMethodForwarderForSelector:", @"instanceMethodSignatureForSelector:", @"resolveClassMethod:"
+        ];
+        void (^setupForwarderFiltered)(Class, SEL) = ^(Class cls, SEL sel) {
+            if((cls == object_getClass([NSObject class])) || (cls == [NSObject class]) || (cls == object_getClass(cls)))
+                return;
+            if(OCMIsApplePrivateMethod(cls, sel))
+                return;
+            if([methodBlackList containsObject:NSStringFromSelector(sel)])
+                return;
+            @try
+            {
+                [self setupForwarderForClassMethodSelector:sel];
+            }
+            @catch(NSException *e)
+            {
+                // ignore for now
+            }
+        };
+        [NSObject enumerateMethodsInClass:originalMetaClass usingBlock:setupForwarderFiltered];
+    }
 }
 
 
@@ -184,15 +197,22 @@
 - (void)forwardInvocationForClassObject:(NSInvocation *)anInvocation
 {
     // in here "self" is a reference to the real class, not the mock
-    OCClassMockObject *mock = OCMGetAssociatedMockForClass((Class)self, YES);
-    if(mock == nil)
+    // Synchronize around self to try and prevent the class from being torn
+    // down while a method is being called on it.
+    // See prepareClassForClassMethodMocking and stopMockingClassMethods for
+    // other locations that are synchronized on this.
+    @synchronized(self)
     {
-        [NSException raise:NSInternalInconsistencyException format:@"No mock for class %@", NSStringFromClass((Class)self)];
-    }
-    if([mock handleInvocation:anInvocation] == NO)
-    {
-        [anInvocation setSelector:OCMAliasForOriginalSelector([anInvocation selector])];
-        [anInvocation invoke];
+        OCClassMockObject *mock = OCMGetAssociatedMockForClass((Class)self, YES);
+        if(mock == nil)
+        {
+            [anInvocation invoke];
+        }
+        else if([mock handleInvocation:anInvocation] == NO)
+        {
+            [anInvocation setSelector:OCMAliasForOriginalSelector([anInvocation selector])];
+            [anInvocation invoke];
+        }
     }
 }
 
