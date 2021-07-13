@@ -19,11 +19,30 @@
 
 @implementation OCMPassByRefSetter
 
+// Stores a reference to each of our OCMPassByRefSetters so that OCMArg can
+// check any given pointer to verify that it is an OCMPassByRefSetter.
+// The pointers are stored as naked pointers with no reference counts.
+// Note: all accesses protected by @synchronized(gPointerTable)
+static NSHashTable *gPointerTable = NULL;
+
++ (void)initialize
+{
+    if (self == [OCMPassByRefSetter class])
+    {
+        gPointerTable = [[NSHashTable hashTableWithOptions:NSPointerFunctionsOpaqueMemory | NSPointerFunctionsOpaquePersonality] retain];
+    }
+}
+
 - (id)initWithValue:(id)aValue
 {
     if((self = [super init]))
     {
         value = [aValue retain];
+        @synchronized(gPointerTable)
+        {
+            // This will throw if somehow we manage to put two of the same pointer in the table.
+            NSHashInsertKnownAbsent(gPointerTable, self);
+        }
     }
 
     return self;
@@ -32,6 +51,11 @@
 - (void)dealloc
 {
     [value release];
+    @synchronized(gPointerTable)
+    {
+        NSAssert(NSHashGet(gPointerTable, self) != NULL, @"self should be in the hash table");
+        NSHashRemove(gPointerTable, self);
+    }
     [super dealloc];
 }
 
@@ -44,6 +68,14 @@
             [(NSValue *)value getValue:pointerValue];
         else
             *(id *)pointerValue = value;
+    }
+}
+
++ (BOOL)ptrIsPassByRefSetter:(void*)ptr
+{
+    @synchronized(gPointerTable)
+    {
+        return NSHashGet(gPointerTable, ptr) != NULL;
     }
 }
 
