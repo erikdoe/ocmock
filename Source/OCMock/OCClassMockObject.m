@@ -140,7 +140,7 @@
     class_addMethod(newMetaClass, @selector(forwardInvocation:), myForwardIMP, method_getTypeEncoding(myForwardMethod));
 
     /* adding forwarder for most class methods (instance methods on meta class) to allow for verify after run */
-    NSArray *methodBlockList = @[
+    NSArray *methodsNotToForward = @[
         @"class", @"forwardingTargetForSelector:", @"methodSignatureForSelector:", @"forwardInvocation:", @"isBlock",
         @"instanceMethodForwarderForSelector:", @"instanceMethodSignatureForSelector:", @"resolveClassMethod:"
     ];
@@ -149,7 +149,7 @@
             return;
         if(OCMIsApplePrivateMethod(cls, sel))
             return;
-        if([methodBlockList containsObject:NSStringFromSelector(sel)])
+        if([methodsNotToForward containsObject:NSStringFromSelector(sel)])
             return;
         @try
         {
