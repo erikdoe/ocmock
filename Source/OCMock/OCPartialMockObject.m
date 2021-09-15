@@ -178,12 +178,12 @@
     class_addMethod(subclass, @selector(class), myObjectClassImp, objectClassTypes);
 
     /* Adding forwarder for most instance methods to allow for verify after run */
-    NSArray *methodBlackList = @[ @"class", @"forwardingTargetForSelector:", @"methodSignatureForSelector:", @"forwardInvocation:",
+    NSArray *methodBlockList = @[ @"class", @"forwardingTargetForSelector:", @"methodSignatureForSelector:", @"forwardInvocation:",
         @"allowsWeakReference", @"retainWeakReference", @"isBlock", @"retainCount", @"retain", @"release", @"autorelease" ];
     void (^setupForwarderFiltered)(Class, SEL) = ^(Class cls, SEL sel) {
         if(OCMIsAppleBaseClass(cls) || OCMIsApplePrivateMethod(cls, sel))
             return;
-        if([methodBlackList containsObject:NSStringFromSelector(sel)])
+        if([methodBlockList containsObject:NSStringFromSelector(sel)])
             return;
         @try
         {
