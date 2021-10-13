@@ -29,6 +29,8 @@ Pod::Spec.new do |s|
   s.ios.framework             = 'XCTest'
   s.tvos.framework            = 'XCTest'
 
+  s.pod_target_xcconfig       = { 'ENABLE_BITCODE' => 'NO' }
+
   s.public_header_files       = ["OCMock.h", "OCMockObject.h", "OCMArg.h", "OCMConstraint.h", 
                                  "OCMLocation.h", "OCMMacroState.h", "OCMRecorder.h", 
                                  "OCMStubRecorder.h", "NSNotificationCenter+OCMAdditions.h", 
