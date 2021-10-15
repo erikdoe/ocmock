@@ -18,7 +18,7 @@ clean:
 	rm -rf "$(CURDIR)/Build"
 
 
-ci: ci-macos ci-ios swiftpm
+ci: swiftpm ci-macos ci-ios
 
 ci-macos:
 	@echo "Building macOS framework and running tests..."
