@@ -3,22 +3,24 @@
 #   - dist  used to build the binary distribution
 #
 # Note that the dist target uses git checkout to copy the source into the
-# product directory. This means you should make sure that you don't have 
+# product directory. This means you should make sure that you don't have
 # uncommited local changes when building a distribution.
 
 BUILD_DIR   = $(CURDIR)/Build
 PRODUCT_DIR = $(BUILD_DIR)/Product
-XCODECI     = xcodebuild -project "$(CURDIR)/Source/OCMock.xcodeproj" -xcconfig "$(CURDIR)/Source/OCMockCI.xcconfig" -destination-timeout 600
-XCODEDIST   = xcodebuild -project "$(CURDIR)/Source/OCMock.xcodeproj" -xcconfig "$(CURDIR)/Source/OCMockDist.xcconfig"
+SOURCE_DIR  = $(CURDIR)/Source
+XCODECI     = xcodebuild -project "$(SOURCE_DIR)/OCMock.xcodeproj" -xcconfig "$(SOURCE_DIR)/OCMockCI.xcconfig" -destination-timeout 600
+XCODEDIST   = xcodebuild -project "$(SOURCE_DIR)/OCMock.xcodeproj" -xcconfig "$(SOURCE_DIR)/OCMockDist.xcconfig"
 SHELL       = /bin/bash -e -o pipefail
 
-.PHONY: macos ioslib ios tvos watchos sourcecode product dmg swiftpm carthage
-	
+.PHONY: macos ioslib ios tvos watchos sourcecode product dmg ci-spm carthage
+
 clean:
-	rm -rf "$(CURDIR)/Build"
+	rm -rf "$(BUILD_DIR)"
+	rm -rf "$(SOURCE_DIR)/Carthage"
 
 
-ci: ci-macos ci-ios swiftpm
+ci: ci-macos ci-ios ci-swiftpm
 
 ci-macos:
 	@echo "Building macOS framework and running tests..."
@@ -30,11 +32,11 @@ ci-ios:
 
 
 dist: product sourcecode dmg
-		
+
 macos:
 	@echo "** Building macOS framework..."
 	$(XCODEDIST) -scheme OCMock install INSTALL_PATH="/macOS" | xcpretty -c
-	
+
 ioslib:
 	@echo "** Building iOS library..."
 	$(XCODEDIST) -target OCMockLib -sdk iphonesimulator install INSTALL_PATH="/iOS library" | xcpretty -c
@@ -46,11 +48,11 @@ ios:
 tvos:
 	@echo "** Building tvOS framework..."
 	$(XCODEDIST) -target "OCMock tvOS" -sdk appletvsimulator install INSTALL_PATH="/tvOS" | xcpretty -c
-		
+
 watchos:
 	@echo "** Building watchOS framework..."
 	$(XCODEDIST) -target "OCMock watchOS" -sdk watchsimulator install INSTALL_PATH="/watchOS" | xcpretty -c
-	
+
 sourcecode:
 	@echo "** Checking out source code..."
 	mkdir -p "$(PRODUCT_DIR)"
@@ -60,19 +62,20 @@ product: macos ioslib ios tvos watchos
 	@echo "** Verifying build products..."
 	Tools/buildcheck.rb $(PRODUCT_DIR)
 
-dmg: 
+dmg:
 	@echo "** Creating disk image..."
 	Tools/makedmg.rb $(PRODUCT_DIR) $(BUILD_DIR)
 
 
-swiftpm:
-	echo "** Testing Swift Package Manager Distribution"
+ci-swiftpm:
+	@echo "** Testing Swift Package Manager Distribution"
+	rm -rf $(SOURCE_DIR)/Carthage
 	swift build
 	swift test
 
 
 carthage:
-	XCODE_XCCONFIG_FILE="$(CURDIR)/Source/Carthage.xcconfig" carthage build --no-skip-current --project-directory "$(CURDIR)/Source"
-	XCODE_XCCONFIG_FILE="$(CURDIR)/Source/Carthage.xcconfig" carthage archive OCMock
+	XCODE_XCCONFIG_FILE="$(SOURCE_DIR)/Carthage.xcconfig" carthage build --no-skip-current --project-directory "$(SOURCE_DIR)"
+	XCODE_XCCONFIG_FILE="$(SOURCE_DIR)/Carthage.xcconfig" carthage archive OCMock
 
 

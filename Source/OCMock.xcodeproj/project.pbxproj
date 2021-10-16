@@ -1231,7 +1231,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 03565A3E18F0566F003AE91E /* Build configuration list for PBXNativeTarget "OCMockTests" */;
 			buildPhases = (
-				03565A4F18F058A0003AE91E /* ShellScript */,
+				03565A4F18F058A0003AE91E /* Carthage */,
 				0397296423907547000E1C45 /* CopyFiles */,
 				03565A2D18F0566E003AE91E /* Sources */,
 				03565A2E18F0566E003AE91E /* Frameworks */,
@@ -1416,18 +1416,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		03565A4F18F058A0003AE91E /* ShellScript */ = {
+		03565A4F18F058A0003AE91E /* Carthage */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = Carthage;
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Resolve dependencies using Carthage\nif [ ! -d ${PROJECT_DIR}/Carthage/Build/Mac/OCHamcrest.framework ]; then\n    carthage update --platform macOS\nfi\n";
+			shellScript = "if [ ! -d ${PROJECT_DIR}/Carthage/Build/Mac/OCHamcrest.framework ]; then\n    carthage update --cache-builds --platform macOS\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
