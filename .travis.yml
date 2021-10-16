@@ -1,5 +1,6 @@
-language: objective-c
+os: osx
 osx_image: xcode12.3
+language: objective-c
 before_install:
     - gem install xcpretty -N --quiet
 script: make ci
