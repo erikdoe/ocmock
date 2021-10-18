@@ -26,3 +26,4 @@
 #import <OCMock/OCMMacroState.h>
 #import <OCMock/NSNotificationCenter+OCMAdditions.h>
 #import <OCMock/OCMFunctions.h>
+#import <OCMock/OCMIssueReporter.h>

@@ -17,7 +17,6 @@
 #import <XCTest/XCTest.h>
 #import "OCMock.h"
 
-
 #pragma mark Helper classes
 
 @interface TestClassForInternalTests : NSObject
@@ -207,6 +206,8 @@
 
 - (void)testRaisesWhenAttemptingToVerifyInvocationsAfterStopMocking
 {
+    OCMIssueReporter *reporter = [OCMIssueReporter defaultReporter];
+    [reporter pushIssueTreatment:OCMIssueTreatmentErrors];
     id mock = OCMClassMock([TestClassForInternalTests class]);
 
     [mock title];
@@ -222,10 +223,13 @@
         XCTAssertEqualObjects(ex.name, NSInternalInconsistencyException);
         XCTAssertTrue([ex.reason containsString:[mock description]]);
     }
+    [reporter popIssueTreatment];
 }
 
 - (void)testRaisesWhenAttemptingToUseAfterStopMocking
 {
+    OCMIssueReporter *reporter = [OCMIssueReporter defaultReporter];
+    [reporter pushIssueTreatment:OCMIssueTreatmentErrors];
     id mock = OCMClassMock([TestClassForInternalTests class]);
 
     [mock stopMocking];
@@ -240,6 +244,7 @@
         XCTAssertEqualObjects(ex.name, NSInternalInconsistencyException);
         XCTAssertTrue([ex.reason containsString:[mock description]]);
     }
+    [reporter popIssueTreatment];
 }
 
 

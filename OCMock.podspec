@@ -35,7 +35,7 @@ Pod::Spec.new do |s|
                                  "OCMLocation.h", "OCMMacroState.h", "OCMRecorder.h", 
                                  "OCMStubRecorder.h", "NSNotificationCenter+OCMAdditions.h", 
                                  "OCMFunctions.h", "OCMVerifier.h", "OCMQuantifier.h",
-                                 "OCMockMacros.h" 
+                                 "OCMockMacros.h", "OCMIssueReporter.h" 
 								]
                                 .map { |file| "Source/OCMock/" + file }
 end

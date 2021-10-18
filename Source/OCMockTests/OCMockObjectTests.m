@@ -17,7 +17,6 @@
 #import <XCTest/XCTest.h>
 #import "OCMock/OCMock.h"
 
-
 #pragma mark Helper classes and protocols for testing
 
 @interface TestClassWithSelectorMethod : NSObject
@@ -499,8 +498,11 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testThrowsWhenAttemptingToStubMethodOnStoppedMock
 {
+    OCMIssueReporter *reporter = [OCMIssueReporter defaultReporter];
+    [reporter pushIssueTreatment:OCMIssueTreatmentErrors];
     [mock stopMocking];
     XCTAssertThrowsSpecificNamed([[mock stub] rangeOfString:@"foo" options:0], NSException, NSInternalInconsistencyException);
+    [reporter popIssueTreatment];
 }
 
 

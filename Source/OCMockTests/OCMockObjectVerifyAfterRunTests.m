@@ -17,7 +17,6 @@
 #import <XCTest/XCTest.h>
 #import "OCMock.h"
 
-
 @interface TestBaseClassForVerifyAfterRun : NSObject
 
 + (NSString *)classMethod1;
@@ -119,6 +118,8 @@
 
 - (void)testThrowsWhenVerificationIsAttemptedAfterStopMocking
 {
+    OCMIssueReporter *reporter = [OCMIssueReporter defaultReporter];
+    [reporter pushIssueTreatment:OCMIssueTreatmentErrors];
     id mock = [OCMockObject niceMockForClass:[TestBaseClassForVerifyAfterRun class]];
 
     [TestBaseClassForVerifyAfterRun classMethod1];
@@ -134,6 +135,7 @@
         XCTAssertEqualObjects([e name], NSInternalInconsistencyException);
         XCTAssertTrue([[e reason] containsString:@"after stopMocking has been called"]);
     }
+    [reporter popIssueTreatment];
 }
 
 
