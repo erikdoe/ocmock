@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name                      = "OCMock"
-  s.version                   = "3.8.1"
+  s.version                   = "3.9.0"
 
   s.summary                   = "Mock objects for Objective-C"
   s.description               = <<-DESC
@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
   s.author                    = { "Erik Doernenburg" => "erik@doernenburg.com" }
   s.social_media_url          = "https://twitter.com/erikdoe"
 
-  s.source                    = { :git => "https://github.com/erikdoe/ocmock.git", :tag => "v3.8.1" }
+  s.source                    = { :git => "https://github.com/erikdoe/ocmock.git", :tag => "v3.9.0" }
   s.source_files              = "Source/OCMock/*.{h,m}"
 
   s.requires_arc              = false
@@ -31,11 +31,11 @@ Pod::Spec.new do |s|
 
   s.pod_target_xcconfig       = { 'ENABLE_BITCODE' => 'NO' }
 
-  s.public_header_files       = ["OCMock.h", "OCMockObject.h", "OCMArg.h", "OCMConstraint.h", 
-                                 "OCMLocation.h", "OCMMacroState.h", "OCMRecorder.h", 
-                                 "OCMStubRecorder.h", "NSNotificationCenter+OCMAdditions.h", 
+  s.public_header_files       = ["OCMock.h", "OCMockObject.h", "OCMArg.h", "OCMConstraint.h",
+                                 "OCMLocation.h", "OCMMacroState.h", "OCMRecorder.h",
+                                 "OCMStubRecorder.h", "NSNotificationCenter+OCMAdditions.h",
                                  "OCMFunctions.h", "OCMVerifier.h", "OCMQuantifier.h",
-                                 "OCMockMacros.h" 
-								]
+                                 "OCMockMacros.h"
+                                ]
                                 .map { |file| "Source/OCMock/" + file }
 end
