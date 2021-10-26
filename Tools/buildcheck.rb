@@ -35,22 +35,16 @@ end
 productdir = ARGV[0]
 abort "Error: no product directory specified" if productdir == nil
 
-macosproduct = "#{productdir}/macOS/OCMock.framework"
-ioslibproduct = "#{productdir}/iOS library/libocmock.a"
-iosproduct = "#{productdir}/iOS/OCMock.framework"
-tvosproduct = "#{productdir}/tvOS/OCMock.framework"
-watchosproduct = "#{productdir}/watchOS/OCMock.framework"
-
-checkArchs "#{macosproduct}/OCMock", "x86_64 arm64"
-checkArchs "#{ioslibproduct}", "x86_64 arm64"
-checkArchs "#{iosproduct}/OCMock", "x86_64 arm64"
-checkArchs "#{tvosproduct}/OCMock", "x86_64 arm64"
-checkArchs "#{watchosproduct}/OCMock", "x86_64 arm64"
+checkArchs "#{productdir}/OCMock-macOS.xcarchive/Products/Library/Frameworks/OCMock.framework/OCMock", "x86_64 arm64"
+checkArchs "#{productdir}/OCMock-iOS-lib.xcarchive/Products/usr/local/lib/libOCMock.a", "armv7 arm64"
+checkArchs "#{productdir}/OCMock-iOS-lib-sim.xcarchive/Products/usr/local/lib/libOCMock.a", "i386 x86_64 arm64"
+checkArchs "#{productdir}/OCMock-iOS.xcarchive/Products/Library/Frameworks/OCMock.framework/OCMock", "armv7 arm64"
+checkArchs "#{productdir}/OCMock-iOS-sim.xcarchive/Products/Library/Frameworks/OCMock.framework/OCMock", "i386 x86_64 arm64"
+checkArchs "#{productdir}/OCMock-tvOS.xcarchive/Products/Library/Frameworks/OCMock.framework/OCMock", "arm64"
+checkArchs "#{productdir}/OCMock-tvOS-sim.xcarchive/Products/Library/Frameworks/OCMock.framework/OCMock", "x86_64 arm64"
+checkArchs "#{productdir}/OCMock-watchOS.xcarchive/Products/Library/Frameworks/OCMock.framework/OCMock", "armv7k arm64_32"
+checkArchs "#{productdir}/OCMock-watchOS-sim.xcarchive/Products/Library/Frameworks/OCMock.framework/OCMock", "i386 x86_64 arm64"
 
 authority = "Apple Development: erik@doernenburg.com (FJTF47J852)"
 
-checkAuthority macosproduct, authority
-# Commented out for now because Apple discourages signing in these cases
-#checkAuthority iosproduct, authority
-#checkAuthority tvosproduct, authority
-#checkAuthority watchosproduct, authority
+checkAuthority "#{productdir}/OCMock-macOS.xcarchive/Products/Library/Frameworks/OCMock.framework", authority

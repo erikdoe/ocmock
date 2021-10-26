@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -133,6 +133,7 @@
 		03B31617146333C00052CD09 /* OCProtocolMockObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B315AE146333BF0052CD09 /* OCProtocolMockObject.m */; };
 		03B3168B14633A4F0052CD09 /* OCMock.h in Headers */ = {isa = PBXBuildFile; fileRef = 030EF0B814632FD000B04273 /* OCMock.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03B3168E14633D9C0052CD09 /* OCMock.h in Headers */ = {isa = PBXBuildFile; fileRef = 030EF0B814632FD000B04273 /* OCMock.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03BB460C27274F5500455183 /* OCHamcrest in Frameworks */ = {isa = PBXBuildFile; productRef = 03BB460B27274F5500455183 /* OCHamcrest */; };
 		03C7BF0A195DA2F200A545DD /* OCMInvocationStub.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C7BF08195DA2F200A545DD /* OCMInvocationStub.h */; };
 		03C7BF0B195DA2F200A545DD /* OCMInvocationStub.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C7BF08195DA2F200A545DD /* OCMInvocationStub.h */; };
 		03C7BF0C195DA2F200A545DD /* OCMInvocationStub.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C7BF09195DA2F200A545DD /* OCMInvocationStub.m */; };
@@ -145,10 +146,6 @@
 		03C9CA1D18F05A75006DF94D /* OCMockObjectProtocolMocksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA286BFBD8B9D068B41E7EF /* OCMockObjectProtocolMocksTests.m */; };
 		03C9CA1E18F05A84006DF94D /* OCMArgTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28EDBF243639C57F88A1B /* OCMArgTests.m */; };
 		03C9CA1F18F05A8E006DF94D /* NSMethodSignatureOCMAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28DEDB9163597B7C49F3D /* NSMethodSignatureOCMAdditionsTests.m */; };
-		03CED2E22390770C001845CC /* OCHamcrest.framework.dSYM in Resources */ = {isa = PBXBuildFile; fileRef = 03CED2E02390770B001845CC /* OCHamcrest.framework.dSYM */; };
-		03CED2E32390770C001845CC /* OCHamcrest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03CED2E12390770C001845CC /* OCHamcrest.framework */; };
-		03CED2E423907759001845CC /* OCHamcrest.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 03CED2E12390770C001845CC /* OCHamcrest.framework */; };
-		03CED2E523907759001845CC /* OCHamcrest.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = 03CED2E02390770B001845CC /* OCHamcrest.framework.dSYM */; };
 		03DCED6D183406BC0059089E /* NSObject+OCMAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28991BEFD67DEF2CCF7D2 /* NSObject+OCMAdditions.m */; };
 		03DCED6F183406DA0059089E /* NSObject+OCMAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA28C5F4A475BEC0C28BDC3 /* NSObject+OCMAdditions.h */; };
 		03E0FAD81B93C00B000C5096 /* OCMBlockArgCaller.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA2891034E7B73AA3511D17 /* OCMBlockArgCaller.h */; };
@@ -456,20 +453,6 @@
 		};
 /* End PBXContainerItemProxy section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		0397296423907547000E1C45 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 16;
-			files = (
-				03CED2E423907759001845CC /* OCHamcrest.framework in CopyFiles */,
-				03CED2E523907759001845CC /* OCHamcrest.framework.dSYM in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		030EF0A814632FD000B04273 /* OCMock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OCMock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		030EF0B314632FD000B04273 /* OCMock-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OCMock-Info.plist"; sourceTree = "<group>"; };
@@ -620,9 +603,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03BB460C27274F5500455183 /* OCHamcrest in Frameworks */,
 				03C7BF1719606EFD00A545DD /* OCMock.framework in Frameworks */,
 				8BF7402024772B0500B9A52C /* XCTest.framework in Frameworks */,
-				03CED2E32390770C001845CC /* OCHamcrest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1231,8 +1214,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 03565A3E18F0566F003AE91E /* Build configuration list for PBXNativeTarget "OCMockTests" */;
 			buildPhases = (
-				03565A4F18F058A0003AE91E /* Carthage */,
-				0397296423907547000E1C45 /* CopyFiles */,
 				03565A2D18F0566E003AE91E /* Sources */,
 				03565A2E18F0566E003AE91E /* Frameworks */,
 				03565A2F18F0566E003AE91E /* Resources */,
@@ -1243,6 +1224,9 @@
 				03565A3D18F0566F003AE91E /* PBXTargetDependency */,
 			);
 			name = OCMockTests;
+			packageProductDependencies = (
+				03BB460B27274F5500455183 /* OCHamcrest */,
+			);
 			productName = OCMockTests;
 			productReference = 03565A3118F0566E003AE91E /* OCMockTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -1354,6 +1338,9 @@
 				Base,
 			);
 			mainGroup = 030EF09C14632FD000B04273;
+			packageReferences = (
+				03BB460A27274F5500455183 /* XCRemoteSwiftPackageReference "OCHamcrest" */,
+			);
 			productRefGroup = 030EF0A914632FD000B04273 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1382,7 +1369,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A02926821CA0725A00594AAF /* TestObjects.xcdatamodeld in Resources */,
-				03CED2E22390770C001845CC /* OCHamcrest.framework.dSYM in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1415,23 +1401,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		03565A4F18F058A0003AE91E /* Carthage */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = Carthage;
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [ ! -d ${PROJECT_DIR}/Carthage/Build/Mac/OCHamcrest.framework ]; then\n    carthage update --cache-builds --platform macOS\nfi\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		030EF0A314632FD000B04273 /* Sources */ = {
@@ -1970,7 +1939,8 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
@@ -1988,11 +1958,16 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "OCMock/OCMock-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mulle-kybernetik.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = OCMock;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2010,7 +1985,8 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
@@ -2025,10 +2001,15 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "OCMock/OCMock-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mulle-kybernetik.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = OCMock;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 				VALIDATE_PRODUCT = YES;
@@ -2047,7 +2028,8 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
@@ -2064,11 +2046,16 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "OCMock/OCMock-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mulle-kybernetik.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = OCMock;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2086,7 +2073,8 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
@@ -2101,10 +2089,15 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "OCMock/OCMock-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mulle-kybernetik.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = OCMock;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				VALIDATE_PRODUCT = YES;
@@ -2184,7 +2177,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
@@ -2194,10 +2189,16 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "OCMock/OCMock-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mulle-kybernetik.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = OCMock;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2211,7 +2212,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
@@ -2222,9 +2225,15 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				INFOPLIST_FILE = "OCMock/OCMock-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mulle-kybernetik.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = OCMock;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2308,6 +2317,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		03BB460A27274F5500455183 /* XCRemoteSwiftPackageReference "OCHamcrest" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hamcrest/OCHamcrest";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		03BB460B27274F5500455183 /* OCHamcrest */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 03BB460A27274F5500455183 /* XCRemoteSwiftPackageReference "OCHamcrest" */;
+			productName = OCHamcrest;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		A02926801CA0725A00594AAF /* TestObjects.xcdatamodeld */ = {

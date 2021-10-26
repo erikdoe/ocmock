@@ -2,9 +2,11 @@ Listing of notable changes by release. More detail is usually found in the Git
 commit messages and/or the pull requests.
 
 
-OCMock 3.9 (2021-10-21)
+OCMock 3.9 (2021-10-26)
 
 * Added support for Swift Package Manager. (Paul Beusterien)
+* Using Swift Package Manager for dependencies.
+* Changed binary distribution to XCFramework.
 * Added setting in podspec to disable bitcode. (Adil Hussain)
 * Various bug-fixes and improvements to developer experience.
 
