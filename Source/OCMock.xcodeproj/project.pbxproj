@@ -15,12 +15,15 @@
 		0322DA6A19118B4600CACAF1 /* OCMVerifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 0322DA6719118B4600CACAF1 /* OCMVerifier.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0322DA6B19118B4600CACAF1 /* OCMVerifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 0322DA6819118B4600CACAF1 /* OCMVerifier.m */; };
 		0322DA6C19118B4600CACAF1 /* OCMVerifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 0322DA6819118B4600CACAF1 /* OCMVerifier.m */; };
+		032BE99627288E2C00B499B0 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032BE99527288E2C00B499B0 /* XCTest.framework */; };
+		032BE99B27288E7C00B499B0 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032BE99A27288E7C00B499B0 /* XCTest.framework */; };
+		032BE99F27288EA100B499B0 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032BE99E27288EA100B499B0 /* XCTest.framework */; };
+		032BE9A227288F5500B499B0 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032BE99A27288E7C00B499B0 /* XCTest.framework */; };
 		033AB1FA24F046C7002014AE /* OCMockMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 033AB1F924F046C7002014AE /* OCMockMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		033AB1FB24F046C7002014AE /* OCMockMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 033AB1F924F046C7002014AE /* OCMockMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		033AB1FC24F046C7002014AE /* OCMockMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 033AB1F924F046C7002014AE /* OCMockMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		033AB1FD24F046C7002014AE /* OCMockMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 033AB1F924F046C7002014AE /* OCMockMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		033AB1FE24F046C7002014AE /* OCMockMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 033AB1F924F046C7002014AE /* OCMockMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		033E1FF414FEF5E0004456B0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 033E1FF314FEF5E0004456B0 /* Foundation.framework */; };
 		03565A4218F05721003AE91E /* OCMockObjectPartialMocksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AC5C1416DF9FA500D82ECD /* OCMockObjectPartialMocksTests.m */; };
 		03565A4318F05721003AE91E /* OCMockObjectClassMethodMockingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F91C516EFB493006C3D70 /* OCMockObjectClassMethodMockingTests.m */; };
 		03565A4418F05721003AE91E /* OCMockObjectProtocolMocksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA286BFBD8B9D068B41E7EF /* OCMockObjectProtocolMocksTests.m */; };
@@ -241,7 +244,6 @@
 		817EB1351BD765130047E85A /* NSValue+OCMAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28896E5EEFD7C2F12C2F8 /* NSValue+OCMAdditions.m */; };
 		817EB1361BD765130047E85A /* OCMFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28C8717BE4B7A89119BA2 /* OCMFunctions.m */; };
 		817EB1371BD765130047E85A /* OCMArgAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28A7898E1046DE957A035 /* OCMArgAction.m */; };
-		817EB1391BD765130047E85A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0B9510A1B0080D500942C38 /* Foundation.framework */; };
 		817EB13B1BD765130047E85A /* OCMock.h in Headers */ = {isa = PBXBuildFile; fileRef = 030EF0B814632FD000B04273 /* OCMock.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		817EB13C1BD765130047E85A /* OCMockObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 03B3159D146333BF0052CD09 /* OCMockObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		817EB13D1BD765130047E85A /* OCMStubRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 03B3159F146333BF0052CD09 /* OCMStubRecorder.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -286,11 +288,6 @@
 		8B3786A924E5BD6400FD1B5B /* OCMFunctionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3786A724E5BD5600FD1B5B /* OCMFunctionsTests.m */; };
 		8BF73E53246CA75E00B9A52C /* OCMNoEscapeBlockTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF73E52246CA75E00B9A52C /* OCMNoEscapeBlockTests.m */; settings = {COMPILER_FLAGS = "-Xclang -fexperimental-optimized-noescape"; }; };
 		8BF73E54246CA75E00B9A52C /* OCMNoEscapeBlockTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF73E52246CA75E00B9A52C /* OCMNoEscapeBlockTests.m */; settings = {COMPILER_FLAGS = "-Xclang -fexperimental-optimized-noescape"; }; };
-		8BF7401E24772AEA00B9A52C /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03565A1D18F05626003AE91E /* XCTest.framework */; };
-		8BF7402024772B0500B9A52C /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03565A1D18F05626003AE91E /* XCTest.framework */; };
-		8BF7402124772B0600B9A52C /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03565A1D18F05626003AE91E /* XCTest.framework */; };
-		8BF7402224772B0800B9A52C /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03565A1D18F05626003AE91E /* XCTest.framework */; };
-		8BF7402324772B0800B9A52C /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03565A1D18F05626003AE91E /* XCTest.framework */; };
 		8DE97C5522B43EE60098C63F /* OCMockObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B3159E146333BF0052CD09 /* OCMockObject.m */; };
 		8DE97C5622B43EE60098C63F /* OCClassMockObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B3158C146333BF0052CD09 /* OCClassMockObject.m */; };
 		8DE97C5722B43EE60098C63F /* OCPartialMockObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B315AA146333BF0052CD09 /* OCPartialMockObject.m */; };
@@ -324,7 +321,6 @@
 		8DE97C7322B43EE60098C63F /* NSValue+OCMAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28896E5EEFD7C2F12C2F8 /* NSValue+OCMAdditions.m */; };
 		8DE97C7422B43EE60098C63F /* OCMFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28C8717BE4B7A89119BA2 /* OCMFunctions.m */; };
 		8DE97C7522B43EE60098C63F /* OCMArgAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA28A7898E1046DE957A035 /* OCMArgAction.m */; };
-		8DE97C7722B43EE60098C63F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0B9510A1B0080D500942C38 /* Foundation.framework */; };
 		8DE97C7922B43EE60098C63F /* OCMock.h in Headers */ = {isa = PBXBuildFile; fileRef = 030EF0B814632FD000B04273 /* OCMock.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8DE97C7A22B43EE60098C63F /* OCMockObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 03B3159D146333BF0052CD09 /* OCMockObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8DE97C7B22B43EE60098C63F /* OCMStubRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 03B3159F146333BF0052CD09 /* OCMStubRecorder.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -370,7 +366,6 @@
 		D31108C91828DBD600737925 /* OCObserverMockObjectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B316291463350E0052CD09 /* OCObserverMockObjectTests.m */; };
 		D31108CA1828DBD600737925 /* NSInvocationOCMAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B3161F1463350E0052CD09 /* NSInvocationOCMAdditionsTests.m */; };
 		D31108CB1828DC1300737925 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 030EF0DC14632FF700B04273 /* libOCMock.a */; };
-		F0B9510B1B0080D500942C38 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0B9510A1B0080D500942C38 /* Foundation.framework */; };
 		F0B9510C1B0080EC00942C38 /* OCMockObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B3159E146333BF0052CD09 /* OCMockObject.m */; };
 		F0B9510D1B0080EC00942C38 /* OCClassMockObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B3158C146333BF0052CD09 /* OCClassMockObject.m */; };
 		F0B9510E1B0080EC00942C38 /* OCPartialMockObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B315AA146333BF0052CD09 /* OCPartialMockObject.m */; };
@@ -464,10 +459,11 @@
 		0322DA64191188D100CACAF1 /* OCMockObjectVerifyAfterRunTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMockObjectVerifyAfterRunTests.m; sourceTree = "<group>"; };
 		0322DA6719118B4600CACAF1 /* OCMVerifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMVerifier.h; sourceTree = "<group>"; };
 		0322DA6819118B4600CACAF1 /* OCMVerifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMVerifier.m; sourceTree = "<group>"; };
+		032BE99527288E2C00B499B0 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		032BE99A27288E7C00B499B0 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		032BE99E27288EA100B499B0 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/AppleTVOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		033AB1F924F046C7002014AE /* OCMockMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OCMockMacros.h; sourceTree = "<group>"; };
-		033E1FF314FEF5E0004456B0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		0354D71F16F23AF5001766BB /* OCMockObjectForwardingTargetTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMockObjectForwardingTargetTests.m; sourceTree = "<group>"; };
-		03565A1D18F05626003AE91E /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		03565A3118F0566E003AE91E /* OCMockTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OCMockTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		03565A3518F0566F003AE91E /* OCMockTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OCMockTests-Info.plist"; sourceTree = "<group>"; };
 		03565A3B18F0566F003AE91E /* OCMockTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OCMockTests-Prefix.pch"; sourceTree = "<group>"; };
@@ -479,7 +475,6 @@
 		03700EDF258FDD7500B5BFBE /* OCMockDist.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = OCMockDist.xcconfig; sourceTree = "<group>"; };
 		03700EE0258FFF2100B5BFBE /* OCMockCI.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = OCMockCI.xcconfig; sourceTree = "<group>"; };
 		037ECD5318FAD84100AF0E4C /* OCMInvocationMatcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMInvocationMatcherTests.m; sourceTree = "<group>"; };
-		03825DDA259CCD2600DEB003 /* Carthage.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Carthage.xcconfig; sourceTree = "<group>"; };
 		038599F623807B06002B3ABE /* OCMockObjectInternalTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OCMockObjectInternalTests.m; sourceTree = "<group>"; };
 		039F91C516EFB493006C3D70 /* OCMockObjectClassMethodMockingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMockObjectClassMethodMockingTests.m; sourceTree = "<group>"; };
 		03AC5C1416DF9FA500D82ECD /* OCMockObjectPartialMocksTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMockObjectPartialMocksTests.m; sourceTree = "<group>"; };
@@ -529,14 +524,11 @@
 		03B316271463350E0052CD09 /* OCMStubRecorderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMStubRecorderTests.m; sourceTree = "<group>"; };
 		03B316291463350E0052CD09 /* OCObserverMockObjectTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCObserverMockObjectTests.m; sourceTree = "<group>"; };
 		03B3168F14633FAB0052CD09 /* Changes.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Changes.txt; sourceTree = "<group>"; };
-		03BA728F23907AD600877EF8 /* Cartfile.resolved */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile.resolved; sourceTree = SOURCE_ROOT; };
 		03BA729023907AD600877EF8 /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile; sourceTree = SOURCE_ROOT; };
 		03C7BF08195DA2F200A545DD /* OCMInvocationStub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMInvocationStub.h; sourceTree = "<group>"; };
 		03C7BF09195DA2F200A545DD /* OCMInvocationStub.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMInvocationStub.m; sourceTree = "<group>"; };
 		03C7BF0E195DAB5300A545DD /* OCMExpectationRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMExpectationRecorder.h; sourceTree = "<group>"; };
 		03C7BF0F195DAB5300A545DD /* OCMExpectationRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMExpectationRecorder.m; sourceTree = "<group>"; };
-		03CED2E02390770B001845CC /* OCHamcrest.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = OCHamcrest.framework.dSYM; path = Carthage/Build/Mac/OCHamcrest.framework.dSYM; sourceTree = "<group>"; };
-		03CED2E12390770C001845CC /* OCHamcrest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OCHamcrest.framework; path = Carthage/Build/Mac/OCHamcrest.framework; sourceTree = "<group>"; };
 		03E98D4918F308B400522D42 /* OCMLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMLocation.h; sourceTree = "<group>"; };
 		03E98D4A18F308B400522D42 /* OCMLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMLocation.m; sourceTree = "<group>"; };
 		03E98D4F18F310EE00522D42 /* OCMockObjectMacroTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMockObjectMacroTests.m; sourceTree = "<group>"; };
@@ -578,7 +570,6 @@
 		D31108B71828DB8700737925 /* OCMockLibTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OCMockLibTests-Info.plist"; sourceTree = "<group>"; };
 		D31108BD1828DB8700737925 /* OCMockLibTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OCMockLibTests-Prefix.pch"; sourceTree = "<group>"; };
 		F0B950F11B0080BE00942C38 /* OCMock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OCMock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F0B9510A1B0080D500942C38 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -586,8 +577,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				033E1FF414FEF5E0004456B0 /* Foundation.framework in Frameworks */,
-				8BF7402124772B0600B9A52C /* XCTest.framework in Frameworks */,
+				032BE99627288E2C00B499B0 /* XCTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -595,7 +585,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BF7401E24772AEA00B9A52C /* XCTest.framework in Frameworks */,
+				032BE9A227288F5500B499B0 /* XCTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -605,7 +595,6 @@
 			files = (
 				03BB460C27274F5500455183 /* OCHamcrest in Frameworks */,
 				03C7BF1719606EFD00A545DD /* OCMock.framework in Frameworks */,
-				8BF7402024772B0500B9A52C /* XCTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -613,8 +602,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				817EB1391BD765130047E85A /* Foundation.framework in Frameworks */,
-				8BF7402324772B0800B9A52C /* XCTest.framework in Frameworks */,
+				032BE99F27288EA100B499B0 /* XCTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -622,7 +610,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8DE97C7722B43EE60098C63F /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -638,8 +625,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F0B9510B1B0080D500942C38 /* Foundation.framework in Frameworks */,
-				8BF7402224772B0800B9A52C /* XCTest.framework in Frameworks */,
+				032BE99B27288E7C00B499B0 /* XCTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -655,8 +641,8 @@
 				030EF0DF14632FF700B04273 /* OCMockLib */,
 				D31108B51828DB8700737925 /* OCMockLibTests */,
 				03700F272590289400B5BFBE /* Build */,
-				03565A1C18F05626003AE91E /* Frameworks */,
 				030EF0A914632FD000B04273 /* Products */,
+				032BE99427288E2C00B499B0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -682,7 +668,6 @@
 				03B3161B146334530052CD09 /* Observer Mocks */,
 				03B31618146333CA0052CD09 /* Foundation Additions */,
 				030EF0B214632FD000B04273 /* Supporting Files */,
-				033E1FF914FEF724004456B0 /* Frameworks */,
 			);
 			path = OCMock;
 			sourceTree = "<group>";
@@ -712,21 +697,12 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		033E1FF914FEF724004456B0 /* Frameworks */ = {
+		032BE99427288E2C00B499B0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				033E1FF314FEF5E0004456B0 /* Foundation.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		03565A1C18F05626003AE91E /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				F0B9510A1B0080D500942C38 /* Foundation.framework */,
-				03565A1D18F05626003AE91E /* XCTest.framework */,
-				03CED2E12390770C001845CC /* OCHamcrest.framework */,
-				03CED2E02390770B001845CC /* OCHamcrest.framework.dSYM */,
+				032BE99E27288EA100B499B0 /* XCTest.framework */,
+				032BE99A27288E7C00B499B0 /* XCTest.framework */,
+				032BE99527288E2C00B499B0 /* XCTest.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -789,9 +765,7 @@
 			children = (
 				03700EE0258FFF2100B5BFBE /* OCMockCI.xcconfig */,
 				03700EDF258FDD7500B5BFBE /* OCMockDist.xcconfig */,
-				03825DDA259CCD2600DEB003 /* Carthage.xcconfig */,
 				03BA729023907AD600877EF8 /* Cartfile */,
-				03BA728F23907AD600877EF8 /* Cartfile.resolved */,
 			);
 			name = Build;
 			sourceTree = "<group>";
@@ -1817,7 +1791,7 @@
 				GCC_PREFIX_HEADER = "OCMock/OCMock-Prefix.pch";
 				INFOPLIST_FILE = "OCMock/OCMock-Info.plist";
 				LD_DYLIB_INSTALL_NAME = "@rpath/$(EXECUTABLE_PATH)";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mulle-kybernetik.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.ocmock.OCMock;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				WRAPPER_EXTENSION = framework;
@@ -1839,7 +1813,7 @@
 				GCC_PREFIX_HEADER = "OCMock/OCMock-Prefix.pch";
 				INFOPLIST_FILE = "OCMock/OCMock-Info.plist";
 				LD_DYLIB_INSTALL_NAME = "@rpath/$(EXECUTABLE_PATH)";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mulle-kybernetik.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.ocmock.OCMock;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				WRAPPER_EXTENSION = framework;
@@ -1965,7 +1939,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mulle-kybernetik.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.ocmock.OCMock;
 				PRODUCT_NAME = OCMock;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = appletvos;
@@ -2007,7 +1981,7 @@
 					"@loader_path/Frameworks",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mulle-kybernetik.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.ocmock.OCMock;
 				PRODUCT_NAME = OCMock;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = appletvos;
@@ -2053,7 +2027,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mulle-kybernetik.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.ocmock.OCMock;
 				PRODUCT_NAME = OCMock;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
@@ -2095,7 +2069,7 @@
 					"@loader_path/Frameworks",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mulle-kybernetik.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.ocmock.OCMock;
 				PRODUCT_NAME = OCMock;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
@@ -2195,7 +2169,7 @@
 					"@loader_path/Frameworks",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mulle-kybernetik.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.ocmock.OCMock;
 				PRODUCT_NAME = OCMock;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
@@ -2230,7 +2204,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mulle-kybernetik.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.ocmock.OCMock;
 				PRODUCT_NAME = OCMock;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
