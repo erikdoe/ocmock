@@ -102,4 +102,4 @@ ci-swiftpm:
 
 
 carthage:
-	carthage build --archive --project-directory "$(SOURCE_DIR)" --no-skip-current --use-xcframeworks
+	carthage build --project-directory "$(SOURCE_DIR)" --no-skip-current --use-xcframeworks
