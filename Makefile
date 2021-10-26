@@ -28,7 +28,7 @@ ci: ci-macos ci-ios ci-swiftpm
 
 ci-macos:
 	@echo "Building macOS framework and running tests..."
-	$(XCODECI) -scheme OCMock -destination 'generic/platform=macOS test | xcpretty -c
+	$(XCODECI) -scheme OCMock -destination 'platform=macOS' test | xcpretty -c
 
 ci-ios:
 	@echo "Building iOS library and running tests..."
