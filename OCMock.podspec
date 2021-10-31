@@ -28,6 +28,7 @@ Pod::Spec.new do |s|
   s.osx.framework             = 'XCTest'
   s.ios.framework             = 'XCTest'
   s.tvos.framework            = 'XCTest'
+  s.watchos.framework         = 'XCTest'
 
   s.pod_target_xcconfig       = { 'ENABLE_BITCODE' => 'NO' }
 
