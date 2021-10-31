@@ -1,6 +1,10 @@
 Listing of notable changes by release. More detail is usually found in the Git
 commit messages and/or the pull requests.
 
+OCMock 3.9.1 (2021-10-31)
+
+* Removed unneeded excludes in package file to avoid warnings.
+
 
 OCMock 3.9 (2021-10-26)
 
