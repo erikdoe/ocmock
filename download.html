@@ -10,7 +10,7 @@ published: true
 
 <h2>Stable Releases</h2>
 
-<p>The disk images contain frameworks for macOS, iOS, tvOS, and watchOS development, a static library for iOS development, and the source code.
+<p>The disk images contain frameworks for macOS, iOS, tvOS, and watchOS development, a static library for iOS development, and the source code. As of OCMock 3.9.0 the binary distribution contains XCFrameworks.
 
 <p>Usually the releases can be used on newer systems, too. For example, OCMock 3.1, built with Xcode 6.2 using the OS X 10.10 and iOS 8.2 SDKs, can also be built with Xcode 7 and its newer SDKs.
 
@@ -25,32 +25,25 @@ published: true
 		<th width="20%">File</th>
 	</tr>
 	<tr>
-		<td>OCMock 3.8.1</td>
-		<td>macOS 11.1, iOS 14.3, tvOS 14.3, watchOS 7.2</td>
+		<td>OCMock 3.9.1</td>
+		<td>macOS 12.0, iOS 15.0, tvOS 15.0, watchOS 8.0</td>
 		<td>OS X 10.10, iOS 9.0, tvOS 9.0, watchOS 4.0</td>
-		<td>30-Dec-2020</td>
-		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.8.1/ocmock-3.8.1.dmg">ocmock-3.8.1.dmg</a></td>
+		<td>31-Oct-2021</td>
+		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.9.1/ocmock-3.9.1.dmg">ocmock-3.9.1.dmg</a></td>
 	</tr>
 	<tr>
 		<td></td>
 		<td colspan="4">
-			<p>Changes in OCMock 3.8.1:
+			<p>Changes in OCMock 3.9.1:
 			<ul>
-				<li>Restored compatibility with Xcode 11. Please note: support of older versions
-					of Xcode is not guaranteed.
+				<li>Removed unneeded excludes in package file to avoid warnings.
 			</ul>
-			<p>Changes in OCMock 3.8:
+			<p>Changes in OCMock 3.9.0:
 			<ul>
-				<li>Added support for ARM-based Macs. Unfortunately, this means that the hack to
-					combine the device targets with the simulator targets no longer works. The
-					binary distribution will be simulator only now.
-				<li>Stubs can now fulfill XCTest expectations. This requires OCMock to link
-					against XCTest; except on watchOS where it's not supported. (Dave MacLachlan)
-				<li>Added two new stub actions to help with debugging. (Dave MacLachlan)
-				<li>Classes can block OCMock from creating mocks. (Dave MacLachlan)
-				<li>Added function to determine whether a class is a dynamically created mock
-					class or a subclass of one.
-				<li>Deprecated notification observer mocks. This can now be done with XCTest.
+				<li>Added support for Swift Package Manager. (Paul Beusterien)
+				<li>Using Swift Package Manager for dependencies.
+				<li>Changed binary distribution to XCFramework.
+				<li>Added setting in podspec to disable bitcode. (Adil Hussain)
 				<li>Various bug-fixes and improvements to developer experience.
 			</ul>
 			<p>More details:
@@ -59,11 +52,11 @@ published: true
 		</td>
 	</tr>
 	<tr>
-		<td>OCMock 3.7.1</td>
-		<td>macOS 10.15, iOS 13.6, tvOS 13.4, watchOS 6.2</td>
-		<td>OS X 10.9, iOS 8.0, tvOS 9.0, watchOS 4.0</td>
-		<td>26-Jul-2020</td>
-		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.7.1/ocmock-3.7.1.dmg">ocmock-3.7.1.dmg</a></td>
+		<td>OCMock 3.8.1</td>
+		<td>macOS 11.1, iOS 14.3, tvOS 14.3, watchOS 7.2</td>
+		<td>OS X 10.10, iOS 9.0, tvOS 9.0, watchOS 4.0</td>
+		<td>30-Dec-2020</td>
+		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.8.1/ocmock-3.8.1.dmg">ocmock-3.8.1.dmg</a></td>
 	</tr>
 	<tr>
 		<td>OCMock 2.2.4</td>
