@@ -302,6 +302,7 @@ header nav {
 
 header nav ul {
 	float: right;
+	min-width: 500px;
 	margin-top: 8px;
 }
 
@@ -310,6 +311,13 @@ header nav li {
 	padding-right: 1em;
 	font-size: 1.0em;
 	vertical-align: text-bottom;
+}
+
+header nav li img {
+	max-width: 1.1em;
+	max-height: 1.1em;
+	vertical-align: text-bottom;
+	filter: invert(26%) sepia(25%) saturate(0%) hue-rotate(186deg) brightness(88%) contrast(91%);
 }
 
 div#navmenu-btn, li#home {
