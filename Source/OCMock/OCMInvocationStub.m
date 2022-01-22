@@ -19,9 +19,6 @@
 #import "OCMArg.h"
 #import "OCMArgAction.h"
 
-#define UNSET_RETURN_VALUE_MARKER ((id)0x01234567)
-
-
 @implementation OCMInvocationStub
 
 - (id)init
@@ -58,19 +55,23 @@
     BOOL isInCreateFamily = isInInitFamily ? NO : [anInvocation methodIsInCreateFamily];
     if(isInInitFamily || isInCreateFamily)
     {
-        id returnVal = UNSET_RETURN_VALUE_MARKER;
-        [anInvocation setReturnValue:&returnVal];
+        id returnValBeforeInvocation = [[NSObject alloc] init];
+        [anInvocation setReturnValue:&returnValBeforeInvocation];
 
         [self invokeActionsForInvocation:anInvocation];
 
-        [anInvocation getReturnValue:&returnVal];
-        if(returnVal == UNSET_RETURN_VALUE_MARKER)
+        id returnValAfterInvocation;
+        [anInvocation getReturnValue:&returnValAfterInvocation];
+        if(returnValAfterInvocation == returnValBeforeInvocation) {
+            [returnValBeforeInvocation release];
             [NSException raise:NSInvalidArgumentException format:@"%@ was stubbed but no return value set. A return value is required for all alloc/copy/new/mutablecopy/init methods. If you intended to return nil, make this explicit with .andReturn(nil)", NSStringFromSelector([anInvocation selector])];
+        }
+        [returnValBeforeInvocation release];
 
         if(isInCreateFamily)
         {
             // methods that "create" an object return it with an extra retain count
-            [returnVal retain];
+            [returnValAfterInvocation retain];
         }
         if(isInInitFamily)
         {
@@ -78,7 +79,7 @@
             // first in case the return value and self are the same.  The analyzer doesn't
             // understand this; see #456 for details. In this case we also need to do something
             // harmless with target or else the analyzer will complain about it not being used.
-            [returnVal retain];
+            [returnValAfterInvocation retain];
 #ifndef __clang_analyzer__
             [target release];
 #else
