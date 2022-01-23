@@ -39,6 +39,7 @@
 
 - (void)testDeterminesThatSpecialReturnIsNeededForLargeStruct
 {
+    XCTSkipIf(TARGET_CPU_ARM64 && TARGET_OS_MAC, @"Apple Silicon Macs always print is special struct return? NO in [NSMethodSignature debugDescription]");
     // This type should(!) require special returns for all architectures
     const char *types = "{CATransform3D=ffffffffffffffff}";
     NSMethodSignature *sig = [NSMethodSignature signatureWithObjCTypes:types];
