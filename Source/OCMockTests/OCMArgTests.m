@@ -37,7 +37,7 @@
 {
     NSRange range = NSMakeRange(5, 5);
     XCTAssertEqualObjects(OCMOCK_VALUE(range), [NSValue valueWithRange:range]);
-#if !(TARGET_OS_IPHONE && TARGET_RT_64_BIT)
+#if !TARGET_CPU_ARM64
     /* This should work everywhere but I can't get it to work on iOS 64-bit */
     XCTAssertEqualObjects(OCMOCK_VALUE((BOOL){YES}), @YES);
 #endif
