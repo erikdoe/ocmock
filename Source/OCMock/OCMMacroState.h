@@ -25,7 +25,7 @@
 
 @interface OCMMacroState : NSObject
 {
-    id   recorder;
+    OCMRecorder *recorder;
     BOOL invocationDidThrow;
 }
 
@@ -44,8 +44,8 @@
 
 + (OCMMacroState *)globalState;
 
-- (void)setRecorder:(id)aRecorder;
-- (id)recorder;
+- (void)setRecorder:(OCMRecorder *)aRecorder;
+- (OCMRecorder *)recorder;
 
 - (void)switchToClassMethod;
 
