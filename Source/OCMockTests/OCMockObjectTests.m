@@ -1156,4 +1156,23 @@ static NSString *TestNotification = @"TestNotification";
     XCTAssertThrows([[OCMockObject alloc] init]);
 }
 
+#pragma mark thread safety
+
+- (void)testExpectationsAreThreadSafe
+{
+    size_t concurrentTaskCount = 10000;
+
+    for (size_t i = 0; i < concurrentTaskCount; i++)
+    {
+        [[mock expect] lowercaseString];
+    }
+
+    dispatch_apply(concurrentTaskCount, dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0), ^(size_t iteration)
+    {
+        [mock lowercaseString];
+    });
+
+    [mock verify];
+}
+
 @end
