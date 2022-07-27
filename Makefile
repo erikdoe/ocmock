@@ -16,7 +16,7 @@ XCODEDIST   = xcodebuild -project "$(SOURCE_DIR)/OCMock.xcodeproj" -xcconfig "$(
 XCODEXCF	= xcodebuild
 SHELL       = /bin/bash -e -o pipefail
 
-.PHONY: macos ioslib ios tvos watchos buildcheck archives xcframework sourcecode ci-swiftpm carthage
+.PHONY: macos ioslib ios catalyst tvos watchos buildcheck archives xcframework sourcecode ci-swiftpm carthage
 
 
 clean:
@@ -51,6 +51,10 @@ ios:
 	$(XCODEDIST) archive -scheme "OCMock iOS" -destination 'generic/platform=iOS' -archivePath $(ARCHIVE_DIR)/OCMock-iOS | xcpretty -c
 	$(XCODEDIST) archive -scheme "OCMock iOS" -destination 'generic/platform=iOS Simulator' -archivePath $(ARCHIVE_DIR)/OCMock-iOS-sim | xcpretty -c
 
+catalyst:
+	@echo "** Building Mac Catalyst framework..."
+	$(XCODEDIST) archive -scheme "OCMock iOS" -destination 'generic/platform=macOS,variant=Mac Catalyst' -archivePath $(ARCHIVE_DIR)/OCMock-catalyst | xcpretty -c
+
 tvos:
 	@echo "** Building tvOS frameworks..."
 	$(XCODEDIST) archive -scheme "OCMock tvOS" -destination 'generic/platform=tvOS' -archivePath $(ARCHIVE_DIR)/OCMock-tvOS | xcpretty -c
@@ -65,12 +69,13 @@ buildcheck:
 	@echo "** Verifying archives..."
 	Tools/buildcheck.rb $(ARCHIVE_DIR)
 
-archives: macos ioslib ios tvos watchos buildcheck
+archives: macos ioslib ios catalyst tvos watchos buildcheck
 
 xcframework:
 	@echo "** Creating XCFrameworks..."
 	rm -rf $(PRODUCT_DIR)/OCMock.xcframework
 	$(XCODEXCF) -create-xcframework -output $(PRODUCT_DIR)/OCMock.xcframework \
+		-framework $(ARCHIVE_DIR)/OCMock-catalyst.xcarchive$(FWK_PATH) \
 		-framework $(ARCHIVE_DIR)/OCMock-macOS.xcarchive$(FWK_PATH) \
 		-framework $(ARCHIVE_DIR)/OCMock-iOS.xcarchive$(FWK_PATH) \
 		-framework $(ARCHIVE_DIR)/OCMock-iOS-sim.xcarchive$(FWK_PATH) \
