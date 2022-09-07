@@ -44,6 +44,7 @@ checkArchs "#{productdir}/OCMock-tvOS.xcarchive/Products/Library/Frameworks/OCMo
 checkArchs "#{productdir}/OCMock-tvOS-sim.xcarchive/Products/Library/Frameworks/OCMock.framework/OCMock", "x86_64 arm64"
 checkArchs "#{productdir}/OCMock-watchOS.xcarchive/Products/Library/Frameworks/OCMock.framework/OCMock", "armv7k arm64_32"
 checkArchs "#{productdir}/OCMock-watchOS-sim.xcarchive/Products/Library/Frameworks/OCMock.framework/OCMock", "i386 x86_64 arm64"
+checkArchs "#{productdir}/OCMock-catalyst.xcarchive/Products/Library/Frameworks/OCMock.framework/OCMock", "x86_64 arm64"
 
 authority = "Apple Development: erik@doernenburg.com (FJTF47J852)"
 
