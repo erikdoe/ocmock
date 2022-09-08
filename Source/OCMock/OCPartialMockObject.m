@@ -179,7 +179,7 @@
 
     /* Adding forwarder for most instance methods to allow for verify after run */
     NSArray *methodsNotToForward = @[ @"class", @"forwardingTargetForSelector:", @"methodSignatureForSelector:", @"forwardInvocation:",
-        @"allowsWeakReference", @"retainWeakReference", @"isBlock", @"retainCount", @"retain", @"release", @"autorelease" ];
+        @"allowsWeakReference", @"retainWeakReference", @"isBlock", @"retainCount", @"retain", @"release", @"autorelease", @".cxx_construct", @".cxx_destruct" ];
     void (^setupForwarderFiltered)(Class, SEL) = ^(Class cls, SEL sel) {
         if(OCMIsAppleBaseClass(cls) || OCMIsApplePrivateMethod(cls, sel))
             return;
