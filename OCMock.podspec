@@ -21,7 +21,7 @@ Pod::Spec.new do |s|
   s.source_files              = "Source/OCMock/*.{h,m}"
 
   s.requires_arc              = false
-  s.osx.deployment_target     = '10.10'
+  s.osx.deployment_target     = '10.11'
   s.ios.deployment_target     = '9.0'
   s.tvos.deployment_target    = '9.0'
   s.watchos.deployment_target = '4.0'
