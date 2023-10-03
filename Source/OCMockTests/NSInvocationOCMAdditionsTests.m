@@ -364,4 +364,14 @@
     XCTAssertEqual(0, arg);
 }
 
+- (void)testSetsDefaultValueForCharPtrWhenCreatingBlockInvocations
+{
+    void (^block)(const char *) = ^void (const char *cString) { /* do nothing */ };
+    NSInvocation *invocation = [NSInvocation invocationForBlock:block withArguments:@[[NSNull null]]];
+
+    char *arg = "value to be overwritten";
+    [invocation getArgument:&arg atIndex:1];
+    XCTAssertEqual(NULL, arg);
+}
+
 @end

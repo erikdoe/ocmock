@@ -105,6 +105,16 @@ BOOL OCMIsObjectType(const char *objCType)
 }
 
 
+BOOL OCMIsPointerType(const char *objCType)
+{
+    const char *unqualifiedObjCType = OCMTypeWithoutQualifiers(objCType);
+    if(unqualifiedObjCType[0] == '^')
+        return YES;
+    if(unqualifiedObjCType[0] == '*')
+        return YES;
+    return NO;
+}
+
 CFNumberType OCMNumberTypeForObjCType(const char *objcType)
 {
     switch(objcType[0])
