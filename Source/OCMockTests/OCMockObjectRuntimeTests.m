@@ -156,6 +156,24 @@ typedef NSString TypedefString;
 @end
 
 
+@interface TestClassWithCopyImplementations : NSObject <NSCopying, NSMutableCopying>
+@end
+
+@implementation TestClassWithCopyImplementations
+
+- (nonnull id)copyWithZone:(nullable NSZone *)zone {
+    return [[TestClassWithCopyImplementations allocWithZone:zone] init];
+}
+
+- (nonnull id)mutableCopyWithZone:(nullable NSZone *)zone { 
+    return [[TestClassWithCopyImplementations allocWithZone:zone] init];
+}
+
+@end
+
+
+
+
 #pragma mark Tests for interaction with runtime and foundation conventions
 
 @interface OCMockObjectRuntimeTests : XCTestCase
@@ -669,7 +687,7 @@ typedef NSString TypedefString;
     __weak id weakMock;
     @autoreleasepool
     {
-        id obj = [[NSDictionary alloc] init];
+        id obj = [[TestClassWithCopyImplementations alloc] init];
         id mock = OCMPartialMock(obj);
         OCMStub([mock mutableCopy]).andForwardToRealObject();
         id local = [obj mutableCopy];
@@ -724,7 +742,7 @@ typedef NSString TypedefString;
     __weak id weakMock;
     @autoreleasepool
     {
-        id obj = [[NSMutableDictionary alloc] init];
+        id obj = [[TestClassWithCopyImplementations alloc] init];
         id mock = OCMPartialMock(obj);
         OCMStub([mock copy]).andForwardToRealObject();
         id local = [obj copy];
