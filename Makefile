@@ -32,7 +32,7 @@ ci-macos:
 
 ci-ios:
 	@echo "Building iOS library and running tests..."
-	$(XCODECI) -scheme OCMockLib -destination 'platform=iOS Simulator,OS=latest,name=iPhone 11' test | xcpretty -c
+	$(XCODECI) -scheme OCMockLib -destination 'platform=iOS Simulator,OS=latest,name=iPhone 15' test | xcpretty -c
 
 
 dist: archives xcframework sourcecode dmg
