@@ -127,7 +127,7 @@ static NSString *const OCMRetainedObjectArgumentsKey = @"OCMRetainedObjectArgume
     const char *typeEncoding = [[self methodSignature] getArgumentTypeAtIndex:idx];
     if((arg == nil) || ([arg respondsToSelector:@selector(isKindOfClass:)] && [arg isKindOfClass:[NSNull class]]))
     {
-        if(typeEncoding[0] == '^')
+        if(OCMIsPointerType(typeEncoding))
         {
             void *nullPtr = NULL;
             [self setArgument:&nullPtr atIndex:idx];
