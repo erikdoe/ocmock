@@ -25,6 +25,73 @@
 #error This file must be compiled with a version of C++ (98) that doesn't support nullptr
 #endif
 
+#pragma mark Helper classes
+
+class IntCounter
+{
+public:
+    IntCounter()
+        : counter_(NULL)
+    {
+    }
+    ~IntCounter()
+    {
+        if(counter_)
+        {
+            (*counter_)--;
+        }
+    }
+    void init(int *counter)
+    {
+        counter_ = counter;
+        if(counter_)
+        {
+            (*counter_)++;
+        }
+    }
+
+private:
+    int *counter_;
+};
+
+@interface BaseFake98 : NSObject
+- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithCounter:(int *)counter NS_DESIGNATED_INITIALIZER;
+@end
+
+@interface DerivedFake98 : BaseFake98
+- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithCounter:(int *)counter NS_DESIGNATED_INITIALIZER;
+@end
+
+@implementation BaseFake98
+{
+    IntCounter _counter;
+}
+
+- (instancetype)initWithCounter:(int *)counter
+{
+    self = [super init];
+    if(self)
+    {
+        _counter.init(counter);
+    }
+    return self;
+}
+
+@end
+
+@implementation DerivedFake98
+
+- (instancetype)initWithCounter:(int *)counter
+{
+    return [super initWithCounter:counter];
+}
+
+@end
+
+#pragma mark Tests
+
 @interface OCMCPlusPlus98Tests : XCTestCase
 @end
 
@@ -40,6 +107,32 @@
 
     OCMExpect([mock lastObject]).andReturn(Nil);
     XCTAssertNil([mock lastObject], @"Should have returned stubbed value");
+}
+
+- (void)testPartialMockBaseCXXDestruct
+{
+    int counter = 0;
+    @autoreleasepool
+    {
+        BaseFake98 *fake = [[BaseFake98 alloc] initWithCounter:&counter];
+        XCTAssertEqual(counter, 1);
+        id __unused mockFake = OCMPartialMock(fake);
+        XCTAssertEqual(counter, 1);
+    }
+    XCTAssertEqual(counter, 0);
+}
+
+- (void)testPartialMockDerivedCXXDestruct
+{
+    int counter = 0;
+    @autoreleasepool
+    {
+        DerivedFake98 *fake = [[DerivedFake98 alloc] initWithCounter:&counter];
+        XCTAssertEqual(counter, 1);
+        id __unused mockFake = OCMPartialMock(fake);
+        XCTAssertEqual(counter, 1);
+    }
+    XCTAssertEqual(counter, 0);
 }
 
 @end

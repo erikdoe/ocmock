@@ -25,9 +25,75 @@
 #error This file must be compiled with a version of C++ that supports nullptr
 #endif
 
-@interface OCMCPlusPlus11Tests : XCTestCase
+#pragma mark Helper classes
+
+class IntCounter
+{
+public:
+    IntCounter()
+        : counter_(nullptr)
+    {
+    }
+    ~IntCounter()
+    {
+        if(counter_)
+        {
+            (*counter_)--;
+        }
+    }
+    void init(int *counter)
+    {
+        counter_ = counter;
+        if(counter_)
+        {
+            (*counter_)++;
+        }
+    }
+
+private:
+    int *counter_;
+};
+
+@interface BaseFake : NSObject
+- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithCounter:(int *)counter NS_DESIGNATED_INITIALIZER;
 @end
 
+@interface DerivedFake : BaseFake
+- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithCounter:(int *)counter NS_DESIGNATED_INITIALIZER;
+@end
+
+@implementation BaseFake
+{
+    IntCounter _counter;
+}
+
+- (instancetype)initWithCounter:(int *)counter
+{
+    self = [super init];
+    if(self)
+    {
+        _counter.init(counter);
+    }
+    return self;
+}
+
+@end
+
+@implementation DerivedFake
+
+- (instancetype)initWithCounter:(int *)counter
+{
+    return [super initWithCounter:counter];
+}
+
+@end
+
+#pragma mark Tests
+
+@interface OCMCPlusPlus11Tests : XCTestCase
+@end
 
 @implementation OCMCPlusPlus11Tests
 
@@ -40,6 +106,32 @@
 
     OCMExpect([mock lastObject]).andReturn(Nil);
     XCTAssertNil([mock lastObject], @"Should have returned stubbed value");
+}
+
+- (void)testPartialMockBaseCXXDestruct
+{
+    int counter = 0;
+    @autoreleasepool
+    {
+        BaseFake *fake = [[BaseFake alloc] initWithCounter:&counter];
+        XCTAssertEqual(counter, 1);
+        id __unused mockFake = OCMPartialMock(fake);
+        XCTAssertEqual(counter, 1);
+    }
+    XCTAssertEqual(counter, 0);
+}
+
+- (void)testPartialMockDerivedCXXDestruct
+{
+    int counter = 0;
+    @autoreleasepool
+    {
+        DerivedFake *fake = [[DerivedFake alloc] initWithCounter:&counter];
+        XCTAssertEqual(counter, 1);
+        id __unused mockFake = OCMPartialMock(fake);
+        XCTAssertEqual(counter, 1);
+    }
+    XCTAssertEqual(counter, 0);
 }
 
 @end
