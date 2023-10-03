@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.license                   = { :type => "Apache 2.0", :file => "License.txt" }
 
   s.author                    = { "Erik Doernenburg" => "erik@doernenburg.com" }
-  s.social_media_url          = "https://twitter.com/erikdoe"
+  s.social_media_url          = "https://toot.thoughtworks.com/@edoernen"
 
   s.source                    = { :git => "https://github.com/erikdoe/ocmock.git", :tag => "v3.9.1" }
   s.source_files              = "Source/OCMock/*.{h,m}"
