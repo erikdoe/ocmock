@@ -19,17 +19,25 @@
 
 @implementation OCMPassByRefSetter
 
-// Stores a reference to each of our OCMPassByRefSetters so that OCMArg can
-// check any given pointer to verify that it is an OCMPassByRefSetter.
-// The pointers are stored as naked pointers with no reference counts.
-// Note: all accesses protected by @synchronized(gPointerTable)
-static NSHashTable *gPointerTable = NULL;
+// Stores a reference to all OCMPassByRefSetter instances so that OCMArg can
+// check for any given pointer whether its an OCMPassByRefSetter without having
+// to get the class for the pointer (see #503). The pointers are stored without
+// reference count.
+static NSHashTable *_OCMPassByRefSetterInstances = NULL;
 
 + (void)initialize
 {
-    if (self == [OCMPassByRefSetter class])
+    if(self == [OCMPassByRefSetter class])
     {
-        gPointerTable = [[NSHashTable hashTableWithOptions:NSPointerFunctionsOpaqueMemory | NSPointerFunctionsOpaquePersonality] retain];
+        _OCMPassByRefSetterInstances = [[NSHashTable hashTableWithOptions:NSPointerFunctionsOpaqueMemory | NSPointerFunctionsOpaquePersonality] retain];
+    }
+}
+
++ (BOOL)isPassByRefSetterInstance:(void *)ptr
+{
+    @synchronized(_OCMPassByRefSetterInstances)
+    {
+        return NSHashGet(_OCMPassByRefSetterInstances, ptr) != NULL;
     }
 }
 
@@ -38,10 +46,9 @@ static NSHashTable *gPointerTable = NULL;
     if((self = [super init]))
     {
         value = [aValue retain];
-        @synchronized(gPointerTable)
+        @synchronized(_OCMPassByRefSetterInstances)
         {
-            // This will throw if somehow we manage to put two of the same pointer in the table.
-            NSHashInsertKnownAbsent(gPointerTable, self);
+            NSHashInsertKnownAbsent(_OCMPassByRefSetterInstances, self);
         }
     }
 
@@ -51,10 +58,9 @@ static NSHashTable *gPointerTable = NULL;
 - (void)dealloc
 {
     [value release];
-    @synchronized(gPointerTable)
+    @synchronized(_OCMPassByRefSetterInstances)
     {
-        NSAssert(NSHashGet(gPointerTable, self) != NULL, @"self should be in the hash table");
-        NSHashRemove(gPointerTable, self);
+        NSHashRemove(_OCMPassByRefSetterInstances, self);
     }
     [super dealloc];
 }
@@ -71,12 +77,5 @@ static NSHashTable *gPointerTable = NULL;
     }
 }
 
-+ (BOOL)ptrIsPassByRefSetter:(void*)ptr
-{
-    @synchronized(gPointerTable)
-    {
-        return NSHashGet(gPointerTable, ptr) != NULL;
-    }
-}
 
 @end

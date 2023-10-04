@@ -23,7 +23,6 @@
 
 - (id)initWithValue:(id)value;
 
-// Returns YES if ptr is actually a OCMPassByRefSetter
-+ (BOOL)ptrIsPassByRefSetter:(void*)ptr;
++ (BOOL)isPassByRefSetterInstance:(void *)ptr;
 
 @end

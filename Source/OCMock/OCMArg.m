@@ -129,7 +129,7 @@
         void *pointer = [value pointerValue];
         if(pointer == [self anyPointer])
             return [OCMArg any];
-        if((pointer != NULL) && [OCMPassByRefSetter ptrIsPassByRefSetter:pointer])
+        if((pointer != NULL) && [OCMPassByRefSetter isPassByRefSetterInstance:pointer])
             return (id)pointer;
     }
     else if(type[0] == ':')
