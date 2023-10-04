@@ -23,4 +23,6 @@
 
 - (id)initWithValue:(id)value;
 
++ (BOOL)isPassByRefSetterInstance:(void *)ptr;
+
 @end

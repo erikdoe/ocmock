@@ -19,11 +19,37 @@
 
 @implementation OCMPassByRefSetter
 
+// Stores a reference to all OCMPassByRefSetter instances so that OCMArg can
+// check for any given pointer whether its an OCMPassByRefSetter without having
+// to get the class for the pointer (see #503). The pointers are stored without
+// reference count.
+static NSHashTable *_OCMPassByRefSetterInstances = NULL;
+
++ (void)initialize
+{
+    if(self == [OCMPassByRefSetter class])
+    {
+        _OCMPassByRefSetterInstances = [[NSHashTable hashTableWithOptions:NSPointerFunctionsOpaqueMemory | NSPointerFunctionsOpaquePersonality] retain];
+    }
+}
+
++ (BOOL)isPassByRefSetterInstance:(void *)ptr
+{
+    @synchronized(_OCMPassByRefSetterInstances)
+    {
+        return NSHashGet(_OCMPassByRefSetterInstances, ptr) != NULL;
+    }
+}
+
 - (id)initWithValue:(id)aValue
 {
     if((self = [super init]))
     {
         value = [aValue retain];
+        @synchronized(_OCMPassByRefSetterInstances)
+        {
+            NSHashInsertKnownAbsent(_OCMPassByRefSetterInstances, self);
+        }
     }
 
     return self;
@@ -32,6 +58,10 @@
 - (void)dealloc
 {
     [value release];
+    @synchronized(_OCMPassByRefSetterInstances)
+    {
+        NSHashRemove(_OCMPassByRefSetterInstances, self);
+    }
     [super dealloc];
 }
 
@@ -46,5 +76,6 @@
             *(id *)pointerValue = value;
     }
 }
+
 
 @end
