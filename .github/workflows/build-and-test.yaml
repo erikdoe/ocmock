@@ -1,0 +1,26 @@
+name: Build and test
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build-and-run-unit-tests:
+    runs-on: macos-13
+    steps:
+    - uses: actions/checkout@v3
+    - name: macOS
+      run: make ci-macos
+    - name: iOS
+      run: make ci-ios
+  check-dist:
+    needs: build-and-run-unit-tests
+    runs-on: macos-13
+    steps:
+    - uses: actions/checkout@v3
+    - name: SwiftPM
+      run: make ci-swiftpm
