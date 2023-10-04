@@ -4,6 +4,8 @@ commit messages and/or the pull requests.
 OCMock 3.9.2 (unreleased)
 
 * Added Mac Catalyst architecture to dist build. (Maksym Koshtenko)
+* Added visionOS to podspec. This is experimental, and there's no official
+  support for visionOS in OCMock until it's available outside the beta.
 * Stopped forwarding C++ constructors and destructors when using partial
   mocks (Tom Burgin)
 * Fixed pontential crashes when using OCMPassByRefSetters. (Dave MacLachlan)
