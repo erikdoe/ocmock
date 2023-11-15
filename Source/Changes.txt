@@ -1,6 +1,11 @@
 Listing of notable changes by release. More detail is usually found in the Git
 commit messages and/or the pull requests.
 
+OCMock 3.9.3 (2023-11-15)
+
+* Removed visionOS from podspec because it's not fully supported yet.
+
+
 OCMock 3.9.2 (2023-10-04)
 
 * Added Mac Catalyst architecture to dist build. (Maksym Koshtenko)
