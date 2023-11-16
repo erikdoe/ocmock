@@ -8,74 +8,17 @@ published: true
 ---
 <h1>{{ page.title }}</h1>
 
-<h2>Stable Releases</h2>
+<h2>Releases</h2>
+
+<p>You can download releases of OCMock on GitHub
+
+<p>&nbsp;&nbsp;&nbsp;<a href="https://github.com/erikdoe/ocmock/releases">https://github.com/erikdoe/ocmock/releases</a>
 
 <p>The disk images contain frameworks for macOS, iOS, tvOS, and watchOS development, a static library for iOS development, and the source code. As of OCMock 3.9.0 the binary distribution contains XCFrameworks.
 
 <p>Usually the releases can be used on newer systems, too. For example, OCMock 3.1, built with Xcode 6.2 using the OS X 10.10 and iOS 8.2 SDKs, can also be built with Xcode 7 and its newer SDKs.
 
 <p>However, there is no guarantee that a release of OCMock can be built with versions of Xcode older than the current stable version at release.
-
-<table>
-	<tr>
-		<th width="15%">Release</th>
-		<th width="25%">Build SDKs</th>
-		<th width="25%">Deployment Targets</th>
-		<th width="15%">Date</th>
-		<th width="20%">File</th>
-	</tr>
-	<tr>
-		<td>OCMock 3.9.3</td>
-		<td>macOS 14.0, iOS 17.0, tvOS 17.0, watchOS 10.0</td>
-		<td>macOS 10.15, iOS 12.0, tvOS 12.0, watchOS 7.0</td>
-		<td>15-Nov-2023</td>
-		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.9.3/ocmock-3.9.3.dmg">ocmock-3.9.3.dmg</a></td>
-	</tr>
-	<tr>
-		<td></td>
-		<td colspan="4">
-			<p>Changes in OCMock 3.9.3:
-			<ul>
-				<li>Removed visionOS from podspec because it's not fully supported yet.
-			</ul>
-			<p>Changes in OCMock 3.9.2:
-			<ul>
-				<li>Added support for Mac Catalyst.
-				<li>Added experimental support for visionOS to podspec.
-				<li>Various bug-fixes
-			</ul>
-			<p>Changes in OCMock 3.9.1:
-			<ul>
-				<li>Removed unneeded excludes in package file to avoid warnings.
-			</ul>
-			<p>Changes in OCMock 3.9.0:
-			<ul>
-				<li>Added support for Swift Package Manager. (Paul Beusterien)
-				<li>Using Swift Package Manager for dependencies.
-				<li>Changed binary distribution to XCFramework.
-				<li>Added setting in podspec to disable bitcode. (Adil Hussain)
-				<li>Various bug-fixes and improvements to developer experience.
-			</ul>
-			<p>More details:
-			<a href="https://github.com/erikdoe/ocmock/blob/master/Source/Changes.txt">change log</a>,
-			<a href="https://github.com/erikdoe/ocmock/milestone/1?closed=1">milestone</a>
-		</td>
-	</tr>
-	<tr>
-		<td>OCMock 3.8.1</td>
-		<td>macOS 11.1, iOS 14.3, tvOS 14.3, watchOS 7.2</td>
-		<td>OS X 10.10, iOS 9.0, tvOS 9.0, watchOS 4.0</td>
-		<td>30-Dec-2020</td>
-		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v3.8.1/ocmock-3.8.1.dmg">ocmock-3.8.1.dmg</a></td>
-	</tr>
-	<tr>
-		<td>OCMock 2.2.4</td>
-		<td>OS X 10.9, iOS 7.1</td>
-		<td>Mac OS X 10.6, iOS 5</td>
-		<td>4-Apr-2014</td>
-		<td><a href="https://github.com/erikdoe/ocmock/releases/download/v2.2.4/ocmock-2.2.4.dmg">ocmock-2.2.4.dmg</a></td>
-	</tr>
-</table>
 
 
 <h2>Source code</h2>
@@ -86,6 +29,8 @@ published: true
 <p>&nbsp;&nbsp;&nbsp;<a href="https://github.com/erikdoe/ocmock">https://github.com/erikdoe/ocmock</a>
 
 <p>The current build status is shown above on the right. If this isn't showing <i>passing</i>, chances are the code is currently not building correctly and we're busy trying to fix it. In all other cases, a local build from source should work.
+
+<p>As mentioned above, there is no guarantee that a release of OCMock can be built with versions of Xcode older than the current stable version at release.
 
 
 <h2>License for OCMock 3.x</h2>
