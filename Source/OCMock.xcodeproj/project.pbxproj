@@ -334,7 +334,7 @@
 		8DE97C8322B43EE60098C63F /* OCPartialMockObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 03B315A9146333BF0052CD09 /* OCPartialMockObject.h */; };
 		8DE97C8422B43EE60098C63F /* OCProtocolMockObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 03B315AD146333BF0052CD09 /* OCProtocolMockObject.h */; };
 		8DE97C8522B43EE60098C63F /* OCMExpectationRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C7BF0E195DAB5300A545DD /* OCMExpectationRecorder.h */; };
-		8DE97C8622B43EE60098C63F /* OCMVerifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 0322DA6719118B4600CACAF1 /* OCMVerifier.h */; };
+		8DE97C8622B43EE60098C63F /* OCMVerifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 0322DA6719118B4600CACAF1 /* OCMVerifier.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8DE97C8722B43EE60098C63F /* OCMInvocationMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA28CCC33B99D6B658E7AF8 /* OCMInvocationMatcher.h */; };
 		8DE97C8822B43EE60098C63F /* OCMInvocationStub.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C7BF08195DA2F200A545DD /* OCMInvocationStub.h */; };
 		8DE97C8922B43EE60098C63F /* OCMInvocationExpectation.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA288509D545BDBE094BCC8 /* OCMInvocationExpectation.h */; };
