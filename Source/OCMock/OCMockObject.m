@@ -408,42 +408,38 @@
     [self assertInvocationsArrayIsPresent];
     [self addInvocation:anInvocation];
 
-    OCMInvocationStub *stub = [self stubForInvocation:anInvocation];
-    if(stub == nil)
-        return NO;
-
-    // Retain the stub in case it ends up being removed because we still need it at the end for handleInvocation:
-    [stub retain];
-
-    BOOL removeStub = NO;
-    @synchronized(expectations)
+    OCMInvocationStub *stub = nil;
+    @synchronized(stubs)
     {
-        if([expectations containsObject:stub])
-        {
-            OCMInvocationExpectation *expectation = [self _nextExpectedInvocation];
-            if(expectationOrderMatters && (expectation != stub))
-            {
-                [NSException raise:NSInternalInconsistencyException
-                            format:@"%@: unexpected method invoked: %@\n\texpected:\t%@",
-                            [self description], [stub description], [[expectations objectAtIndex:0] description]];
-            }
+        stub = [self stubForInvocation:anInvocation];
+        if(stub == nil)
+            return NO;
 
-            // We can't check isSatisfied yet, since the stub won't be satisfied until we call
-            // handleInvocation: since we'll still have the current expectation in the expectations array, which
-            // will cause an exception if expectationOrderMatters is YES and we're not ready for any future
-            // expected methods to be called yet
-            if(![(OCMInvocationExpectation *)stub isMatchAndReject])
-            {
-                [expectations removeObject:stub];
-                removeStub = YES;
-            }
-        }
-    }
-    if(removeStub)
-    {
-        @synchronized(stubs)
+        // Retain the stub in case it ends up being removed because we still need it at the end for handleInvocation:
+        [stub retain];
+
+        @synchronized(expectations)
         {
-            [stubs removeObject:stub];
+            if([expectations containsObject:stub])
+            {
+                OCMInvocationExpectation *expectation = [self _nextExpectedInvocation];
+                if(expectationOrderMatters && (expectation != stub))
+                {
+                    [NSException raise:NSInternalInconsistencyException
+                                format:@"%@: unexpected method invoked: %@\n\texpected:\t%@",
+                                [self description], [stub description], [[expectations objectAtIndex:0] description]];
+                }
+
+                // We can't check isSatisfied yet, since the stub won't be satisfied until we call
+                // handleInvocation: since we'll still have the current expectation in the expectations array, which
+                // will cause an exception if expectationOrderMatters is YES and we're not ready for any future
+                // expected methods to be called yet
+                if(![(OCMInvocationExpectation *)stub isMatchAndReject])
+                {
+                    [expectations removeObject:stub];
+                    [stubs removeObject:stub];
+                }
+            }
         }
     }
 
