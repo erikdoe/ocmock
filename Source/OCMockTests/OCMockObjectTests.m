@@ -489,9 +489,10 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testBlocksAreNotConsideredNonObjectArguments
 {
-    [[[mock stub] ignoringNonObjectArgs] enumerateLinesUsingBlock:[OCMArg invokeBlock]];
+    mock = [OCMockObject mockForClass:[NSArray class]];
+    [[[mock stub] ignoringNonObjectArgs] enumerateObjectsWithOptions:0 usingBlock:[OCMArg invokeBlock]];
     __block BOOL blockWasInvoked = NO;
-    [mock enumerateLinesUsingBlock:^(NSString *_Nonnull line, BOOL *_Nonnull stop) {
+    [mock enumerateObjectsWithOptions:5 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         blockWasInvoked = YES;
     }];
     XCTAssertTrue(blockWasInvoked, @"Should not have ignored the block argument.");
@@ -503,6 +504,29 @@ static NSString *TestNotification = @"TestNotification";
     XCTAssertThrowsSpecificNamed([[mock stub] rangeOfString:@"foo" options:0], NSException, NSInternalInconsistencyException);
 }
 
+- (void)testRaisesExceptionWhenIgnoringNonObjectArgumentsOnMethodThatHasZeroArgs
+{
+    @try
+    {
+        [[[mock stub] ignoringNonObjectArgs] uppercaseString];
+    }
+    @catch (NSException *e)
+    {
+        XCTAssertTrue([[e reason] containsString:@"0 args"]);
+    }
+}
+
+- (void)testRaisesExceptionWhenIgnoringNonObjectArgumentsOnMethodThatOnlyTakesObjects
+{
+    @try
+    {
+        [[[mock stub] ignoringNonObjectArgs] stringByAppendingString:[OCMArg any]];
+    }
+    @catch (NSException *e)
+    {
+        XCTAssertTrue([[e reason] containsString:@"only object args"]);
+    }
+}
 
 #pragma mark returning values from stubbed methods
 

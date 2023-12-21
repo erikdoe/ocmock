@@ -45,6 +45,7 @@
     // anInvocation contains self as an argument, -retainArguments would create a retain cycle.
     [anInvocation retainObjectArgumentsExcludingObject:self];
     recordedInvocation = [anInvocation retain];
+    [self verifyInvocationCompatibleWithIgnoreNonObjectArgs];
 }
 
 - (void)setRecordedAsClassMethod:(BOOL)flag
@@ -60,6 +61,7 @@
 - (void)setIgnoreNonObjectArgs:(BOOL)flag
 {
     ignoreNonObjectArgs = flag;
+    [self verifyInvocationCompatibleWithIgnoreNonObjectArgs];
 }
 
 - (NSString *)description
@@ -137,6 +139,29 @@
         }
     }
     return YES;
+}
+
+- (void)verifyInvocationCompatibleWithIgnoreNonObjectArgs 
+{
+    if (!recordedInvocation || !ignoreNonObjectArgs) 
+    {
+        return;
+    }
+    NSMethodSignature *signature = [recordedInvocation methodSignature];
+    NSUInteger n = [signature numberOfArguments];
+    BOOL foundNonObjectArg = NO;
+    for(NSUInteger i = 2; i < n; i++)
+    {
+        if(!OCMIsObjectType([signature getArgumentTypeAtIndex:i]))
+        {
+            foundNonObjectArg = YES;
+            break;
+        }
+    }
+    if (!foundNonObjectArg) 
+    {
+        [NSException raise:NSInvalidArgumentException format:@"Method `%@` with %@ marked as ignoreNonObjectArgs.", NSStringFromSelector([recordedInvocation selector]), n == 2 ? @"0 args" : @"only object args"];
+    }
 }
 
 @end
