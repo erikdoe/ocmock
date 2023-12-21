@@ -27,4 +27,9 @@ NSString *OCMStubbedException = @"OCMStubbedException";
     [[NSException exceptionWithName:OCMStubbedException reason:@"Exception stubbed in test." userInfo:@{ @"exception" : returnValue }] raise];
 }
 
+- (NSString *)description
+{
+  return [NSString stringWithFormat:@"[%@ - %p]: Throws `%@`", [self class], self, returnValue];
+}
+
 @end

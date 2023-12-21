@@ -43,4 +43,9 @@
     }
 }
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"[%@ - %p]: Calls `%@`", [self class], self, block];
+}
+
 @end
