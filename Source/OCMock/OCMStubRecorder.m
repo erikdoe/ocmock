@@ -126,21 +126,14 @@
 
 @dynamic _andReturn;
 
-- (OCMStubRecorder * (^)(NSValue *))_andReturn
+- (OCMStubRecorder *(^)(NSArray<id> *))_andReturn
 {
-    id (^theBlock)(id) = ^(NSValue *aValue) {
-        if(OCMIsObjectType([aValue objCType]))
-        {
-            id objValue = nil;
-            [aValue getValue:&objValue]; // TODO: deprecated but replacement available in 10.13 only
-            return [self andReturn:objValue];
-        }
-        else
-        {
-            return [self andReturnValue:aValue];
-        }
+    id (^theBlock)(NSArray<id> *) = ^ (NSArray<id> *aTuple)
+    {
+        id value = (aTuple.count == 1) ? nil : aTuple[1];
+        return [aTuple[0] boolValue] ?  [self andReturn:value] : [self andReturnValue:value];
     };
-    return (id)[[theBlock copy] autorelease];
+    return [[theBlock copy] autorelease];
 }
 
 
