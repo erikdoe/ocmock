@@ -152,7 +152,23 @@
     OCMVerifyAll(mock); const char *expectedFile = __FILE__; int expectedLine = __LINE__;
     shouldCaptureFailure = NO;
 
-    XCTAssertNotNil(reportedDescription, @"Should have recorded a failure with description.");
+    XCTAssertEqualObjects(reportedDescription, @"OCClassMockObject(NSString): expected method was not invoked: lowercaseString");
+    XCTAssertTrue([reportedFile hasSuffix:[NSString stringWithUTF8String:expectedFile]], @"Should have reported correct file.");
+    XCTAssertEqual(expectedLine, (int)reportedLine, @"Should have reported correct line");
+}
+
+- (void)testReportsVerifyFailuresWithCorrectLocation
+{
+    id mock = OCMClassMock([NSString class]);
+
+    OCMExpect([mock lowercaseString]);
+    OCMExpect([mock uppercaseString]);
+
+    shouldCaptureFailure = YES;
+    OCMVerifyAll(mock); const char *expectedFile = __FILE__; int expectedLine = __LINE__;
+    shouldCaptureFailure = NO;
+
+    XCTAssertEqualObjects(reportedDescription, @"OCClassMockObject(NSString): 2 expected methods were not invoked: \n\tlowercaseString\n\tuppercaseString");
     XCTAssertTrue([reportedFile hasSuffix:[NSString stringWithUTF8String:expectedFile]], @"Should have reported correct file.");
     XCTAssertEqual(expectedLine, (int)reportedLine, @"Should have reported correct line");
 }
