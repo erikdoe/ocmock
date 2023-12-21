@@ -88,6 +88,17 @@ TestOpaque myOpaque;
 
 @end
 
+@interface TestClassWithCopyProperty : NSObject
+
+@property (nonatomic, copy) NSString *title;
+
+@end
+
+@implementation TestClassWithCopyProperty
+
+@synthesize title;
+
+@end
 
 @interface TestClassWithBlockArgMethod : NSObject
 
@@ -210,6 +221,42 @@ static NSString *testClassThatMayNotSupportMockingReason = nil;
 
     *reasonPtr = testClassThatMayNotSupportMockingReason;
     return NO;
+}
+
+@end
+
+@interface TestClassListenerManager : NSObject
+@end
+
+@implementation TestClassListenerManager
+
+- (void)addListener:(id)object
+{
+}
+
+- (void)removeListener:(id)object
+{
+}
+@end
+
+@interface TestClassListener : NSObject
+{
+  TestClassListenerManager *manager;
+}
+@end
+
+@implementation TestClassListener
+- (instancetype)initWithListenerManager:(TestClassListenerManager *)aManager
+{
+  self = [super init];
+  manager = aManager;
+  [manager addListener:self];
+  return self;
+}
+
+- (void)dealloc
+{
+  [manager removeListener:self];
 }
 
 @end
@@ -503,6 +550,47 @@ static NSString *TestNotification = @"TestNotification";
     XCTAssertThrowsSpecificNamed([[mock stub] rangeOfString:@"foo" options:0], NSException, NSInternalInconsistencyException);
 }
 
+- (void)testAnyWithOCMArgDoNotRetainInvocationArgIsNotRetainedByInvocation
+{
+    mock = OCMClassMock([TestClassListenerManager class]);
+    [[mock expect] addListener:[OCMArg anyWithOptions:OCMArgDoNotRetainInvocationArg]];
+    [[mock expect] removeListener:[OCMArg anyWithOptions:OCMArgDoNotRetainInvocationArg]];
+    TestClassListener *listener = [[TestClassListener alloc] initWithListenerManager:mock];
+    listener = nil;
+    [mock verify];
+}
+
+- (void)testArgumentWithOCMArgNeverRetainArgIsNotRetainedByStubOrInvocation
+{
+    mock = OCMClassMock([TestClassListenerManager class]);
+    TestClassListener *listener = [TestClassListener alloc];
+    [[mock expect] addListener:[OCMArg isEqual:listener options:OCMArgNeverRetainArg]];
+    [[mock expect] removeListener:[OCMArg isEqual:listener options:OCMArgNeverRetainArg]];
+    listener = [listener initWithListenerManager:mock];
+    listener = nil;
+    [mock verify];
+}
+
+- (void)testArgumentWithDefaultOptionsIsNotCopiedByInvocation
+{
+    mock = OCMClassMock([TestClassWithCopyProperty class]);
+    [[mock stub] setTitle:[OCMArg any]];
+    NSMutableString *aString = [@"foo" mutableCopy];
+    [mock setTitle:aString]; 
+    [aString appendString:@"bar"];
+    // If the string *were* being handled properly, this would fail.
+    OCMVerify([mock setTitle:@"foobar"]);
+}
+
+- (void)testArgumentWithOCMArgCopyInvocationArgIsCopiedByInvocation
+{
+    mock = OCMClassMock([TestClassWithCopyProperty class]);
+    [[mock stub] setTitle:[OCMArg anyWithOptions:OCMArgCopyInvocationArg]];
+    NSMutableString *aString = [@"foo" mutableCopy];
+    [mock setTitle:aString]; 
+    [aString appendString:@"bar"];
+    OCMVerify([mock setTitle:@"foo"]);
+}
 
 #pragma mark returning values from stubbed methods
 

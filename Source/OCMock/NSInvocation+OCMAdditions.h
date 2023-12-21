@@ -20,8 +20,7 @@
 
 + (NSInvocation *)invocationForBlock:(id)block withArguments:(NSArray *)arguments;
 
-- (void)retainObjectArgumentsExcludingObject:(id)objectToExclude;
-
+- (void)applyConstraintOptionsFromStubInvocation:(NSInvocation *)stubInvocation excludingObject:(id)objectToExclude;
 - (id)getArgumentAtIndexAsObject:(NSInteger)argIndex;
 
 - (NSString *)invocationDescription;
