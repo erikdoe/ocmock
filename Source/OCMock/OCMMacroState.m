@@ -25,9 +25,10 @@ static NSString *const OCMGlobalStateKey = @"OCMGlobalStateKey";
 
 #pragma mark Methods to begin/end macros
 
-+ (void)beginStubMacro
++ (void)beginStubMacroAtLocation:(OCMLocation *)aLocation
 {
     OCMStubRecorder *recorder = [[[OCMStubRecorder alloc] init] autorelease];
+    recorder.ocm_location = aLocation;
     OCMMacroState *macroState = [[OCMMacroState alloc] initWithRecorder:recorder];
     [NSThread currentThread].threadDictionary[OCMGlobalStateKey] = macroState;
     [macroState release];
@@ -40,21 +41,31 @@ static NSString *const OCMGlobalStateKey = @"OCMGlobalStateKey";
     OCMStubRecorder *recorder = [[(OCMStubRecorder *)[globalState recorder] retain] autorelease];
     BOOL didThrow = [globalState invocationDidThrow];
     [threadDictionary removeObjectForKey:OCMGlobalStateKey];
-    if(didThrow == NO && [recorder didRecordInvocation] == NO)
-    {
-        [NSException raise:NSInternalInconsistencyException
-                    format:@"Did not record an invocation in OCMStub/OCMExpect/OCMReject.\n"
-                           @"Possible causes are:\n"
-                           @"- The receiver is not a mock object.\n"
-                           @"- The selector conflicts with a selector implemented by OCMStubRecorder/OCMExpectationRecorder."];
-    }
+	  if(didThrow == NO && [recorder didRecordInvocation] == NO)
+	  {
+        OCMLocation *location = recorder.ocm_location;
+        NSString *explanation = @"Did not record an invocation in OCMStub/OCMExpect/OCMReject.\n"
+                                @"Possible causes are:\n"
+                                @"- The receiver is not a mock object.\n"
+                                @"- The selector conflicts with a selector implemented by OCMStubRecorder/OCMExpectationRecorder.";
+        if(location != nil)
+        {
+            [NSException raise:NSInternalInconsistencyException
+                        format:@"%@:%d :%@", [location file], (int)[location line], explanation];
+        }
+        else
+        {
+            [NSException raise:NSInternalInconsistencyException format:@"%@", explanation];
+        }
+	  }
     return recorder;
 }
 
 
-+ (void)beginExpectMacro
++ (void)beginExpectMacroAtLocation:(OCMLocation *)aLocation
 {
     OCMExpectationRecorder *recorder = [[[OCMExpectationRecorder alloc] init] autorelease];
+    recorder.ocm_location = aLocation;
     OCMMacroState *macroState = [[OCMMacroState alloc] initWithRecorder:recorder];
     [NSThread currentThread].threadDictionary[OCMGlobalStateKey] = macroState;
     [macroState release];
@@ -66,9 +77,10 @@ static NSString *const OCMGlobalStateKey = @"OCMGlobalStateKey";
 }
 
 
-+ (void)beginRejectMacro
++ (void)beginRejectMacroAtLocation:(OCMLocation *)aLocation
 {
     OCMExpectationRecorder *recorder = [[[OCMExpectationRecorder alloc] init] autorelease];
+    recorder.ocm_location = aLocation;
     OCMMacroState *macroState = [[OCMMacroState alloc] initWithRecorder:recorder];
     [NSThread currentThread].threadDictionary[OCMGlobalStateKey] = macroState;
     [macroState release];
@@ -92,7 +104,7 @@ static NSString *const OCMGlobalStateKey = @"OCMGlobalStateKey";
 + (void)beginVerifyMacroAtLocation:(OCMLocation *)aLocation withQuantifier:(OCMQuantifier *)quantifier
 {
     OCMVerifier *recorder = [[[OCMVerifier alloc] init] autorelease];
-    [recorder setLocation:aLocation];
+    recorder.ocm_location = aLocation;
     [recorder setQuantifier:quantifier];
     OCMMacroState *macroState = [[OCMMacroState alloc] initWithRecorder:recorder];
     [NSThread currentThread].threadDictionary[OCMGlobalStateKey] = macroState;

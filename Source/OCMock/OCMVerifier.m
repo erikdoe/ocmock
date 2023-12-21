@@ -44,12 +44,11 @@
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
     [super forwardInvocation:anInvocation];
-    [mockObject verifyInvocation:invocationMatcher withQuantifier:self.quantifier atLocation:self.location];
+    [mockObject verifyInvocation:invocationMatcher withQuantifier:self.quantifier atLocation:self.ocm_location];
 }
 
 - (void)dealloc
 {
-    [_location release];
     [_quantifier release];
     [super dealloc];
 }
