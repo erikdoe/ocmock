@@ -88,12 +88,10 @@
 {
     if(realObject != nil)
     {
-        Class partialMockClass = object_getClass(realObject);
         OCMSetAssociatedMockForObject(nil, realObject);
         object_setClass(realObject, [self mockedClass]);
         [realObject release];
         realObject = nil;
-        OCMDisposeSubclass(partialMockClass);
     }
     [super stopMocking];
 }
@@ -155,27 +153,30 @@
 {
     OCMSetAssociatedMockForObject(self, realObject);
 
-    /* dynamically create a subclass and set it as the class of the object */
-    Class subclass = OCMCreateSubclass(mockedClass, realObject);
-    object_setClass(realObject, subclass);
+    if(!classCreatedForNewMetaClass)
+    {
+        classCreatedForNewMetaClass = OCMCreateSubclass(mockedClass, mockedClass);
+    }
+    object_setClass(realObject, classCreatedForNewMetaClass);
 
     /* point forwardInvocation: of the object to the implementation in the mock */
     Method myForwardMethod = class_getInstanceMethod([self mockObjectClass], @selector(forwardInvocationForRealObject:));
     IMP myForwardIMP = method_getImplementation(myForwardMethod);
-    class_addMethod(subclass, @selector(forwardInvocation:), myForwardIMP, method_getTypeEncoding(myForwardMethod));
+    class_addMethod(classCreatedForNewMetaClass, @selector(forwardInvocation:), myForwardIMP, method_getTypeEncoding(myForwardMethod));
 
     /* do the same for forwardingTargetForSelector, remember existing imp with alias selector */
     Method myForwardingTargetMethod = class_getInstanceMethod([self mockObjectClass], @selector(forwardingTargetForSelectorForRealObject:));
     IMP myForwardingTargetIMP = method_getImplementation(myForwardingTargetMethod);
     IMP originalForwardingTargetIMP = [mockedClass instanceMethodForSelector:@selector(forwardingTargetForSelector:)];
-    class_addMethod(subclass, @selector(forwardingTargetForSelector:), myForwardingTargetIMP, method_getTypeEncoding(myForwardingTargetMethod));
-    class_addMethod(subclass, @selector(ocmock_replaced_forwardingTargetForSelector:), originalForwardingTargetIMP, method_getTypeEncoding(myForwardingTargetMethod));
+    const char *encoding = method_getTypeEncoding(myForwardingTargetMethod);
+    class_addMethod(classCreatedForNewMetaClass, @selector(forwardingTargetForSelector:), myForwardingTargetIMP, encoding);
+    class_addMethod(classCreatedForNewMetaClass, @selector(ocmock_replaced_forwardingTargetForSelector:), originalForwardingTargetIMP, encoding);
 
     /* We also override the -class method to return the original class */
     Method myObjectClassMethod = class_getInstanceMethod([self mockObjectClass], @selector(classForRealObject));
     const char *objectClassTypes = method_getTypeEncoding(myObjectClassMethod);
     IMP myObjectClassImp = method_getImplementation(myObjectClassMethod);
-    class_addMethod(subclass, @selector(class), myObjectClassImp, objectClassTypes);
+    class_addMethod(classCreatedForNewMetaClass, @selector(class), myObjectClassImp, objectClassTypes);
 
     /* Adding forwarder for most instance methods to allow for verify after run */
     NSArray *methodsNotToForward = @[ @"class", @"forwardingTargetForSelector:", @"methodSignatureForSelector:", @"forwardInvocation:",
