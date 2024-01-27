@@ -46,7 +46,7 @@
     }
 
     if(needsStructureReturn)
-      return _objc_msgForward_stret;
+      return (SEL)_objc_msgForward_stret;
 #endif
 
   return _objc_msgForward;
