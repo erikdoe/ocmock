@@ -30,6 +30,10 @@
 
 @implementation NSMethodSignatureOCMAdditionsTests
 
+#ifndef __arm64__
+
+// Special structure return not really needed on arm64. And we should remove arm and i386 at some point...
+
 - (void)testDeterminesThatSpecialReturnIsNotNeededForNonStruct
 {
     const char *types = "i";
@@ -97,6 +101,9 @@
     ASSERT_ENC(YES,  "{foo=ccccc}");
 #endif
 }
+
+#endif
+
 
 - (void)testNSMethodSignatureDebugDescriptionWorksTheWayWeExpectIt
 {
