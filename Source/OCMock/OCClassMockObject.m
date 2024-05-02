@@ -166,6 +166,12 @@
 
 - (void)setupForwarderForClassMethodSelector:(SEL)selector
 {
+    for(Class aClass in [OCMockObject classesIgnoringMockedSelector:selector])
+    {
+        if([mockedClass isKindOfClass:aClass])
+            return;
+    }
+    
     SEL aliasSelector = OCMAliasForOriginalSelector(selector);
     if(class_getClassMethod(mockedClass, aliasSelector) != NULL)
         return;

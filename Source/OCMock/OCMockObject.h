@@ -43,6 +43,9 @@
 
 + (id)observerMock __deprecated_msg("Please use XCTNSNotificationExpectation instead.");
 
++ (NSArray <Class> *)classesIgnoringMockedSelector:(SEL)aSelector;
++ (void)ignoreMethod:(SEL) selector forClass:(Class) aClass;
+
 - (instancetype)init;
 
 - (void)setExpectationOrderMatters:(BOOL)flag;
