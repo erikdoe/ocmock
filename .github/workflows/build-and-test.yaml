@@ -10,15 +10,15 @@ on:
 
 jobs:
   build-and-run-unit-tests:
-    runs-on: macos-13
+    runs-on: macos-14
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: macOS
       run: make ci-macos
   check-dist:
     needs: build-and-run-unit-tests
-    runs-on: macos-13
+    runs-on: macos-14
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: SwiftPM
       run: make ci-swiftpm
