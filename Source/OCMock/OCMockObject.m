@@ -246,8 +246,13 @@
     }
     else if([unsatisfiedExpectations count] > 0)
     {
+        NSMutableString *unsatisfiedExpectationList = [NSMutableString string];
+        for(OCMInvocationExpectation *expectation in unsatisfiedExpectations)
+        {
+            [unsatisfiedExpectationList appendFormat:@"\n\t%@", [expectation description]];
+        }
         NSString *description = [NSString stringWithFormat:@"%@: %@ expected methods were not invoked: %@",
-                                          [self description], @([unsatisfiedExpectations count]), [self _stubDescriptions:YES]];
+                                          [self description], @([unsatisfiedExpectations count]), unsatisfiedExpectationList];
         OCMReportFailure(location, description);
     }
 
@@ -474,7 +479,7 @@
     {
         [NSException raise:NSInternalInconsistencyException
                     format:@"%@: unexpected method invoked: %@ %@",
-                    [self description], [anInvocation invocationDescription], [self _stubDescriptions:NO]];
+                    [self description], [anInvocation invocationDescription], [self stubDescriptions]];
     }
 }
 
@@ -498,7 +503,7 @@
 
 #pragma mark Helper methods
 
-- (NSString *)_stubDescriptions:(BOOL)onlyExpectations
+- (NSString *)stubDescriptions
 {
     NSMutableString *outputString = [NSMutableString string];
     NSArray *stubsCopy = nil;
@@ -506,31 +511,18 @@
     {
         stubsCopy = [stubs copy];
     }
+    NSArray *expectationsCopy = nil;
+    @synchronized(expectations)
+    {
+        expectationsCopy = [expectations copy];
+    }
     for(OCMStubRecorder *stub in stubsCopy)
     {
-        BOOL expectationsContainStub = NO;
-        @synchronized(expectations)
-        {
-            expectationsContainStub = [expectations containsObject:stub];
-        }
-
-        NSString *prefix = @"";
-
-        if(onlyExpectations)
-        {
-            if(expectationsContainStub == NO)
-                continue;
-        }
-        else
-        {
-            if(expectationsContainStub)
-                prefix = @"expected:\t";
-            else
-                prefix = @"stubbed:\t";
-        }
+        NSString *prefix = [expectationsCopy containsObject:stub] ? @"expected:\t" : @"stubbed:\t";
         [outputString appendFormat:@"\n\t%@%@", prefix, [stub description]];
     }
     [stubsCopy release];
+    [expectationsCopy release];
     return outputString;
 }
 
