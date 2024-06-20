@@ -39,12 +39,6 @@
     return self;
 }
 
-- (void)dealloc
-{
-    [self stopMocking];
-    [super dealloc];
-}
-
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"OCClassMockObject(%@)", NSStringFromClass(mockedClass)];
