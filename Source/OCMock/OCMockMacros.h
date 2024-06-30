@@ -155,3 +155,5 @@
     macro \
     _Pragma("clang diagnostic pop") \
 })
+
+#define OCMIgnore(class,selector) do { [OCMockObject  ignoreMethod:selector forClass:class];} while(0);

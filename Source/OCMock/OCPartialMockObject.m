@@ -199,6 +199,12 @@
 
 - (void)setupForwarderForSelector:(SEL)sel
 {
+    
+    for(Class aClass in [OCMockObject classesIgnoringMockedSelector:sel])
+    {
+        if([realObject isKindOfClass:aClass])
+            return;
+    }
     SEL aliasSelector = OCMAliasForOriginalSelector(sel);
     if(class_getInstanceMethod(object_getClass(realObject), aliasSelector) != NULL)
         return;
@@ -232,6 +238,14 @@
 - (id)forwardingTargetForSelectorForRealObject:(SEL)sel
 {
     // in here "self" is a reference to the real object, not the mock
+    
+    for(Class aClass in [OCMockObject classesIgnoringMockedSelector:sel])
+    {
+        if([self isKindOfClass:aClass])
+            return self;
+    }
+    
+    
     OCPartialMockObject *mock = OCMGetAssociatedMockForObject(self);
     if(mock == nil)
         [NSException raise:NSInternalInconsistencyException format:@"No partial mock for object %p", self];

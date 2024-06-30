@@ -83,6 +83,26 @@
 }
 
 
+NSDictionary <NSString*,NSSet <Class> *>  * _static_ignoredBySelectorName;
+
++ (void)ignoreMethod:(SEL) aSelector forClass:(Class) aClass{
+    @synchronized (self) 
+    {
+        NSMutableDictionary * muIgnoreListBySelector = [[_static_ignoredBySelectorName?:@{} mutableCopy] autorelease];
+        NSMutableSet * muIgnoreList = [[muIgnoreListBySelector[NSStringFromSelector(aSelector)]?:NSSet.new mutableCopy] autorelease];
+        [muIgnoreList addObject:aClass ];
+        muIgnoreListBySelector[NSStringFromSelector(aSelector)] = [muIgnoreList.copy autorelease];
+        [_static_ignoredBySelectorName autorelease];
+        _static_ignoredBySelectorName = muIgnoreListBySelector.copy;
+    }
+}
+
++ (NSArray <Class> *)classesIgnoringMockedSelector:(SEL)aSelector{
+    return [_static_ignoredBySelectorName[NSStringFromSelector(aSelector)] allObjects];
+}
+
+
+
 #pragma mark Initialisers, description, accessors, etc.
 
 - (instancetype)init
@@ -363,6 +383,20 @@
         [recorder setShouldReturnMockFromInit:(class_getInstanceMethod(object_getClass(recorder), aSelector) == NO)];
         return recorder;
     }
+    if (object_getClass(self) == OCPartialMockObject.class) 
+    {
+        Ivar ivar = class_getInstanceVariable(OCPartialMockObject.class,"realObject");
+        id mockObject = ivar?object_getIvar(self, ivar):nil;
+        if(mockObject)
+        {
+            for(Class aClass in [OCMockObject classesIgnoringMockedSelector:aSelector])
+            {
+                if([mockObject isKindOfClass:aClass])
+                    return mockObject;
+            }
+        }
+    }
+
     return nil;
 }
 
