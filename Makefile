@@ -39,31 +39,31 @@ dist: archives xcframework sourcecode dmg
 
 macos:
 	@echo "** Building macOS framework..."
-	$(XCODEDIST) archive -scheme OCMock -destination 'generic/platform=macOS' -archivePath $(ARCHIVE_DIR)/OCMock-macOS | xcpretty -c
+	$(XCODEDIST) archive -scheme OCMock -destination 'generic/platform=macOS' -archivePath $(ARCHIVE_DIR)/OCMock-macOS TEAM_IDENTIFIER="${TEAM_IDENTIFIER}" CODE_SIGN_IDENTITY="${CODE_SIGN_IDENTITY}" | xcpretty -c
 
 ioslib:
 	@echo "** Building iOS libraries..."
-	$(XCODEDIST) archive -scheme OCMockLib -destination 'generic/platform=iOS' -archivePath $(ARCHIVE_DIR)/OCMock-iOS-lib | xcpretty -c
-	$(XCODEDIST) archive -scheme OCMockLib -destination 'generic/platform=iOS Simulator' -archivePath $(ARCHIVE_DIR)/OCMock-iOS-lib-sim | xcpretty -c
+	$(XCODEDIST) archive -scheme OCMockLib -destination 'generic/platform=iOS' -archivePath $(ARCHIVE_DIR)/OCMock-iOS-lib TEAM_IDENTIFIER="${TEAM_IDENTIFIER}" CODE_SIGN_IDENTITY="${CODE_SIGN_IDENTITY}" | xcpretty -c
+	$(XCODEDIST) archive -scheme OCMockLib -destination 'generic/platform=iOS Simulator' -archivePath $(ARCHIVE_DIR)/OCMock-iOS-lib-sim TEAM_IDENTIFIER="${TEAM_IDENTIFIER}" CODE_SIGN_IDENTITY="${CODE_SIGN_IDENTITY}" | xcpretty -c
 
 ios:
 	@echo "** Building iOS frameworks..."
-	$(XCODEDIST) archive -scheme "OCMock iOS" -destination 'generic/platform=iOS' -archivePath $(ARCHIVE_DIR)/OCMock-iOS | xcpretty -c
-	$(XCODEDIST) archive -scheme "OCMock iOS" -destination 'generic/platform=iOS Simulator' -archivePath $(ARCHIVE_DIR)/OCMock-iOS-sim | xcpretty -c
+	$(XCODEDIST) archive -scheme "OCMock iOS" -destination 'generic/platform=iOS' -archivePath $(ARCHIVE_DIR)/OCMock-iOS TEAM_IDENTIFIER="${TEAM_IDENTIFIER}" CODE_SIGN_IDENTITY="${CODE_SIGN_IDENTITY}" | xcpretty -c
+	$(XCODEDIST) archive -scheme "OCMock iOS" -destination 'generic/platform=iOS Simulator' -archivePath $(ARCHIVE_DIR)/OCMock-iOS-sim TEAM_IDENTIFIER="${TEAM_IDENTIFIER}" CODE_SIGN_IDENTITY="${CODE_SIGN_IDENTITY}" | xcpretty -c
 
 catalyst:
 	@echo "** Building Mac Catalyst framework..."
-	$(XCODEDIST) archive -scheme "OCMock iOS" -destination 'generic/platform=macOS,variant=Mac Catalyst' -archivePath $(ARCHIVE_DIR)/OCMock-catalyst | xcpretty -c
+	$(XCODEDIST) archive -scheme "OCMock iOS" -destination 'generic/platform=macOS,variant=Mac Catalyst' -archivePath $(ARCHIVE_DIR)/OCMock-catalyst TEAM_IDENTIFIER="${TEAM_IDENTIFIER}" CODE_SIGN_IDENTITY="${CODE_SIGN_IDENTITY}" | xcpretty -c
 
 tvos:
 	@echo "** Building tvOS frameworks..."
-	$(XCODEDIST) archive -scheme "OCMock tvOS" -destination 'generic/platform=tvOS' -archivePath $(ARCHIVE_DIR)/OCMock-tvOS | xcpretty -c
-	$(XCODEDIST) archive -scheme "OCMock tvOS" -destination 'generic/platform=tvOS Simulator' -archivePath $(ARCHIVE_DIR)/OCMock-tvOS-sim | xcpretty -c
+	$(XCODEDIST) archive -scheme "OCMock tvOS" -destination 'generic/platform=tvOS' -archivePath $(ARCHIVE_DIR)/OCMock-tvOS TEAM_IDENTIFIER="${TEAM_IDENTIFIER}" CODE_SIGN_IDENTITY="${CODE_SIGN_IDENTITY}" | xcpretty -c
+	$(XCODEDIST) archive -scheme "OCMock tvOS" -destination 'generic/platform=tvOS Simulator' -archivePath $(ARCHIVE_DIR)/OCMock-tvOS-sim TEAM_IDENTIFIER="${TEAM_IDENTIFIER}" CODE_SIGN_IDENTITY="${CODE_SIGN_IDENTITY}" | xcpretty -c
 
 watchos:
 	@echo "** Building watchOS frameworks..."
-	$(XCODEDIST) archive -scheme "OCMock watchOS" -destination 'generic/platform=watchOS' -archivePath $(ARCHIVE_DIR)/OCMock-watchOS | xcpretty -c
-	$(XCODEDIST) archive -scheme "OCMock watchOS" -destination 'generic/platform=watchOS Simulator' -archivePath $(ARCHIVE_DIR)/OCMock-watchOS-sim | xcpretty -c
+	$(XCODEDIST) archive -scheme "OCMock watchOS" -destination 'generic/platform=watchOS' -archivePath $(ARCHIVE_DIR)/OCMock-watchOS TEAM_IDENTIFIER="${TEAM_IDENTIFIER}" CODE_SIGN_IDENTITY="${CODE_SIGN_IDENTITY}" | xcpretty -c
+	$(XCODEDIST) archive -scheme "OCMock watchOS" -destination 'generic/platform=watchOS Simulator' -archivePath $(ARCHIVE_DIR)/OCMock-watchOS-sim TEAM_IDENTIFIER="${TEAM_IDENTIFIER}" CODE_SIGN_IDENTITY="${CODE_SIGN_IDENTITY}" | xcpretty -c
 
 buildcheck:
 	@echo "** Verifying archives..."
