@@ -18,6 +18,7 @@
 #import <OCMock/OCMRecorder.h>
 
 #import <objc/runtime.h>
+#import <string.h>
 
 #if !defined(OCM_DISABLE_XCTEST_FEATURES)
 @class XCTestExpectation;
@@ -42,15 +43,32 @@
 
 @interface OCMStubRecorder (Properties)
 
-#define andReturn(aValue) _andReturn(({                                             \
-  __typeof__(aValue) _val = (aValue);                                               \
-  NSValue *_nsval = [NSValue value:&_val withObjCType:@encode(__typeof__(_val))];   \
-  if (OCMIsObjectType(@encode(__typeof(_val)))) {                                   \
-      objc_setAssociatedObject(_nsval, "OCMAssociatedBoxedValue", *(__unsafe_unretained id *) (void *) &_val, OBJC_ASSOCIATION_RETAIN); \
-  }                                                                                 \
-  _nsval;                                                                           \
+// Used to autoselect `return` vs `returnValue` based on type.
+// Gets complicated because NSValue cannot be NSCoded if it contains a type
+// of void*, and typeof(nil) is void* in ObjC (but not ObjC++) code.
+// Also we want to avoid undefined behaviours by casting _val into an id
+// if it isn't a pointer type.
+#define andReturn(aValue) _andReturn(({                                        \
+  __typeof__(aValue) _val = (aValue);                                          \
+  const char *_encoding = @encode(__typeof(aValue));                           \
+  const void *_nilPtr = nil;                                                   \
+  BOOL _objectOrNil = OCMIsObjectType(_encoding) ||                            \
+                      (strcmp(_encoding, @encode(void *)) == 0 &&              \
+                       memcmp((void*)&_val, &_nilPtr, sizeof(void*)) == 0);    \
+  id _retVal;                                                                  \
+  if(_objectOrNil)                                                             \
+  {                                                                            \
+    __unsafe_unretained id _unsafeId;                                          \
+    memcpy(&_unsafeId, (void*)&_val, sizeof(id));                              \
+    _retVal = _unsafeId;                                                       \
+  }                                                                            \
+  else                                                                         \
+  {                                                                            \
+    _retVal = [NSValue valueWithBytes:&_val objCType:_encoding];               \
+  }                                                                            \
+  [NSArray arrayWithObjects:@(_objectOrNil), _retVal, nil];                    \
 }))
-@property (nonatomic, readonly) OCMStubRecorder *(^ _andReturn)(NSValue *);
+@property (nonatomic, readonly) OCMStubRecorder *(^ _andReturn)(NSArray<id> *);
 
 #define andThrow(anException) _andThrow(anException)
 @property (nonatomic, readonly) OCMStubRecorder *(^ _andThrow)(NSException *);
